@@ -4,13 +4,12 @@
 #include <math.h>
 
 #include "point.hpp"
-#include "form.hpp"
 
 class Edge
 {
 private:
-	Point p1, p2;
-	//Form *form;
+	Point *p1, *p2;
+	
 public:
 	Edge();
 	
@@ -19,9 +18,9 @@ public:
 
 	bool check_if_crosses(Edge *other);
 	
-	float length(){return p1.get_distance_to(p2);};
-	float get_edge_x(){return p2.get_x()-p1.get_x();};
-	float get_edge_y(){return p2.get_y()-p1.get_y();};
+	float length(){return p1->get_distance_to(*p2);};
+	float get_edge_x(){return p2->get_x()-p1->get_x();};
+	float get_edge_y(){return p2->get_y()-p1->get_y();};
 };
 
 #endif

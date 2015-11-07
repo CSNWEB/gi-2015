@@ -1,4 +1,4 @@
-#inlcude "form.hpp"
+#include "form.hpp"
 
 bool Form::check_for_overlap(Form other)
 {

@@ -3,6 +3,7 @@
 void Point::rotate(float center_x, float center_y, float angle)
 {
 	angle *= PI/180;
+	
 	float sin_angle = sin(angle);
 	float cos_angle = cos(angle);
 

@@ -4,8 +4,9 @@
 #include <vector>
 
 #include "edge.hpp"
-#include "plane.hpp"
 #include "abstractForm.hpp"
+
+class AbstractForm;
 
 #define floatmat vector<vector<float>>
 
@@ -14,12 +15,12 @@ using namespace std;
 class Form
 {
 private:
-	//AbstractForm *mother;
+	AbstractForm *mother;
 	
 	int number_of_edges;
 
 	vector<Edge> edges;
-	//Plane *plane;
+	vector<Point> points;
 	
 	// bounding box:
 	float x_min;
