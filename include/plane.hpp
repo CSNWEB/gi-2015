@@ -61,6 +61,14 @@ public:
 	 */
 		void compute_all_overlappings();
 
+	/**
+	 *  Checks if the positioning of forms on this plane is legal,
+	 *  i.e. no overlappings and all forms are within the plane
+	 *
+	 *  @return 	A boolean: true if plane is legal
+	 */
+	 	bool check_if_legal();
+	 	
 };
 
 #endif

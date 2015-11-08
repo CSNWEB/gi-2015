@@ -6,6 +6,11 @@ Form::Form(AbstractForm* mother)
 	// needs testing!
 	this->mother = mother;
 
+	x_min = 0;
+	x_max = mother->get_dx();
+	y_min = 0;
+	y_max = mother->get_dy();
+
 	number_of_edges = mother->get_number_of_points();
 
 	points = vector<Point>(number_of_edges);

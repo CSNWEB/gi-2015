@@ -24,18 +24,18 @@ private:
 	 * The number of outer edges this form has.
 	 * Note that this is equal to the number of points that define this form
 	 */
-	int number_of_edges;
+		int number_of_edges;
 
-	vector<Edge> edges;
-	vector<Point> points;
+		vector<Edge> edges;
+		vector<Point> points;
 	
 	/**
 	 * parameters definind the bounding box of this form:
 	 */
-	float x_min;
-	float x_max;
-	float y_min;
-	float y_max;
+		float x_min;
+		float x_max;
+		float y_min;
+		float y_max;
 	
 public:
 	/**
@@ -56,10 +56,10 @@ public:
 	/**
 	 * Getter functions for bounding box
 	 */
-	float get_bounding_xmin();
-	float get_bounding_xmax();
-	float get_bounding_ymin();
-	float get_bounding_ymax();
+	float get_bounding_xmin(){return x_min;};
+	float get_bounding_xmax(){return x_max;};
+	float get_bounding_ymin(){return y_min;};
+	float get_bounding_ymax(){return y_max;};
 	
 	/**
 	 * Function to move this form relatively
