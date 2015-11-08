@@ -1,4 +1,4 @@
-CXX          = gcc
+CXX          = g++
 INCLUDES     = -Iinclude
 SFMLINCLUDES = -lsfml-graphics -lsfml-window -lsfml-system
 CXXFLAGS     = -std=c++0x -O2
