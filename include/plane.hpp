@@ -4,6 +4,10 @@
 #include <vector>
 
 #include "form.hpp"
+#include "abstractForm.hpp"
+
+class Form;
+class AbstractForm;
 
 #define boolmat vector<vector<bool>>
 
@@ -22,8 +26,40 @@ private:
 	boolmat overlappings;
 
 public:
-	// computes which forms overlap pairwise and saves result in bool-matrix overlappings 
-	void compute_all_overlappings();
+	/**
+	 * default constructor
+	 */
+		Plane(){};
+
+	/**
+	 * consructor that sets the size of the plane
+	 */
+	 	Plane(float dx, float dy){this->dx = dx; this->dy = dy;}
+
+	/**
+	 * ? not sure if this function is necessary ?
+	 *
+	 * Adds a form, if anywhere on the plane is enough space for the bounding-box (unrotated)
+	 *
+	 * @param form 		The form to be added to the plane
+	 *
+	 * @return			A boolean: true if form was added, false if not enough space
+	 */
+		bool add_form_with_boundingbox(AbstractForm *form);
+
+	/**
+	 * Adds a form at a specific position. Does not check if the result is a legal setting
+	 *
+	 * @param form 		The (abstract) form to be added to the plane
+	 * @param pos_x		x-position on plane where the top-left corner of the bounding-box of form is placed
+	 * @param pos_y		y-position on plane where the top-left corner of the bounding-box of form is placed
+	 */
+		void add_form_at_position(AbstractForm *form, float pos_x, float pos_y);
+
+	/**
+	 * computes which forms overlap pairwise and saves result in bool-matrix overlappings 
+	 */
+		void compute_all_overlappings();
 
 };
 

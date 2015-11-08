@@ -18,7 +18,7 @@ public:
 	float get_x() {return x;};
 	float get_y() {return y;};
 	
-	float get_distance_to(Point other){return sqrt((x-other.x)*(x-other.x)+(y-other.y)*(y-other.y));};
+	float get_distance_to(Point *other){return sqrt((x-other->x)*(x-other->x)+(y-other->y)*(y-other->y));};
 	
 	void move_rel(float dx, float dy){x += dx; y += dy;};
 	void rotate(float center_x, float center_y, float angle);
