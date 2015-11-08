@@ -1,5 +1,11 @@
 #include "edge.hpp"
 
+Edge::Edge(Point *p1, Point *p2)
+{
+	this->p1 = p1;
+	this->p2 = p2;
+}
+
 bool Edge::check_if_crosses(Edge *other)
 {
 	float dp11 = p1->get_distance_to(other->p1);

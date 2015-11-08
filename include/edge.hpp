@@ -11,7 +11,7 @@ private:
 	Point *p1, *p2;
 	
 public:
-	Edge();
+	Edge(){};
 
 	Edge(Point *p1, Point *p2);
 	
