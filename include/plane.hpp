@@ -37,6 +37,20 @@ public:
 	 	Plane(float dx, float dy){this->dx = dx; this->dy = dy;}
 
 	/**
+	 *  Get number of forms on this plane
+	 */
+		int get_number_of_forms();
+
+	/**
+	 *  Get a specific form from this plane
+	 *
+	 *  @param i 	The number of the form to be returned
+	 *
+	 *  @return 	the Form at forms[i]
+	 */
+		Form get_form_at(int i);
+
+	/**
 	 * ? not sure if this function is necessary ?
 	 *
 	 * Adds a form, if anywhere on the plane is enough space for the bounding-box (unrotated)
@@ -68,7 +82,7 @@ public:
 	 *  @return 	A boolean: true if plane is legal
 	 */
 	 	bool check_if_legal();
-	 	
+	 
 };
 
 #endif

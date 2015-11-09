@@ -54,7 +54,7 @@ public:
 	/**
 	 *  Default constructor
 	 */
-    Form();
+    Form(){};
 
 	/**
 	 *  Constructor that creates a form specified by an AbstractForm, bit without
@@ -117,6 +117,11 @@ public:
      *  @return True if the receiver and the other Form overlap, false if not.
      */
 	bool check_for_overlap(Form *other, floatmat* crossings);
+
+    /**
+     *  Debug: print form to std_out
+     */
+    void _d_print_form_to_console();
 };
 
 #endif

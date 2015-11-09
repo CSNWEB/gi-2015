@@ -8,8 +8,8 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 	number_of_different_forms 	= abstract_forms.size();
 	number_of_forms_needed 		= num_of_forms;
 
-	number_of_planes 			= 0;
-	planes  					= list<Plane>();
+	//number_of_planes 			= 0;
+	planes  					= vector<Plane>();
 }
 
 void Problem::create_initial_setting()

@@ -89,3 +89,10 @@ void Form::rotate(float center_x, float center_y, float degree)
 		edges[i].rotate(center_x, center_y, degree);
 }
 	
+void Form::_d_print_form_to_console()
+{
+	printf("Number of points: %i\n", points.size());
+
+	for (int i=0; i<points.size(); ++i)
+		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
+}

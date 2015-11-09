@@ -25,7 +25,7 @@ private:
 	
 	//vector<string> names_of_forms;
 	vector<AbstractForm> forms;
-	//vector<int> number_of_pieces;
+	vector<int> number_of_pieces;
 public:
 	InputHandler(){};
 

@@ -14,12 +14,13 @@ void InputHandler::get_input(bool debug)
 		printf("Number of different forms: %i\n", number_of_different_forms);
 	}
 	
-	forms						 = vector<AbstractForm>(number_of_different_forms);
-	vector<int> number_of_pieces = vector<int>(number_of_different_forms);
+	forms			 = vector<AbstractForm>(number_of_different_forms);
+	number_of_pieces = vector<int>(number_of_different_forms);
 
 	string 	tmp_name_of_form;
 	int 	tmp_number_of_points;
 	float 	tmp_x, tmp_y;
+
 	for (int i=0; i<number_of_different_forms; ++i)
 	{
 		if (debug)
@@ -110,5 +111,10 @@ void InputHandler::_d_paint_input(bool debug)
 		}
 		window.display();
 	}
+}
 
+
+Problem InputHandler::create_problem()
+{
+	return Problem(size_of_sheet_x, size_of_sheet_y, forms, number_of_pieces);
 }

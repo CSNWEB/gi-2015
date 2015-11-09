@@ -14,7 +14,7 @@
 #define PROBLEM_H
 
 #include <vector>
-#include <list>
+//#include <list>
 
 #include "abstractForm.hpp"
 #include "plane.hpp"
@@ -62,12 +62,12 @@ private:
 	/*
 	 * The number of planes currently used:
 	 */
-		int number_of_planes;
+	//	int number_of_planes;
 
 	/**
-	 * A list of all planes(sheets) that are generated and optimized while solving the problem
+	 * A vector of all planes(sheets) that are generated and optimized while solving the problem
 	 */
-		list<Plane> planes;
+		vector<Plane> planes;
 
 
 public:
@@ -77,14 +77,28 @@ public:
 	 	Problem(){};
 
 	/**
-	 * Constructor called by inputHandler
+	 *  Constructor called by inputHandler
 	 *
-	 * @param sx 			A float describing the size of the sheet in dim x
-	 * @param sy 			A float describing the size of the sheet in dim y
-	 * @param abst_forms 	A vector of abstract forms
-	 * @param num_of_forms 	A vector of integers describing the number of forms needed (for each abstract form)
+	 *  @param sx 				A float describing the size of the sheet in dim x
+	 *  @param sy 				A float describing the size of the sheet in dim y
+	 *  @param abst_forms 		A vector of abstract forms
+	 *  @param num_of_forms 	A vector of integers describing the number of forms needed (for each abstract form)
 	 */
 	 	Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms);
+
+	/**
+	 *  Returns number_of_planes
+	 */
+		int get_number_of_planes(){return planes.size();};
+
+	/**
+	 *  Get a specific Plane
+	 *
+	 *  @param i 	The number of the plane to be return
+	 *
+	 *  @return 	the Plane at planes[i]
+	 */
+		Plane get_plane_at(int i){if (i<planes.size()) return planes[i]; else return Plane();};
 
 	/**
 	 * Function to create an initial legal setting
@@ -96,6 +110,7 @@ public:
 	 * Solve the problem!
 	 */
 		void solve();
+
 };
 
 #endif
