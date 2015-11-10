@@ -12,7 +12,7 @@ int main()
 	ih.get_input();
 	ih._d_print_input();
 
-	//ih._d_paint_input();
+	ih._d_paint_input();
 
 	Problem problem = ih.create_problem();
 
