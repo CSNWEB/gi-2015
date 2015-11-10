@@ -96,3 +96,11 @@ void Form::_d_print_form_to_console()
 	for (int i=0; i<points.size(); ++i)
 		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
 }
+
+void Form::print_form_to_svg(svg::Document doc, int x_offset)
+{
+    svg::Polygon polygon(svg::Color(200, 160, 220), svg::Stroke(.5, svg::Color(150, 160, 200)));
+        for (int i=0; i<points.size(); ++i)
+		polygon << svg::Point(points[i].get_x(), points[i].get_y());
+    doc << polygon;
+}
