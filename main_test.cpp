@@ -15,7 +15,7 @@ int main()
         
         
 
-	//ih._d_paint_input();
+	ih._d_paint_input();
 
 	Problem problem = ih.create_problem();
 

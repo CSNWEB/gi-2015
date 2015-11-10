@@ -28,14 +28,30 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	// To Do: maybe normalize position of form s.t. xmin = ymin = 0
 }
 
-sf::ConvexShape AbstractForm::get_shape(int pos_x, int pos_y, int scale)
+void AbstractForm::sort_points_dim_x_in_place()
 {
-	sf::ConvexShape shape;
-	shape.setPointCount(number_of_points);
-	for (int i=0; i<number_of_points; ++i)
-		shape.setPoint(i, sf::Vector2f(points[i].get_x()*scale+pos_x, points[i].get_y()*scale+pos_y));
+	for (int i=0; i<points.size()-1; ++i)
+		for (int j=i; j<points.size(); ++j)
+		{
+			if (points[i].get_x() > points[j].get_x())
+			{
+				Point tmp = points[i];
+				points[i] = points[j];
+				points[j] = tmp;
+			}
+		}
+}
 
-	return shape;
+void AbstractForm::compute_convex_hull()
+{
+	sort_points_dim_x_in_place();
+
+	// TO DO
+	// start with pointers to first three points, do while points left:
+		// check if second point is on the left of line defined by first -> third
+			// yes: second point is not in convex hull. second = first, first = first from last iteration
+			// no: first = second, second = third
+		// third = next point
 }
 
 void AbstractForm::_d_print_abstract_form()
@@ -46,3 +62,15 @@ void AbstractForm::_d_print_abstract_form()
 	for (int i=0; i<number_of_points; ++i)
 		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
 }
+
+#ifdef USE_SFML
+sf::ConvexShape AbstractForm::get_shape(int pos_x, int pos_y, int scale)
+{
+	sf::ConvexShape shape;
+	shape.setPointCount(number_of_points);
+	for (int i=0; i<number_of_points; ++i)
+		shape.setPoint(i, sf::Vector2f(points[i].get_x()*scale+pos_x, points[i].get_y()*scale+pos_y));
+
+	return shape;
+}
+#endif

@@ -68,8 +68,11 @@ void InputHandler::_d_print_input()
 	}
 }
 
+
 void InputHandler::_d_paint_input(bool debug)
 {
+	#ifdef USE_SFML
+
 	int scaling = 50;
 
 	if (debug)
@@ -111,6 +114,8 @@ void InputHandler::_d_paint_input(bool debug)
 		}
 		window.display();
 	}
+
+	#endif
 }
 
 

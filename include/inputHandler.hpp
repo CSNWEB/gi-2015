@@ -6,7 +6,9 @@
 #include <vector>
 #include <string>
 
+#ifdef USE_SFML
 #include <SFML/Graphics.hpp>
+#endif
 
 #include "abstractForm.hpp"
 #include "problem.hpp"

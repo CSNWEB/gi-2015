@@ -11,7 +11,9 @@
 #include <vector>
 #include <string>
 
+#ifdef USE_SFML
 #include <SFML/Graphics.hpp>
+#endif
 
 #include "point.hpp"
 #include "plane.hpp"
@@ -46,7 +48,27 @@ private:
      *  The size of the are of the form.
      */
 	float size_of_area;
+
+    /**
+     *  All points that belong to the confex hull
+     */
+    vector<Point> convex_hull;
 	
+    /**
+     *  Sorts points in x-dimension
+     *
+     *  uses in-place insertion-sort for small amount of points
+     *  Maybe implement a merge-sort for forms with #points > ? 
+     */
+    void sort_points_dim_x_in_place();
+
+    /**
+     *  Computes the convex hull of this shape:
+     *
+     *  Stores the result in vector<Point> convex_hull
+     */
+    void compute_convex_hull();
+
 public:
     
     /**
@@ -109,6 +131,8 @@ public:
      */
 	Point get_point_at_index(int index){return points[index];};
 
+    #ifdef USE_SFML
+
     /**
      *  Creates a ConvexShape representation of this AbstractForm.
      *
@@ -119,6 +143,12 @@ public:
      *  @return An object of type "ConvexShape" that represents this AbstractForm.
      */
 	sf::ConvexShape get_shape(int pos_x, int pos_y, int scale);
+
+    /**
+     * TO DO: a function that returns an array of line segments
+     */
+
+    #endif
 };
 
 #endif
