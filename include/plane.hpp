@@ -9,7 +9,7 @@
 class Form;
 class AbstractForm;
 
-#define boolmat vector<vector<bool>>
+#define boolmat vector<vector<bool> >
 
 using namespace std;
 

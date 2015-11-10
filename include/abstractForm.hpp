@@ -93,7 +93,7 @@ public:
      *
      *  removed because intended way of adding a form to a plane is via class problem
      *
-	//void create_form_in_plane(Plane *s, float pos_x, float pos_y);
+	//void create_form_in_plane(Plane *s, float pos_x, float pos_y);*/
 
     /**
      *  A Debugging function that prints the properties of the form to the

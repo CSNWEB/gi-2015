@@ -13,12 +13,11 @@
 
 #include "edge.hpp"
 #include "abstractForm.hpp"
-
-#include "simple_svg_1.0.0.hpp"
+#include "simpleSVG.hpp"
 
 class AbstractForm;
 
-#define floatmat vector<vector<float>>
+#define floatmat vector<vector<float> >
 
 using namespace std;
 
@@ -128,7 +127,7 @@ public:
     /**
      * Print the form points to a svg Polygon
      */
-    void print_form_to_svg(svg::Document doc, int x_offset);
+   void print_form_to_svg(svg::Document * doc, int x_offset);
 };
 
 #endif

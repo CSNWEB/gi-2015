@@ -1,3 +1,4 @@
+
 #include "inputHandler.hpp"
 #include "problem.hpp"
 #include "plane.hpp"
@@ -15,7 +16,7 @@ int main()
         
         
 
-	ih._d_paint_input();
+	//ih._d_paint_input();
 
 	Problem problem = ih.create_problem();
 
@@ -27,7 +28,7 @@ int main()
 
         
         unsigned int planes = problem.get_number_of_planes();
-        int factor = 100;
+        int factor = 10;
         int planeWidth =  floor(problem.get_plane_width() * factor);
         int planeHeight = floor(problem.get_plane_height() * factor);
         
@@ -45,7 +46,7 @@ int main()
 			Form f = p.get_form_at(j);
                        
 			f._d_print_form_to_console();
-                        f.print_form_to_svg(doc, i*(planeWidth+10));
+                        f.print_form_to_svg(&doc, i*(planeWidth+10));
 		}
 		printf("\n");
 	}
