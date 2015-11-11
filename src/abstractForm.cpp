@@ -25,6 +25,8 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	dx = x_max-x_min;
 	dy = y_max-y_min;
 
+	convex_hull = vector<Point>();
+
 	// To Do: maybe normalize position of form s.t. xmin = ymin = 0
 }
 
@@ -45,6 +47,52 @@ void AbstractForm::sort_points_dim_x_in_place()
 void AbstractForm::compute_convex_hull()
 {
 	sort_points_dim_x_in_place();
+
+	if (points.size() < 3)
+	{
+		convex_hull = points;
+		return;
+	}
+	else
+	{
+		vector<Point> convex_hull_lower = points;
+		convex_hull_lower.push_front(points[0]);
+		int i=0;
+		while (i < convex_hull_lower.size()-2);
+		{
+			Point *p1 = &convex_hull_lower[i];
+			Point *p2 = &convex_hull_lower[i+1];
+			Point *p3 = &convex_hull_lower[i+2];
+
+			if (p2->is_left_of(p1,p3) > 0)
+				// p2 is not part of convex hull
+				convex_hull.erase(convex_hull_lower.begin()+i+1);
+				--i;
+			else
+				++i;
+		}
+		convex_hull_lower.erase(convex_hull_lower.begin());
+
+		vector<Point> convex_hull_upper = points;
+		convex_hull_upper.push_back(points[points.size()-1]);
+		i = points.size()-1;
+		while (i >= 2)
+		{
+			Point *p1 = &convex_hull_lower[i];
+			Point *p2 = &convex_hull_lower[i-1];
+			Point *p3 = &convex_hull_lower[i-2];
+
+			if (p2->is_left_of(p1,p3) > 0)
+				// p2 is not part of convex hull
+				convex_hull.erase(convex_hull_lower.end()-i-2);
+				++i;
+			else
+				--i;
+		}
+
+		convex_hull = convex_hull_lower;
+		convex_hull.insert(convex_hull.end(), convex_hull_upper.begin(), convex_hull_upper.end());
+	}
 
 	// TO DO
 	// start with pointers to first three points, do while points left:

@@ -19,6 +19,18 @@ public:
 	float get_y() {return y;};
 	
 	float get_distance_to(Point *other){return sqrt((x-other->x)*(x-other->x)+(y-other->y)*(y-other->y));};
+
+	/**
+	 *  Function to check if this point is left of line defined by p_start -> p_end
+	 *
+	 * @param p_start 	Pointer to point defining start of line
+	 * @param p_end 	Point to point defining direction of line
+	 *
+	 * @retun 			 0 if this point is on line
+	 *					 1 if this point is left of line
+	 * 					-1 if this point is on the right of line
+	 */
+	int is_left_of(Point *p_start, Point *p_end);
 	
 	void move_rel(float dx, float dy){x += dx; y += dy;};
 	void rotate(float center_x, float center_y, float angle);
