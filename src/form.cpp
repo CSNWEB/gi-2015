@@ -98,11 +98,13 @@ void Form::_d_print_form_to_console()
 		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
 }
 
-void Form::print_form_to_svg(svg::Document * doc, int x_offset)
+void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
     std::cout << "Painting Polygon";
-    svg::Polygon polygon(svg::Color(200, 160, 220), svg::Stroke(10, svg::Color::Black));
-        for (int i=0; i<points.size(); ++i)
-		polygon << svg::Point(points[i].get_x() + x_offset, points[i].get_y() + 5);
+    svg::Polygon polygon(svg::Color(200, 160, 220), svg::Stroke(1, svg::Color::Black));
+
+    for (int i=0; i<points.size(); ++i)
+		polygon << svg::Point(points[i].get_x()*scale + x_offset, points[i].get_y()*scale + y_offset);
+    
     (*doc) << polygon;    
 }

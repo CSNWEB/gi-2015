@@ -127,7 +127,7 @@ public:
     /**
      * Print the form points to a svg Polygon
      */
-   void print_form_to_svg(svg::Document * doc, int x_offset);
+   void print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale);
 };
 
 #endif
