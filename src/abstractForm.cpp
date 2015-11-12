@@ -64,8 +64,9 @@ void AbstractForm::compute_convex_hull()
 	}
 	else
 	{
-		vector<Point> convex_hull_lower = points;
-		convex_hull_lower.push_front(points[0]);
+		vector<Point> convex_hull_lower = vector<Point>();
+		convex_hull_lower.push_back(points[0]);
+		convex_hull_lower.insert(convex_hull_lower.end(), points.begin(), points.end());
 		int i=0;
 		while (i < convex_hull_lower.size()-2);
 		{
@@ -74,9 +75,11 @@ void AbstractForm::compute_convex_hull()
 			Point *p3 = &convex_hull_lower[i+2];
 
 			if (p2->is_left_of(p1,p3) > 0)
+			{
 				// p2 is not part of convex hull
 				convex_hull.erase(convex_hull_lower.begin()+i+1);
 				--i;
+			}
 			else
 				++i;
 		}
@@ -92,15 +95,19 @@ void AbstractForm::compute_convex_hull()
 			Point *p3 = &convex_hull_lower[i-2];
 
 			if (p2->is_left_of(p1,p3) > 0)
+			{
 				// p2 is not part of convex hull
 				convex_hull.erase(convex_hull_lower.end()-i-2);
 				++i;
+			}
 			else
 				--i;
 		}
 
 		convex_hull = convex_hull_lower;
-		convex_hull.insert(convex_hull.end(), convex_hull_upper.begin(), convex_hull_upper.end());
+		for (int k=convex_hull_upper.size()-2; k>=0; --k)
+			convex_hull.push_back(convex_hull_upper[k]);
+		//convex_hull.insert(convex_hull.end(), convex_hull_upper.begin(), convex_hull_upper.end());
 	}
 
 	// TO DO
