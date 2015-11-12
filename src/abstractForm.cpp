@@ -25,7 +25,7 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	dx = x_max-x_min;
 	dy = y_max-y_min;
 
-	convex_hull = vector<Point>();
+	convex_hull = vector<int>();
 
 	// To Do: maybe normalize position of form s.t. xmin = ymin = 0
     
@@ -48,42 +48,49 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
     size_of_area /= 2.0;
 }
 
-void AbstractForm::sort_points_dim_x_in_place()
+vector<int> AbstractForm::sort_points_dim_x_in_place()
 {
+	vector<int> ordered_indices = vector<int>(0,points.size());
+	for (int i=0; i<points.size(); ++i)
+		ordered_indices[i] = i;
+
 	for (int i=0; i<points.size()-1; ++i)
 		for (int j=i; j<points.size(); ++j)
 		{
-			if (points[i].get_x() > points[j].get_x())
+			if (points[ordered_indices[i]].get_x() > points[ordered_indices[j]].get_x())
 			{
-				Point tmp = points[i];
-				points[i] = points[j];
-				points[j] = tmp;
+				int tmp = ordered_indices[i];
+				ordered_indices[i] = ordered_indices[j];
+				ordered_indices[j] = tmp;
 			}
 		}
+
+	return ordered_indices;
 }
+
 
 void AbstractForm::compute_convex_hull()
 {
-	sort_points_dim_x_in_place();
+	vector<int> ordered_indices = sort_points_dim_x_in_place();
 
 	if (points.size() < 3)
 	{
-		convex_hull = points;
+		convex_hull = ordered_indices;
 		return;
 	}
 	else
 	{
-		vector<Point> convex_hull_lower = vector<Point>();
-		convex_hull_lower.push_back(points[0]);
-		convex_hull_lower.insert(convex_hull_lower.end(), points.begin(), points.end());
+		vector<int> convex_hull_lower = vector<int>();
+		convex_hull_lower.push_back(ordered_indices[0]);
+		convex_hull_lower.insert(convex_hull_lower.end(), ordered_indices.begin(), ordered_indices.end());
 		int i=0;
 		while (i < convex_hull_lower.size()-2);
 		{
-			Point *p1 = &convex_hull_lower[i];
-			Point *p2 = &convex_hull_lower[i+1];
-			Point *p3 = &convex_hull_lower[i+2];
+			int ind_p1 = convex_hull_lower[i];
+			int ind_p2 = convex_hull_lower[i+1];
+			int ind_p3 = convex_hull_lower[i+2];
 
-			if (p2->is_left_of(p1,p3) > 0)
+			if (points[ind_p2].is_left_of(&points[ind_p1], &points[ind_p3]) > 0)
 			{
 				// p2 is not part of convex hull
 				convex_hull.erase(convex_hull_lower.begin()+i+1);
@@ -94,16 +101,16 @@ void AbstractForm::compute_convex_hull()
 		}
 		convex_hull_lower.erase(convex_hull_lower.begin());
 
-		vector<Point> convex_hull_upper = points;
-		convex_hull_upper.push_back(points[points.size()-1]);
-		i = points.size()-1;
+		vector<int> convex_hull_upper = ordered_indices;
+		convex_hull_upper.push_back(ordered_indices[ordered_indices.size()-1]);
+		i = ordered_indices.size()-1;
 		while (i >= 2)
 		{
-			Point *p1 = &convex_hull_lower[i];
-			Point *p2 = &convex_hull_lower[i-1];
-			Point *p3 = &convex_hull_lower[i-2];
+			int ind_p1 = convex_hull_lower[i];
+			int ind_p2 = convex_hull_lower[i-1];
+			int ind_p3 = convex_hull_lower[i-2];
 
-			if (p2->is_left_of(p1,p3) > 0)
+			if (points[ind_p2].is_left_of(&points[ind_p1], &points[ind_p3]) > 0)
 			{
 				// p2 is not part of convex hull
 				convex_hull.erase(convex_hull_lower.end()-i-2);

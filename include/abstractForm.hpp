@@ -52,7 +52,7 @@ private:
     /**
      *  All points that belong to the confex hull
      */
-    vector<Point> convex_hull;
+    vector<int> convex_hull;
 	
     /**
      *  Sorts points in x-dimension
@@ -60,7 +60,7 @@ private:
      *  uses in-place insertion-sort for small amount of points
      *  Maybe implement a merge-sort for forms with #points > ? 
      */
-    void sort_points_dim_x_in_place();
+    vector<int> sort_points_dim_x_in_place();
 
     /**
      *  Computes the convex hull of this shape:
