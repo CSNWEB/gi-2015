@@ -85,8 +85,8 @@ Point Form::get_centroid()
     
     for (unsigned int index = 0; index < points.size(); index++)
     {
-        x += points[index].x;
-        y += points[index].y;
+        x += points[index].get_x();
+        y += points[index].get_y();
     }
     
     x /= points.size();
