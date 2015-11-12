@@ -91,6 +91,16 @@ public:
 	float get_bounding_ymax(){return y_max;};
 	
     /**
+     *  A vector containing the points that belong to the form.
+     *
+     *  @return A vector containing the points of the form.
+     */
+    vector<Point> get_points()
+    {
+        return points;
+    }
+    
+    /**
      *  Get the centroid of the form. The means the mean of the x and y values
      *  of all points.
      *

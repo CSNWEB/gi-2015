@@ -210,8 +210,8 @@ public:
      */
     void calculcate_best_offset_from_first_to_second_form(unsigned int population_size,
                                                           float mutation_probability,
-                                                          float fitter_preference_probability = 0.5,
-                                                          float gene_string_mutation_propability = 0.2,
+                                                          float fitter_preference_probability,
+                                                          float gene_string_mutation_propability,
                                                           unsigned int maximum_generations,
                                                           float fitness_threshhold,
                                                           float offset_step_size);

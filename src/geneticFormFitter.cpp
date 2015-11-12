@@ -25,6 +25,11 @@ GeneticFormFitter::GeneticFormFitter(AbstractForm *first_form, AbstractForm *sec
  */
 void GeneticFormFitter::calculate_fitness_of_chromosome(Chromosome &chromosome)
 {
+    
+#ifdef DEBUG
+    cout << "Calculating fitness of chromosome with gene string: " << chromosome.gene_string << endl;
+#endif
+    
     Form first_form, second_form;
     get_forms_from_chromosome(chromosome, first_form, second_form);
     
@@ -35,14 +40,14 @@ void GeneticFormFitter::calculate_fitness_of_chromosome(Chromosome &chromosome)
      *  calculate its convex hull.
      */
     
-    vector<Point>first_form_points = first_form->points;
-    vector<Point>second_form_points = second_form->points;
+    vector<Point>first_form_points = first_form.get_points();
+    vector<Point>second_form_points = second_form.get_points();
     
-    AbstractForm combined_abstract_form = AbstractForm("combined_form",
-                                                       first_form_points.insert(first_form_points.end(), second_form_points.
-                                                                                begin(),
-                                                                                second_form_points.end())
-                                                       );
+    string combined_abstract_form_name = "combined_form";
+    first_form_points.insert(first_form_points.end(), second_form_points.
+                             begin(),
+                             second_form_points.end());
+    AbstractForm combined_abstract_form = AbstractForm(combined_abstract_form_name, first_form_points);
     
     // Calculate the size of the bounding box of the combined forms.
     float bounding_box_size = (combined_abstract_form.get_dx() * combined_abstract_form.get_dy());
@@ -50,20 +55,20 @@ void GeneticFormFitter::calculate_fitness_of_chromosome(Chromosome &chromosome)
     // Calculate the area of the convex hull of the combined form
     
     // Get the indices of the points that belong to the convex hull of the abstract form.
-    vector<int> combined_abstract_form_convex_hull_indices = combined_abstract_form.convex_hull;
+    vector<int> combined_abstract_form_convex_hull_indices = combined_abstract_form.get_convex_hull();
     
     // Get the points that are part of the convex hull using the gathered indices.
     vector<Point> combined_abstract_form_convex_hull_points = vector<Point>();
     for (unsigned int index = 0; index < combined_abstract_form_convex_hull_indices.size(); index++)
     {
-        combined_abstract_form_convex_hull_points.push_back(combined_abstract_form.get_point_at_index(combined_abstract_form_convex_hull_indices[index]);   
+        combined_abstract_form_convex_hull_points.push_back(combined_abstract_form.get_point_at_index(combined_abstract_form_convex_hull_indices[index]));
     }
     
     // Create an abstract form only containing the points of the convex hull.
     AbstractForm convex_hull_combined_form = AbstractForm("convex_hull_combined", combined_abstract_form_convex_hull_points);
     
     // Get the size of the convex hull
-    float convex_hull_size = convex_hull_combined_form.size_of_area;
+    float convex_hull_size = convex_hull_combined_form.get_size_of_area();
     
     /**
      *  The fitness is the ratio of bounding box size to convex hull size.
@@ -76,7 +81,7 @@ void GeneticFormFitter::calculate_fitness_of_chromosome(Chromosome &chromosome)
      *  Overlappings are punsihed by doubling the score. Since the score is
      *  better the lower it is.
      */
-    if (first_form.check_for_overlap(second_form))
+    if (first_form.check_for_overlap(&second_form)) // TODO: Maybe make punishment depending on the crossings?
     {
         fitness_of_chromosome *= 2;
     }
@@ -102,7 +107,7 @@ void GeneticFormFitter::calculate_fitness_of_population()
  *
  *  @return The Chromosome representing the fittest gene in the population.
  */
-Chromosome get_fittest_chromosome_from_population()
+Chromosome GeneticFormFitter::get_fittest_chromosome_from_population()
 {
     Chromosome fittest_chromosome = population[0];
     for (unsigned int index = 0; index < population.size(); index++)
@@ -213,9 +218,7 @@ Chromosome GeneticFormFitter::create_random_chromosome()
      *  number. Which might lead to a rotation angle much larger than 360°. 
      */
     
-    srand (time(NULL));
-    
-    unsigned int first_rotation_angle = rand % 360;
+    unsigned int first_rotation_angle = rand() % 360;
     
     unsigned int positive_negative_flag_horizontal = rand() % 2;
     unsigned int horizontal_offset = rand() % 100;
@@ -223,7 +226,7 @@ Chromosome GeneticFormFitter::create_random_chromosome()
     unsigned int positive_negative_flag_vertical = rand() % 2;
     unsigned int vertical_offset = rand() % 100;
     
-    unsigned int second_rotation_angle = rand % 360;
+    unsigned int second_rotation_angle = rand() % 360;
     
     stringstream stream;
     stream << setfill('0');
@@ -263,7 +266,7 @@ void GeneticFormFitter::get_offset_rotation_from_chromosome(Chromosome chromosom
     
     unsigned int first_rotation_angle = stoi(first_rotation_angle_string);
     
-    unsigned int positive_negative_flag_horizontal = stoi(positive_negative_flag_horizontal_string)
+    unsigned int positive_negative_flag_horizontal = stoi(positive_negative_flag_horizontal_string);
     int horizontal_offset_sign = positive_negative_flag_horizontal > 0 ? -1 : 1;
     unsigned int horizontal_offset = stoi(horizontal_offset_string);
     
@@ -294,13 +297,27 @@ void GeneticFormFitter::get_forms_from_chromosome(Chromosome chromosome,
     first_form = Form(this->first_form);
     second_form = Form(this->second_form);
     
+#ifdef DEBUG
+    cout << "Forms created successfully!" << endl;
+#endif
+    
     float x_offset, y_offset, first_rotation, second_rotation;
     
-    get_offset_rotation_from_chromosome(chromosome, x_offset, y_offset, first_rotation, second_rotation);
+    get_offset_rotation_from_chromosome(chromosome,
+                                        x_offset,
+                                        y_offset,
+                                        first_rotation,
+                                        second_rotation);
+    
+#ifdef DEBUG
+    cout << "Chromosome with gene string: \"" << chromosome.gene_string << "\" was translated to offset: (" << x_offset << ", " << y_offset << "), first rotation: " << first_rotation << ", second rotation: " << second_rotation << endl;
+#endif
     
     Point first_form_centroid = first_form.get_centroid();
     
-    first_form.rotate(first_form_centroid.get_x(), first_form_centroid.get_y(), first_rotation);
+    first_form.rotate(first_form_centroid.get_x(),
+                      first_form_centroid.get_y(),
+                      first_rotation);
     
     second_form.move_rel(x_offset,
                          y_offset);
@@ -319,11 +336,13 @@ void GeneticFormFitter::get_forms_from_chromosome(Chromosome chromosome,
  */
 void GeneticFormFitter::create_random_population(unsigned int size)
 {
+    srand (time(NULL));
+    
     this->population = vector<Chromosome>(size);
     
     for (unsigned int index = 0; index < size; index++)
     {
-        this->population[index] = create_random_gene_string();
+        this->population[index] = create_random_chromosome();
     }
 }
 
@@ -347,7 +366,7 @@ void GeneticFormFitter::breed_population()
         Chromosome fit_chromosome = population[fit_index];
         Chromosome dead_chromosome = population[dead_index];
         
-        if (fit_chromosome.fitness > dead_index.fitness)
+        if (fit_chromosome.fitness > dead_chromosome.fitness)
         {
             fit_index = index + 1;
             dead_index = index;
@@ -357,7 +376,7 @@ void GeneticFormFitter::breed_population()
         }
         
         for (unsigned int character_index = 0;
-             character_index < first_chromosome.gene_string.length();
+             character_index < fit_chromosome.gene_string.length();
              character_index++)
         {
             // Randomly choose from which string the gene is taken
@@ -394,8 +413,8 @@ void GeneticFormFitter::breed_population()
  */
 void GeneticFormFitter::calculcate_best_offset_from_first_to_second_form(unsigned int population_size,
                                                                          float mutation_probability,
-                                                                         float fitter_preference_probability = 0.5,
-                                                                         float gene_string_mutation_propability = 0.2,
+                                                                         float fitter_preference_probability,
+                                                                         float gene_string_mutation_propability,
                                                                          unsigned int maximum_generations,
                                                                          float fitness_threshhold,
                                                                          float offset_step_size)
@@ -406,9 +425,23 @@ void GeneticFormFitter::calculcate_best_offset_from_first_to_second_form(unsigne
     this->gene_string_mutation_propability = gene_string_mutation_propability;
     
     // Making sure the number of chromosomes in the population is even.
-    (population_size % 2 == 0) ? : population_size++;
+    if (population_size % 2 != 0)
+    {
+        population_size++;
+    }
     
     create_random_population(population_size);
+    
+#ifdef DEBUG
+
+    cout << "Created random population: " << endl;
+    for (unsigned int index = 0; index < population.size(); index++)
+    {
+        cout << population[index].gene_string << ", ";
+    }
+    cout << endl;
+
+#endif
     
     for (unsigned int generation = 1; generation <= maximum_generations; generation++)
     {
@@ -454,5 +487,9 @@ void GeneticFormFitter::get_best_offset_and_rotation(float &x_offset,
 {
     Chromosome fittest_chromosome = get_fittest_chromosome_from_population();
     
-    get_offset_rotation_from_chromosome(chromosome, x_offset, y_offset, first_rotation, second_rotation);
+    get_offset_rotation_from_chromosome(fittest_chromosome,
+                                        x_offset,
+                                        y_offset,
+                                        first_rotation,
+                                        second_rotation);
 }
