@@ -54,7 +54,10 @@ int main()
 #endif
 
 			f._d_print_form_to_console();
+			f._d_print_convex_hull_to_console();
+            f.print_convex_hull_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
             f.print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
+            
 		}
 		printf("\n");
 	}

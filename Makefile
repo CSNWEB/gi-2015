@@ -3,7 +3,8 @@ INCLUDES     = -Iinclude
 SFMLINCLUDES = -lsfml-graphics -lsfml-window -lsfml-system
 USESFML 	 =  
 #USESFML      = -D USE_SFML
-CXXFLAGS     = -std=c++0x -O2 $(USESFML)
+DEBUGFLAG	 = -DDEBUG
+CXXFLAGS     = -std=c++0x -O2 $(USESFML) $(DEBUGFLAG)
 
 #SOURCE = main_test.cpp src/inputHandler.cpp src/abstractForm.cpp
 INCDIR = include/

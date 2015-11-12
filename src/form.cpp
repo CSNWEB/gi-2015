@@ -125,7 +125,7 @@ void Form::_d_print_convex_hull_to_console()
 
 void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
-    std::cout << "Painting Polygon";
+    std::cout << "Painting Polygon\n";
     svg::Polygon polygon(svg::Color(200, 160, 220), svg::Stroke(1, svg::Color::Black));
 
     for (int i=0; i<points.size(); ++i)
@@ -136,10 +136,10 @@ void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, in
 
 void Form::print_convex_hull_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
-	cout << "Painting convex hull";
+	cout << "Painting convex hull\n";
 	vector<int> convex_hull_points = mother->get_convex_hull();
 
-	svg::Polyline convex_hull_line(svg::Stroke(1, svg::Color::Blue));
+	svg::Polyline convex_hull_line(svg::Stroke(5, svg::Color::Blue));
 	for (int i=0; i<convex_hull_points.size(); ++i)
 		convex_hull_line << svg::Point(points[convex_hull_points[i]].get_x()*scale + x_offset, points[convex_hull_points[i]].get_y()*scale + y_offset);
 	

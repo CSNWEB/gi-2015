@@ -31,11 +31,11 @@ private:
 public:
 	InputHandler(){};
 
-	void get_input(bool debug = false);
+	void get_input();
 
 	void _d_print_input();
 
-	void _d_paint_input(bool debug = false);
+	void _d_paint_input();
 
 	Problem create_problem();
 };

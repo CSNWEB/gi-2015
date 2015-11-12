@@ -2,6 +2,10 @@
 
 Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms)
 {
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: Problem\n");
+	#endif
+		
 	size_of_sheet_x 			= sx;
 	size_of_sheet_y 			= sy;
 	abstract_forms 				= abst_forms;
