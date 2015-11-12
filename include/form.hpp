@@ -145,7 +145,13 @@ public:
     /**
      * Print the form points to a svg Polygon
      */
-   void print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale);
+    void print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale);
+
+    /**
+     *  Print the convex hull of this form to svg polygon
+     *
+     */
+    void print_convex_hull_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale);
 };
 
 #endif
