@@ -32,6 +32,9 @@ edge.o: src/edge.cpp include/edge.hpp
 point.o: src/point.cpp include/point.hpp
 	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/point.cpp -o $@
 
+geneticFormFitter.o: src/geneticFormFitter.cpp include/geneticFormFitter.hpp
+	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/geneticFormFitter.cpp -o $@
+
 main_test.o: main_test.cpp
 	$(CXX) $(CXXFLAGS) -c $(INCLUDES) $^ -o $@
 
