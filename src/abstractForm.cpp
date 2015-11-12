@@ -32,9 +32,18 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
     // Calculate the size of the area (according to http://stackoverflow.com/questions/451426/how-do-i-calculate-the-surface-area-of-a-2d-polygon)
     
     size_of_area = 0.0;
-    for (unsigned int index = 0; index < number_of_points; index += 2)
+    
+    vector<Point> closed_even_points = points;
+    closed_even_points.push_back(closed_even_points[0]);
+    
+    if (closed_even_points.size() % 2 != 0)
     {
-        size_of_area += points[index + 1].get_x() * (points[index + 2].get_y() - points[index].get_y()) + points[index + 1].get_y() * (points[index].get_x() - points[index + 2].get_x());
+        closed_even_points.push_back(closed_even_points[0]);
+    }
+    
+    for (unsigned int index = 0; index < closed_even_points.size(); index += 2)
+    {
+        size_of_area += closed_even_points[index + 1].get_x() * (closed_even_points[index + 2].get_y() - closed_even_points[index].get_y()) + closed_even_points[index + 1].get_y() * (closed_even_points[index].get_x() - closed_even_points[index + 2].get_x());
     }
     size_of_area /= 2.0;
 }
