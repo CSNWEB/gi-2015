@@ -48,11 +48,6 @@ private:
      *  The size of the are of the form.
      */
 	float size_of_area;
-
-    /**
-     *  All points that belong to the confex hull
-     */
-    vector<int> convex_hull;
 	
     /**
      *  Sorts points in x-dimension
@@ -62,6 +57,11 @@ private:
      */
     vector<int> sort_points_dim_x_in_place();
 
+    /**
+     *  All points that belong to the confex hull
+     */
+    vector<int> convex_hull;
+    
     /**
      *  Computes the convex hull of this shape:
      *
@@ -138,6 +138,16 @@ public:
         return size_of_area;
     }
     
+    /**
+     *  The indices of the points that are part of the convex hull.
+     *
+     *  @return A vector containing the indices of the points of the convex hull.
+     */
+    vector<int> get_convex_hull()
+    {
+        return convex_hull;
+    }
+
     /**
      *  Get the certain point of the ones that make up the form.
      *

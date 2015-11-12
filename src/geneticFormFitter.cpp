@@ -47,11 +47,23 @@ void GeneticFormFitter::calculate_fitness_of_chromosome(Chromosome &chromosome)
     // Calculate the size of the bounding box of the combined forms.
     float bounding_box_size = (combined_abstract_form.get_dx() * combined_abstract_form.get_dy());
     
-    // Calculate the are of the convex hull of the combined form
-    combined_abstract_form.compute_convex_hull();
-    AbstractForm convex_hull_combined_form = AbstractForm("convex_hull_combined", combined_abstract_form->convex_hull);
+    // Calculate the area of the convex hull of the combined form
     
-    float convex_hull_size = convex_hull_combined_form->size_of_area;
+    // Get the indices of the points that belong to the convex hull of the abstract form.
+    vector<int> combined_abstract_form_convex_hull_indices = combined_abstract_form.convex_hull;
+    
+    // Get the points that are part of the convex hull using the gathered indices.
+    vector<Point> combined_abstract_form_convex_hull_points = vector<Point>();
+    for (unsigned int index = 0; index < combined_abstract_form_convex_hull_indices.size(); index++)
+    {
+        combined_abstract_form_convex_hull_points.push_back(combined_abstract_form.get_point_at_index(combined_abstract_form_convex_hull_indices[index]);   
+    }
+    
+    // Create an abstract form only containing the points of the convex hull.
+    AbstractForm convex_hull_combined_form = AbstractForm("convex_hull_combined", combined_abstract_form_convex_hull_points);
+    
+    // Get the size of the convex hull
+    float convex_hull_size = convex_hull_combined_form.size_of_area;
     
     /**
      *  The fitness is the ratio of bounding box size to convex hull size.
@@ -180,9 +192,12 @@ Chromosome GeneticFormFitter::create_random_chromosome()
     chromosome.fitness = numeric_limits<float>::max();
     
     /*
-     *  A gene string consists of 3 parts.
+     *  A gene string consists of 4 parts.
      *
      *  Part 1:
+     *  The angle that the first form is rotated by.
+     *
+     *  Part 2:
      *  A number describing how many times the second form is moved relative to
      *  the first, using the offset_step_size in horizontal direction.
      *  It consists of 3 digits. The first indicates whether the offset is
@@ -190,14 +205,17 @@ Chromosome GeneticFormFitter::create_random_chromosome()
      *  The remaining two digits define the number of times of offset_step_size
      *  the second form is moved relative to the first in horizontal direction.
      *
-     *  Part 2:
+     *  Part 3:
      *  The same as Part 1, but in vertical, instead of horizontal direction.
      *
-     *  Part 3:
-     *  The angle that the second form is rotated by.
+     *  Part 4:
+     *  The angle that the second form is rotated by. NOTE: This can be any 3-digit 
+     *  number. Which might lead to a rotation angle much larger than 360°. 
      */
     
     srand (time(NULL));
+    
+    unsigned int first_rotation_angle = rand % 360;
     
     unsigned int positive_negative_flag_horizontal = rand() % 2;
     unsigned int horizontal_offset = rand() % 100;
@@ -205,15 +223,16 @@ Chromosome GeneticFormFitter::create_random_chromosome()
     unsigned int positive_negative_flag_vertical = rand() % 2;
     unsigned int vertical_offset = rand() % 100;
     
-    unsigned int rotation_angle = rand % 360;
+    unsigned int second_rotation_angle = rand % 360;
     
     stringstream stream;
     stream << setfill('0');
+    stream << setw(3) << first_rotation_angle;
     stream << positive_negative_flag_horizontal;
     stream << setw(2) << horizontal_offset;
     stream << positive_negative_flag_vertical;
     stream << setw(2) << vertical_offset;
-    stream << setw(3) << rotation_angle;
+    stream << setw(3) << second_rotation_angle;
     chromosome.gene_string = stream.str();
     
     return chromosome;
@@ -223,21 +242,26 @@ Chromosome GeneticFormFitter::create_random_chromosome()
  *  Gets the offset and rotation represented by the gene string of a
  *  chromosome.
  *
- *  @param chromosome The chromosome containing the gene string.
- *  @param x_offset   The variable to store the horizontal offset in.
- *  @param y_offset   The variable to store the vertical offset in.
- *  @param rotation   The variable to store the rotation of the second form in.
+ *  @param chromosome       The chromosome containing the gene string.
+ *  @param x_offset         The variable to store the horizontal offset in.
+ *  @param y_offset         The variable to store the vertical offset in.
+ *  @param first_rotation   The variable to store the rotation of the first form in.
+ *  @param second_rotation  The variable to store the rotation of the second form in.
  */
 void GeneticFormFitter::get_offset_rotation_from_chromosome(Chromosome chromosome,
                                                             float &x_offset,
                                                             float &y_offset,
-                                                            float &rotation)
+                                                            float &first_rotation,
+                                                            float &second_rotation)
 {
-    string positive_negative_flag_horizontal_string = chromosome.gene_string.substr(0, 1);
-    string horizontal_offset_string = chromosome.gene_string.substr(1, 2);
-    string positive_negative_flag_vertical_string = chromosome.gene_string.substr(3, 1);
-    string vertical_offset_string = chromosome.gene_string.substr(4, 2);
-    string rotation_angle_string = chromosome.gene_string.substr(6, 3);
+    string first_rotation_angle_string = chromosome.gene_string.substr(0, 3);
+    string positive_negative_flag_horizontal_string = chromosome.gene_string.substr(3, 1);
+    string horizontal_offset_string = chromosome.gene_string.substr(4, 2);
+    string positive_negative_flag_vertical_string = chromosome.gene_string.substr(6, 1);
+    string vertical_offset_string = chromosome.gene_string.substr(7, 2);
+    string second_rotation_angle_string = chromosome.gene_string.substr(9, 3);
+    
+    unsigned int first_rotation_angle = stoi(first_rotation_angle_string);
     
     unsigned int positive_negative_flag_horizontal = stoi(positive_negative_flag_horizontal_string)
     int horizontal_offset_sign = positive_negative_flag_horizontal > 0 ? -1 : 1;
@@ -247,11 +271,12 @@ void GeneticFormFitter::get_offset_rotation_from_chromosome(Chromosome chromosom
     int vertical_offset_sign = positive_negative_flag_vertical > 0 ? -1 : 1;
     unsigned int vertical_offset = stoi(vertical_offset_string);
     
-    unsigned int rotation_angle = stoi(rotation_angle_string);
+    unsigned int second_rotation_angle = stoi(second_rotation_angle_string);
     
-    x_offset = horizontal_offset_sign * horizontal_offset * this->offset_step_size;
-    y_offset = vertical_offset_sign * vertical_offset * this->offset_step_size;
-    rotation = rotation_angle * this->rotation_angle_size;
+    x_offset = horizontal_offset_sign * horizontal_offset * offset_step_size;
+    y_offset = vertical_offset_sign * vertical_offset * offset_step_size;
+    first_rotation = first_rotation_angle;
+    second_rotation = second_rotation_angle;
 }
 
 /**
@@ -269,9 +294,13 @@ void GeneticFormFitter::get_forms_from_chromosome(Chromosome chromosome,
     first_form = Form(this->first_form);
     second_form = Form(this->second_form);
     
-    float x_offset, y_offset, rotation;
+    float x_offset, y_offset, first_rotation, second_rotation;
     
-    get_offset_rotation_from_chromosome(chromosome, x_offset, y_offset, rotation);
+    get_offset_rotation_from_chromosome(chromosome, x_offset, y_offset, first_rotation, second_rotation);
+    
+    Point first_form_centroid = first_form.get_centroid();
+    
+    first_form.rotate(first_form_centroid.get_x(), first_form_centroid.get_y(), first_rotation);
     
     second_form.move_rel(x_offset,
                          y_offset);
@@ -280,7 +309,7 @@ void GeneticFormFitter::get_forms_from_chromosome(Chromosome chromosome,
     
     second_form.rotate(second_form_centroid.get_x(),
                        second_form_centroid.get_y(),
-                       rotation);
+                       second_rotation);
 }
 
 /**
@@ -369,11 +398,9 @@ void GeneticFormFitter::calculcate_best_offset_from_first_to_second_form(unsigne
                                                                          float gene_string_mutation_propability = 0.2,
                                                                          unsigned int maximum_generations,
                                                                          float fitness_threshhold,
-                                                                         float offset_step_size,
-                                                                         unsigned int rotation_angle_size)
+                                                                         float offset_step_size)
 {
     this->offset_step_size = offset_step_size;
-    this->rotation_angle_size = rotation_angle_size;
     this->mutation_probability = mutation_probability;
     this->fitter_preference_probability = fitter_preference_probability;
     this->gene_string_mutation_propability = gene_string_mutation_propability;
@@ -413,17 +440,19 @@ void GeneticFormFitter::calculcate_best_offset_from_first_to_second_form(unsigne
 }
 
 /**
- *  Get the best relative position from the second form to the first one.
- *
- *  @param x_offset     The variable in which the best horizontal offset from the first to the second form is to be stored
- *  @param y_offset     The variable in which the best vertical offset from the first to the second form is to be stored
- *  @param rotation     THe variable in which the best rotation of the second form is to be stored.
- */
-void GeneticFormFitter::get_best_offset_from_first_to_second_form(float &x_offset,
-                                                                  float &y_offset,
-                                                                  float &rotation)
+*  Get the best relative position from the second form to the first one.
+*
+*  @param x_offset           The variable in which the best horizontal offset from the first to the second form is to be stored
+*  @param y_offset           The variable in which the best vertical offset from the first to the second form is to be stored
+*  @param first_rotation     The variable in which the best rotation of the first form is to be stored in degrees.
+*  @param second_rotation    The variable in which the best rotation of the second form is to be stored in degrees.
+*/
+void GeneticFormFitter::get_best_offset_and_rotation(float &x_offset,
+                                                     float &y_offset,
+                                                     float &first_rotation,
+                                                     float &second_rotation)
 {
     Chromosome fittest_chromosome = get_fittest_chromosome_from_population();
     
-    get_offset_rotation_from_chromosome(chromosome, x_offset, y_offset, rotation);
+    get_offset_rotation_from_chromosome(chromosome, x_offset, y_offset, first_rotation, second_rotation);
 }

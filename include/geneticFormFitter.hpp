@@ -104,18 +104,20 @@ private:
     Chromosome create_random_chromosome();
     
     /**
-     *  Gets the offset and rotation represented by the gene string of a
-     *  chromosome.
-     *
-     *  @param chromosome The chromosome containing the gene string.
-     *  @param x_offset   The variable to store the horizontal offset in.
-     *  @param y_offset   The variable to store the vertical offset in.
-     *  @param rotation   The variable to store the rotation of the second form in.
-     */
+    *  Gets the offset and rotation represented by the gene string of a
+    *  chromosome.
+    *
+    *  @param chromosome       The chromosome containing the gene string.
+    *  @param x_offset         The variable to store the horizontal offset in.
+    *  @param y_offset         The variable to store the vertical offset in.
+    *  @param first_rotation   The variable to store the rotation of the first form in.
+    *  @param second_rotation  The variable to store the rotation of the second form in.
+    */
     void get_offset_rotation_from_chromosome(Chromosome chromosome,
                                              float &x_offset,
                                              float &y_offset,
-                                             float &rotation);
+                                             float &first_rotation,
+                                             float &second_rotation);
     
     /**
      *  Given a gene string the forms that the string represents are passed to
@@ -176,16 +178,6 @@ private:
      */
     float offset_step_size;
     
-    /**
-     *  The second form will only be rotated by a multiple of the passed angle
-     *  size.
-     *
-     *  The smaller the angle size, the more accurate is the calculated
-     *  rotation. However, a smaller offset could mean that more generations
-     *  would be necessary to create a satisfying result.
-     */
-    unsigned int rotation_angle_size;
-    
 public:
     
 #pragma mark - Constructor
@@ -215,7 +207,6 @@ public:
      *  @param maximum_generations                The number of generations that the evolution should use
      *  @param fitness_threshhold                 A fitness threshhold. If a given fitness e.g. 1.1 is reached, the evolution is stopped.
      *  @param offset_step_size                   The step size that is used when determining the best offset between the two forms in vertical and horizontal direction.
-     *  @param rotation_angle_size
      */
     void calculcate_best_offset_from_first_to_second_form(unsigned int population_size,
                                                           float mutation_probability,
@@ -223,19 +214,20 @@ public:
                                                           float gene_string_mutation_propability = 0.2,
                                                           unsigned int maximum_generations,
                                                           float fitness_threshhold,
-                                                          float offset_step_size,
-                                                          unsigned int rotation_angle_size);
+                                                          float offset_step_size);
 
     /**
      *  Get the best relative position from the second form to the first one.
      *
-     *  @param x_offset     The variable in which the best horizontal offset from the first to the second form is to be stored
-     *  @param y_offset     The variable in which the best vertical offset from the first to the second form is to be stored
-     *  @param rotation     THe variable in which the best rotation of the second form is to be stored.
+     *  @param x_offset           The variable in which the best horizontal offset from the first to the second form is to be stored
+     *  @param y_offset           The variable in which the best vertical offset from the first to the second form is to be stored
+     *  @param first_rotation     The variable in which the best rotation of the first form is to be stored in degrees.
+     *  @param second_rotation    The variable in which the best rotation of the second form is to be stored in degrees.
      */
-    void get_best_offset_from_first_to_second_form(float &x_offset,
-                                                   float &y_offset,
-                                                   float &rotation);
+    void get_best_offset_and_rotation(float &x_offset,
+                                      float &y_offset,
+                                      float &first_rotation,
+                                      float &second_rotation);
 
 #pragma mark - Output
     
