@@ -91,7 +91,9 @@ void AbstractForm::compute_convex_hull()
 		}
 
 		convex_hull = convex_hull_lower;
-		convex_hull.insert(convex_hull.end(), convex_hull_upper.begin(), convex_hull_upper.end());
+		for (int k=convex_hull_upper.size()-2; k>=0; --k)
+			convex_hull.push_back(convex_hull_upper[k]);
+		//convex_hull.insert(convex_hull.end(), convex_hull_upper.begin(), convex_hull_upper.end());
 	}
 
 	// TO DO
