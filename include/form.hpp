@@ -141,6 +141,11 @@ public:
      *  Debug: print form to std_out
      */
     void _d_print_form_to_console();
+
+    /**
+     *  Debug: print convex hull to console
+     */
+    void _d_print_convex_hull_to_console();
     
     /**
      * Print the form points to a svg Polygon

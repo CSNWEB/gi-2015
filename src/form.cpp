@@ -115,6 +115,14 @@ void Form::_d_print_form_to_console()
 		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
 }
 
+void Form::_d_print_convex_hull_to_console()
+{
+	vector<int> hull = mother->get_convex_hull();
+	printf("Convex hull of form has %i points\n", hull.size());
+	for (int i=0; i<hull.size(); ++i)
+		printf("Point %2i at %.1f/%.1f\n", i, points[hull[i]].get_x(), points[hull[i]].get_y());
+}
+
 void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
     std::cout << "Painting Polygon";
@@ -124,4 +132,16 @@ void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, in
 		polygon << svg::Point(points[i].get_x()*scale + x_offset, points[i].get_y()*scale + y_offset);
     
     (*doc) << polygon;    
+}
+
+void Form::print_convex_hull_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
+{
+	cout << "Painting convex hull";
+	vector<int> convex_hull_points = mother->get_convex_hull();
+
+	svg::Polyline convex_hull_line(svg::Stroke(1, svg::Color::Blue));
+	for (int i=0; i<convex_hull_points.size(); ++i)
+		convex_hull_line << svg::Point(points[convex_hull_points[i]].get_x()*scale + x_offset, points[convex_hull_points[i]].get_y()*scale + y_offset);
+	
+	(*doc) << convex_hull_line;	
 }
