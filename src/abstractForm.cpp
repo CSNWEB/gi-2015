@@ -28,6 +28,15 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	convex_hull = vector<Point>();
 
 	// To Do: maybe normalize position of form s.t. xmin = ymin = 0
+    
+    // Calculate the size of the area (according to http://stackoverflow.com/questions/451426/how-do-i-calculate-the-surface-area-of-a-2d-polygon)
+    
+    size_of_area = 0.0;
+    for (unsigned int index = 0; index < number_of_points; index += 2)
+    {
+        size_of_area += points[index + 1].get_x() * (points[index + 2].get_y() - points[index].get_y()) + points[index + 1].get_y() * (points[index].get_x() - points[index + 2].get_x());
+    }
+    size_of_area /= 2.0;
 }
 
 void AbstractForm::sort_points_dim_x_in_place()

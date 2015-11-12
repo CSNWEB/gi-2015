@@ -81,6 +81,14 @@ public:
 	float get_bounding_ymax(){return y_max;};
 	
     /**
+     *  Get the centroid of the form. The means the mean of the x and y values
+     *  of all points.
+     *
+     *  @return A Point that represents the centroid of the form.
+     */
+    Point get_centroid();
+    
+    /**
      *  Moves the Form relative to its current position by the passed amount in
      *  x- and y-direction.
      *

@@ -78,6 +78,23 @@ bool Form::check_for_overlap(Form *other)
 		return false;
 }
 
+Point Form::get_centroid()
+{
+    float x = 0.0;
+    float y = 0.0;
+    
+    for (unsigned int index = 0; index < points.size(); index++)
+    {
+        x += points[index].x;
+        y += points[index].y;
+    }
+    
+    x /= points.size();
+    y /= points.size();
+    
+    return Point(x, y);
+}
+
 void Form::move_rel(float dx, float dy)
 {
 	for (int i=0; i<number_of_edges; ++i)
