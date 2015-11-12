@@ -109,16 +109,16 @@ public:
 	int get_number_of_points(){return number_of_points;};
     
     /**
-     *  Get the position of the form on the x-axis.
+     *  Get the size of the bounding box of the form in x direction.
      *
-     *  @return A float representing he position of the form on the x-axis.
+     *  @return A float representing size of the bounding box of the form in x direction.
      */
 	float get_dx(){return dx;};
     
     /**
-     *  Get the position of the form on the y-axis.
+     *  Get the size of the bounding box of the form in y direction.
      *
-     *  @return A float representing he position of the form on the y-axis.
+     *  @return A float representing the size of the bounding box of the form in y direction.
      */
 	float get_dy(){return dy;};
     
