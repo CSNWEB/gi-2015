@@ -70,6 +70,16 @@ public:
     Form(AbstractForm *mother, float pos_x, float pos_y); // TODO: Use Point?
 	
     /**
+     *  The abstract form that this Form represents.
+     *
+     *  @return An object of type AbstractForm that this Form represents.
+     */
+    AbstractForm *get_mother()
+    {
+        return this->mother;
+    }
+    
+    /**
      *  The coordinates of the bounding box. Described by the minimum and
      *  maximum values in x- and y-direction that contain the forms points.
      *

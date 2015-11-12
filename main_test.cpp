@@ -47,7 +47,9 @@ int main()
 		{
 			printf("Form %i\n",j+1);
 			Form f = p.get_form_at(j);
-                       
+            
+            printf("The size of the form is: %f\n", f.get_mother()->get_size_of_area());
+            
 			f._d_print_form_to_console();
             f.print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
 		}

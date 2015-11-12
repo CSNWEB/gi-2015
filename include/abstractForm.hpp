@@ -68,6 +68,12 @@ private:
      *  Stores the result in vector<Point> convex_hull
      */
     void compute_convex_hull();
+    
+    /**
+     *  Computes the size of the area of the shape and stores the result in
+     *  float size_of_area.
+     */
+    void compute_size_of_area();
 
 public:
     
@@ -121,6 +127,16 @@ public:
      *  @return A float representing the size of the bounding box of the form in y direction.
      */
 	float get_dy(){return dy;};
+    
+    /**
+     *  The size of the area of the abstract form.
+     *
+     *  @return A float representing the size of the area of the form.
+     */
+    float get_size_of_area()
+    {
+        return size_of_area;
+    }
     
     /**
      *  Get the certain point of the ones that make up the form.

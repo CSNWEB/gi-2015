@@ -29,23 +29,7 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 
 	// To Do: maybe normalize position of form s.t. xmin = ymin = 0
     
-    // Calculate the size of the area (according to http://stackoverflow.com/questions/451426/how-do-i-calculate-the-surface-area-of-a-2d-polygon)
-    
-    size_of_area = 0.0;
-    
-    vector<Point> closed_even_points = points;
-    closed_even_points.push_back(closed_even_points[0]);
-    
-    if (closed_even_points.size() % 2 != 0)
-    {
-        closed_even_points.push_back(closed_even_points[0]);
-    }
-    
-    for (unsigned int index = 0; index < closed_even_points.size(); index += 2)
-    {
-        size_of_area += closed_even_points[index + 1].get_x() * (closed_even_points[index + 2].get_y() - closed_even_points[index].get_y()) + closed_even_points[index + 1].get_y() * (closed_even_points[index].get_x() - closed_even_points[index + 2].get_x());
-    }
-    size_of_area /= 2.0;
+    compute_size_of_area();
 }
 
 void AbstractForm::sort_points_dim_x_in_place()
@@ -60,6 +44,25 @@ void AbstractForm::sort_points_dim_x_in_place()
 				points[j] = tmp;
 			}
 		}
+}
+
+void AbstractForm::compute_size_of_area()
+{
+    // Calculate the size of the area (according to http://www.mathopenref.com/coordpolygonarea.html )
+    
+    size_of_area = 0.0;
+    
+    vector<Point> closed_points = points;
+    closed_points.push_back(closed_points[0]);
+    
+    for (unsigned int index = 0; index < closed_points.size() - 1; index++)
+    {
+        size_of_area += ((closed_points[index].get_x() * closed_points[index + 1].get_y()) - (closed_points[index].get_y() * closed_points[index + 1].get_x()));
+    }
+    
+    size_of_area /= 2.0;
+    
+    size_of_area = fabs(size_of_area);
 }
 
 void AbstractForm::compute_convex_hull()
