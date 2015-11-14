@@ -6,16 +6,22 @@
 
 #include <stdio.h>
 
-int main()
+int main(int argc, char* argv[])
 {
 	
 #ifdef DEBUG
 	cout << "Starging... (Debugging is enabled!)" << endl;
 #endif
-	
+
+    if (argc == 1)
+    {
+        printf("missing filename of input file!\n");
+        return 0;
+    }
+
 	InputHandler ih;
 
-	ih.get_input();
+	ih.get_input(argv[1]);
 	ih._d_print_input();
         
 	//ih._d_paint_input();
@@ -62,6 +68,8 @@ int main()
 		printf("\n");
 	}
     
+
+/*
 #ifdef DEBUG
 	// Testing the GeneticFormFitter
     if (problem.get_number_of_planes() > 1)
@@ -85,6 +93,7 @@ int main()
         }      
     }        
 #endif
+*/
     
     doc.save();
 
