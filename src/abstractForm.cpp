@@ -221,13 +221,14 @@ void AbstractForm::_d_print_abstract_form()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: AbstractForm::_d_print_abstract_form()\n");
+
+		printf("Name of form: %s\n", name.c_str());
+		printf("Number of points: %i\n", number_of_points);
+
+		for (int i=0; i<number_of_points; ++i)
+			printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
+
 	#endif
-
-	printf("Name of form: %s\n", name.c_str());
-	printf("Number of points: %i\n", number_of_points);
-
-	for (int i=0; i<number_of_points; ++i)
-		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
 }
 
 #ifdef USE_SFML

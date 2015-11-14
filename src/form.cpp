@@ -109,23 +109,30 @@ void Form::rotate(float center_x, float center_y, float degree)
 	
 void Form::_d_print_form_to_console()
 {
+	#ifdef DEBUG
 	printf("Number of points: %i\n", points.size());
 
 	for (int i=0; i<points.size(); ++i)
 		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
+	#endif
 }
 
 void Form::_d_print_convex_hull_to_console()
 {
+	#ifdef DEBUG
 	vector<int> hull = mother->get_convex_hull();
 	printf("Convex hull of form has %i points\n", hull.size());
 	for (int i=0; i<hull.size(); ++i)
 		printf("Point %2i at %.1f/%.1f\n", i, points[hull[i]].get_x(), points[hull[i]].get_y());
+	#endif
 }
 
 void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
-    std::cout << "Painting Polygon\n";
+	#ifdef DEBUG
+    	std::cout << "Painting Polygon\n";
+    #endif
+
     svg::Polygon polygon(svg::Color(200, 160, 220), svg::Stroke(1, svg::Color::Black));
 
     for (int i=0; i<points.size(); ++i)
@@ -136,7 +143,10 @@ void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, in
 
 void Form::print_convex_hull_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
-	cout << "Painting convex hull\n";
+	#ifdef DEBUG
+		cout << "Painting convex hull\n";
+	#endif
+		
 	vector<int> convex_hull_points = mother->get_convex_hull();
 
 	svg::Polyline convex_hull_line(svg::Stroke(5, svg::Color::Blue));

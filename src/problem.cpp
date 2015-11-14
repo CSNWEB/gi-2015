@@ -18,6 +18,10 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 
 void Problem::create_initial_setting()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: Problem::create_initial_setting\n");
+	#endif
+		
 	for (int i=0; i<number_of_different_forms; ++i)
 	{
 		for (int j=0; j<number_of_forms_needed[i]; ++j)

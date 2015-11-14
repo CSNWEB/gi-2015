@@ -69,6 +69,8 @@ void InputHandler::get_input(char* filename)
 		#endif
 	}
 
+	fclose(file);
+
 	#ifdef DEBUG
 		printf("Input complete!\n");
 	#endif
@@ -78,10 +80,11 @@ void InputHandler::_d_print_input()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: InputHandler::_d_print_input()\n");
-	#endif
 
-	printf("Size of sheet: %.1f x %.1f\n", size_of_sheet_x, size_of_sheet_y);
-	printf("Number of different forms: %i\n", number_of_different_forms);
+		printf("Size of sheet: %.1f x %.1f\n", size_of_sheet_x, size_of_sheet_y);
+		printf("Number of different forms: %i\n", number_of_different_forms);
+	#endif
+		
 	for (int i=0; i<number_of_different_forms; ++i)
 	{
 		forms[i]._d_print_abstract_form();

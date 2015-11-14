@@ -28,36 +28,34 @@ int main(int argc, char* argv[])
 
 	Problem problem = ih.create_problem();
 
-	printf("\nCreate_initial_setting...\n\n");
-
 	problem.create_initial_setting();
 
-	printf("Current setting:\n");
-
-        unsigned int planes = problem.get_number_of_planes();
-        int factor = 100;
-        int spacing = 20;
-        int planeWidth =  floor(problem.get_plane_width() * factor);
-        int planeHeight = floor(problem.get_plane_height() * factor);
-        
-        svg::Dimensions dimensions((planeWidth + spacing) * planes, planeHeight + spacing);
-        svg::Document doc("./output.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
+    unsigned int planes = problem.get_number_of_planes();
+    int factor = 100;
+    int spacing = 20;
+    int planeWidth =  floor(problem.get_plane_width() * factor);
+    int planeHeight = floor(problem.get_plane_height() * factor);
+      
+    svg::Dimensions dimensions((planeWidth + spacing) * planes, planeHeight + spacing);
+    svg::Document doc("./output.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
 
 	for (int i=0; i<planes; ++i)
 	{
+        #ifdef DEBUG
+            printf("Plane %i\n",i+1);
+        #endif
+
 		Plane p = problem.get_plane_at(i);
         doc << svg::Rectangle(svg::Point(i*(planeWidth+spacing)+(spacing/2), (spacing/2)), planeWidth, planeHeight, svg::Color::White);
 		
-		printf("Plane %i\n",i+1);
-		
 		for (int j=0; j<p.get_number_of_forms(); ++j)
 		{
-			printf("Form %i\n",j+1);
 			Form f = p.get_form_at(j);
 
-#ifdef DEBUG
-            printf("The size of the form is: %f\n", f.get_mother()->get_size_of_area());
-#endif
+            #ifdef DEBUG
+                printf("Form %i\n",j+1);
+                printf("The size of the form is: %f\n", f.get_mother()->get_size_of_area());
+            #endif
 
 			f._d_print_form_to_console();
 			f._d_print_convex_hull_to_console();
@@ -65,7 +63,9 @@ int main(int argc, char* argv[])
             f.print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
             
 		}
-		printf("\n");
+        #ifdef DEBUG
+    		printf("\n");
+        #endif
 	}
     
 
