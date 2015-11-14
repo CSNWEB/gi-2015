@@ -5,17 +5,20 @@ CXXFLAGS     = -std=c++0x -O2
 #SOURCE = main_test.cpp src/inputHandler.cpp src/abstractForm.cpp
 INCDIR = include/
 
-test: main_test.o inputHandler.o abstractForm.o point.o edge.o form.o plane.o problem.o
+test: main_test.o inputHandler.o outputHandler.o abstractForm.o point.o edge.o form.o plane.o problem.o
 	$(CXX) -o test $^
 	
-test_debug: main_test_debug.o inputHandler_debug.o abstractForm_debug.o point_debug.o edge_debug.o form_debug.o plane_debug.o problem_debug.o
+test_debug: main_test_debug.o inputHandler_debug.o outputHandler_debug.o abstractForm_debug.o point_debug.o edge_debug.o form_debug.o plane_debug.o problem_debug.o
 	$(CXX) -o test_debug $^
 
-test_sfml: main_test_sfml.o inputHandler_sfml.o abstractForm_sfml.o point_sfml.o edge_sfml.o form_sfml.o plane_sfml.o problem_sfml.o
+test_sfml: main_test_sfml.o inputHandler_sfml.o outputHandler.o abstractForm_sfml.o point_sfml.o edge_sfml.o form_sfml.o plane_sfml.o problem_sfml.o
 	$(CXX) -o test_sfml $^ -lsfml-graphics -lsfml-window -lsfml-system
 
 inputHandler.o: src/inputHandler.cpp include/inputHandler.hpp
 	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/inputHandler.cpp -o $@
+
+outputHandler.o: src/outputHandler.cpp include/outputHandler.hpp
+	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/outputHandler.cpp -o $@
 
 abstractForm.o: src/abstractForm.cpp include/abstractForm.hpp
 	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/abstractForm.cpp -o $@
@@ -72,6 +75,9 @@ main_test_sfml.o: main_test.cpp
 
 inputHandler_debug.o: src/inputHandler.cpp include/inputHandler.hpp
 	$(CXX) $(CXXFLAGS) -D DEBUG -c $(INCLUDES) src/inputHandler.cpp -o $@
+
+outputHandler_debug.o: src/outputHandler.cpp include/outputHandler.hpp
+	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/outputHandler.cpp -o $@
 
 abstractForm_debug.o: src/abstractForm.cpp include/abstractForm.hpp
 	$(CXX) $(CXXFLAGS) -D DEBUG -c $(INCLUDES) src/abstractForm.cpp -o $@

@@ -115,6 +115,13 @@ public:
 	int get_number_of_points(){return number_of_points;};
     
     /**
+     *  Get the name of this abstractform
+     *
+     *  @return     A string containing the name of this form
+     */
+    string get_name(){return name;};
+
+    /**
      *  Get the size of the bounding box of the form in x direction.
      *
      *  @return A float representing size of the bounding box of the form in x direction.

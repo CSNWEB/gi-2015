@@ -146,7 +146,7 @@ void Form::print_convex_hull_to_svg(svg::Document * doc, int x_offset, int y_off
 	#ifdef DEBUG
 		cout << "Painting convex hull\n";
 	#endif
-		
+
 	vector<int> convex_hull_points = mother->get_convex_hull();
 
 	svg::Polyline convex_hull_line(svg::Stroke(5, svg::Color::Blue));

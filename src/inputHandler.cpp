@@ -24,7 +24,7 @@ void InputHandler::get_input(char* filename)
 	forms			 = vector<AbstractForm>(number_of_different_forms);
 	number_of_pieces = vector<int>(number_of_different_forms);
 
-	string 	tmp_name_of_form = "";
+	string 	tmp_name_of_form;
 	char	tmp_char_of_name;
 	int 	tmp_number_of_points;
 	float 	tmp_x, tmp_y;
@@ -34,6 +34,8 @@ void InputHandler::get_input(char* filename)
 		#ifdef DEBUG
 			printf("Input of form %i:\n",i);
 		#endif
+
+		tmp_name_of_form = "";
 
 		scanf_result = fscanf(file, " ");
 		scanf_result = fscanf(file, "%c", &tmp_char_of_name);
