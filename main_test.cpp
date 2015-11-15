@@ -1,4 +1,5 @@
 #include "inputHandler.hpp"
+#include "outputHandler.hpp"
 #include "problem.hpp"
 #include "plane.hpp"
 #include "form.hpp"
@@ -6,52 +7,78 @@
 
 #include <stdio.h>
 
-int main()
+int main(int argc, char* argv[])
 {
 	
 #ifdef DEBUG
 	cout << "Starging... (Debugging is enabled!)" << endl;
 #endif
-	
+
+    if (argc == 1)
+    {
+        printf("missing filename of input file!\n");
+        return 0;
+    }
+
 	InputHandler ih;
 
-	ih.get_input();
+	ih.get_input(argv[1]);
 	ih._d_print_input();
         
 	//ih._d_paint_input();
 
 	Problem problem = ih.create_problem();
 
-	printf("\nCreate_initial_setting...\n\n");
-
 	problem.create_initial_setting();
 
-	printf("Current setting:\n");
+    OutputHandler oh(&problem);
 
-        unsigned int planes = problem.get_number_of_planes();
-        int factor = 100;
-        int spacing = 20;
-        int planeWidth =  floor(problem.get_plane_width() * factor);
-        int planeHeight = floor(problem.get_plane_height() * factor);
-        
-        svg::Dimensions dimensions((planeWidth + spacing) * planes, planeHeight + spacing);
-        svg::Document doc("./output.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
+    oh.write_setting_to_txt();
+    oh.write_setting_to_svg();
+
+    #ifdef DEBUG
+        for (int i=0; i<problem.get_number_of_planes(); ++i)
+        {
+            Plane p = problem.get_plane_at(i);
+
+            for (int j=0; j<p.get_number_of_forms(); ++j)
+            {
+                Form f = p.get_form_at(j);
+
+                f._d_print_form_to_console();
+                f._d_print_convex_hull_to_console();
+            }
+        }
+    #endif
+
+    /*
+
+    unsigned int planes = problem.get_number_of_planes();
+    int factor = 100;
+    int spacing = 20;
+    int planeWidth =  floor(problem.get_plane_width() * factor);
+    int planeHeight = floor(problem.get_plane_height() * factor);
+      
+    svg::Dimensions dimensions((planeWidth + spacing) * planes, planeHeight + spacing);
+    svg::Document doc("./output.svg", svg::Layout(dimensions, svg::Layout::TopLeft));
 
 	for (int i=0; i<planes; ++i)
 	{
+        #ifdef DEBUG
+            printf("Plane %i\n",i+1);
+        #endif
+
 		Plane p = problem.get_plane_at(i);
         doc << svg::Rectangle(svg::Point(i*(planeWidth+spacing)+(spacing/2), (spacing/2)), planeWidth, planeHeight, svg::Color::White);
 		
-		printf("Plane %i\n",i+1);
-		
 		for (int j=0; j<p.get_number_of_forms(); ++j)
 		{
-			printf("Form %i\n",j+1);
 			Form f = p.get_form_at(j);
 
-#ifdef DEBUG
-            printf("The size of the form is: %f\n", f.get_mother()->get_size_of_area());
-#endif
+            #ifdef DEBUG
+                printf("Form %i\n",j+1);
+                printf("The size of the form is: %f\n", f.get_mother()->get_size_of_area());
+            #endif
 
 			f._d_print_form_to_console();
 			f._d_print_convex_hull_to_console();
@@ -59,9 +86,14 @@ int main()
             f.print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
             
 		}
-		printf("\n");
+        #ifdef DEBUG
+    		printf("\n");
+        #endif
 	}
+    */
     
+
+/*
 #ifdef DEBUG
 	// Testing the GeneticFormFitter
     if (problem.get_number_of_planes() > 1)
@@ -85,8 +117,9 @@ int main()
         }      
     }        
 #endif
+*/
     
-    doc.save();
+    //doc.save();
 
 	return 0;
 }

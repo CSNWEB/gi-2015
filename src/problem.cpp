@@ -18,6 +18,10 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 
 void Problem::create_initial_setting()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: Problem::create_initial_setting\n");
+	#endif
+
 	for (int i=0; i<number_of_different_forms; ++i)
 	{
 		for (int j=0; j<number_of_forms_needed[i]; ++j)
@@ -27,4 +31,24 @@ void Problem::create_initial_setting()
 			planes.push_back(newplane);
 		}
 	}
+}
+
+float Problem::get_total_utilization()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: Problem::get_total_utilization\n");
+	#endif
+
+	float utilization = 0;
+
+	for (int i=0; i<planes.size(); ++i)
+		utilization += planes[i].compute_utilization();
+
+	utilization /= planes.size();
+
+	#ifdef DEBUG
+		printf("Total utilization is: %.2f\n", utilization);
+	#endif
+	
+	return utilization;
 }

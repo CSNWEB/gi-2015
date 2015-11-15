@@ -45,15 +45,3 @@ bool Edge::check_if_crosses(Edge *other)
 		}
 	}
 }
-
-void Edge::move_rel(float dx, float dy)
-{
-	p1->move_rel(dx, dy);
-	p2->move_rel(dx,dy);
-}
-
-void Edge::rotate(float center_x, float center_y, float degree)
-{
-	p1->rotate(center_x, center_y, degree);
-	p2->rotate(center_x, center_y, degree);
-}

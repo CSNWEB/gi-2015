@@ -123,6 +123,13 @@ public:
     };
 
     /**
+     *  Compute the total efficiency (i.e. utilization) of the current setting
+     *
+     *  @return     the utilitation as percentage within [0,1]
+     */
+    float get_total_utilization();
+
+    /**
      * Function to create an initial legal setting
      * places every form on its own sheet
      */

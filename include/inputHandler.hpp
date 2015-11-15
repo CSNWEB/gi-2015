@@ -2,6 +2,7 @@
 #define INPUTHANDLER_H
 
 #include <stdio.h>
+#include <fstream>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -31,7 +32,7 @@ private:
 public:
 	InputHandler(){};
 
-	void get_input();
+	void get_input(char* filename);
 
 	void _d_print_input();
 

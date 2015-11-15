@@ -1,6 +1,6 @@
 #include "inputHandler.hpp"
 
-void InputHandler::get_input()
+void InputHandler::get_input(char* filename)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: InputHandler::get_input()\n");
@@ -8,9 +8,13 @@ void InputHandler::get_input()
 
 	int scanf_result;
 
-	scanf_result = scanf("%f", &size_of_sheet_x);
-	scanf_result = scanf("%f", &size_of_sheet_y);
-	scanf_result = scanf("%i", &number_of_different_forms);
+	//ifstream file(filename);
+	FILE *file;
+	file = fopen(filename, "r");
+
+	scanf_result = fscanf(file, "%f", &size_of_sheet_x);
+	scanf_result = fscanf(file, "%f", &size_of_sheet_y);
+	scanf_result = fscanf(file, "%i", &number_of_different_forms);
 
 	#ifdef DEBUG
 		printf("Size of sheet: %.1f x %.1f\n",size_of_sheet_x, size_of_sheet_y);
@@ -21,6 +25,7 @@ void InputHandler::get_input()
 	number_of_pieces = vector<int>(number_of_different_forms);
 
 	string 	tmp_name_of_form;
+	char	tmp_char_of_name;
 	int 	tmp_number_of_points;
 	float 	tmp_x, tmp_y;
 
@@ -30,11 +35,18 @@ void InputHandler::get_input()
 			printf("Input of form %i:\n",i);
 		#endif
 
-		scanf_result = scanf(" ");
-		getline(cin, tmp_name_of_form);
-		scanf_result = scanf(" ");
-		scanf_result = scanf("%i", &number_of_pieces[i]);
-		scanf_result = scanf("%i", &tmp_number_of_points);
+		tmp_name_of_form = "";
+
+		scanf_result = fscanf(file, " ");
+		scanf_result = fscanf(file, "%c", &tmp_char_of_name);
+		while (tmp_char_of_name >= 32)
+		{
+			tmp_name_of_form += tmp_char_of_name;
+			scanf_result = fscanf(file, "%c", &tmp_char_of_name);
+		}	
+		scanf_result = fscanf(file, " ");
+		scanf_result = fscanf(file, "%i", &number_of_pieces[i]);
+		scanf_result = fscanf(file, "%i", &tmp_number_of_points);
 
 		#ifdef DEBUG
 			printf("Name of form: %s\n", tmp_name_of_form.c_str());
@@ -45,7 +57,7 @@ void InputHandler::get_input()
 		vector<Point> points = vector<Point>(tmp_number_of_points);
 		for (int j=0; j<tmp_number_of_points; ++j)
 		{
-			scanf_result = scanf("%f %f", &tmp_x, &tmp_y);
+			scanf_result = fscanf(file, "%f %f", &tmp_x, &tmp_y);
 			points[j] = Point(tmp_x, tmp_y);
 
 			#ifdef DEBUG
@@ -59,6 +71,8 @@ void InputHandler::get_input()
 		#endif
 	}
 
+	fclose(file);
+
 	#ifdef DEBUG
 		printf("Input complete!\n");
 	#endif
@@ -68,10 +82,11 @@ void InputHandler::_d_print_input()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: InputHandler::_d_print_input()\n");
-	#endif
 
-	printf("Size of sheet: %.1f x %.1f\n", size_of_sheet_x, size_of_sheet_y);
-	printf("Number of different forms: %i\n", number_of_different_forms);
+		printf("Size of sheet: %.1f x %.1f\n", size_of_sheet_x, size_of_sheet_y);
+		printf("Number of different forms: %i\n", number_of_different_forms);
+	#endif
+		
 	for (int i=0; i<number_of_different_forms; ++i)
 	{
 		forms[i]._d_print_abstract_form();

@@ -20,6 +20,14 @@ void Plane::add_form_at_position(AbstractForm *form, float pos_x, float pos_y)
 	number_of_forms++;
 }
 
+float Plane::compute_utilization()
+{
+	float utilization = 0;
+	for (int i=0; i<forms.size(); ++i)
+		utilization += (forms[i].get_mother())->get_size_of_area();
+	return (utilization/(dx*dy));
+}
+
 bool Plane::check_if_legal()
 {
 	bool ret = true;

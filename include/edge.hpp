@@ -33,24 +33,6 @@ public:
      *  Constructor to initialize an edge with its two points.
      */
 	Edge(Point *p1, Point *p2);
-	
-    /**
-     *  Move the edge relative to its current position by the amounts given in
-     *  x- and y-direction.
-     *
-     *  @param dx A float defining how much the edge is moved on the x-axis.
-     *  @param dy A float defining how much the edge is moved on the y-axis.
-     */
-	void move_rel(float dx, float dy);
-    
-    /**
-     *  Rotates the edge around the passed center by the given degree.
-     *
-     *  @param center_x A float defining the position of the center on the x-axis.
-     *  @param center_y A float defining the position of the center on the y-axis.
-     *  @param degree   A float describing the amount by which the edge is rotated.
-     */
-	void rotate(float center_x, float center_y, float degree); // TODO: Maybe use Point for center?
 
     /**
      *  Check whether the receiver crosses the passed edge.

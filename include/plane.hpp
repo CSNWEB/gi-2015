@@ -76,6 +76,13 @@ public:
 		void compute_all_overlappings();
 
 	/**
+	 *  Computes percentage of utilization of this plane
+	 *
+	 *  @return 	the utilitation as percentage within [0,1]
+     */
+    	float compute_utilization();
+
+	/**
 	 *  Checks if the positioning of forms on this plane is legal,
 	 *  i.e. no overlappings and all forms are within the plane
 	 *
