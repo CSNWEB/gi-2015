@@ -124,7 +124,7 @@ public:
      *  @param center_y The y-coordinate of the center point that the Form is rotated around.
      *  @param degree   The amount that the Form is rotated by.
      */
-	void rotate(float center_x, float center_y, float degree);
+	void rotate(float center_x, float center_y, float angle);
 	
     /**
      *  Checks if the receiver overlaps with the passed Form.

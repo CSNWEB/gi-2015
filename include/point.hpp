@@ -70,7 +70,7 @@ public:
      *  @param dx The amount by which the point is moved on the x-axis.
      *  @param dy The amount by which the point is moved on the y-axis.
      */
-	void move_rel(float dx, float dy){x += dx; y += dy;};
+	void move_rel(float dx, float dy);
     
     /**
      *  Rotates a point around a given center.

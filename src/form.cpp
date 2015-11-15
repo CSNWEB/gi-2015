@@ -97,14 +97,36 @@ Point Form::get_centroid()
 
 void Form::move_rel(float dx, float dy)
 {
-	for (int i=0; i<number_of_edges; ++i)
-		edges[i].move_rel(dx, dy);
+	for (int i=0; i<points.size(); ++i)
+		points[i].move_rel(dx, dy);
+	x_min += dx;
+	x_max += dx;
+	y_min += dy;
+	y_max += dy;
 }
 
-void Form::rotate(float center_x, float center_y, float degree)
+void Form::rotate(float center_x, float center_y, float angle)
 {
-	for (int i=0; i<number_of_edges; ++i)
-		edges[i].rotate(center_x, center_y, degree);
+	#ifdef DEBUG
+		printf("FUNCTION: Form::rotate\n");
+	#endif
+
+	for (int i=0; i<points.size(); ++i)
+	{
+		points[i].rotate(center_x, center_y, angle);
+		if (points[i].get_x() < x_min)
+			x_min = points[i].get_x();
+		if (points[i].get_x() > x_max)
+			x_max = points[i].get_x();
+		if (points[i].get_y() < y_min)
+			y_min = points[i].get_y();
+		if (points[i].get_y() > y_max)
+			y_max = points[i].get_y();
+	}
+
+	#ifdef DEBUG
+		printf("\tBounding box updated to:\n\t(%.2f,%.2f) - (%.2f,%.2f)\n",x_min, y_min, x_max, y_max);
+	#endif
 }
 	
 void Form::_d_print_form_to_console()

@@ -1,5 +1,11 @@
 #include "point.hpp"
 
+void Point::move_rel(float dx, float dy)
+{
+	x += dx;
+	y += dy;
+}
+
 void Point::rotate(float center_x, float center_y, float angle)
 {
 	angle *= PI/180;
