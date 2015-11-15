@@ -1,0 +1,52 @@
+\documentclass{scrartcl}
+
+\usepackage[applemac]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{Optiblech}
+
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\begin{document}
+\maketitle
+
+\section*{Problem: Optiblech}
+
+\subsection*{Eingabe}
+
+\begin{itemize}
+\item{$(dx, dy) \in \mathbb{R}^{2}$, Ma{\ss}e einer rechteckigen Blechtafel}
+\item{$\{((x_{1_{1}}, y_{1_{1}}), \ldots , (x_{1_{k(1)}}, y_{1_{k(1)}})), \ldots , ((x_{m_{1}}, y_{m_{1}}), \ldots , (x_{m_{k(m)}}, y_{m_{k(m)}}))\}$, \\ Menge der $m$ auszustanzenden Formen, gegeben durch die Punktetupel \\ $((x_{i_{1}}, y_{i_{1}}), \ldots , (x_{i_{k(i)}}, y_{i_{k(i)}}))$ die sie definieren, wobei $k(i)$ angibt, wie viele Punkte die $i$-te Form hat}
+\item{$\{n_{1}, \ldots , n_{m}\} \in \mathbb{N}^{m}$} , Menge in der $n_{i}$ beschreibt wie oft eine Form $i \in \{1, \ldots, m\}$ ausgestanzt werden soll
+\end{itemize}
+
+\subsection*{Ausgabe}
+Sei, $b$ die Anzahl der Bleche, $A_{b}$ die Fl\"ache der $b$ Bleche, $A_{i}$ die Fl\"ache der $i$-ten Form und $A_{f} = \sum_{i=1}^{m} n_{i} \cdot A_{i}$ die Summe die Fl\"achen aller ausgestanzten Formen.
+Ausgegeben wird dann $b$, die Anzahl der Bleche, die mindestens ben\"otigt werden, um $n_{i}$ mal die Form $i$ auszustanzen, sodass $A_{b} - A_{f}$ m\"oglichst klein ist und die Formen nicht \"uberlappen, bzw. die Grenzen eines Blechs \"uberschreiten.
+
+\section*{Problem: Das Beh\"alterproblem (Binpacking)}
+\subsection*{Eingabe}
+\begin{itemize}
+\item{$g \in \mathbb{N}$, die Gr\"o{\ss}e der Beh\"alter (Bins)}
+\item{$a_{1}, \ldots, a_{n}$, die Gr\"o{\ss}e der $n$ Objekte, mit $a_{i} < g$}
+\end{itemize}
+
+\subsection*{Ausgabe}
+Die Anzahl b, der Beh\"alter die mindestens ben\"otigt werden, um die $n$ Objekte in ihnen unterzubringen, ohne dass die Beh\"alter ``\"uberlaufen'' oder sich die Objekte \"uberlappen.
+
+\section*{Reduktion}
+Es ist bekannt, dass das Binpacking-Problem NP-schwer ist. Wir reduzieren Binpacking auf Optiblech um zu zeigen, dass auch Optiblech NP-schwer ist. 
+Gegeben sei eine Instanz $(g, \{a_{1}, \ldots, a_{n}\})$ von Binpacking. Wir \"uberf\"uhren diese in eine Optiblech-Instanz\\ $((dx, dy), \{((x_{1_{1}}, y_{1_{1}}), \ldots , (x_{1_{k(1)}}, y_{1_{k(1)}})), \ldots , ((x_{m_{1}}, y_{m_{1}}), \ldots , (x_{m_{k(m)}}, y_{m_{k(m)}}))\}, \{n_{1}, \ldots, n_{m}\})$, wie folgt. W\"ahle als Blechgr\"o{\ss}e $(g, 1)$, wobei $g$ die Gr\"o{\ss}e der Bins ist. Nun werden die Objektgr\"o{\ss}en in Punktmengen der Formen des Optiblechproblems \"uberf\"uhrt. Erstelle f\"ur das Objekt mit Gr\"o{\ss}e $a_{i}$ die Punktmenge $((0, 0), (a_{i}, 0), (a_{i}, 1), (0, 1))$. Die Menge die beschreibt, wie oft eine Form ausgestanzt werden soll, wird aus $n$ $1en$ bestehen, da jedes Objekt genau einmal untergebracht werden soll. Diese Reduktion ist offensichtlich in polynomieller Zeit durchf\"uhrbar.
+
+\subsection*{Behauptung}
+Die minimale Anzahl an Blechen, die ein Algorithmus f\"ur Optiblech bei der resultierenden Instanz: $((g, 1), \{((0, 0), (a_{1}, 0), (a_{1}, 1), (0, 1)), \ldots, ((0, 0), (a_{n}, 0), (a_{n}, 1), (0, 1))\}, \{1\}^{n})$ ausgeben w\"urde, ist auch die minimale Anzahl an Bins der Binpacking-Instanz.
+
+\subsection*{Beweis}
+Da alle Formen die gleiche H\"ohe von $1$ haben, kann in der Optiblech-Instanz nicht von Rotation profitiert werden. Formen die l\"anger als $1$ sind, k\"onnen nicht gedreht werden, ohne die Grenzen des Bleches zu \"uberschreiten. Bei Formen der L\"ange $1$, w\"urde eine Rotation keine \"Anderung bewirken. Formen mit L\"ange $<1$ k\"onnten nur dann von Rotation profitieren, wenn die verbleibende vertikale Fl\"ache durch anderen Formen der L\"ange $<1$ aufgef\"ullt werden kann. Da dies aber nur m\"oglich ist, wenn die gemeinsam eingenommene Fl\"ache dieser Formen exakt $1\times1$ ist, w\"are die gleiche Effizienz auch ohne Rotation m\"oglich gewesen. Rotation hat demzufolge keinen Einfluss auf die ausgenutzte Fl\"ache im Optiblechproblem. Da alle Formen genauso hoch wie die Bleche sind und nicht rotiert werden k\"onnen, kann auch die Positionierung der Formen auf einem Blech die Effizienz der ausgenutzten Fl\"ache nicht beeinflussen. Lediglich die Zuordnung der Formen auf die verschiedenen Bleche beeinflusst diesen Faktor. Diese Aufteilung im Optiblechproblem ist auch im Binpackingproblem zul\"assig, da die Formen sich nicht \"uberlappen oder die Blechgrenzen \"uberschreiten d\"urfen. Demzufolge w\"urde in der Optiblech-Instanz eine Aufteilung der Objekte gefunden werden, die die Anzahl der Bleche minimiert. Die gleiche Aufteilung der Objekte der Binpacking-Instanz w\"urde dann auch die Anzahl der Bins minimieren. Somit k\"onnte Binpacking mit Optiblech gel\"ost werden. Da Binpacking NP-schwer ist, folgt daraus, dass auch Optbiblech NP-schwer sein muss.
+
+\end{document}
