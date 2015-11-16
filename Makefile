@@ -5,13 +5,13 @@ CXXFLAGS     = -std=c++0x -O2
 #SOURCE = main_test.cpp src/inputHandler.cpp src/abstractForm.cpp
 INCDIR = include/
 
-test: main_test.o inputHandler.o outputHandler.o abstractForm.o point.o edge.o form.o plane.o problem.o
+test: main_test.o inputHandler.o outputHandler.o abstractForm.o point.o edge.o form.o plane.o problem.o 2DBP_shelf.o
 	$(CXX) -o test $^
 	
-test_debug: main_test_debug.o inputHandler_debug.o outputHandler_debug.o abstractForm_debug.o point_debug.o edge_debug.o form_debug.o plane_debug.o problem_debug.o
+test_debug: main_test_debug.o inputHandler_debug.o outputHandler_debug.o abstractForm_debug.o point_debug.o edge_debug.o form_debug.o plane_debug.o problem_debug.o 2DBP_shelf_debug.o
 	$(CXX) -o test_debug $^
 
-test_sfml: main_test_sfml.o inputHandler_sfml.o outputHandler.o abstractForm_sfml.o point_sfml.o edge_sfml.o form_sfml.o plane_sfml.o problem_sfml.o
+test_sfml: main_test_sfml.o inputHandler_sfml.o outputHandler.o abstractForm_sfml.o point_sfml.o edge_sfml.o form_sfml.o plane_sfml.o problem_sfml.o 2DBP_shelf.o
 	$(CXX) -o test_sfml $^ -lsfml-graphics -lsfml-window -lsfml-system
 
 inputHandler.o: src/inputHandler.cpp include/inputHandler.hpp
@@ -25,6 +25,9 @@ abstractForm.o: src/abstractForm.cpp include/abstractForm.hpp
 
 problem.o: src/problem.cpp include/problem.hpp
 	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/problem.cpp -o $@
+
+2DBP_shelf.o: src/2DBP_shelf.cpp include/2DBP_shelf.hpp
+	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/2DBP_shelf.cpp -o $@
 
 plane.o: src/plane.cpp include/plane.hpp
 	$(CXX) $(CXXFLAGS) -c $(INCLUDES) src/plane.cpp -o $@
@@ -96,6 +99,9 @@ edge_debug.o: src/edge.cpp include/edge.hpp
 
 point_debug.o: src/point.cpp include/point.hpp
 	$(CXX) $(CXXFLAGS) -D DEBUG -c $(INCLUDES) src/point.cpp -o $@
+
+2DBP_shelf_debug.o: src/2DBP_shelf.cpp include/2DBP_shelf.hpp
+	$(CXX) $(CXXFLAGS) -D DEBUG -c $(INCLUDES) src/2DBP_shelf.cpp -o $@
 
 geneticFormFitter_debug.o: src/geneticFormFitter.cpp include/geneticFormFitter.hpp
 	$(CXX) $(CXXFLAGS) -D DEBUG -c $(INCLUDES) src/geneticFormFitter.cpp -o $@

@@ -18,6 +18,7 @@
 
 #include "abstractForm.hpp"
 #include "plane.hpp"
+#include "2DBP_shelf.hpp"
 
 using namespace std;
 

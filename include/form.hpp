@@ -89,6 +89,14 @@ public:
 	float get_bounding_xmax(){return x_max;};
 	float get_bounding_ymin(){return y_min;};
 	float get_bounding_ymax(){return y_max;};
+
+    /**
+     *  Functions to get the size of the bounding box
+     *
+     *  @return     a float representing the width (or height) of the bounding box
+     */
+    float get_bounding_dx(){return x_max - x_min;};
+    float get_bounding_dy(){return y_max - y_min;};
 	
     /**
      *  A vector containing the points that belong to the form.
