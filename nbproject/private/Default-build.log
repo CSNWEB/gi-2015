@@ -1,0 +1,53 @@
+g++ -std=c++0x -O2 -c -Iinclude main_test.cpp -o main_test.o
+In file included from main_test.cpp:1:
+In file included from include/inputHandler.hpp:11:
+include/abstractForm.hpp:76:5: warning: '/*' within block comment [-Wcomment]
+    /**
+    ^
+1 warning generated.
+g++ -std=c++0x -O2 -c -Iinclude src/inputHandler.cpp -o inputHandler.o
+In file included from src/inputHandler.cpp:1:
+In file included from include/inputHandler.hpp:11:
+include/abstractForm.hpp:76:5: warning: '/*' within block comment [-Wcomment]
+    /**
+    ^
+1 warning generated.
+g++ -std=c++0x -O2 -c -Iinclude src/abstractForm.cpp -o abstractForm.o
+In file included from src/abstractForm.cpp:1:
+include/abstractForm.hpp:76:5: warning: '/*' within block comment [-Wcomment]
+    /**
+    ^
+1 warning generated.
+g++ -std=c++0x -O2 -c -Iinclude src/point.cpp -o point.o
+g++ -std=c++0x -O2 -c -Iinclude src/edge.cpp -o edge.o
+src/edge.cpp:47:1: warning: control reaches end of non-void function [-Wreturn-type]
+}
+^
+1 warning generated.
+g++ -std=c++0x -O2 -c -Iinclude src/form.cpp -o form.o
+In file included from src/form.cpp:1:
+In file included from include/form.hpp:15:
+include/abstractForm.hpp:76:5: warning: '/*' within block comment [-Wcomment]
+    /**
+    ^
+src/form.cpp:94:35: warning: format specifies type 'int' but the argument has type 'size_type' (aka 'unsigned long') [-Wformat]
+        printf("Number of points: %i\n", points.size());
+                                  ~~     ^~~~~~~~~~~~~
+                                  %lu
+2 warnings generated.
+g++ -std=c++0x -O2 -c -Iinclude src/plane.cpp -o plane.o
+In file included from src/plane.cpp:1:
+In file included from include/plane.hpp:6:
+In file included from include/form.hpp:15:
+include/abstractForm.hpp:76:5: warning: '/*' within block comment [-Wcomment]
+    /**
+    ^
+1 warning generated.
+g++ -std=c++0x -O2 -c -Iinclude src/problem.cpp -o problem.o
+In file included from src/problem.cpp:1:
+In file included from include/problem.hpp:19:
+include/abstractForm.hpp:76:5: warning: '/*' within block comment [-Wcomment]
+    /**
+    ^
+1 warning generated.
+g++ -o test main_test.o inputHandler.o abstractForm.o point.o edge.o form.o plane.o problem.o -lsfml-graphics -lsfml-window -lsfml-system
