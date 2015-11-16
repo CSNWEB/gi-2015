@@ -136,6 +136,12 @@ public:
     void create_initial_setting();
 
     /**
+     *  Function that places bounding-boxes on sheets using
+     *  2-dimensional bin packing with rotation and guillotine cutting
+     */
+    void create_setting_2BPRG();
+
+    /**
      * Solve the problem!
      */
     void solve();
