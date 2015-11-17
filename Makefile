@@ -7,17 +7,26 @@ TARGET := bin/runner
 SRCEXT := cpp
 SOURCES := $(shell find $(SRCDIR) -type f -name "*.$(SRCEXT)")
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+DEBUG_OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=_debug.o))
 CFLAGS := -g -std=c++0x -O2 # -Wall
 LIB := 
 INC := -I include
 
 $(TARGET): $(OBJECTS)
 	@echo " Linking..."
-	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)
+	@echo " $(CC) $^ -o $(TARGET) $(LIB)"; $(CC) $^ -o $(TARGET) $(LIB)		
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
 	@echo " $(CC) $(CFLAGS) $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) $(INC) -c -o $@ $<
+	
+debug: $(DEBUG_OBJECTS)
+	@echo " Linking..."
+	@echo " $(CC) $^ -o $(TARGET)_debug $(LIB)"; $(CC) $^ -o $(TARGET)_debug $(LIB)		
+
+$(BUILDDIR)/%_debug.o: $(SRCDIR)/%.$(SRCEXT)
+	@mkdir -p $(BUILDDIR)
+	@echo " $(CC) $(CFLAGS) -D DEBUG $(INC) -c -o $@ $<"; $(CC) $(CFLAGS) -D DEBUG $(INC) -c -o $@ $<
 
 clean:
 	@echo " Cleaning..."; 

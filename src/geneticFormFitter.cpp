@@ -14,6 +14,7 @@ GeneticFormFitter::GeneticFormFitter(AbstractForm *first_form, AbstractForm *sec
     this->second_form = second_form;
 }
 
+
 #pragma mark - Fitness
 
 /**

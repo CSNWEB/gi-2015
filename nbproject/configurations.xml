@@ -15,7 +15,6 @@
         <in>problem.cpp</in>
         <in>simpleSVG.cpp</in>
       </df>
-      <in>main_test.cpp</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -54,11 +53,6 @@
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="/Users/Christoph/Code/gi-2015/main_test.cpp"
-            ex="false"
-            tool="1"
-            flavor2="8">
-      </item>
       <item path="/Users/Christoph/Code/gi-2015/src/2DBP_shelf.cpp"
             ex="false"
             tool="1"
@@ -143,6 +137,8 @@
           </incDir>
         </ccTool>
       </folder>
+      <item path="src/main_test.cpp" ex="false" tool="1" flavor2="8">
+      </item>
     </conf>
   </confs>
 </configurationDescriptor>
