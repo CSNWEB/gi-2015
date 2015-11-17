@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="1600px" height="320px" xmlns="http://www.w3.org/2000/svg" version="1.1" >
+	<rect x="10" y="10" width="300" height="300" fill="rgb(255,255,255)" />
+	<polyline points="10,10 10,160 160,160 160,10 10,10 " fill="transparent" stroke-width="5" stroke="rgb(0,0,255)" />
+	<polygon points="10,10 10,160 160,160 160,10 " fill="rgb(200,160,220)" stroke-width="1" stroke="rgb(0,0,0)" />
+	<rect x="330" y="10" width="300" height="300" fill="rgb(255,255,255)" />
+	<polyline points="330,10 330,160 480,160 480,10 330,10 " fill="transparent" stroke-width="5" stroke="rgb(0,0,255)" />
+	<polygon points="330,10 330,160 480,160 480,10 " fill="rgb(200,160,220)" stroke-width="1" stroke="rgb(0,0,0)" />
+	<rect x="650" y="10" width="300" height="300" fill="rgb(255,255,255)" />
+	<polyline points="650,10 650,160 800,160 800,10 650,10 " fill="transparent" stroke-width="5" stroke="rgb(0,0,255)" />
+	<polygon points="650,10 650,160 800,160 800,10 " fill="rgb(200,160,220)" stroke-width="1" stroke="rgb(0,0,0)" />
+	<rect x="970" y="10" width="300" height="300" fill="rgb(255,255,255)" />
+	<polyline points="970,10 970,160 1120,160 970,10 " fill="transparent" stroke-width="5" stroke="rgb(0,0,255)" />
+	<polygon points="970,10 970,160 1120,160 " fill="rgb(200,160,220)" stroke-width="1" stroke="rgb(0,0,0)" />
+	<rect x="1290" y="10" width="300" height="300" fill="rgb(255,255,255)" />
+	<polyline points="1290,10 1290,160 1440,160 1290,10 " fill="transparent" stroke-width="5" stroke="rgb(0,0,255)" />
+	<polygon points="1290,10 1290,160 1440,160 " fill="rgb(200,160,220)" stroke-width="1" stroke="rgb(0,0,0)" />
+</svg>

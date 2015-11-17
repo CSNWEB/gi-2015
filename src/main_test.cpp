@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
 	problem.create_initial_setting();
 	
-	Solver s(&problem);
+	//Solver s(&problem);
 
     OutputHandler oh(&problem);
 
