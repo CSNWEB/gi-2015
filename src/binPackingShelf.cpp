@@ -1,9 +1,9 @@
-#include "2DBP_shelf.hpp"
+#include "binPackingShelf.hpp"
 
-Shelf::Shelf(int index_of_plane, float offset_height, float height, float width)
+BinPackingShelf::BinPackingShelf(int index_of_plane, float offset_height, float height, float width)
 {
 	#ifdef DEBUG
-		printf("CONSTRUCTOR: Shelf\n");
+		printf("CONSTRUCTOR: BinPackingShelf\n");
 	#endif
 
 	this->index_of_plane 	= index_of_plane;
@@ -12,10 +12,10 @@ Shelf::Shelf(int index_of_plane, float offset_height, float height, float width)
 	remaining_width 		= width;
 }
 
-bool Shelf::add_form(Form *f, int index)
+bool BinPackingShelf::add_form(Form *f, int index)
 {
 	#ifdef DEBUG
-		printf("FUNCTION: Shelf::add_form\n");
+		printf("FUNCTION: BinPackingShelf::add_form\n");
 	#endif
 
 	if (f->get_bounding_dy() <= height && f->get_bounding_dx() <= remaining_width)
@@ -38,10 +38,10 @@ bool Shelf::add_form(Form *f, int index)
 	}
 }
 
-bool Shelf::check_if_fit(Form *f)
+bool BinPackingShelf::check_if_fit(Form *f)
 {
 	#ifdef DEBUG
-		printf("FUNCTION: Shelf::check_if_fit\n");
+		printf("FUNCTION: BinPackingShelf::check_if_fit\n");
 	#endif
 
 	if (f->get_bounding_dy() <= height && f->get_bounding_dx() <= remaining_width)
@@ -52,12 +52,12 @@ bool Shelf::check_if_fit(Form *f)
 		return false;
 }
 
-float Shelf::get_height()
+float BinPackingShelf::get_height()
 {
 	return height;
 }
 
-float Shelf::get_remaining_width()
+float BinPackingShelf::get_remaining_width()
 {
 	return remaining_width;
 }

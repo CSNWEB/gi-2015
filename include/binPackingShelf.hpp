@@ -1,5 +1,5 @@
-#ifndef SHELF_H
-#define SHELF_H
+#ifndef BinPackingShelf_H
+#define BinPackingShelf_H
 
 /**
  *  A "shelf" used in the 2-dim. bin-packing problem
@@ -10,7 +10,7 @@
 
 #include "form.hpp"
 
-class Shelf
+class BinPackingShelf
 {
 private:
 	/**
@@ -51,7 +51,7 @@ public:
 	 *  @param  height 				height of the shelf
 	 *  @param  width 				width of the plane
 	 */
-	Shelf(int index_of_plane, float offset_height, float height, float width);
+	BinPackingShelf(int index_of_plane, float offset_height, float height, float width);
 
 	/**
 	 *  Adds a form on this shelf. Also checks if there is enough space on this shelf

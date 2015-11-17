@@ -1,4 +1,4 @@
-#include "GeneticFormFitter.hpp"
+#include "geneticFormFitter.hpp"
 
 #pragma mark - Constructor
 
