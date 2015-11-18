@@ -12,6 +12,7 @@
 #include <algorithm>
 
 #include "point.hpp"
+#include <iostream>
 
 class Edge
 {
@@ -34,6 +35,17 @@ public:
      */
 	Edge(Point *p1, Point *p2);
 
+    /**
+     *  Finds the point where the receiver and other intersect each other.
+     *
+     *  Taken from: http://flassari.is/2008/11/line-line-intersection-in-cplusplus/
+     *
+     *  @param other The edge that may cross this edge.
+     *
+     *  @return The Point where the receiver and other intersect. NULL if they don't.
+     */
+    Point* intersection_with_edge(Edge *other);
+    
     /**
      *  Check whether the receiver crosses the passed edge.
      *

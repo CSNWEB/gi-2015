@@ -30,3 +30,10 @@
 #IDE
 nbproject
 /build/
+test
+
+out.svg
+
+out.txt
+
+bin/runner
