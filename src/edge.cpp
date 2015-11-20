@@ -2,16 +2,24 @@
 
 Edge::Edge(Point *p1, Point *p2)
 {
-	this->p1 = p1;
-	this->p2 = p2;
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	point_1 = p1;
+	point_2 = p2;
 }
 
 bool Edge::check_if_crosses(Edge *other)
 {
-	float dp11 = p1->get_distance_to(other->p1);
-	float dp12 = p1->get_distance_to(other->p2);
-	float dp21 = p2->get_distance_to(other->p1);
-	float dp22 = p2->get_distance_to(other->p2);
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	float dp11 = point_1->get_distance_to(other->point_1);
+	float dp12 = point_1->get_distance_to(other->point_2);
+	float dp21 = point_2->get_distance_to(other->point_1);
+	float dp22 = point_2->get_distance_to(other->point_2);
 	
 	float min1 = std::min(dp11, dp12);
 	float min2 = std::min(dp21, dp22);
@@ -23,8 +31,8 @@ bool Edge::check_if_crosses(Edge *other)
 	{		
 		// check if both points of other are on the same side of this edge by cross-product
 
-		float z1 = ((p2->get_x()-p1->get_x()) * (other->p1->get_y()-p1->get_y())) - ((other->p1->get_x()-p1->get_x()) * (p2->get_y() - p1->get_y()));
-		float z2 = ((p2->get_x()-p1->get_x()) * (other->p2->get_y()-p1->get_y())) - ((other->p2->get_x()-p1->get_x()) * (p2->get_y() - p1->get_y()));
+		float z1 = ((point_2->get_x()-point_1->get_x()) * (other->point_1->get_y()-point_1->get_y())) - ((other->point_1->get_x()-point_1->get_x()) * (point_2->get_y() - point_1->get_y()));
+		float z2 = ((point_2->get_x()-point_1->get_x()) * (other->point_2->get_y()-point_1->get_y())) - ((other->point_2->get_x()-point_1->get_x()) * (point_2->get_y() - point_1->get_y()));
 		
 		if (z1*z2 >= 0)
 		{
@@ -33,10 +41,10 @@ bool Edge::check_if_crosses(Edge *other)
 		else
 		{
 			// check if both edges cross:
-			// solve equation p1+ lambda*(p2-p1) = o.p1 + mu*(o.p2-o.p1)
+			// solve equation point_1+ lambda*(point_2-point_1) = o.point_1 + mu*(o.point_2-o.point_1)
 			// and check if x,y are within {0,1}
-			float lambda = (p1->get_y() - (other->p1)->get_y() - p1->get_x() + (other->p1)->get_x()) / (- (p2->get_y() - p1->get_y() ) * (1+(p2->get_x() - p1->get_x()) / (p2->get_y() - p2->get_y()) ));
-			float mu = (p1->get_x() - (other->p1)->get_x() + lambda*(p2->get_x() - p1->get_x())) / ((other->p2)->get_x() - (other->p1)->get_x());
+			float lambda = (point_1->get_y() - (other->point_1)->get_y() - point_1->get_x() + (other->point_1)->get_x()) / (- (point_2->get_y() - point_1->get_y() ) * (1+(point_2->get_x() - point_1->get_x()) / (point_2->get_y() - point_2->get_y()) ));
+			float mu = (point_1->get_x() - (other->point_1)->get_x() + lambda*(point_2->get_x() - point_1->get_x())) / ((other->point_2)->get_x() - (other->point_1)->get_x());
 
 			if (lambda > 0 && lambda < 1 && mu > 0 && mu < 1)
 			{
@@ -44,4 +52,11 @@ bool Edge::check_if_crosses(Edge *other)
 			}
 		}
 	}
+}
+
+void Edge::_d_print_edge_to_console()
+{
+	#ifdef DEBUG
+		printf("Edge from point %.2f/%.2f to point %.2f/%.2f with length %.2f\n", point_1->get_x(), point_1->get_y(), point_2->get_x(), point_2->get_y(), length());
+	#endif
 }

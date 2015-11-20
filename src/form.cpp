@@ -3,8 +3,10 @@
 
 Form::Form(AbstractForm* mother)
 {
-	// not sure if this does the right thing
-	// needs testing!
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
 	this->mother = mother;
 
 	x_min = 0;
@@ -22,14 +24,18 @@ Form::Form(AbstractForm* mother)
 	for (int i=1; i<number_of_edges; ++i)
 	{
 		points[i] = mother->get_point_at_index(i);
-		edges[i] = Edge(&points[i-1], &points[i]);
+		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
 	}
 
-	edges[number_of_edges-1] = Edge(&points[number_of_edges-2], &points[number_of_edges-1]);
+	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
 }
 
 Form::Form(AbstractForm *mother, float pos_x, float pos_y)
-{
+{	
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	this->mother = mother;
 	
 	x_min = pos_x;
@@ -42,20 +48,24 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)
 	points = vector<Point>(number_of_edges);
 	edges  = vector<Edge>(number_of_edges);
 
-	points[0] = mother->get_point_at_index(0);
+	points[0] = Point(mother->get_point_at_index(0));
+	points[0].move_rel(pos_x, pos_y);
 
 	for (int i=1; i<number_of_edges; ++i)
 	{
-		points[i] = mother->get_point_at_index(i);
+		points[i] = Point(mother->get_point_at_index(i));
 		points[i].move_rel(pos_x, pos_y);
-		edges[i] = Edge(&points[i-1], &points[i]);
+		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
 	}
 
-	edges[number_of_edges-1] = Edge(&points[number_of_edges-2], &points[number_of_edges-1]);
+	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
 }
 
 bool Form::check_for_overlap(Form *other)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
 	// check if both bounding-boxes overlap
 	// if no, no overlap
 	// else check overlapping of edges pairwise
@@ -108,7 +118,7 @@ void Form::move_rel(float dx, float dy)
 void Form::rotate(float center_x, float center_y, float angle)
 {
 	#ifdef DEBUG
-		printf("FUNCTION: Form::rotate\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	for (int i=0; i<points.size(); ++i)
@@ -129,13 +139,23 @@ void Form::rotate(float center_x, float center_y, float angle)
 	#endif
 }
 	
-void Form::_d_print_form_to_console()
+void Form::_d_print_points_to_console()
 {
 	#ifdef DEBUG
 	printf("Number of points: %i\n", points.size());
 
 	for (int i=0; i<points.size(); ++i)
 		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
+
+	#endif
+}
+
+void Form::_d_print_edges_to_console()
+{
+	#ifdef DEBUG
+		printf("Number of edges: %i\n", edges.size());
+		for (int i=0; i<edges.size(); ++i)
+			edges[i]._d_print_edge_to_console();
 	#endif
 }
 

@@ -8,6 +8,10 @@ void Point::move_rel(float dx, float dy)
 
 void Point::rotate(float center_x, float center_y, float angle)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	angle *= PI/180;
 	
 	float sin_angle = sin(angle);
@@ -22,6 +26,10 @@ void Point::rotate(float center_x, float center_y, float angle)
 
 int Point::is_left_of(Point *p_start, Point *p_end)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
 	/**
 	 *  compute determinant of 
 	 * 		1 	p_start.x 	p_start.y

@@ -4,6 +4,7 @@
 #include "plane.hpp"
 #include "form.hpp"
 #include "geneticFormFitter.hpp"
+#include "setting.hpp"
 
 #include <stdio.h>
 
@@ -27,26 +28,26 @@ int main(int argc, char* argv[])
 
 	Problem problem = ih.create_problem();
 
-	problem.create_initial_setting();
-	
-	//Solver s(&problem);
+    Setting trivial_solution = Setting(&problem);
+    trivial_solution.create_initial_setting();
 
-    OutputHandler oh(&problem);
-
+    OutputHandler oh(&problem, &trivial_solution);
     oh.write_setting_to_txt();
     oh.write_setting_to_svg();
 
     #ifdef DEBUG
-        for (int i=0; i<problem.get_number_of_planes(); ++i)
+        printf("check in %s\n", __PRETTY_FUNCTION__);
+        for (int i=0; i<trivial_solution.get_number_of_planes(); ++i)
         {
-            Plane p = problem.get_plane_at(i);
+            Plane *p = trivial_solution.get_plane_at(i);
+            printf("Current plane: %i\n", i);
 
-            for (int j=0; j<p.get_number_of_forms(); ++j)
+            for (int j=0; j<p->get_number_of_forms(); ++j)
             {
-                Form f = p.get_form_at(j);
-
-                f._d_print_form_to_console();
-                f._d_print_convex_hull_to_console();
+                printf("Current form: %i\n", j);
+                p->get_form_at(j)->_d_print_points_to_console();
+                p->get_form_at(j)->_d_print_edges_to_console();
+                p->get_form_at(j)->_d_print_convex_hull_to_console();
             }
         }
     #endif

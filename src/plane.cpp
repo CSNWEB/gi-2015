@@ -5,23 +5,30 @@ int Plane::get_number_of_forms()
 	return forms.size();
 }
 
-Form Plane::get_form_at(int i)
+Form* Plane::get_form_at(int i)
 {
 	if (i<forms.size())
-		return forms[i];
+		return &forms[i];
 	else
-		return Form();
+		return NULL;
 }
 
 void Plane::add_form_at_position(AbstractForm *form, float pos_x, float pos_y)
 {
-	Form newform = Form(form, pos_x, pos_y);
-	forms.push_back(newform);
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	forms.push_back(Form(form, pos_x, pos_y));
 	number_of_forms++;
 }
 
 float Plane::compute_utilization()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	float utilization = 0;
 	for (int i=0; i<forms.size(); ++i)
 		utilization += (forms[i].get_mother())->get_size_of_area();
@@ -30,6 +37,10 @@ float Plane::compute_utilization()
 
 bool Plane::check_if_legal()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	bool ret = true;
 	for (int i=0; i<forms.size(); ++i)
 		for (int j=i; j<forms.size(); ++j)

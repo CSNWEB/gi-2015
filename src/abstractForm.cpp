@@ -2,6 +2,10 @@
 
 AbstractForm::AbstractForm(string name, vector<Point> points)
 {
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
 	this->name = name;
 	this->points = points;
 	number_of_points = points.size();
@@ -37,7 +41,7 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 vector<int> AbstractForm::sort_points_dim_x()
 {
 	#ifdef DEBUG
-		printf("FUNCTION: AbstractForm::sort_points_dim_x_in_place()\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	vector<int> ordered_indices = vector<int>(points.size(),0);
@@ -74,7 +78,7 @@ void AbstractForm::compute_size_of_area()
     // Calculate the size of the area (according to http://www.mathopenref.com/coordpolygonarea.html )
 
 	#ifdef DEBUG
-		printf("FUNCITON: AbstractForm::compute_size_of_area()\n");
+		printf("FUNCITON: %s\n", __PRETTY_FUNCTION__);
 	#endif
     
     size_of_area = 0.0;
@@ -95,7 +99,7 @@ void AbstractForm::compute_size_of_area()
 void AbstractForm::compute_convex_hull()
 {
 	#ifdef DEBUG
-		printf("FUNCTION: AbstractForm::compute_convex_hull()\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	vector<int> ordered_indices = sort_points_dim_x();
@@ -220,7 +224,7 @@ void AbstractForm::compute_convex_hull()
 void AbstractForm::_d_print_abstract_form()
 {
 	#ifdef DEBUG
-		printf("FUNCTION: AbstractForm::_d_print_abstract_form()\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 
 		printf("Name of form: %s\n", name.c_str());
 		printf("Number of points: %i\n", number_of_points);

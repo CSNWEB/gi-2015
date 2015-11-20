@@ -20,14 +20,18 @@ private:
     /**
      *  The points that define the edge.
      */
-	Point *p1, *p2;
+	Point *point_1, *point_2;
 	
 public:
     
     /**
      *  Default constructor
      */
-	Edge(){};
+	Edge(){
+    #ifdef DEBUG
+        printf("\t\tConstructor: %s\n", __PRETTY_FUNCTION__);
+    #endif
+    };
 
     /**
      *  Constructor to initialize an edge with its two points.
@@ -48,15 +52,21 @@ public:
      *
      *  @return A float resembling the length of the edge.
      */
-	float length(){return p1->get_distance_to(p2);};
+	float length(){return point_1->get_distance_to(point_2);};
     
     /**
      *  The distance the edge covers on the x- and y-axis respectively.
      *
      *  @return A float representing the distance the edge covers on the x- and y-axis respectively.
      */
-	float get_edge_x(){return p2->get_x()-p1->get_x();};
-	float get_edge_y(){return p2->get_y()-p1->get_y();};
+	float get_edge_x(){return point_2->get_x()-point_1->get_x();};
+	float get_edge_y(){return point_2->get_y()-point_1->get_y();};
+
+    /**
+     *  Debug output function:
+     *  prints start- and endpoint of edge to console
+     */
+    void _d_print_edge_to_console();
 };
 
 #endif
