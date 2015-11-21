@@ -38,9 +38,9 @@ struct FormComparator
 			smaller_edge_box_2 = form_2->get_dy();
 
 		if (smaller_edge_box_1 < smaller_edge_box_2)
-			return true;
+			return false;
 		else
-			return false; 
+			return true; 
 	};
 };
 

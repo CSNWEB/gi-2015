@@ -102,12 +102,12 @@ Setting BinPacking::get_packed_setting()
 				printf("Form %i could not be placed on any existing plane.\nCreate new plane.\n", form_index);
 			#endif
 
-			//result.add_plane();
+			bp_planes.push_back(BinPackingPlane(problem->get_plane_width(), problem->get_plane_height()));
+			int plane_index = bp_planes.size()-1;
 
-			//shelfs_on_planes.push_back(vector<BinPackingShelf>());
-			//(shelfs_on_planes.end()-1)->push_back(BinPackingShelf());
-			//	->add_form(problem->get_abstract_form_at_position(form_index), form_index):
-			// create new plane, create new shelf, add form
+			if (bp_planes[plane_index].add_shelf(problem->get_abstract_form_at_position(all_forms_sorted_by_size[form_index])->get_dy()))
+				bp_planes[plane_index].get_shelf_at(0)->add_form(problem->get_abstract_form_at_position(all_forms_sorted_by_size[form_index]), form_index);
+
 		}
 	}
 
@@ -124,9 +124,29 @@ Setting BinPacking::get_packed_setting()
 			float x_offset_on_current_shelf = 0;
 			for (int form_index=0; form_index < bp_planes[plane_index].get_shelf_at(shelf_index)->get_number_of_forms_on_shelf(); ++form_index)
 			{
-				result.get_plane_at(plane_index)->add_form_at_position(problem->get_abstract_form_at_position(bp_planes[plane_index].get_shelf_at(shelf_index)->get_abstract_index_of_form_at(form_index)), x_offset_on_current_shelf, y_offset_on_current_plane);
-				x_offset_on_current_shelf += problem->get_abstract_form_at_position(bp_planes[plane_index].get_shelf_at(shelf_index)->get_abstract_index_of_form_at(form_index))->get_dx();
+				int index_of_abst_form = bp_planes[plane_index].get_shelf_at(shelf_index)->get_abstract_index_of_form_at(form_index);
+
+				#ifdef DEBUG
+					printf("Create Setting:\n");
+					printf("\tForm (index of abstract form): %i\n", all_forms_sorted_by_size[index_of_abst_form]);
+					printf("\tPlane: %i\n", plane_index);
+					printf("\t(Shelf: %i)\n", shelf_index);
+					printf("\tPosition x: %.2f\n\tPosition y: %.2f\n", x_offset_on_current_shelf, y_offset_on_current_plane);
+				#endif
+
+				result.get_plane_at(plane_index)->add_form_at_position(problem->get_abstract_form_at_position(all_forms_sorted_by_size[index_of_abst_form]), x_offset_on_current_shelf, y_offset_on_current_plane);
+				
+				#ifdef DEBUG
+					printf("Form successfully added to plane.\n");
+				#endif
+
+				x_offset_on_current_shelf += problem->get_abstract_form_at_position(all_forms_sorted_by_size[index_of_abst_form])->get_dx();
 			}
+
+			#ifdef DEBUG
+				printf("Successfully added all forms of shelf to plane.\n");
+			#endif
+				
 			y_offset_on_current_plane += bp_planes[plane_index].get_shelf_at(shelf_index)->get_height();
 		}
 	}

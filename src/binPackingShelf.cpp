@@ -14,7 +14,7 @@ BinPackingShelf::BinPackingShelf(int index_of_plane, float offset_height, float 
 }
 */
 
-BinPackingShelf::BinPackingShelf(float height, float width)
+BinPackingShelf::BinPackingShelf(float width, float height)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
@@ -32,12 +32,13 @@ bool BinPackingShelf::add_form(AbstractForm *f, int index)
 
 	if (f->get_dy() <= height && f->get_dx() <= remaining_width)
 	{
+		#ifdef DEBUG
+			printf("\tForm fucessfully added to shelf:\n");
+			printf("\t\tneeded dy = %.2f, height = %.2f\n\t\tneeded dx = %.2f, remaining width = %.2f\n", f->get_dy(), height, f->get_dx(), remaining_width);
+		#endif
+
 		indices_of_forms.push_back(index);
 		remaining_width -= f->get_dx();
-
-		#ifdef DEBUG
-			printf("\tForm fucessfully added to shelf.\n");
-		#endif
 
 		return true;
 	}
@@ -45,6 +46,7 @@ bool BinPackingShelf::add_form(AbstractForm *f, int index)
 	{
 		#ifdef DEBUG
 			printf("\tForm could not be added to shelf.\n");
+			printf("\t\tneeded dy = %.2f, height = %.2f\n\t\tneeded dx = %.2f, remaining width = %.2f\n", f->get_dy(), height, f->get_dx(), remaining_width);
 		#endif
 
 		return false;
