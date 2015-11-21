@@ -1,19 +1,5 @@
 #include "binPackingShelf.hpp"
 
-/*
-BinPackingShelf::BinPackingShelf(int index_of_plane, float offset_height, float height, float width)
-{
-	#ifdef DEBUG
-		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
-	#endif
-
-	this->index_of_plane 	= index_of_plane;
-	this->offset_height 	= offset_height;
-	this->height 			= height;
-	remaining_width 		= width;
-}
-*/
-
 BinPackingShelf::BinPackingShelf(float width, float height)
 {
 	#ifdef DEBUG

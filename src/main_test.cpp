@@ -29,8 +29,6 @@ int main(int argc, char* argv[])
 
 	Problem problem = ih.create_problem();
 
-    //Setting trivial_solution = Setting(&problem);
-    //trivial_solution.create_initial_setting();
     BinPacking bin_packing(&problem);
 
     Setting bin_packed = bin_packing.get_packed_setting();
