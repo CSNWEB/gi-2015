@@ -48,7 +48,7 @@ public:
 	 *
 	 *  @return 	the Form at forms[i]
 	 */
-		Form get_form_at(int i);
+		Form *get_form_at(int i);
 
 	/**
 	 * ? not sure if this function is necessary ?

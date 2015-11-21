@@ -2,8 +2,8 @@
 
 Edge::Edge(Point *p1, Point *p2)
 {
-	this->p1 = p1;
-	this->p2 = p2;
+	point_1 = p1;
+	point_2 = p2;
 }
 
 /**
@@ -17,14 +17,46 @@ Edge::Edge(Point *p1, Point *p2)
  */
 Point* Edge::intersection_with_edge(Edge *other)
 {
-    Point *p3 = other->p1;
-    Point *p4 = other->p2;
+    Point *p3 = other->point_1;
+    Point *p4 = other->point_2;
     
     
     // Store the values for fast access and easy
     // equations-to-code conversion
-    float x1 = p1->get_x(), x2 = p2->get_x(), x3 = p3->get_x(), x4 = p4->get_x();
-    float y1 = p1->get_y(), y2 = p2->get_y(), y3 = p3->get_y(), y4 = p4->get_y();
+    
+    if (point_1 == nullptr)
+    {
+        printf ("ERROR: p1 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
+    }
+    
+    if (point_2 == nullptr)
+    {
+        printf ("ERROR: p2 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
+    }
+    
+    if (other == nullptr)
+    {
+        printf ("ERROR: other is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
+    }
+    
+    if (p3 == nullptr)
+    {
+        printf ("ERROR: p3 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
+    }
+    
+    if (p4 == nullptr)
+    {
+        printf ("ERROR: p4 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
+    }
+    
+    float x1 = point_1->get_x();
+    float x2 = point_2->get_x();
+    float x3 = p3->get_x();
+    float x4 = p4->get_x();
+    float y1 = point_1->get_y();
+    float y2 = point_2->get_y();
+    float y3 = p3->get_y();
+    float y4 = p4->get_y();
     
     float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     // If d is zero, there is no intersection
@@ -71,10 +103,10 @@ bool Edge::check_if_crosses(Edge *other)
         float x = intersection->get_x();
         float y = intersection->get_y();
         
-        if ((p1->get_x() == x && p1->get_y() == y) ||
-            (p2->get_x() == x && p2->get_y() == y) ||
-            (other->p1->get_x() == x && other->p1->get_y() == y) ||
-            (other->p2->get_x() == x && other->p2->get_y() == y))
+        if ((point_1->get_x() == x && point_1->get_y() == y) ||
+            (point_2->get_x() == x && point_2->get_y() == y) ||
+            (other->point_1->get_x() == x && other->point_1->get_y() == y) ||
+            (other->point_2->get_x() == x && other->point_2->get_y() == y))
         {
             return false;
         }

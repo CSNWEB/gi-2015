@@ -22,8 +22,8 @@ void OutputHandler::write_setting_to_txt()
 		fprintf(file, "%i\n", i+1);
 		for (int j=0; j<problem->get_plane_at(i).get_number_of_forms(); ++j)
 		{
-			fprintf(file, "%s\n", ((problem->get_plane_at(i)).get_form_at(j).get_mother())->get_name().c_str());
-			vector<Point> points_of_current_form = (problem->get_plane_at(i)).get_form_at(j).get_points();
+			fprintf(file, "%s\n", ((problem->get_plane_at(i)).get_form_at(j)->get_mother())->get_name().c_str());
+			vector<Point> points_of_current_form = (problem->get_plane_at(i)).get_form_at(j)->get_points();
 			for (int k=0; k<points_of_current_form.size(); ++k)
 				fprintf(file, "%.2f %.2f\n", points_of_current_form[k].get_x(), points_of_current_form[k].get_y());
 		}
@@ -56,15 +56,15 @@ void OutputHandler::write_setting_to_svg()
 		
 		for (int j=0; j<p.get_number_of_forms(); ++j)
 		{
-			Form f = p.get_form_at(j);
+			Form *f = p.get_form_at(j);
 
             #ifdef DEBUG
                 printf("\tPaint form %i\n",j+1);
-                printf("\t\tThe size of the form is: %f\n", f.get_mother()->get_size_of_area());
+                printf("\t\tThe size of the form is: %f\n", f->get_mother()->get_size_of_area());
             #endif
 
-            f.print_convex_hull_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
-            f.print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
+            f->print_convex_hull_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
+            f->print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
             
 		}
         #ifdef DEBUG

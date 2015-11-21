@@ -22,10 +22,10 @@ Form::Form(AbstractForm* mother)
 	for (int i=1; i<number_of_edges; ++i)
 	{
 		points[i] = mother->get_point_at_index(i);
-		edges[i] = Edge(&points[i-1], &points[i]);
+		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
 	}
 
-	edges[number_of_edges-1] = Edge(&points[number_of_edges-2], &points[number_of_edges-1]);
+	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
 }
 
 Form::Form(AbstractForm *mother, float pos_x, float pos_y)
@@ -42,16 +42,17 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)
 	points = vector<Point>(number_of_edges);
 	edges  = vector<Edge>(number_of_edges);
 
-	points[0] = mother->get_point_at_index(0);
+	points[0] = Point(mother->get_point_at_index(0));
+    points[0].move_rel(pos_x, pos_y);
 
 	for (int i=1; i<number_of_edges; ++i)
 	{
-		points[i] = mother->get_point_at_index(i);
+		points[i] = Point(mother->get_point_at_index(i));
 		points[i].move_rel(pos_x, pos_y);
-		edges[i] = Edge(&points[i-1], &points[i]);
+		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
 	}
 
-	edges[number_of_edges-1] = Edge(&points[number_of_edges-2], &points[number_of_edges-1]);
+	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
 }
 
 bool Form::check_for_overlap(Form *other)

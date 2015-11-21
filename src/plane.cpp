@@ -5,18 +5,17 @@ int Plane::get_number_of_forms()
 	return forms.size();
 }
 
-Form Plane::get_form_at(int i)
+Form *Plane::get_form_at(int i)
 {
 	if (i<forms.size())
-		return forms[i];
+		return &forms[i];
 	else
-		return Form();
+		return NULL;
 }
 
 void Plane::add_form_at_position(AbstractForm *form, float pos_x, float pos_y)
 {
-	Form newform = Form(form, pos_x, pos_y);
-	forms.push_back(newform);
+	forms.push_back(Form(form, pos_x, pos_y));
 	number_of_forms++;
 }
 
