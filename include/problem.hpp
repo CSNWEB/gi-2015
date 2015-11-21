@@ -18,16 +18,12 @@
 
 #include "abstractForm.hpp"
 #include "plane.hpp"
-#include "2DBP_shelf.hpp"
+//#include "2DBP_shelf.hpp"
 
 using namespace std;
 
 class Problem {
 private:
-    /*
-     * Datastructure describing the input:
-     */
-
     /**
      *  The size of the sheet in x-dimension
      */
@@ -54,22 +50,6 @@ private:
      */
     vector<int> number_of_forms_needed;
 
-    /*
-     * Datastructure describing the state of the problem during solving
-     * and the solution
-     */
-
-    /*
-     * The number of planes currently used:
-     */
-    //	int number_of_planes;
-
-    /**
-     * A vector of all planes(sheets) that are generated and optimized while solving the problem
-     */
-    vector<Plane> planes;
-
-
 public:
 
     /**
@@ -89,13 +69,6 @@ public:
     Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms);
 
     /**
-     *  Returns number_of_planes
-     */
-    int get_number_of_planes() {
-        return planes.size();
-    };
-
-    /**
      * Get the plane width
      * @return int      Width of one Plant
      */
@@ -112,41 +85,46 @@ public:
     };
 
     /**
-     *  Get a specific Plane
-     *
-     *  @param i 	The number of the plane to be return
-     *
-     *  @return 	the Plane at planes[i]
+     *  Get the number of different abstract forms
      */
-    Plane get_plane_at(int i) {
-        if (i < planes.size()) return planes[i];
-        else return Plane();
+    int get_number_of_different_forms(){
+        return number_of_different_forms;
     };
 
     /**
-     *  Compute the total efficiency (i.e. utilization) of the current setting
+     *  Get a specific abstract form
      *
-     *  @return     the utilitation as percentage within [0,1]
+     *  @param i    the index of the abstract form to be returned
+     *
+     *  @return     a pointer to the abstract form at abstract_forms[i]
      */
-    float get_total_utilization();
+    AbstractForm *get_abstract_form_at_position(int i){
+        if (i >= 0 && i < number_of_different_forms)
+            return &abstract_forms[i];
+        else return 0;
+    };
 
     /**
-     * Function to create an initial legal setting
-     * places every form on its own sheet
+     *  Get the number of forms needed of abstract form [i]
+     *
+     *  @param i    the index of the abstract form in question
+     *
+     *  @return     the number of forms needed for abstract_form[i]
      */
-    void create_initial_setting();
+    int get_number_of_form_needed(int i)
+    {
+        if (i>=0 && i<number_of_different_forms)
+            return number_of_forms_needed[i];
+        else return 0;
+    };
 
     /**
-     *  Function that places bounding-boxes on sheets using
-     *  2-dimensional bin packing with rotation and guillotine cutting
+     *  Get the total number of all forms that have to be placed
+     *
+     *  @return     int: the total number of all forms
      */
-    void create_setting_2BPRG();
-
-    /**
-     * Solve the problem!
-     */
-    void solve();
-
+    int get_total_number_of_all_forms();
+    
 };
 
 #endif

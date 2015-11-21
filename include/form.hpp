@@ -156,9 +156,14 @@ public:
 	bool check_for_overlap(Form *other, floatmat* crossings);
 
     /**
-     *  Debug: print form to std_out
+     *  Debug: print points to std_out
      */
-    void _d_print_form_to_console();
+    void _d_print_points_to_console();
+
+    /**
+     *  Debug: print edges to std_out
+     */
+    void _d_print_edges_to_console();
 
     /**
      *  Debug: print convex hull to console

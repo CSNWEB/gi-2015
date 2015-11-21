@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "form.hpp"
+#include "abstractForm.hpp"
 
 class BinPackingShelf
 {
@@ -43,6 +43,8 @@ private:
 
 
 public:
+	BinPackingShelf(){};
+
 	/**
 	 *  Constructor that creates an empty shelf on a given form with specified position and size
 	 *
@@ -51,7 +53,8 @@ public:
 	 *  @param  height 				height of the shelf
 	 *  @param  width 				width of the plane
 	 */
-	BinPackingShelf(int index_of_plane, float offset_height, float height, float width);
+	//BinPackingShelf(int index_of_plane, float offset_height, float height, float width);
+	BinPackingShelf(float height, float width);
 
 	/**
 	 *  Adds a form on this shelf. Also checks if there is enough space on this shelf
@@ -61,7 +64,7 @@ public:
 	 *
 	 *  @return 		true if form was sucessfully placed on shelf, false otherwise
 	 */
-	bool add_form(Form *f, int index);
+	bool add_form(AbstractForm *f, int index);
 
 	/**
 	 *  Checks if a form could be placed on this sheld
@@ -70,7 +73,7 @@ public:
 	 *  
 	 *  @return 		true if there is enough space for f on this shelf, false otherwise
 	 */
-	bool check_if_fit(Form *f);
+	bool check_if_fit(AbstractForm *f);
 
 	/**
 	 *  Getter for height of shelf
@@ -81,6 +84,16 @@ public:
 	 *  Getter for remaining width of shelf
 	 */
 	float get_remaining_width();
+
+	/**
+	 *  Get number of forms on this shelf
+	 */
+	int get_number_of_forms_on_shelf();
+
+	/**
+	 *  Get index of AbstractForm of ith form on shelf
+	 */
+	int get_abstract_index_of_form_at(int index_of_form);
 };
 
 

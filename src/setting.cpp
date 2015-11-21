@@ -61,3 +61,12 @@ void Setting::create_initial_setting()
 		}
 	}
 }
+
+void Setting::add_plane()
+{
+	#ifdef DEBUG
+		printf("FUNCITON: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	planes.push_back(Plane(problem->get_plane_width(), problem->get_plane_height()));
+}

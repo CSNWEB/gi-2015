@@ -5,6 +5,7 @@
 #include "form.hpp"
 #include "geneticFormFitter.hpp"
 #include "setting.hpp"
+#include "binPacking.hpp"
 
 #include <stdio.h>
 
@@ -28,18 +29,22 @@ int main(int argc, char* argv[])
 
 	Problem problem = ih.create_problem();
 
-    Setting trivial_solution = Setting(&problem);
-    trivial_solution.create_initial_setting();
+    //Setting trivial_solution = Setting(&problem);
+    //trivial_solution.create_initial_setting();
+    BinPacking bin_packing(&problem);
 
-    OutputHandler oh(&problem, &trivial_solution);
+    Setting bin_packed = bin_packing.get_packed_setting();
+
+    
+    OutputHandler oh(&problem, &bin_packed);
     oh.write_setting_to_txt();
     oh.write_setting_to_svg();
 
     #ifdef DEBUG
         printf("check in %s\n", __PRETTY_FUNCTION__);
-        for (int i=0; i<trivial_solution.get_number_of_planes(); ++i)
+        for (int i=0; i<bin_packed.get_number_of_planes(); ++i)
         {
-            Plane *p = trivial_solution.get_plane_at(i);
+            Plane *p = bin_packed.get_plane_at(i);
             printf("Current plane: %i\n", i);
 
             for (int j=0; j<p->get_number_of_forms(); ++j)
@@ -51,6 +56,7 @@ int main(int argc, char* argv[])
             }
         }
     #endif
+    
 
 	return 0;
 }
