@@ -6,6 +6,9 @@
       </df>
       <df name="build">
       </df>
+      <df name="gen">
+        <in>genInput.cpp</in>
+      </df>
       <df name="include">
         <in>2DBP_shelf.hpp</in>
         <in>abstractForm.hpp</in>
@@ -26,13 +29,13 @@
         <in>form.cpp</in>
         <in>geneticFormFitter.cpp</in>
         <in>inputHandler.cpp</in>
+        <in>main_test.cpp</in>
         <in>outputHandler.cpp</in>
         <in>plane.cpp</in>
         <in>point.cpp</in>
         <in>problem.cpp</in>
         <in>simpleSVG.cpp</in>
       </df>
-      <in>main_test.cpp</in>
     </df>
   </logicalFolder>
   <projectmakefile>/Users/Christoph/Code/gi-2015/Makefile</projectmakefile>
