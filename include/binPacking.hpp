@@ -21,6 +21,10 @@ struct FormComparator
 
 	bool operator()(int index_of_box_1, int index_of_box_2)
 	{
+		#ifndef DEBUG
+			printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+		#endif
+
 		int smaller_edge_box_1;
 		int smaller_edge_box_2;
 
@@ -37,7 +41,7 @@ struct FormComparator
 		else
 			smaller_edge_box_2 = form_2->get_dy();
 
-		if (smaller_edge_box_1 < smaller_edge_box_2)
+		if (smaller_edge_box_1 <= smaller_edge_box_2)
 			return false;
 		else
 			return true; 

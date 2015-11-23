@@ -20,14 +20,42 @@ void BinPacking::create_initial_sorting()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	all_forms_sorted_by_size = vector<int> (problem->get_total_number_of_all_forms(), 0);
+	int total_number_of_all_forms = problem->get_total_number_of_all_forms();
+
+	all_forms_sorted_by_size = vector<int> (total_number_of_all_forms, 0);
+
+	#ifdef DEBUG
+		printf("Total number of all forms: %i\n", total_number_of_all_forms);
+	#endif
+
 	int k = 0;
-	for (int i=0; i<problem->get_number_of_different_forms(); ++i)
-		for (int j=0; j<problem->get_number_of_form_needed(i); ++j)
+	int number_of_different_forms = problem->get_number_of_different_forms();
+	for (int i=0; i<number_of_different_forms; ++i)
+	{
+		#ifdef DEBUG
+			printf("Consider abstract form number %i\n",i);
+		#endif
+
+		int number_needed_of_specific_form = problem->get_number_of_form_needed(i);
+
+		#ifdef DEBUG
+			printf("Number of forms needed: %i\n",number_needed_of_specific_form);
+		#endif
+
+		for (int j=0; j<number_needed_of_specific_form; ++j)
 		{
+			#ifdef DEBUG
+				printf("Add form number %i at to all_forms_sorted_by_size[%i]\n",i,k);
+			#endif
+
 			all_forms_sorted_by_size[k] = i;
 			++k;
 		}
+	}
+
+	#ifdef DEBUG
+		printf("Finished initializing all_forms_sorted_by_size\n");
+	#endif
 
 	FormComparator formComparator(problem);
 	std::sort(all_forms_sorted_by_size.begin(), all_forms_sorted_by_size.end(), formComparator);
