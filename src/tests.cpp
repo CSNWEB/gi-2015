@@ -10,17 +10,17 @@
 bool Tests::test_everything()
 {
     std::cout << "Testing everthing:" << std::endl;
-    
+
     if (!test_edge_cross())
     {
         return false;
     }
-    
+
     if (!test_form_overlap())
     {
         return false;
     }
-    
+
     std::cout << "All tests: [SUCCEEDED]" << std::endl;
     return true;
 }
@@ -38,10 +38,10 @@ bool Tests::test_crossing_edges()
     Point top_right = Point(1.0, 1.0);
     Point bottom_left = Point(0.0, 0.0);
     Point bottom_right = Point(1.0, 0.0);
-    
+
     Edge top_left_to_bottom_right = Edge(&top_left, &bottom_right);
     Edge top_right_to_bottom_left = Edge(&top_right, &bottom_left);
-    
+
     /**
      *  Both edges cross each other. We check whether the method recognizes
      *  this independently on which one is the receiver.
@@ -70,12 +70,12 @@ bool Tests::test_parallel_edges()
     Point top_right = Point(1.0, 1.0);
     Point bottom_left = Point(0.0, 0.0);
     Point bottom_right = Point(1.0, 0.0);
-    
+
     Edge top_left_to_top_right = Edge(&top_left, &top_right);
     Edge bottom_left_to_bottom_right = Edge(&bottom_left, &bottom_right);
-    
+
     /**
-     *  Both edges are parallel to each other. We check whether the method 
+     *  Both edges are parallel to each other. We check whether the method
      *  recognizes this independently of which one is the receiver.
      *
      *  The test passes if both times it is detected that they don't cross.
@@ -101,10 +101,10 @@ bool Tests::test_edges_same_points()
 {
     Point top_left = Point(1.0, 0.0);
     Point top_right = Point(1.0, 1.0);
-    
+
     Edge top_left_to_top_right_1 = Edge(&top_left, &top_right);
     Edge top_left_to_top_right_2 = Edge(&top_left, &top_right);
-    
+
     /**
      *  Both edges have the same start and endpoint. We check whether the method
      *  recognizes that they're not crossing each other independently of which
@@ -133,10 +133,10 @@ bool Tests::test_meeting_edges()
     Point top_left = Point(0.0, 1.0);
     Point top_right = Point(1.0, 1.0);
     Point bottom_left = Point(0.0, 0.0);
-    
+
     Edge top_left_to_top_right = Edge(&top_left, &top_right);
     Edge bottom_left_to_top_left = Edge(&bottom_left, &top_left);
-    
+
     /**
      *  Both edges share one point. We check whether the method recognizes
      *  that they don't cross independently on which one is the receiver.
@@ -162,9 +162,9 @@ bool Tests::test_meeting_edges()
 bool Tests::test_edge_cross()
 {
     std::cout << "Testing edge cross: " << std::endl;
-    
+
     // Crossing edges
-    
+
     std::cout << "Testing crossing edges: ";
     if (test_crossing_edges())
     {
@@ -175,9 +175,9 @@ bool Tests::test_edge_cross()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     // Parallel edges
-    
+
     std::cout << "Testing parallel edges: ";
     if (test_parallel_edges())
     {
@@ -188,9 +188,9 @@ bool Tests::test_edge_cross()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     // Edges with same points
-    
+
     std::cout << "Testing edges with same points: ";
     if (test_edges_same_points())
     {
@@ -201,9 +201,9 @@ bool Tests::test_edge_cross()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     // Meeting edges
-    
+
     std::cout << "Testing meeting edges: ";
     if (test_meeting_edges())
     {
@@ -214,7 +214,7 @@ bool Tests::test_edge_cross()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     std::cout << "All edge tests: [SUCCEEDED]" << std::endl;
     return true;
 }
@@ -235,15 +235,15 @@ bool Tests::test_overlap_disjoint()
         Point(1.0, 1.0),
         Point(1.0, 0.0)
     };
-    
+
     AbstractForm square = AbstractForm("square", square_points);
-    
+
     Form first_square = Form(&square);
     Form second_square = Form(&square);
-    
+
     // Move the second square by 2.0 on the x-axis.
     second_square.move_rel(2.0, 0.0);
-    
+
     // The squares should not be overlapping now.
     if (!first_square.check_for_overlap(&second_square) &&
         !second_square.check_for_overlap(&first_square))
@@ -271,21 +271,18 @@ bool Tests::test_overlap_disjoint_parallel()
         Point(1.0, 1.0),
         Point(1.0, 0.0)
     };
-    
+
     AbstractForm square = AbstractForm("square", square_points);
-    
+
     Form first_square = Form(&square);
     Form second_square = Form(&square);
-    
+
     // Move the second square by 0.5 on the x-axis.
     second_square.move_rel(0.5, 0.0);
-    
-    bool first_check = first_square.check_for_overlap(&second_square);
-    bool second_check = second_square.check_for_overlap(&first_square);
-    
+
     // The squares should be overlapping now.
-    if (first_check &&
-        second_check)
+    if (first_square.check_for_overlap(&second_square) &&
+        second_square.check_for_overlap(&first_square))
     {
         return true;
     }
@@ -310,15 +307,15 @@ bool Tests::test_overlap_disjoint_non_parallel()
         Point(1.0, 1.0),
         Point(1.0, 0.0)
     };
-    
+
     AbstractForm square = AbstractForm("square", square_points);
-    
+
     Form first_square = Form(&square);
     Form second_square = Form(&square);
-    
+
     // Move the second square by 0.5 on the x-axis and on the y-axis.
     second_square.move_rel(0.5, 0.5);
-    
+
     // The squares should be overlapping now.
     if (first_square.check_for_overlap(&second_square) &&
         second_square.check_for_overlap(&first_square))
@@ -346,18 +343,18 @@ bool Tests::test_overlap_sharing_point()
         Point(1.0, 1.0),
         Point(1.0, 0.0)
     };
-    
+
     AbstractForm square = AbstractForm("square", square_points);
-    
+
     Form first_square = Form(&square);
     Form second_square = Form(&square);
-    
+
     // Move the second square by 0.5 on the x-axis and on the y-axis.
     second_square.move_rel(1.0, 1.0);
-    
+
     // The squares should be overlapping now.
-    if (first_square.check_for_overlap(&second_square) &&
-        second_square.check_for_overlap(&first_square))
+    if (!first_square.check_for_overlap(&second_square) &&
+        !second_square.check_for_overlap(&first_square))
     {
         return true;
     }
@@ -383,11 +380,11 @@ bool Tests::test_overlap_concave()
         Point(1.0, 1.0),
         Point(1.0, 0.0)
     };
-    
+
     AbstractForm square = AbstractForm("square", square_points);
-    
+
     // A "bucket" where the square fits in
-    
+
     std::vector<Point> bucket_points {
         Point(0.0, 0.0),
         Point(0.0, 3.0),
@@ -398,15 +395,15 @@ bool Tests::test_overlap_concave()
         Point(5.0, 3.0),
         Point(5.0, 0.0)
     };
-    
+
     AbstractForm bucket = AbstractForm("bucket", bucket_points);
-    
+
     Form square_form = Form(&square);
     Form bucket_form = Form(&bucket);
-    
+
     // Move the second square by 2.0 on the x-axis and 2.0 on the y-axis.
     bucket_form.move_rel(2.0, 2.0);
-    
+
     // The square should now be within the bucket, but not overlapping.
     if (!square_form.check_for_overlap(&bucket_form) &&
         !bucket_form.check_for_overlap(&square_form))
@@ -427,9 +424,9 @@ bool Tests::test_overlap_concave()
 bool Tests::test_form_overlap()
 {
     std::cout << "Testing form overlap: " << std::endl;
-    
+
     // Disjoint forms
-    
+
     std::cout << "Testing disjoint forms overlapping: ";
     if (test_overlap_disjoint())
     {
@@ -440,9 +437,9 @@ bool Tests::test_form_overlap()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     // Parallel disjoint forms
-    
+
     std::cout << "Testing disjoint forms parallel overlapping: ";
     if (test_overlap_disjoint_parallel())
     {
@@ -453,9 +450,9 @@ bool Tests::test_form_overlap()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     // Non parallel disjoint forms
-    
+
     std::cout << "Testing disjoint forms non parallel overlapping: ";
     if (test_overlap_disjoint_non_parallel())
     {
@@ -466,9 +463,9 @@ bool Tests::test_form_overlap()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     // Forms sharing a point
-    
+
     std::cout << "Testing forms sharing a point overlapping: ";
     if (test_overlap_sharing_point())
     {
@@ -479,9 +476,9 @@ bool Tests::test_form_overlap()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     // Concave
-    
+
     std::cout << "Testing forms concave overlapping: ";
     if (test_overlap_concave())
     {
@@ -492,7 +489,7 @@ bool Tests::test_form_overlap()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
-    
+
     std::cout << "All edge tests: [SUCCEEDED]" << std::endl;
     return true;
 }
