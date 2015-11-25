@@ -417,6 +417,93 @@ bool Tests::test_overlap_concave()
 }
 
 /**
+ *  Two triangles pointing towards each other and overlapping. The test
+ *  checks whether the function recognizes this.
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_overlap_triangle()
+{
+    // A triangle pointing to the right.
+    std::vector<Point> triangle_right_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(0.5, 0.5),
+    };
+    
+    AbstractForm triangle_right = AbstractForm("triangle_right", triangle_right_points);
+    
+    // A triangle pointing to the left.
+    
+    std::vector<Point> triangle_left_points {
+        Point(0.0, 0.5),
+        Point(0.5, 1.0),
+        Point(0.5, 0.0),
+    };
+    
+    AbstractForm triangle_left = AbstractForm("triangle_left", triangle_left_points);
+    
+    Form triangle_right_form = Form(&triangle_right);
+    Form triangle_left_form = Form(&triangle_left);
+    
+    // The triangles are overlapping now.
+    if (triangle_right_form.check_for_overlap(&triangle_left_form) &&
+        triangle_left_form.check_for_overlap(&triangle_right_form))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/**
+ *  Two triangles pointing towards each other but not overlapping. The test
+ *  checks whether the function recognizes this.
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_non_overlap_triangle()
+{
+    // A triangle pointing to the right
+    std::vector<Point> triangle_right_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(0.5, 0.5),
+    };
+    
+    AbstractForm triangle_right = AbstractForm("triangle_right", triangle_right_points);
+    
+    // A triangle pointing to the left
+    
+    std::vector<Point> triangle_left_points {
+        Point(0.0, 0.5),
+        Point(0.5, 1.0),
+        Point(0.5, 0.0),
+    };
+    
+    AbstractForm triangle_left = AbstractForm("triangle_left", triangle_left_points);
+    
+    Form triangle_right_form = Form(&triangle_right);
+    Form triangle_left_form = Form(&triangle_left);
+    
+    // Move the triangle so that is doesn't overlap with the other one.
+    triangle_left_form.move_rel(0.5, 0.0);
+    
+    // The triangles should not be not overlapping.
+    if (!triangle_right_form.check_for_overlap(&triangle_left_form) &&
+        !triangle_left_form.check_for_overlap(&triangle_right_form))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+/**
  *  Tests whether methods dealing with edge crosses work as intended.
  *
  *  @return True, if all tests are successful, false if at least one test fails.
@@ -481,6 +568,32 @@ bool Tests::test_form_overlap()
 
     std::cout << "Testing forms concave overlapping: ";
     if (test_overlap_concave())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Triangle overlapping
+    
+    std::cout << "Testing forms triangle overlapping: ";
+    if (test_overlap_triangle())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Triangle not overlapping
+    
+    std::cout << "Testing forms triangle not overlapping: ";
+    if (test_non_overlap_triangle())
     {
         std::cout << "[SUCCEEDED]" << std::endl;
     }

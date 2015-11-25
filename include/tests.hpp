@@ -90,6 +90,22 @@ private:
      *  @return True if the test passes, false if not.
      */
     static bool test_overlap_concave();
+
+    /**
+     *  Two triangles pointing towards each other and overlapping. The test
+     *  checks whether the function recognizes this.
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_overlap_triangle();
+    
+    /**
+     *  Two triangles pointing towards each other but not overlapping. The test
+     *  checks whether the function recognizes this.
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_non_overlap_triangle();
     
 public:
     
