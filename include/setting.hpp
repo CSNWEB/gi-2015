@@ -37,6 +37,13 @@ public:
         else
             return NULL;
     };
+    
+    /**
+     *  Returns the problem that the setting was created for.
+     *
+     *  @return A Problem to which this Setting might be a solution.
+     */
+    Problem *get_problem(){return problem;};
 
     /**
      *  Adds a new, empty plane to the setting

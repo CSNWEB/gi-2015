@@ -14,8 +14,9 @@
 #include <iostream>
 #include <vector>
 
-#include "setting.hpp"
+#include "form.hpp"
 #include "plane.hpp"
+#include "setting.hpp"
 
 class Validator
 {
@@ -34,7 +35,7 @@ public:
      *
      *  @return true if the plane is valid, false if not.
      */
-    static bool validate_plane(Plane *plane);
+    static bool is_plane_valid(Plane *plane);
     
     /**
      * Checks whether a setting is valid.
@@ -48,7 +49,7 @@ public:
      *
      * @return true, if the setting is valid. false, if not.
      */
-    static bool validate_setting(Setting *setting);
+    static bool is_setting_valid(Setting *setting);
     
 };
 
