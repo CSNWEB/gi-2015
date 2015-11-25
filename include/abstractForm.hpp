@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include <cmath>
 
 #ifdef USE_SFML
 #include <SFML/Graphics.hpp>
@@ -53,17 +54,34 @@ private:
      *  Sorts points in x-dimension
      *
      *  uses in-place insertion-sort for small amount of points
-     *  Maybe implement a merge-sort for forms with #points > ? 
+     *  Maybe implement a merge-sort for forms with high number of points?
      */
     vector<int> sort_points_dim_x();
 
     /**
-     *  All points that belong to the confex hull
+     *  Two vectors to calculate the positions of the form relative to each other.
+     *  Given two starting points p_0 and p_1, all points of the form can be calculated as follows
+     *
+     *  Let i>=0, j=i+1, k=j+1 < points.size()
+     *  Let v be the vector from p_i to p_j, and let n be the orthogonal vector to v.
+     *  Then p_k = p_i+ lambda[k]*v + mu[k]*n
+     */
+    vector<float> relative_point_position_lambda;
+    vector<float> relative_point_position_mu;
+
+    /**
+     *  The same data as above, but only considering points on the convex hull
+     */
+    vector<float> relative_point_position_cv_lambda;
+    vector<float> relative_point_position_cv_mu;
+
+    /**
+     *  All points that belong to the convex hull
      */
     vector<int> convex_hull;
     
     /**
-     *  Computes the convex hull of this shape:
+     *  Computes the convex hull of this shape using graham scan algorithm
      *
      *  Stores the result in vector<Point> convex_hull
      */
@@ -74,6 +92,52 @@ private:
      *  float size_of_area.
      */
     void compute_size_of_area();
+
+    /**
+     *  compute the values for
+     *      relative_point_position_lambda
+     *      relative_point_position_mu
+     *
+     *  @param consider_only_convex_hull    if true, the lambda- and mu-values for the edges on the convex hull will be computed
+     *                                      the results are stored in relative_point_position_cv_lambda and -_mu
+     *
+     *                                      else, the edges of the original form are considered
+     *                                      the results are stored in relative_point_position_lambda and -_mu
+     */
+    void compute_lambda_and_mu(bool consider_only_convex_hull = false);
+
+    /**
+     *  Subfunctions of compute_lambda_and_mu:
+     *  compute a certain lambda or mu for a given pair of vertices
+     *
+     *      dx_2 = dx_1 + lambda * dx_1 + mu dy_1
+     *  <=> lambda = (dx_2 - dx_1 - (mu * dy_1)) / dx_1
+     *
+     *      dy_2 = dx_1 + lambda * dy_1 - mu dx_1
+     *  <=> mu = - (dy_2-dy_1 - ((dx_2 -dx_1- mu * d_y1)/dx_1) * dy_1) / dx_1
+     *  <=> mu = - (dy_2 - ((dx_2 * dy_1) / dx_1) / ((dy_1^2)/dx_1 + dx_1)
+     */
+    float compute_lambda(float d1_x, float d1_y, float d2_x, float d2_y, float mu);
+    float compute_mu(float d1_x, float d1_y, float d2_x, float d2_y);
+
+    /**
+     *  Find a rotation of form such that the area of the bounding box is minimal.
+     *  using algorithm by freeman and shapira
+     *  needs O(n^2) time, where n is the number of points on the convex hull
+     *
+     *  @return     the index (in te convex hull) of the first point of the pair that defines this configuration
+     *              points[convex_hull[i]] and points[convex_hull[i+1]] define a rotation in which both points are placed
+     *              on y=0 axis
+     */
+    int find_configuration_with_minimum_bounding_box();
+
+    /**
+     *  Rotates the abstract form to a position defined by two consecutive points on the convex hull
+     *  These points define a rotation by placing them to y=0 and x minimal (i.e. such that all values for x are greater or equal 0)
+     *
+     *  @param  index_of_point_in_convex_hull      the first point of the pair to be placed on y = 0
+     */
+    void rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull);
 
 public:
     
@@ -150,9 +214,9 @@ public:
      *
      *  @return A vector containing the indices of the points of the convex hull.
      */
-    vector<int> get_convex_hull()
+    vector<int> *get_convex_hull()
     {
-        return convex_hull;
+        return &convex_hull;
     }
 
     /**
