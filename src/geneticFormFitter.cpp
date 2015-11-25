@@ -1,4 +1,4 @@
-#include "GeneticFormFitter.hpp"
+#include "geneticFormFitter.hpp"
 
 #pragma mark - Constructor
 
@@ -56,13 +56,13 @@ void GeneticFormFitter::calculate_fitness_of_chromosome(Chromosome &chromosome)
     // Calculate the area of the convex hull of the combined form
     
     // Get the indices of the points that belong to the convex hull of the abstract form.
-    vector<int> combined_abstract_form_convex_hull_indices = combined_abstract_form.get_convex_hull();
+    vector<int> *combined_abstract_form_convex_hull_indices = combined_abstract_form.get_convex_hull();
     
     // Get the points that are part of the convex hull using the gathered indices.
     vector<Point> combined_abstract_form_convex_hull_points = vector<Point>();
-    for (unsigned int index = 0; index < combined_abstract_form_convex_hull_indices.size(); index++)
+    for (unsigned int index = 0; index < combined_abstract_form_convex_hull_indices->size(); index++)
     {
-        combined_abstract_form_convex_hull_points.push_back(combined_abstract_form.get_point_at_index(combined_abstract_form_convex_hull_indices[index]));
+        combined_abstract_form_convex_hull_points.push_back(combined_abstract_form.get_point_at_index((*combined_abstract_form_convex_hull_indices)[index]));
     }
     
     // Create an abstract form only containing the points of the convex hull.

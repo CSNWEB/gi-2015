@@ -2,6 +2,9 @@
 
 Edge::Edge(Point *p1, Point *p2)
 {
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
 	point_1 = p1;
 	point_2 = p2;
 }
@@ -17,12 +20,18 @@ Edge::Edge(Point *p1, Point *p2)
  */
 Point* Edge::intersection_with_edge(Edge *other)
 {
+    #ifdef DEBUG
+        printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+    #endif
+    
     Point *p3 = other->point_1;
     Point *p4 = other->point_2;
     
     
     // Store the values for fast access and easy
     // equations-to-code conversion
+    
+    #ifdef DEBUG
     
     if (point_1 == nullptr)
     {
@@ -48,6 +57,8 @@ Point* Edge::intersection_with_edge(Edge *other)
     {
         printf ("ERROR: p4 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
     }
+    
+    #endif
     
     float x1 = point_1->get_x();
     float x2 = point_2->get_x();
@@ -115,4 +126,11 @@ bool Edge::check_if_crosses(Edge *other)
             return true;
         }
     }
+}
+
+void Edge::_d_print_edge_to_console()
+{
+	#ifdef DEBUG
+		printf("Edge from point %.2f/%.2f to point %.2f/%.2f with length %.2f\n", point_1->get_x(), point_1->get_y(), point_2->get_x(), point_2->get_y(), length());
+	#endif
 }

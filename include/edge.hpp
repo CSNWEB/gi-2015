@@ -28,7 +28,11 @@ public:
     /**
      *  Default constructor
      */
-	Edge(){};
+	Edge(){
+    #ifdef DEBUG
+        printf("\t\tConstructor: %s\n", __PRETTY_FUNCTION__);
+    #endif
+    };
 
     /**
      *  Constructor to initialize an edge with its two points.
@@ -68,7 +72,13 @@ public:
      *  @return A float representing the distance the edge covers on the x- and y-axis respectively.
      */
 	float get_edge_x(){return point_2->get_x()-point_1->get_x();};
-    float get_edge_y(){return point_2->get_y()-point_1->get_y();};
+	float get_edge_y(){return point_2->get_y()-point_1->get_y();};
+
+    /**
+     *  Debug output function:
+     *  prints start- and endpoint of edge to console
+     */
+    void _d_print_edge_to_console();
 };
 
 #endif
