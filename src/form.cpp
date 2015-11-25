@@ -90,6 +90,10 @@ bool Form::check_for_overlap(Form *other)
 
 Point Form::get_centroid()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
     float x = 0.0;
     float y = 0.0;
     
@@ -107,6 +111,10 @@ Point Form::get_centroid()
 
 void Form::move_rel(float dx, float dy)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	for (int i=0; i<points.size(); ++i)
 		points[i].move_rel(dx, dy);
 	x_min += dx;
@@ -142,17 +150,20 @@ void Form::rotate(float center_x, float center_y, float angle)
 void Form::_d_print_points_to_console()
 {
 	#ifdef DEBUG
-	printf("Number of points: %i\n", points.size());
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		
+		printf("Number of points: %i\n", points.size());
 
-	for (int i=0; i<points.size(); ++i)
-		printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
-
+		for (int i=0; i<points.size(); ++i)
+			printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
 	#endif
 }
 
 void Form::_d_print_edges_to_console()
 {
 	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+
 		printf("Number of edges: %i\n", edges.size());
 		for (int i=0; i<edges.size(); ++i)
 			edges[i]._d_print_edge_to_console();
@@ -162,17 +173,20 @@ void Form::_d_print_edges_to_console()
 void Form::_d_print_convex_hull_to_console()
 {
 	#ifdef DEBUG
-	vector<int> hull = mother->get_convex_hull();
-	printf("Convex hull of form has %i points\n", hull.size());
-	for (int i=0; i<hull.size(); ++i)
-		printf("Point %2i at %.1f/%.1f\n", i, points[hull[i]].get_x(), points[hull[i]].get_y());
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+
+		vector<int> *hull = mother->get_convex_hull();
+		printf("Convex hull of form has %i points\n", hull->size());
+		for (int i=0; i<hull->size(); ++i)
+			printf("Point %2i at %.1f/%.1f\n", i, points[(*hull)[i]].get_x(), points[(*hull)[i]].get_y());
 	#endif
 }
 
 void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
 	#ifdef DEBUG
-    	std::cout << "Painting Polygon\n";
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		printf("Painting Polygon\n");
     #endif
 
     svg::Polygon polygon(svg::Color(200, 160, 220), svg::Stroke(1, svg::Color::Black));
@@ -186,14 +200,28 @@ void Form::print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, in
 void Form::print_convex_hull_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale)
 {
 	#ifdef DEBUG
-		cout << "Painting convex hull\n";
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		printf("Painting convex hull\n");
 	#endif
 
-	vector<int> convex_hull_points = mother->get_convex_hull();
+	vector<int> *convex_hull_points = mother->get_convex_hull();
+
+	#ifdef DEBUG
+		printf("Got points of hull\n");
+	#endif
 
 	svg::Polyline convex_hull_line(svg::Stroke(5, svg::Color::Blue));
-	for (int i=0; i<convex_hull_points.size(); ++i)
-		convex_hull_line << svg::Point(points[convex_hull_points[i]].get_x()*scale + x_offset, points[convex_hull_points[i]].get_y()*scale + y_offset);
-	
+	for (int i=0; i<convex_hull_points->size(); ++i)
+	{
+		#ifdef DEBUG
+			printf("Consider the %ith point on convex hull: is point %i\n", i, (*convex_hull_points)[i]);
+		#endif
+		convex_hull_line << svg::Point(points[(*convex_hull_points)[i]].get_x()*scale + x_offset, points[(*convex_hull_points)[i]].get_y()*scale + y_offset);
+	}
+
+	#ifdef DEBUG
+		printf("Hull in svg created\n");
+	#endif
+
 	(*doc) << convex_hull_line;	
 }

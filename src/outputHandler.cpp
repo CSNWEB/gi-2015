@@ -3,7 +3,7 @@
 OutputHandler::OutputHandler(Problem *p, Setting *s, string name_txt, string name_svg)
 {
 	#ifdef DEBUG
-		printf("CONSTRUCTOR: OutputHandler(Problem *p, Setting *s, string name_txt, string name_svg)\n");
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 	problem = p;
 	setting = s;
@@ -15,7 +15,7 @@ OutputHandler::OutputHandler(Problem *p, Setting *s, string name_txt, string nam
 void OutputHandler::write_setting_to_txt()
 {
 	#ifdef DEBUG
-		printf("OutputHandler::write_setting_to_txt\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	FILE *file;
@@ -39,7 +39,7 @@ void OutputHandler::write_setting_to_txt()
 void OutputHandler::write_setting_to_svg()
 {
 	#ifdef DEBUG
-		printf("OutputHandler::write_setting_to_txt\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	unsigned int planes = setting->get_number_of_planes();
@@ -58,7 +58,7 @@ void OutputHandler::write_setting_to_svg()
         #endif
 
 		Plane *p = setting->get_plane_at(i);
-        doc << svg::Rectangle(svg::Point(i*(planeWidth+spacing)+(spacing/2), (spacing/2)), planeWidth, planeHeight, svg::Color::White);
+        doc << svg::Rectangle(svg::Point(i*(planeWidth+spacing)+(spacing/2), (spacing/2)), planeWidth, planeHeight, svg::Color(255,255,200));
 		
 		for (int j=0; j<p->get_number_of_forms(); ++j)
 		{

@@ -16,11 +16,14 @@ bool BinPackingShelf::add_form(AbstractForm *f, int index)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (f->get_dy() <= height && f->get_dx() <= remaining_width)
+	float max_h = f->get_dy();
+	float max_w = f->get_dx();
+
+	if ((max_h <= height) && (max_w <= remaining_width))
 	{
 		#ifdef DEBUG
 			printf("\tForm fucessfully added to shelf:\n");
-			printf("\t\tneeded dy = %.2f, height = %.2f\n\t\tneeded dx = %.2f, remaining width = %.2f\n", f->get_dy(), height, f->get_dx(), remaining_width);
+			printf("\t\tneeded dy = %.2f, height = %.2f\n\t\tneeded dx = %.2f, remaining width = %.2f\n", max_h, height, max_w, remaining_width);
 		#endif
 
 		indices_of_forms.push_back(index);
@@ -32,7 +35,7 @@ bool BinPackingShelf::add_form(AbstractForm *f, int index)
 	{
 		#ifdef DEBUG
 			printf("\tForm could not be added to shelf.\n");
-			printf("\t\tneeded dy = %.2f, height = %.2f\n\t\tneeded dx = %.2f, remaining width = %.2f\n", f->get_dy(), height, f->get_dx(), remaining_width);
+			printf("\t\tneeded dy = %f, height = %f\n\t\tneeded dx = %f, remaining width = %f\n",  max_h, height, max_w, remaining_width);
 		#endif
 
 		return false;

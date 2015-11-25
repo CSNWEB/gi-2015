@@ -87,9 +87,7 @@ public:
     /**
      *  Get the number of different abstract forms
      */
-    int get_number_of_different_forms(){
-        return number_of_different_forms;
-    };
+    int get_number_of_different_forms();
 
     /**
      *  Get a specific abstract form
@@ -111,12 +109,7 @@ public:
      *
      *  @return     the number of forms needed for abstract_form[i]
      */
-    int get_number_of_form_needed(int i)
-    {
-        if (i>=0 && i<number_of_different_forms)
-            return number_of_forms_needed[i];
-        else return 0;
-    };
+    int get_number_of_form_needed(int i);
 
     /**
      *  Get the total number of all forms that have to be placed
