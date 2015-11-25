@@ -139,6 +139,14 @@ private:
      */
     void rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull);
 
+    /**
+     *  Move a form such all points have x- and y-coordinates > 0
+     *
+     *  @param x_min    current minimal position of any point on x-axis
+     *  @param y_min    current minimal position of any point on y-axis
+     */
+    void normalize_position(float x_min, float y_min);
+
 public:
     
     /**
