@@ -35,9 +35,7 @@ bool Validator::is_plane_valid(Plane *plane)
             first_form->get_bounding_xmax() > plane_width ||
             first_form->get_bounding_ymax() > plane_height)
         {
-            #ifdef DEBUG
-                printf("ERROR: The form at index (%d) is exceeding the bounds of the plane!", index);
-            #endif
+            printf("ERROR: The form at index (%d) is exceeding the bounds of the plane!\n", index);
             
             // If a form is exceeding the plane's bounds, the plane is not valid!
             return false;
@@ -53,9 +51,7 @@ bool Validator::is_plane_valid(Plane *plane)
             
             if (forms_are_overlapping)
             {
-                #ifdef DEBUG
-                    printf("ERROR: The forms at indices (%d) and (%d) are overlapping!", index, index_2);
-                #endif
+                printf("ERROR: The forms at indices (%d) and (%d) are overlapping!\n", index, index_2);
                 
                 // If two forms are overlapping, the plane is not valid!
                 return false;
@@ -109,14 +105,12 @@ bool Validator::is_setting_valid(Setting *setting)
         
         // Check if the plane is valid.
         #ifdef DEBUG
-            printf("Checking validity of plane at index (%d).", index);
+            printf("Checking validity of plane at index (%d).\n", index);
         #endif
         
         if (!Validator::is_plane_valid(plane))
         {
-            #ifdef DEBUG
-                printf("ERROR: Plane at index (%d) is not valid!", index);
-            #endif
+            printf("ERROR: Plane at index (%d) is not valid!\n", index);
             
             // If the plane is not valid, the setting can't be either.
             return false;
@@ -134,9 +128,7 @@ bool Validator::is_setting_valid(Setting *setting)
             if (found_forms.count(mother->get_name()) == 0)
             {
                 // There is a form on the plane that is not part of the problem!
-                #ifdef DEBUG
-                    printf("ERROR: The form at index (%d) on plane with index (%d) is not part of the problem!", form_index, index);
-                #endif
+                printf("ERROR: The form at index (%d) on plane with index (%d) is not part of the problem!\n", form_index, index);
                 
                 return false;
             }
@@ -148,7 +140,7 @@ bool Validator::is_setting_valid(Setting *setting)
     }
     
     #ifdef DEBUG
-        printf("Checking whether the number of found forms matches the required number!", form_index, index);
+        printf("Checking whether the number of found forms matches the required number!\n", form_index, index);
     #endif
     for (unsigned int index = 0;
          index < problem->get_number_of_different_forms();
@@ -160,15 +152,13 @@ bool Validator::is_setting_valid(Setting *setting)
         unsigned int found_number_of_forms = found_forms[name_of_form];
         
         #ifdef DEBUG
-            printf("%s: required: %d - found: %d", required_number_of_forms, found_number_of_forms);
+            printf("%s: required: %d - found: %d\n", required_number_of_forms, found_number_of_forms);
         #endif
         
         if (required_number_of_forms != found_number_of_forms)
         {
             // There is a form on the plane that is not part of the problem!
-            #ifdef DEBUG
-                printf("ERROR: The required number of forms (%d) of type %s does not match the found number of forms (%d)!", required_number_of_forms, found_number_of_forms, name_of_form);
-            #endif
+            printf("ERROR: The required number of forms (%d) of type %s does not match the found number of forms (%d)!\n", required_number_of_forms, name_of_form.c_str(), found_number_of_forms);
             
             return false;
         }

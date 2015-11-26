@@ -21,7 +21,7 @@ struct FormComparator
 
 	bool operator()(int index_of_box_1, int index_of_box_2)
 	{
-		#ifndef DEBUG
+		#ifdef DEBUG
 			printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 		#endif
 

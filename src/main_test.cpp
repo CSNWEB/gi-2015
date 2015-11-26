@@ -7,6 +7,7 @@
 #include "plane.hpp"
 #include "setting.hpp"
 #include "tests.hpp"
+#include "validator.hpp"
 
 #include <iostream>
 
@@ -15,9 +16,8 @@ int main(int argc, char* argv[])
 	
     #ifdef DEBUG
         std::cout << "Starging... (Debugging is enabled!)" << std::endl;
+        Tests::test_everything();
     #endif
-    
-    Tests::test_everything();
 
     if (argc == 1)
     {
@@ -57,6 +57,15 @@ int main(int argc, char* argv[])
             }
         }
     #endif
+    
+    if (Validator::is_setting_valid(&bin_packed))
+    {
+        printf("The settings has been validated and is correct.\n");
+    }
+    else
+    {
+        printf("ERROR: The setting could not be validated!\n");
+    }
     
 	return 0;
 }
