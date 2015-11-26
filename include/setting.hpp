@@ -20,9 +20,7 @@ public:
     /**
      *  Returns number_of_planes
      */
-    int get_number_of_planes() {
-        return planes.size();
-    };
+    int get_number_of_planes();
 
     /**
      *  Get a specific Plane
@@ -52,7 +50,7 @@ public:
      *  @param dy 					the y-position of the new form
      *  @param rot					the rotation in degree of the new form
      */
-    void add_form_to_plan_at_position(int index_of_plane, int index_of_form, float dx, float dy, float rot);
+    void add_form_to_plane_at_position(int index_of_plane, int index_of_form, float dx, float dy, float rot);
 
     /**
      *  Compute the total efficiency (i.e. utilization) of the current setting

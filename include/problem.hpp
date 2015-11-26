@@ -72,17 +72,13 @@ public:
      * Get the plane width
      * @return int      Width of one Plant
      */
-    int get_plane_width() {
-        return size_of_sheet_x;
-    };
+    float get_plane_width();
 
     /**
      * Get the plane height
      * @return int      Width of one Plant
      */
-    int get_plane_height() {
-        return size_of_sheet_y;
-    };
+    float get_plane_height();
 
     /**
      *  Get the number of different abstract forms
@@ -96,11 +92,7 @@ public:
      *
      *  @return     a pointer to the abstract form at abstract_forms[i]
      */
-    AbstractForm *get_abstract_form_at_position(int i){
-        if (i >= 0 && i < number_of_different_forms)
-            return &abstract_forms[i];
-        else return 0;
-    };
+    AbstractForm *get_abstract_form_at_position(int i);
 
     /**
      *  Get the number of forms needed of abstract form [i]

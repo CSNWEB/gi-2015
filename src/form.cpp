@@ -37,7 +37,7 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)
 	#endif
 
 	this->mother = mother;
-	
+
 	x_min = pos_x;
 	x_max = pos_x + mother->get_dx();
 	y_min = pos_y;
