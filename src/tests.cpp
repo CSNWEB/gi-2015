@@ -21,6 +21,11 @@ bool Tests::test_everything()
         return false;
     }
 
+    if (!test_validator())
+    {
+        return false;
+    }
+    
     std::cout << "All tests: [SUCCEEDED]" << std::endl;
     return true;
 }
@@ -604,5 +609,431 @@ bool Tests::test_form_overlap()
     }
 
     std::cout << "All edge tests: [SUCCEEDED]" << std::endl;
+    return true;
+}
+
+#pragma mark - Validator
+
+/**
+ *  There is an empty setting but the problem specifies that a given
+ *  number of forms has to be placed on planes. The test checks whether
+ *  the validator recognizes this.
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_validator_empty()
+{
+    // A square of length one. One corner is at the origin.
+    std::vector<Point> square_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm square = AbstractForm("square", square_points);
+    
+    // The vector containing which abstract forms are used.
+    std::vector<AbstractForm> abstract_forms {
+        square
+    };
+    
+    // The vector defining how many of each abstract form are needed.
+    std::vector<int> number_of_forms {
+        1
+    };
+    
+    // Width and height of the planes.
+    float plane_width = 10.0;
+    float plane_height = 10.0;
+    
+    // The problem that is to be solved.
+    Problem problem = Problem(plane_width,
+                              plane_height,
+                              abstract_forms,
+                              number_of_forms);
+    
+    // The empty setting that does not really solve the problem.
+    Setting setting = Setting(&problem);
+    
+    bool empty_setting_is_valid = Validator::is_setting_valid(&setting);
+    
+    // Add a plane but don't place any forms.
+    setting.add_plane();
+    
+    bool empty_plane_setting_is_valid = Validator::is_setting_valid(&setting);
+    
+    return (!(empty_setting_is_valid ||
+              empty_plane_setting_is_valid));
+}
+
+/**
+ *  The required number of forms is present, but one is exceeding the bounds
+ *  of a plane. The test checks whether the validator recognizes this.
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_validator_exceeding_bounds()
+{
+    // A square of length one. One corner is at the origin.
+    std::vector<Point> square_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm square = AbstractForm("square", square_points);
+    
+    // The vector containing which abstract forms are used.
+    std::vector<AbstractForm> abstract_forms {
+        square
+    };
+    
+    // The vector defining how many of each abstract form are needed.
+    std::vector<int> number_of_forms {
+        1
+    };
+    
+    // Width and height of the planes.
+    float plane_width = 10.0;
+    float plane_height = 10.0;
+    
+    // The problem that is to be solved.
+    Problem problem = Problem(plane_width,
+                              plane_height,
+                              abstract_forms,
+                              number_of_forms);
+    
+    /**
+     *  The setting where the form will exceed the plane in the minimum
+     *  x-direction.
+     */
+    Setting setting_minx = Setting(&problem);
+    
+    // Add a plane
+    setting_minx.add_plane();
+    
+    Plane *plane_minx = setting_minx.get_plane_at(0);
+    
+    // Add a form out of the planes bounds.
+    plane_minx->add_form_at_position(&square, -0.5, 0.0);
+    
+    /**
+     *  Check whether the Validator recognizes if a forms exceeds the bounds
+     *  of the plane.
+     */
+    bool exceeding_minimum_x_is_valid = Validator::is_setting_valid(&setting_minx);
+
+    /**
+     *  The setting where the form will exceed the plane in the minimum
+     *  y-direction.
+     */
+    Setting setting_miny = Setting(&problem);
+    
+    // Add a plane
+    setting_miny.add_plane();
+    
+    Plane *plane_miny = setting_miny.get_plane_at(0);
+    
+    // Add a form out of the planes bounds.
+    plane_miny->add_form_at_position(&square, 0.0, -0.5);
+    
+    /**
+     *  Check whether the Validator recognizes if a forms exceeds the bounds
+     *  of the plane.
+     */
+    bool exceeding_minimum_y_is_valid = Validator::is_setting_valid(&setting_miny);
+    
+    /**
+     *  The setting where the form will exceed the plane in the maximum
+     *  x-direction.
+     */
+    Setting setting_maxx = Setting(&problem);
+    
+    // Add a plane
+    setting_maxx.add_plane();
+    
+    Plane *plane_maxx = setting_maxx.get_plane_at(0);
+    
+    // Add a form out of the planes bounds.
+    plane_maxx->add_form_at_position(&square, 9.5, 0.0);
+    
+    /**
+     *  Check whether the Validator recognizes if a forms exceeds the bounds
+     *  of the plane.
+     */
+    bool exceeding_maximum_x_is_valid = Validator::is_setting_valid(&setting_maxx);
+    
+    /**
+     *  The setting where the form will exceed the plane in the maximum
+     *  y-direction.
+     */
+    Setting setting_maxy = Setting(&problem);
+    
+    // Add a plane
+    setting_maxy.add_plane();
+    
+    Plane *plane_maxy = setting_maxy.get_plane_at(0);
+    
+    // Add a form out of the planes bounds.
+    plane_maxy->add_form_at_position(&square, 0.0, 9.5);
+    
+    /**
+     *  Check whether the Validator recognizes if a forms exceeds the bounds
+     *  of the plane.
+     */
+    bool exceeding_maximum_y_is_valid = Validator::is_setting_valid(&setting_maxy);
+    
+    return (!(exceeding_minimum_x_is_valid ||
+              exceeding_minimum_y_is_valid ||
+              exceeding_maximum_x_is_valid ||
+              exceeding_maximum_y_is_valid));
+}
+
+/**
+ *  There is a form, that is not specified in the problem. The test checks
+ *  whether the validator recognizes this.
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_validator_unknown_form()
+{
+    // A square of length one. One corner is at the origin.
+    std::vector<Point> square_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm square = AbstractForm("square", square_points);
+    
+    // The vector containing which abstract forms are used.
+    std::vector<AbstractForm> abstract_forms {
+        square
+    };
+    
+    // The vector defining how many of each abstract form are needed.
+    std::vector<int> number_of_forms {
+        1
+    };
+    
+    // Width and height of the planes.
+    float plane_width = 10.0;
+    float plane_height = 10.0;
+    
+    // The problem that is to be solved.
+    Problem problem = Problem(plane_width,
+                              plane_height,
+                              abstract_forms,
+                              number_of_forms);
+    
+    // The empty setting that does not really solve the problem.
+    Setting setting = Setting(&problem);
+    
+    // Add a form to the setting that is not specified in the problem.
+    AbstractForm triangle = AbstractForm("triangle", square_points);
+    
+    setting.add_plane();
+    Plane *plane = setting.get_plane_at(0);
+    
+    plane->add_form_at_position(&triangle, 0.0, 0.0);
+    
+    return (!Validator::is_setting_valid(&setting));
+}
+
+/**
+ *  The number of forms added does not match the required number. The test
+ *  checks whether the validator recognizes this.
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_validator_wrong_count()
+{
+    // A square of length one. One corner is at the origin.
+    std::vector<Point> square_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm square = AbstractForm("square", square_points);
+    
+    // The vector containing which abstract forms are used.
+    std::vector<AbstractForm> abstract_forms {
+        square
+    };
+    
+    // The vector defining how many of each abstract form are needed.
+    std::vector<int> number_of_forms {
+        2
+    };
+    
+    // Width and height of the planes.
+    float plane_width = 10.0;
+    float plane_height = 10.0;
+    
+    // The problem that is to be solved.
+    Problem problem = Problem(plane_width,
+                              plane_height,
+                              abstract_forms,
+                              number_of_forms);
+    
+    // The empty setting that does not really solve the problem.
+    Setting setting = Setting(&problem);
+    
+    // Add only one form to the plane although 2 are needed.
+    setting.add_plane();
+    Plane *plane = setting.get_plane_at(0);
+    
+    plane->add_form_at_position(&square, 0.0, 0.0);
+    
+    bool not_enough_forms_is_valid = Validator::is_setting_valid(&setting);
+    
+    /**
+     *  Adding two more forms to test whether the validator recognizes if there
+     *  are too many forms on the planes. The forms are not overlapping or 
+     *  exceeding the bounds of the planes.
+     */
+    plane->add_form_at_position(&square, 2.0, 0.0);
+    plane->add_form_at_position(&square, 4.0, 0.0);
+    
+    bool too_many_forms_is_valid = Validator::is_setting_valid(&setting);
+    
+    return (!(not_enough_forms_is_valid ||
+              too_many_forms_is_valid));
+}
+
+/**
+ *  The required number of forms is present and none of the forms exceed the
+ *  bounds of the planes or overlap each other.
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_validator_correct()
+{
+    // A square of length one. One corner is at the origin.
+    std::vector<Point> square_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm square = AbstractForm("square", square_points);
+    
+    // The vector containing which abstract forms are used.
+    std::vector<AbstractForm> abstract_forms {
+        square
+    };
+    
+    // The vector defining how many of each abstract form are needed.
+    std::vector<int> number_of_forms {
+        2
+    };
+    
+    // Width and height of the planes.
+    float plane_width = 10.0;
+    float plane_height = 10.0;
+    
+    // The problem that is to be solved.
+    Problem problem = Problem(plane_width,
+                              plane_height,
+                              abstract_forms,
+                              number_of_forms);
+    
+    // The empty setting that does not really solve the problem.
+    Setting setting = Setting(&problem);
+    
+    /**
+     *  Add as many forms to a plane as necessary and don't exceed the bounds
+     *  of the plane or overlap the two forms. This should be a valid setting.
+     */
+    setting.add_plane();
+    Plane *plane = setting.get_plane_at(0);
+    
+    plane->add_form_at_position(&square, 0.0, 0.0);
+    plane->add_form_at_position(&square, 4.0, 0.0);
+    
+    return (Validator::is_setting_valid(&setting));
+}
+
+/**
+ *  Tests whether the validator works as intended.
+ *
+ *  @return True, if all tests are successful, false if at least one test fails.
+ */
+bool Tests::test_validator()
+{
+    std::cout << "Testing validator: " << std::endl;
+    
+    // Empty setting
+    
+    std::cout << "Testing validator empty setting: ";
+    if (test_validator_empty())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Exceeding bounds
+    
+    std::cout << "Testing validator exceeding bounds: ";
+    if (test_validator_exceeding_bounds())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Unkown forms
+    
+    std::cout << "Testing validator unknown form: ";
+    if (test_validator_unknown_form())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Wrong count
+    
+    std::cout << "Testing validator wrong count: ";
+    if (test_validator_wrong_count())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Correct
+    
+    std::cout << "Testing validator correct: ";
+    if (test_validator_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    std::cout << "All validator tests: [SUCCEEDED]" << std::endl;
     return true;
 }

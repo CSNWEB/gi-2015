@@ -13,6 +13,9 @@
 #include "edge.hpp"
 #include "form.hpp"
 #include "point.hpp"
+#include "problem.hpp"
+#include "setting.hpp"
+#include "validator.hpp"
 
 class Tests
 {
@@ -107,6 +110,49 @@ private:
      */
     static bool test_non_overlap_triangle();
     
+#pragma mark - Validator (Private)
+    
+    /**
+     *  There is an empty setting but the problem specifies that a given
+     *  number of forms has to be placed on planes. The test checks whether
+     *  the validator recognizes this.
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_validator_empty();
+    
+    /**
+     *  The required number of forms is present, but one is exceeding the bounds
+     *  of a plane. The test checks whether the validator recognizes this.
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_validator_exceeding_bounds();
+    
+    /**
+     *  There is a form, that is not specified in the problem. The test checks 
+     *  whether the validator recognizes this.
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_validator_unknown_form();
+    
+    /**
+     *  The number of forms added does not match the required number. The test
+     *  checks whether the validator recognizes this.
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_validator_wrong_count();
+    
+    /**
+     *  The required number of forms is present and none of the forms exceed the
+     *  bounds of the planes or overlap each other.
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_validator_correct();
+    
 public:
     
 #pragma mark - All
@@ -135,6 +181,15 @@ public:
      *  @return True, if all tests are successful, false if at least one test fails.
      */
     static bool test_form_overlap();
+    
+#pragma mark - Validator
+    
+    /**
+     *  Tests whether the validator works as intended.
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_validator();
     
 };
 

@@ -140,7 +140,7 @@ bool Validator::is_setting_valid(Setting *setting)
     }
     
     #ifdef DEBUG
-        printf("Checking whether the number of found forms matches the required number!\n", form_index, index);
+        printf("Checking whether the number of found forms matches the required number!\n");
     #endif
     for (unsigned int index = 0;
          index < problem->get_number_of_different_forms();
@@ -152,7 +152,7 @@ bool Validator::is_setting_valid(Setting *setting)
         unsigned int found_number_of_forms = found_forms[name_of_form];
         
         #ifdef DEBUG
-            printf("%s: required: %d - found: %d\n", required_number_of_forms, found_number_of_forms);
+            printf("%s: required: %d - found: %d\n", name_of_form.c_str(), required_number_of_forms, found_number_of_forms);
         #endif
         
         if (required_number_of_forms != found_number_of_forms)
