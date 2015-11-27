@@ -184,7 +184,7 @@ public:
      *
      *  @return The number of points that the form is made of.
      */
-	int get_number_of_points(){return number_of_points;};
+	int get_number_of_points();
     
     /**
      *  Get the name of this abstractform
@@ -198,14 +198,14 @@ public:
      *
      *  @return A float representing size of the bounding box of the form in x direction.
      */
-	float get_dx(){return dx;};
+	float get_dx();
     
     /**
      *  Get the size of the bounding box of the form in y direction.
      *
      *  @return A float representing the size of the bounding box of the form in y direction.
      */
-	float get_dy(){return dy;};
+	float get_dy();
     
     /**
      *  The size of the area of the abstract form.

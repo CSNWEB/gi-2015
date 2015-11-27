@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "abstractForm.hpp"
+#include "global.hpp"
 
 class BinPacking;
 

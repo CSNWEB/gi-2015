@@ -617,6 +617,34 @@ void AbstractForm::compute_convex_hull()
 	#endif
 }
 
+
+int AbstractForm::get_number_of_points()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return number_of_points;
+}
+
+float AbstractForm::get_dx()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return dx;
+}
+
+float AbstractForm::get_dy()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return dy;
+}
+
 void AbstractForm::_d_print_abstract_form()
 {
 	#ifdef DEBUG

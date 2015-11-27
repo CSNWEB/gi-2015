@@ -8,6 +8,7 @@
 #include "binPackingPlane.hpp"
 #include "binPackingShelf.hpp"
 #include "abstractForm.hpp"
+#include "global.hpp"
 
 using namespace std;
 
@@ -26,28 +27,40 @@ struct FormComparator
 
 	bool operator()(int index_of_box_1, int index_of_box_2)
 	{
-		
-
-		int smaller_edge_box_1;
-		int smaller_edge_box_2;
+		float smaller_edge_box_1;
+		float smaller_edge_box_2;
+		float bigger_edge_box_1;
+		float bigger_edge_box_2;
 
 		form_1 = problem->get_abstract_form_at_position(index_of_box_1);
 		form_2 = problem->get_abstract_form_at_position(index_of_box_2);
 
 		if (form_1->get_dx() < form_1->get_dy())
+		{
 			smaller_edge_box_1 = form_1->get_dx();
+			bigger_edge_box_1  = form_1->get_dy();
+		}
 		else
+		{
 			smaller_edge_box_1 = form_1->get_dy();
-
+			bigger_edge_box_1  = form_1->get_dx();
+		}
 		if (form_2->get_dx() < form_2->get_dy())
+		{
 			smaller_edge_box_2 = form_2->get_dx();
+			bigger_edge_box_2  = form_2->get_dy();
+		}
 		else
+		{
 			smaller_edge_box_2 = form_2->get_dy();
+			bigger_edge_box_2  = form_2->get_dx();
+		}
 
-		if (smaller_edge_box_1 <= smaller_edge_box_2)
-			return false;
-		else
-			return true; 
+		if (smaller_edge_box_1 - smaller_edge_box_2 > TOLERANCE)
+			return true;
+		else if (smaller_edge_box_2 - smaller_edge_box_1 > TOLERANCE)
+			return false; 
+		else return (bigger_edge_box_1 - bigger_edge_box_2 > TOLERANCE);
 	};
 };
 
@@ -88,16 +101,6 @@ public:
 	 */
 	Setting get_packed_setting();
 
-	/**
-	 *  Add a shelf
-	 *
-	 * 	@param: index_of_plane 		index of plane to which a new shelf should be added
-	 *  @param: height_of_shelf 	height of the shelf to be created
-	 *
-	 *  @return 					true, if there was enough space to add shelf and shelf was added
-	 *								false, if there was not enough space on the plane
-	 */
-	//bool add_new_shelf(int index_of_plane, float offset_x, float offset_y, float height_of_shelf, float width_of_shelf, bool is_rotated);
 };
 
 #endif
