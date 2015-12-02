@@ -12,6 +12,11 @@
 
 using namespace std;
 
+/**
+ *  Struct FormComparator
+ *
+ *  Struct used in sorting forms by their x- and y- dimensions
+ */
 struct FormComparator
 {
 	FormComparator(Problem *p) : problem(p)
@@ -67,11 +72,14 @@ struct FormComparator
 class BinPacking
 {
 private:
+	/**
+	 *  A pointer to the problem to acess forms and the size of a plane
+	 */
 	Problem *problem;
 
-	Setting packed_setting;
-
-
+	/**
+	 *  The indices of the abstract forms, sorted by height (and width, if heights are equal) of the bounding box.
+	 */
 	vector<int> all_forms_sorted_by_size;
 
 	/**
@@ -94,10 +102,20 @@ private:
 	void create_initial_sorting();
 
 public:
+	/**
+	 *  Constructor
+	 *
+	 *  Needs a pointer to an instance of class Problem, otherwise no bin packing can be computed
+	 *
+	 *  @param p 	a pointer to a problem for which the binpacking should be computed
+	 */
 	BinPacking(Problem *p);
 
 	/**
 	 *  Use 2-dimensional bin-packing with bounding boxes to create a setting
+	 *  algorithm sorts bounding boxes by height (and width, if heights are equal)
+	 *  then for every form is placed on the first shelf it fits on.
+	 *  If there is no approriate shelf, a new shelf is created on the first plane with enough space.
 	 */
 	Setting get_packed_setting();
 

@@ -12,12 +12,12 @@
 #include <string>
 #include <cmath>
 
-#ifdef USE_SFML
-#include <SFML/Graphics.hpp>
-#endif
-
 #include "point.hpp"
 #include "plane.hpp"
+
+#ifdef USE_SFML
+    #include <SFML/Graphics.hpp>
+#endif
 
 using namespace std;
 
@@ -59,24 +59,45 @@ private:
     vector<int> sort_points_dim_x();
 
     /**
-     *  Two vectors to calculate the positions of the form relative to each other.
-     *  Given two starting points p_0 and p_1, all points of the form can be calculated as follows
+     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v,
+     *  the parameters lambda and mu are computed here.
+     *  Given any two adjacent starting points p_0 and p_1, all points of the form then can be calculated as follows
      *
-     *  Let i>=0, j=i+1, k=j+1 < points.size()
+     *  Let i>=0, i<points.size(),  j=(i+1)%points.size(), k=(j+1)%points.size() 
      *  Let v be the vector from p_i to p_j, and let n be the orthogonal vector to v.
      *  Then p_k = p_i+ lambda[k]*v + mu[k]*n
+     *
+     *  This vector holds all lambda-values.
      */
     vector<float> relative_point_position_lambda;
+
+    /**
+     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v,
+     *  the parameters lambda and mu are computed here.
+     *  Given any two adjacent starting points p_0 and p_1, all points of the form then can be calculated as follows
+     *
+     *  Let i>=0, i<points.size(),  j=(i+1)%points.size(), k=(j+1)%points.size() 
+     *  Let v be the vector from p_i to p_j, and let n be the orthogonal vector to v.
+     *  Then p_k = p_i+ lambda[k]*v + mu[k]*n
+     *
+     *  This vector holds all mu-values.
+     */
     vector<float> relative_point_position_mu;
 
     /**
-     *  The same data as above, but only considering points on the convex hull
+     *  See vector<float> relative_point_position_lambda
+     *  This vector considers only the points on the convex hull
      */
     vector<float> relative_point_position_cv_lambda;
+
+    /**
+     *  See vector<float> relative_point_position_mu
+     *  This vector considers only the points on the convex hull
+     */
     vector<float> relative_point_position_cv_mu;
 
     /**
-     *  All points that belong to the convex hull
+     *  All points that belong to the convex hull, stored by their indices in vector<Point> points
      */
     vector<int> convex_hull;
     
@@ -107,8 +128,25 @@ private:
     void compute_lambda_and_mu(bool consider_only_convex_hull = false);
 
     /**
-     *  Subfunctions of compute_lambda_and_mu:
-     *  compute a certain lambda or mu for a given pair of vertices
+     *  Subfunction of compute_lambda_and_mu:
+     *  compute a certain lambda for a given pair of vertices and a already comuted mu
+     *
+     *      dx_2 = dx_1 + lambda * dx_1 + mu dy_1
+     *  <=> lambda = (dx_2 - dx_1 - (mu * dy_1)) / dx_1
+     *
+     *  @param d1_x     x-length of first vector
+     *  @param d1_y     y-length of first vector
+     *  @param d2_x     x-length of second vector
+     *  @param d2_y     y-length of second vector
+     *  @param mu       value for mu, as computed by compute_mu(float, float, float, float)
+     *
+     *  @return         float: the lambda value as specified above
+     */
+    float compute_lambda(float d1_x, float d1_y, float d2_x, float d2_y, float mu);
+
+    /**
+     *  Subfunction of compute_lambda_and_mu:
+     *  compute a certain mu for a given pair of vertices
      *
      *      dx_2 = dx_1 + lambda * dx_1 + mu dy_1
      *  <=> lambda = (dx_2 - dx_1 - (mu * dy_1)) / dx_1
@@ -116,8 +154,14 @@ private:
      *      dy_2 = dx_1 + lambda * dy_1 - mu dx_1
      *  <=> mu = - (dy_2-dy_1 - ((dx_2 -dx_1- mu * d_y1)/dx_1) * dy_1) / dx_1
      *  <=> mu = - (dy_2 - ((dx_2 * dy_1) / dx_1) / ((dy_1^2)/dx_1 + dx_1)
+     *
+     *  @param d1_x     x-length of first vector
+     *  @param d1_y     y-length of first vector
+     *  @param d2_x     x-length of second vector
+     *  @param d2_y     y-length of second vector
+     *
+     *  @return         float: the mu value as specified above
      */
-    float compute_lambda(float d1_x, float d1_y, float d2_x, float d2_y, float mu);
     float compute_mu(float d1_x, float d1_y, float d2_x, float d2_y);
 
     /**

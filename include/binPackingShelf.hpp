@@ -2,7 +2,7 @@
 #define BinPackingShelf_H
 
 /**
- *  A "shelf" used in the 2-dim. bin-packing problem
+ *  A shelf used in the 2-dim. bin-packing problem
  *  this is a representation of a retangular subset of a plane
  */
 
@@ -17,18 +17,18 @@ class BinPackingShelf
 {
 private:
 	/**
- 	 *  Pointer to the packing
+ 	 *  Pointer to the packing this shelf is a part of
 	 */
  	BinPacking *packing;
 
 	/**
-	 *  The index of the plane this shelf is positioned on:
+	 *  The index of the plane this shelf is placed on:
 	 */
 	int index_of_plane;
 
 	/**
-	 *  The indices of all forms placed on this shelf 
-	 *  in order from left to right!
+	 *  The indices of all forms placed on this shelf,
+	 *  in order from left to right.
 	 */
 	vector<int> indices_of_forms;
 
@@ -48,29 +48,29 @@ private:
 	bool is_rotated_subshelf;
 
 	/**
-	 *  The size of the shelf,
-	 *  i.e. the maximum size in x- and y-dimension for any form that can be placed und this shelf
+	 *  The height of the shelf,
+	 *  i.e. the maximum size in y-dimension for any form that can be placed on this shelf
 	 */
-	float width;
 	float height;
 
 	/**
-	 *  The remaining free width on this shelf that can be filled
+	 *	The width of the shelf,
+	 *  i.e. the remaining width on this shelf at creation
+	 */
+	float width;
+
+	/**
+	 *  The remaining free width on this shelf that can be filled,
+	 *  i.e. the maximum width for any form that can be placed on this shelf
 	 */
 	float remaining_width;
 
 
 public:
-	BinPackingShelf(){};
-
-	/**
-	 *  Constructor that creates an empty shelf on a given form with specified position and size
-	 *
-	 *  @param  height 				height of the shelf
-	 *  @param  width 				width of the plane
+	/*
+	 *  Default Constructor
 	 */
-	//BinPackingShelf(int index_of_plane, float offset_height, float height, float width);
-	//BinPackingShelf(int plane, float height, float width);
+	BinPackingShelf(){};
 
 	/**
 	 *  Constructor that creates an empty shelf on a given plane with specified position and size
@@ -107,15 +107,22 @@ public:
 	bool check_if_fit(AbstractForm *f);
 
 	/**
-	 *  Getter for offset of shelf on plane:
+	 *  Getter for x-offset of shelf on plane:
 	 */
 	float get_offset_x();
+
+	/**
+	 *  Getter for x-offset of shelf on plane:
+	 */
 	float get_offset_y();
 
 	/**
-	 *  Getter for height and width of shelf
+	 *  Getter for height of shelf
 	 */
 	float get_height();
+	/**
+	 *	Getter for width of shelf
+	 */
 	float get_width();
 
 	/**
@@ -134,7 +141,11 @@ public:
 	int get_number_of_forms_on_shelf();
 
 	/**
-	 *  Get index of AbstractForm of ith form on shelf
+	 *  Get index of AbstractForm of ith form on shelf, i.e. a getter for an int in vector<int> indices_of_forms
+	 *
+	 *  @param index_of_form 	the position of the form on this shelf, i.e. the index in vector<int> indices_of_forms
+	 *
+	 *  @return 				the index of the abstractform at the vector of all abstract forms at an instance of the class problem
 	 */
 	int get_abstract_index_of_form_at(int index_of_form);
 };
