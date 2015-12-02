@@ -50,13 +50,24 @@ private:
      */
     vector<int> number_of_forms_needed;
 
+    /**
+     *  Check if a given form is small enough to fit on a plane,
+     *  i.e. there is a rotation such that the bounding box of the rotated form is in both dimension at most as big as the plane
+     *  If it fits, the optimal angle is approximated (i.e. an angle such that the area of the bounding box is minimal)
+     *
+     *  @param index_of_form    the index of vector<AbstractForm> abstract_forms describing the form to be checked
+     *
+     *  @return                 a float describing the optimal rotation angle if the form can be placed on a plane
+     *                          -1 otherwise
+     */
+     float find_optimal_angle(int index_of_form);
+
 public:
 
     /**
      *  Default constructor
      */
-    Problem() {
-    };
+    Problem(){};
 
     /**
      *  Constructor called by inputHandler
@@ -110,6 +121,13 @@ public:
      */
     int get_total_number_of_all_forms();
     
+    /**
+     *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
+     *
+     *  @return     true if problem is solveable,
+     *              false otherwise
+     */
+    bool check_if_solveable();
 };
 
 #endif
