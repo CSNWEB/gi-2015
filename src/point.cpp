@@ -11,17 +11,21 @@ void Point::rotate(float center_x, float center_y, float angle)
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
-
-	angle *= PI/180;
 	
-	float sin_angle = sin(angle);
-	float cos_angle = cos(angle);
-
-	float dx = x-center_x;
-	float dy = y-center_y;
-
-	x = cos_angle*dx - sin_angle*dy + center_x;
-	y = sin_angle*dx - cos_angle*dy + center_y;
+    float s = sin(angle);
+    float c = cos(angle);
+    
+    // translate point back to origin:
+    x -= center_x;
+    y -= center_y;
+    
+    // rotate point
+    float xnew = x * c - y * s;
+    float ynew = x * s + y * c;
+    
+    // translate point back:
+    x = xnew + center_x;
+    y = ynew + center_y;
 }
 
 int Point::is_left_of(Point *p_start, Point *p_end)

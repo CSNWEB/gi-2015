@@ -1,4 +1,4 @@
-/**
+/*!
  *  Class Form
  *
  *  A Form is the representation of an AbstractForm.
@@ -25,51 +25,51 @@ class Form
 {
 private:
     
-    /**
+    /*!
      *  The abstract form this form is derived of
      */
     AbstractForm *mother;
 	
-	/**
+	/*!
 	 *  The number of outer edges this form has.
 	 *  Note that this is equal to the number of points that define this form
 	 */
     int number_of_edges;
 
-    /**
+    /*!
      *  A vector of edges that make up this Form.
      */
     vector<Edge> edges;
     
-    /**
+    /*!
      *  A vector of points that make up this Form.
      */
     vector<Point> points;
 	
-	/**
+	/*!
 	 *  Parameters definind the bounding box of this form:
 	 */
     float x_min, x_max, y_min, y_max;
 	
 public:
-	/**
+	/*!
 	 *  Default constructor
 	 */
     Form(){};
 
-	/**
+	/*!
 	 *  Constructor that creates a form specified by an AbstractForm, bit without
      *  a specific position
 	 */
     Form(AbstractForm *mother);
 
-	/**
+	/*!
 	 *  Constructor that creates a Form at given coordinates (top left corner of
      *  bounding box)
 	 */
     Form(AbstractForm *mother, float pos_x, float pos_y); // TODO: Use Point?
 	
-    /**
+    /*!
      *  The abstract form that this Form represents.
      *
      *  @return An object of type AbstractForm that this Form represents.
@@ -79,7 +79,7 @@ public:
         return this->mother;
     }
     
-    /**
+    /*!
      *  The coordinates of the bounding box. Described by the minimum and
      *  maximum values in x- and y-direction that contain the forms points.
      *
@@ -90,7 +90,7 @@ public:
 	float get_bounding_ymin(){return y_min;};
 	float get_bounding_ymax(){return y_max;};
 
-    /**
+    /*!
      *  Functions to get the size of the bounding box
      *
      *  @return     a float representing the width (or height) of the bounding box
@@ -98,7 +98,7 @@ public:
     float get_bounding_dx(){return x_max - x_min;};
     float get_bounding_dy(){return y_max - y_min;};
 	
-    /**
+    /*!
      *  A vector containing the points that belong to the form.
      *
      *  @return A vector containing the points of the form.
@@ -108,7 +108,7 @@ public:
         return points;
     }
     
-    /**
+    /*!
      *  Get the centroid of the form. The means the mean of the x and y values
      *  of all points.
      *
@@ -116,7 +116,7 @@ public:
      */
     Point get_centroid();
     
-    /**
+    /*!
      *  Moves the Form relative to its current position by the passed amount in
      *  x- and y-direction.
      *
@@ -125,7 +125,7 @@ public:
      */
 	void move_rel(float dx, float dy);
 
-    /**
+    /*!
      *  Rotates the form around the passed center by the amount given by degree.
      *
      *  @param center_x The x-coordinate of the center point that the Form is rotated around.
@@ -134,7 +134,7 @@ public:
      */
 	void rotate(float center_x, float center_y, float angle);
 	
-    /**
+    /*!
      *  Checks if the receiver overlaps with the passed Form.
      *
      *  @param other The form that the overlapping is checked against.
@@ -143,7 +143,7 @@ public:
      */
 	bool check_for_overlap(Form *other);
 	
-    /**
+    /*!
      *  Checks if the receiver overlaps with the passed Form.
      *  Additionally saves the minimum distance for every two edges in a
      *  float-matrix or zero if the edges cross.
@@ -155,27 +155,27 @@ public:
      */
 	bool check_for_overlap(Form *other, floatmat* crossings);
 
-    /**
+    /*!
      *  Debug: print points to std_out
      */
     void _d_print_points_to_console();
 
-    /**
+    /*!
      *  Debug: print edges to std_out
      */
     void _d_print_edges_to_console();
 
-    /**
+    /*!
      *  Debug: print convex hull to console
      */
     void _d_print_convex_hull_to_console();
     
-    /**
+    /*!
      * Print the form points to a svg Polygon
      */
     void print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale);
 
-    /**
+    /*!
      *  Print the convex hull of this form to svg polygon
      *
      */
