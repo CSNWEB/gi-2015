@@ -1,3 +1,10 @@
+/**
+ *  Class Setting
+ *
+ *  A setting describes a number of planes with forms placed on them.
+ *  A setting can be a valid solution, an intermediate step while computing a optimized solution.
+ *  A setting may also not be a valid solution (because forms overlap or not all needed forms are placed on planes).
+ */
 #ifndef SETTING_H
 #define SETTING_H
 
@@ -9,12 +16,26 @@
 class Setting
 {
 private:
+    /**
+     *  A pointer to the problem this setting is based on.
+     *  To acess the size of the planes and the forms.
+     */
 	Problem *problem;
 
+    /**
+     *  A vector of all planes used in this setting
+     */
 	vector<Plane> planes;
 
 public:
+    /**
+     *  Default Constructor.
+     */
     Setting(){};
+
+    /**
+     *  Constructor that initializes the problem.
+     */
 	Setting(Problem *p);
 
     /**

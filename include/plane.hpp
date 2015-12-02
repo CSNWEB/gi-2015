@@ -16,13 +16,29 @@ using namespace std;
 class Plane
 {
 private:
+	/**
+	 *  The width of the plane.
+	 */
 	float dx;
+
+	/**
+	 *  The height of the plane.
+	 */
 	float dy;
 	
+	/**
+	 *  The number of forms on this plane.
+	 */
 	int number_of_forms;
 	
+	/**
+	 *  All forms on this plane
+	 */
 	vector<Form> forms;
 	
+	/**
+	 *  A 2-dimensional bool matrix describing which forms overlap
+	 */
 	boolmat overlappings;
 
 public:
