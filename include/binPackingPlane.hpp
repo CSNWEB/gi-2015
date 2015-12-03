@@ -17,7 +17,7 @@ private:
 public:
 	BinPackingPlane(float dx, float dy);
 
-	/**
+	/*!
 	 *  Add a shelf to plane
 	 *
 	 *  @param: height_of_shelf 	height of the shelf to be added to this plane
@@ -27,12 +27,12 @@ public:
 	 */
 	bool add_shelf(float height_of_shelf);
 
-	/**
+	/*!
 	 *  Get size of shelfs
 	 */
 	int get_number_of_shelfs();
 
-	/**
+	/*!
 	 *  Get a specific shelf
 	 *
 	 *  @param: index_of_shelf 		index of the shelf in vector shelfs

@@ -1,4 +1,4 @@
-/**
+/*!
  *  Class Edge
  *
  *  An Edge consists of two points. It has a length and one can get the distance
@@ -18,14 +18,14 @@ class Edge
 {
 private:
     
-    /**
+    /*!
      *  The points that define the edge.
      */
 	Point *point_1, *point_2;
 	
 public:
     
-    /**
+    /*!
      *  Default constructor
      */
 	Edge(){
@@ -34,12 +34,12 @@ public:
     #endif
     };
 
-    /**
+    /*!
      *  Constructor to initialize an edge with its two points.
      */
 	Edge(Point *p1, Point *p2);
 
-    /**
+    /*!
      *  Finds the point where the receiver and other intersect each other.
      *
      *  Taken from: http://flassari.is/2008/11/line-line-intersection-in-cplusplus/
@@ -50,7 +50,7 @@ public:
      */
     Point* intersection_with_edge(Edge *other);
     
-    /**
+    /*!
      *  Check whether the receiver crosses the passed edge.
      *
      *  @param other The Edge that the cross-check is done against.
@@ -59,14 +59,14 @@ public:
      */
 	bool check_if_crosses(Edge *other);
 	
-    /**
+    /*!
      *  The length of the edge
      *
      *  @return A float resembling the length of the edge.
      */
 	float length(){return point_1->get_distance_to(point_2);};
     
-    /**
+    /*!
      *  The distance the edge covers on the x- and y-axis respectively.
      *
      *  @return A float representing the distance the edge covers on the x- and y-axis respectively.
@@ -74,7 +74,7 @@ public:
 	float get_edge_x(){return point_2->get_x()-point_1->get_x();};
 	float get_edge_y(){return point_2->get_y()-point_1->get_y();};
 
-    /**
+    /*!
      *  Debug output function:
      *  prints start- and endpoint of edge to console
      */

@@ -1,4 +1,4 @@
-/**
+/*!
  *  Class Problem
  *  
  *  An object of Problem describes an instance of the problem defined in the task.
@@ -24,41 +24,41 @@ using namespace std;
 
 class Problem {
 private:
-    /**
+    /*!
      *  The size of the sheet in x-dimension
      */
     float size_of_sheet_x;
 
-    /**
+    /*!
      *  The size of the sheet in y-dimension
      */
     float size_of_sheet_y;
 
-    /**
+    /*!
      * The number of different forms to be handled
      */
     int number_of_different_forms;
 
-    /**
+    /*!
      * All abstract forms describing the forms(shape, name)
      * needed in this problem
      */
     vector<AbstractForm> abstract_forms;
 
-    /**
+    /*!
      * The number of forms needed for each abstract form
      */
     vector<int> number_of_forms_needed;
 
 public:
 
-    /**
+    /*!
      *  Default constructor
      */
     Problem() {
     };
 
-    /**
+    /*!
      *  Constructor called by inputHandler
      *
      *  @param sx 				A float describing the size of the sheet in dim x
@@ -68,7 +68,7 @@ public:
      */
     Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms);
 
-    /**
+    /*!
      * Get the plane width
      * @return int      Width of one Plant
      */
@@ -76,7 +76,7 @@ public:
         return size_of_sheet_x;
     };
 
-    /**
+    /*!
      * Get the plane height
      * @return int      Width of one Plant
      */
@@ -84,12 +84,12 @@ public:
         return size_of_sheet_y;
     };
 
-    /**
+    /*!
      *  Get the number of different abstract forms
      */
     int get_number_of_different_forms();
 
-    /**
+    /*!
      *  Get a specific abstract form
      *
      *  @param i    the index of the abstract form to be returned
@@ -102,7 +102,7 @@ public:
         else return 0;
     };
 
-    /**
+    /*!
      *  Get the number of forms needed of abstract form [i]
      *
      *  @param i    the index of the abstract form in question
@@ -111,7 +111,7 @@ public:
      */
     int get_number_of_form_needed(int i);
 
-    /**
+    /*!
      *  Get the total number of all forms that have to be placed
      *
      *  @return     int: the total number of all forms

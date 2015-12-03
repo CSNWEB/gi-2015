@@ -15,11 +15,25 @@ Form *Plane::get_form_at(int i)
 
 void Plane::add_form_at_position(AbstractForm *form, float pos_x, float pos_y)
 {
+    add_form_at_position_rotation(form, pos_x, pos_y, 0.0);
+}
+
+void Plane::add_form_at_position_rotation(AbstractForm *form,
+                                          float pos_x,
+                                          float pos_y,
+                                          float rotation)
+{
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	forms.push_back(Form(form, pos_x, pos_y));
+    Form form_object = Form(form, pos_x, pos_y);
+    Point centroid = form_object.get_centroid();
+    form_object.rotate(centroid.get_x(),
+                      centroid.get_y(),
+                      rotation);
+    
+	forms.push_back(form_object);
 	number_of_forms++;
 }
 

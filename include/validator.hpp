@@ -1,4 +1,4 @@
-/**
+/*!
  *  Class Validator
  *
  *  Validator check whether a given Setting or plane is valid.
@@ -24,7 +24,7 @@ private:
     
 public:
     
-    /**
+    /*!
      *  Checks whether a plane is valid.
      *
      *  Criteria are:
@@ -37,7 +37,7 @@ public:
      */
     static bool is_plane_valid(Plane *plane);
     
-    /**
+    /*!
      * Checks whether a setting is valid.
      *
      * Criteria are:

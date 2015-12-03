@@ -58,14 +58,14 @@ private:
 
 	vector<int> all_forms_sorted_by_size;
 
-	/**
+	/*!
 	 *  2-dim vektor to organize the the shelfs of each plane
 	 *
 	 *  shelfs_on_planes[p][s] is shelf #s on plane #p
 	 */
 	vector<BinPackingPlane> bp_planes;
 
-	/**
+	/*!
 	 *  Sort all forms by the smaller edge and store the sorted indices in 
 	 *	all_forms_sorted_by_size
 	 */
@@ -74,7 +74,7 @@ private:
 public:
 	BinPacking(Problem *p);
 
-	/**
+	/*!
 	 *  Use 2-dimensional bin-packing with bounding boxes to create a setting
 	 */
 	Setting get_packed_setting();
