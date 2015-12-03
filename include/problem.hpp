@@ -50,13 +50,24 @@ private:
      */
     vector<int> number_of_forms_needed;
 
+    /**
+     *  Check if a given form is small enough to fit on a plane,
+     *  i.e. there is a rotation such that the bounding box of the rotated form is in both dimension at most as big as the plane
+     *  If it fits, the optimal angle is approximated (i.e. an angle such that the area of the bounding box is minimal)
+     *
+     *  @param index_of_form    the index of vector<AbstractForm> abstract_forms describing the form to be checked
+     *
+     *  @return                 a float describing the optimal rotation angle if the form can be placed on a plane
+     *                          -1 otherwise
+     */
+     float find_optimal_angle(int index_of_form);
+
 public:
 
     /*!
      *  Default constructor
      */
-    Problem() {
-    };
+    Problem(){};
 
     /*!
      *  Constructor called by inputHandler
@@ -72,17 +83,13 @@ public:
      * Get the plane width
      * @return int      Width of one Plant
      */
-    int get_plane_width() {
-        return size_of_sheet_x;
-    };
+    float get_plane_width();
 
     /*!
      * Get the plane height
      * @return int      Width of one Plant
      */
-    int get_plane_height() {
-        return size_of_sheet_y;
-    };
+    float get_plane_height();
 
     /*!
      *  Get the number of different abstract forms
@@ -96,11 +103,7 @@ public:
      *
      *  @return     a pointer to the abstract form at abstract_forms[i]
      */
-    AbstractForm *get_abstract_form_at_position(int i){
-        if (i >= 0 && i < number_of_different_forms)
-            return &abstract_forms[i];
-        else return 0;
-    };
+    AbstractForm *get_abstract_form_at_position(int i);
 
     /*!
      *  Get the number of forms needed of abstract form [i]
@@ -118,6 +121,13 @@ public:
      */
     int get_total_number_of_all_forms();
     
+    /**
+     *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
+     *
+     *  @return     true if problem is solveable,
+     *              false otherwise
+     */
+    bool check_if_solveable();
 };
 
 #endif

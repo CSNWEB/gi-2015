@@ -1,10 +1,11 @@
 #include "abstractForm.hpp"
 #include "form.hpp"
-#include "RandomizedFormFitter.hpp"
+#include "randomizedFormFitter.hpp"
 #include "outputHandler.hpp"
 #include "validator.hpp"
 #include "tests.hpp"
 #include <iostream>
+#include <chrono>
 
 int main(int argc, char* argv[])
 {

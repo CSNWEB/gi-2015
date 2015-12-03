@@ -1,3 +1,8 @@
+/**
+ *  Class Outputhandler
+ *
+ *  Handles the output of intern data structure to correctly formatted txt- and svg- files
+ */
 #ifndef OUTPUTHANDLER_H
 #define OUTPUTHANDLER_H
 
@@ -14,10 +19,24 @@ using namespace std;
 class OutputHandler
 {
 private:
+	/**
+	 *  A pointer to the problem the setting is based on
+	 */
 	Problem *problem;
+
+	/**
+	 *  A pointer to the setting that should be outputted
+	 */
 	Setting *setting;
 	
+	/**
+	 *  A filename with which the txt-output is saved
+	 */
 	string filename_txt;
+
+	/**
+	 *  A filename with which the svg-output is saved
+	 */
 	string filename_svg;
 
 public:

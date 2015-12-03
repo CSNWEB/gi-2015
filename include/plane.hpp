@@ -16,15 +16,30 @@ using namespace std;
 class Plane
 {
 private:
-    float dx;
-    float dy;
-    
-    int number_of_forms;
-    
-    vector<Form> forms;
-    
-    boolmat overlappings;
-    
+	/**
+	 *  The width of the plane.
+	 */
+	float dx;
+
+	/**
+	 *  The height of the plane.
+	 */
+	float dy;
+	
+	/**
+	 *  The number of forms on this plane.
+	 */
+	int number_of_forms;
+	
+	/**
+	 *  All forms on this plane
+	 */
+	vector<Form> forms;
+	
+	/**
+	 *  A 2-dimensional bool matrix describing which forms overlap
+	 */
+	boolmat overlappings;
 public:
     /*!
      * default constructor
@@ -44,9 +59,15 @@ public:
     /*!
      *  Get the dimensions of the plane.
      *
-     *  @return A float representing the dimension of the plane in x- and y-direction repsectively.
+     *  @return A float representing the dimension of the plane in x-direction.
      */
     float get_dx() {return dx;};
+
+    /*!
+     *  Get the dimensions of the plane.
+     *
+     *  @return A float representing the dimension of the plane in y-direction.
+     */
     float get_dy() {return dy;};
     
     /*!
@@ -57,17 +78,6 @@ public:
      *  @return 	the Form at forms[i]
      */
     Form *get_form_at(int i);
-    
-    /*!
-     * ? not sure if this function is necessary ?
-     *
-     * Adds a form, if anywhere on the plane is enough space for the bounding-box (unrotated)
-     *
-     * @param form 		The form to be added to the plane
-     *
-     * @return			A boolean: true if form was added, false if not enough space
-     */
-    bool add_form_with_boundingbox(AbstractForm *form);
     
     /*!
      * Adds a form at a specific position. Does not check if the result is a legal setting

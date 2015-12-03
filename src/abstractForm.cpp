@@ -370,7 +370,7 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 	int index_of_next_point_of_form = (index_of_hullpoint_2+1) % points.size();
 
 	#ifdef DEBUG
-		printf("\tPoint %i: %.2f/%.2f\n\tPoint %i: %.2f/%.2f\n\tPoint %i: %.2f/%.2f\n", index_of_hullpoint_1, points[index_of_hullpoint_1].get_x(), points[index_of_hullpoint_1].get_y(), index_of_hullpoint_2, points[index_of_hullpoint_2].get_x(), points[index_of_hullpoint_2].get_y(), index_of_next_point_of_form, points[index_of_next_point_of_form].get_x(), points[index_of_next_point_of_form].get_y());
+		printf("Initial triangle:\n\tPoint %i: %.2f/%.2f\n\tPoint %i: %.2f/%.2f\n\tPoint %i: %.2f/%.2f\n", index_of_hullpoint_1, points[index_of_hullpoint_1].get_x(), points[index_of_hullpoint_1].get_y(), index_of_hullpoint_2, points[index_of_hullpoint_2].get_x(), points[index_of_hullpoint_2].get_y(), index_of_next_point_of_form, points[index_of_next_point_of_form].get_x(), points[index_of_next_point_of_form].get_y());
 	#endif
 
 	float d1_x = points[index_of_hullpoint_2].get_x() - points[index_of_hullpoint_1].get_x();
@@ -391,120 +391,72 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 	float p2_x = points[index_of_hullpoint_1].get_distance_to(&points[index_of_hullpoint_2]);
 	float p2_y = 0;
 
+	float p3_x, p3_y;
+
 	float x_min = 0;
 	float x_max = p2_x;
 	float y_min = 0;
 	float y_max = 0;
 
 	// compute new position of first point of form after pair of points from convex hull
+	// these lambda- and mu-values are not precomputed
 	float mu = compute_mu(d1_x, d1_y, d2_x, d2_y);
 	float lambda = compute_lambda(d1_x, d1_y, d2_x, d2_y, mu);
+	
+	float dx = p2_x;
+	float dy = 0;
 
 	#ifdef DEBUG
 		printf("\tComputed lambda = %.2f and mu = %.2f\n", lambda, mu);
 		printf("\tConsider points p1 = %.2f/%.2f and p2 = %.2f/%.2f\n", p1_x, p1_y, p2_x, p2_y);
 	#endif
 
-	float p3_x = p2_x + (lambda * (p2_x-p1_x)) + (mu * (p2_y-p1_y));
-	float p3_y = p2_y - (mu * (p2_x-p1_x)) + (lambda * (p2_y-p1_y));
+	int index_of_next_point_to_compute = index_of_next_point_of_form;
 
-	if (p3_x < x_min)
-		x_min = p3_x;
-	else if (p3_x > x_max)
-		x_max = p3_x;
-	if (p3_y < y_min)
-		y_min = p3_y;
-	else if (p3_y > y_max)
-		y_max = p3_y;
-
-	points[index_of_next_point_of_form] = Point(p3_x, p3_y);
-	#ifdef DEBUG
-		printf("\tPoint %i moved to %.2f/%.2f\n", index_of_next_point_of_form, p3_x, p3_y);
-	#endif
-
-	// compute new position of next point
-	float dx = p3_x - p2_x;
-	float dy = p3_y - p2_y;
-
-	mu 		= relative_point_position_mu[(index_of_next_point_of_form+1) % points.size()];
-	lambda 	= relative_point_position_lambda[(index_of_next_point_of_form+1) % points.size()];
-
-	#ifdef DEBUG
-		printf("\tdx = %.2f\n\tdy = %.2f\n",dx,dy);
-
-		printf("\tlambda = %.2f and mu = %.2f\n", lambda, mu);
-	#endif
-
-	p2_x = p3_x;
-	p2_y = p3_y;
-	p3_x = p2_x + (lambda * dx) + (mu * dy);
-	p3_y = p2_y - (mu * dx) + (lambda * dy);
-
-	if (p3_x < x_min)
-		x_min = p3_x;
-	else if (p3_x > x_max)
-		x_max = p3_x;
-	if (p3_y < y_min)
-		y_min = p3_y;
-	else if (p3_y > y_max)
-		y_max = p3_y;
-
-	points[(index_of_next_point_of_form+1) % points.size()] = Point(p3_x, p3_y);
-	
-	#ifdef DEBUG
-		printf("\tPoint %i moved to %.2f/%.2f\n", (index_of_next_point_of_form+1) % points.size(), p3_x, p3_y);
-	#endif
-
-	// TO DO: compute new position of remaining points:
-	for (int i=2; i<points.size(); ++i)
+	for (int i=0; i<points.size(); ++i)
 	{
-		int current_index = (index_of_next_point_of_form+i) % points.size();
-
 		#ifdef DEBUG
-			printf ("Compute new position for point %i: \n", current_index);
+			printf ("Compute new position for point %i: \n", index_of_next_point_to_compute);
 		#endif
 
-		/*
-		float dx = points[(current_index-1)%points.size()].get_x() - points[(current_index-2)%points.size()].get_x();
-		float dy = points[(current_index-1)%points.size()].get_y() - points[(current_index-2)%points.size()].get_y();
-		*/
+		p3_x = p2_x + (lambda * dx) + (mu * dy);
+		p3_y = p2_y - (mu * dx) + (lambda * dy);
 
-		dx = p3_x - p2_x;
-		dy = p3_y - p2_y;
-
-		float lambda = relative_point_position_lambda[(current_index)%points.size()];
-		float mu = relative_point_position_mu[(current_index)%points.size()];
-
-		#ifdef DEBUG
-			printf("\tdx = %.2f\n\tdy = %.2f\n",dx,dy);
-			printf("\tlambda = %.2f\n\tmu = %.2f\n", lambda, mu);
-		#endif
-
-		/*
-		float p3_x = points[current_index-1].get_x() + (1+relative_point_position_lambda[current_index])*dx + relative_point_position_mu[current_index]*dy;
-		float p3_y = points[current_index-1].get_y() + (1+relative_point_position_lambda[current_index])*dy - relative_point_position_mu[current_index]*dx;
-		*/
-		p2_x = p3_x;
-		p2_y = p3_y;
-
-		p3_x = p2_x + (lambda*dx) + (mu*dy);
-		p3_y = p2_y - (mu*dx) + (lambda*dy);
-		
-		#ifdef DEBUG
-			printf("\tPoint %i moved to %.2f/%.2f\n", current_index, p3_x, p3_y);
-		#endif
-
-		points[current_index] = Point(p3_x, p3_y);
-		
 		if (p3_x < x_min)
 			x_min = p3_x;
 		else if (p3_x > x_max)
 			x_max = p3_x;
-
 		if (p3_y < y_min)
 			y_min = p3_y;
 		else if (p3_y > y_max)
 			y_max = p3_y;
+
+		points[index_of_next_point_to_compute] = Point(p3_x, p3_y);
+
+		#ifdef DEBUG
+			printf("\tPoint %i moved to %.2f/%.2f\n", index_of_next_point_to_compute, p3_x, p3_y);
+		#endif
+
+		// prepare computation of next point:
+		dx = p3_x - p2_x;
+		dy = p3_y - p2_y;
+
+		p2_x = p3_x;
+		p2_y = p3_y;
+
+		index_of_next_point_to_compute = (index_of_next_point_of_form + 1 + i) % points.size();
+		
+		#ifdef DEBUG
+			printf("\t\tindex = %i\n\t\tindex_of_next_point_to_compute = %i\n", i, index_of_next_point_to_compute);
+		#endif
+
+		mu 		= relative_point_position_mu[index_of_next_point_to_compute];
+		lambda 	= relative_point_position_lambda[index_of_next_point_to_compute];
+
+		#ifdef DEBUG
+			printf("\tdx = %.2f\n\tdy = %.2f\n",dx,dy);
+			printf("\tlambda = %.2f and mu = %.2f\n", lambda, mu);
+		#endif
 	}
 
 	// move form such that minimal positions in x and y dimension are 0
@@ -512,17 +464,26 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 		printf("\tx_range = %.2f - %.2f\n\ty_range = %.2f - %.2f\n",x_min,x_max,y_min,y_max);
 	#endif
 
+	normalize_position(x_min, y_min);
+
+	this->dx = x_max-x_min;
+	this->dy = y_max-y_min;
+}
+
+void AbstractForm::normalize_position(float x_min, float y_min)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	for (int i=0; i<points.size(); ++i)
 	{
 		points[i].move_rel(-x_min, -y_min);
 
 		#ifdef DEBUG
-			printf("Point %i moved to normalized position %.2f/%.2f\n", i, points[i].get_x(), points[i].get_y());
+			printf("\tPoint %i moved to normalized position %.2f/%.2f\n", i, points[i].get_x(), points[i].get_y());
 		#endif
 	}
-
-	this->dx = x_max-x_min;
-	this->dy = y_max-y_min;
 }
 
 void AbstractForm::compute_convex_hull()
@@ -654,6 +615,34 @@ void AbstractForm::compute_convex_hull()
 		for (int i=0; i<convex_hull.size(); ++i)
 			printf("\t%i\n", convex_hull[i]);
 	#endif
+}
+
+
+int AbstractForm::get_number_of_points()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return number_of_points;
+}
+
+float AbstractForm::get_dx()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return dx;
+}
+
+float AbstractForm::get_dy()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return dy;
 }
 
 void AbstractForm::_d_print_abstract_form()

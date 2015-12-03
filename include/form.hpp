@@ -86,16 +86,43 @@ public:
      *  @return A float representing the position of the bounding box at minimum and maximum position on the x- and y-axis respectively.
      */
 	float get_bounding_xmin(){return x_min;};
+
+    /**
+     *  The coordinates of the bounding box. Described by the minimum and
+     *  maximum values in x- and y-direction that contain the forms points.
+     *
+     *  @return A float representing the position of the bounding box at minimum and maximum position on the x- and y-axis respectively.
+     */
 	float get_bounding_xmax(){return x_max;};
+
+    /**
+     *  The coordinates of the bounding box. Described by the minimum and
+     *  maximum values in x- and y-direction that contain the forms points.
+     *
+     *  @return A float representing the position of the bounding box at minimum and maximum position on the x- and y-axis respectively.
+     */
 	float get_bounding_ymin(){return y_min;};
+
+    /**
+     *  The coordinates of the bounding box. Described by the minimum and
+     *  maximum values in x- and y-direction that contain the forms points.
+     *
+     *  @return A float representing the position of the bounding box at minimum and maximum position on the x- and y-axis respectively.
+     */
 	float get_bounding_ymax(){return y_max;};
 
-    /*!
-     *  Functions to get the size of the bounding box
+    /**
+     *  Function to get the size of the bounding box
      *
      *  @return     a float representing the width (or height) of the bounding box
      */
     float get_bounding_dx(){return x_max - x_min;};
+
+    /**
+     *  Functions to get the size of the bounding box
+     *
+     *  @return     a float representing the width (or height) of the bounding box
+     */
     float get_bounding_dy(){return y_max - y_min;};
 	
     /*!
@@ -172,12 +199,21 @@ public:
     
     /*!
      * Print the form points to a svg Polygon
+     *
+     *  @param doc          the svg-filge to be written into
+     *  @param x_offset     the global x-offset (within the svg-file) of the hull
+     *  @param y_offset     the global y-offset (within the svg-file) of the hull
+     *  @param scale        the global scaling of all objects written to the svg-file
      */
     void print_form_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale);
 
     /*!
      *  Print the convex hull of this form to svg polygon
      *
+     *  @param doc          the svg-filge to be written into
+     *  @param x_offset     the global x-offset (within the svg-file) of the hull
+     *  @param y_offset     the global y-offset (within the svg-file) of the hull
+     *  @param scale        the global scaling of all objects written to the svg-file
      */
     void print_convex_hull_to_svg(svg::Document * doc, int x_offset, int y_offset, int scale);
 };

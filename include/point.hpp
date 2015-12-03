@@ -15,10 +15,14 @@ class Point
 {
 private:
     
-    /*!
-     *  Floats representing the x and y coordinates of the point.
+    /**
+     *  Float representing the x coordinate of the point.
      */
 	float x;
+
+    /**
+     *  Float representing the y coordinate of the point.
+     */
 	float y;
 	
 public:
@@ -35,12 +39,18 @@ public:
      */
 	Point(float x, float y){this->x = x; this->y = y;};
 
-    /*!
-     *  Getter for the x and y coordinates of the point.
+    /**
+     *  Getter for the x coordinate of the point.
      *
-     *  @return A float representing the x and y coordinate of the point respectively.
+     *  @return A float representing the x coordinate of the point.
      */
 	float get_x() {return x;};
+
+    /**
+     *  Getter for the y coordinate of the point.
+     *
+     *  @return A float representing the y coordinate of the point.
+     */
 	float get_y() {return y;};
 	
     /*!

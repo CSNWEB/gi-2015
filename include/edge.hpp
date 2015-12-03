@@ -72,6 +72,12 @@ public:
      *  @return A float representing the distance the edge covers on the x- and y-axis respectively.
      */
 	float get_edge_x(){return point_2->get_x()-point_1->get_x();};
+
+    /**
+     *  The distance the edge covers on the x- and y-axis respectively.
+     *
+     *  @return A float representing the distance the edge covers on the x- and y-axis respectively.
+     */
 	float get_edge_y(){return point_2->get_y()-point_1->get_y();};
 
     /*!

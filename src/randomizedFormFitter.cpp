@@ -1,4 +1,4 @@
-#include "RandomizedFormFitter.hpp"
+#include "randomizedFormFitter.hpp"
 
 #include "point.hpp"
 #include <ctype.h>

@@ -8,13 +8,20 @@
 class BinPackingPlane
 {
 private:
+	/*!
+	 *  The size of this plane
+	 */
 	float dx, dy;
 
+	/*!
+	 *  The remaining size in y-dimension, i.e. the remaining space below the lowest shelf on this plane
+	 */
 	float remaining_height;
-
-	vector<BinPackingShelf> shelfs;
 	
 public:
+	/*!
+	 *  Default constructor
+	 */
 	BinPackingPlane(float dx, float dy);
 
 	/*!
@@ -23,24 +30,14 @@ public:
 	 *  @param: height_of_shelf 	height of the shelf to be added to this plane
 	 *
 	 *  @return 					true, if there was enough space to add plane and plane was added
-	 *								flase, if there was not enough space on this plane
+	 *								false, if there was not enough space on this plane
 	 */
 	bool add_shelf(float height_of_shelf);
 
 	/*!
-	 *  Get size of shelfs
+	 *  Get remaining height
 	 */
-	int get_number_of_shelfs();
-
-	/*!
-	 *  Get a specific shelf
-	 *
-	 *  @param: index_of_shelf 		index of the shelf in vector shelfs
-	 *
-	 *	@return: 					a pointer to the shelf if shelf exists
-	 *								NULL if shelf does not exists or index_of_shelf < 0
-	 */
-	BinPackingShelf* get_shelf_at(int index_of_shelf);
+	float get_remaining_height();
 };
 
 #endif

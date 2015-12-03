@@ -70,3 +70,12 @@ void Setting::add_plane()
 
 	planes.push_back(Plane(problem->get_plane_width(), problem->get_plane_height()));
 }
+
+int Setting::get_number_of_planes()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
+    return planes.size();
+}

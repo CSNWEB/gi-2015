@@ -48,3 +48,32 @@ int Problem::get_number_of_form_needed(int i)
         return number_of_forms_needed[i];
     else return 0;
 }
+
+float Problem::get_plane_width()
+{
+    #ifdef DEBUG
+        printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+    #endif
+
+    return size_of_sheet_x;
+}
+
+float Problem::get_plane_height()
+{
+    #ifdef DEBUG
+        printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+    #endif
+
+    return size_of_sheet_y;
+}
+
+AbstractForm* Problem::get_abstract_form_at_position(int i)
+{
+    #ifdef DEBUG
+        printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+    #endif
+
+    if (i >= 0 && i < number_of_different_forms)
+        return &abstract_forms[i];
+    else return 0;
+}
