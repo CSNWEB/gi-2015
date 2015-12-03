@@ -3,11 +3,14 @@
 #include "RandomizedFormFitter.hpp"
 #include "outputHandler.hpp"
 #include "validator.hpp"
+#include "tests.hpp"
 #include <iostream>
 
 int main(int argc, char* argv[])
 {
     // A square of length one. One corner is at the origin.
+    
+    Tests::test_everything();
     
     std::vector<Point> triangle_points {
         Point(0.0, 1.0),
