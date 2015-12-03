@@ -1,4 +1,4 @@
-/**
+/*!
  *  Class Point
  *
  *  Represents a point in two dimensional space.
@@ -27,14 +27,14 @@ private:
 	
 public:
     
-    /**
+    /*!
      *  Default Constructor.
      *
      *  Initializes a point at the origin in two dimensional space.
      */
 	Point(){x=0; y=0;};
     
-    /**
+    /*!
      *  Constructor that initializes the point with the passed x and y coordinates.
      */
 	Point(float x, float y){this->x = x; this->y = y;};
@@ -53,7 +53,7 @@ public:
      */
 	float get_y() {return y;};
 	
-    /**
+    /*!
      *  Calculates the euclidian distance between the receiver and the passed
      *  Point other.
      *
@@ -63,7 +63,7 @@ public:
      */
 	float get_distance_to(Point *other){return sqrt((x-other->x)*(x-other->x)+(y-other->y)*(y-other->y));};
 
-	/**
+	/*!
 	 *  Function to check if this point is left of line defined by p_start -> p_end
 	 *
 	 * @param p_start 	Pointer to point defining start of line
@@ -75,7 +75,7 @@ public:
 	 */
 	int is_left_of(Point *p_start, Point *p_end);
 	
-    /**
+    /*!
      *  Moves the point in two dimensional space.
      *
      *  @param dx The amount by which the point is moved on the x-axis.
@@ -83,7 +83,7 @@ public:
      */
 	void move_rel(float dx, float dy);
     
-    /**
+    /*!
      *  Rotates a point around a given center.
      *
      *  @param center_x The x-coordinate of the center around which the point is rotated.

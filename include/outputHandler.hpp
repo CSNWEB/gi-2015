@@ -40,7 +40,7 @@ private:
 	string filename_svg;
 
 public:
-	/**
+	/*!
 	 *  Constructor
 	 *
 	 *  @param p 			a pointer to the problem
@@ -50,12 +50,12 @@ public:
 	 */
 	OutputHandler(Problem *p, Setting *s, string name_txt = "out.txt", string name_svg = "out.svg");
 
-	/**
+	/*!
 	 *  writes the current setting of problem in defined format into a txt file
 	 */
 	void write_setting_to_txt();
 
-	/**
+	/*!
 	 *  writes the current setting of problem to a svg file
 	 */
 	void write_setting_to_svg();

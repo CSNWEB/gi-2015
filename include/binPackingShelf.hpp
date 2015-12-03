@@ -16,50 +16,50 @@ class BinPacking;
 class BinPackingShelf
 {
 private:
-	/**
+	/*!
  	 *  Pointer to the packing this shelf is a part of
 	 */
  	BinPacking *packing;
 
-	/**
+	/*!
 	 *  The index of the plane this shelf is placed on:
 	 */
 	int index_of_plane;
 
-	/**
+	/*!
 	 *  The indices of all forms placed on this shelf,
 	 *  in order from left to right.
 	 */
 	vector<int> indices_of_forms;
 
-	/**
+	/*!
 	 *  The position in y-dim of this shelf on its plane
 	 */
 	float offset_y;
 
-	/**
+	/*!
 	 *  If this plane is a sub-shelf: the x-position of beginning of plane
 	 */
 	float offset_x;
 
-	/**
+	/*!
 	 *  If this shelf is a sub-shelf: is it rotated (by 90 degrees)
 	 */
 	bool is_rotated_subshelf;
 
-	/**
+	/*!
 	 *  The height of the shelf,
 	 *  i.e. the maximum size in y-dimension for any form that can be placed on this shelf
 	 */
 	float height;
 
-	/**
+	/*!
 	 *	The width of the shelf,
 	 *  i.e. the remaining width on this shelf at creation
 	 */
 	float width;
 
-	/**
+	/*!
 	 *  The remaining free width on this shelf that can be filled,
 	 *  i.e. the maximum width for any form that can be placed on this shelf
 	 */
@@ -72,7 +72,7 @@ public:
 	 */
 	BinPackingShelf(){};
 
-	/**
+	/*!
 	 *  Constructor that creates an empty shelf on a given plane with specified position and size
 	 *  has a specific offset in x- and y- dim and also sets if this subshelf is rotated or not
 	 *
@@ -85,7 +85,7 @@ public:
 	 */
 	BinPackingShelf(int plane, float width, float height, float offset_x, float offset_y);
 
-	/**
+	/*!
 	 *  Adds a form on this shelf. Also checks if there is enough space on this shelf
 	 *  
 	 *  @param f 			Pointer to the form that should be added to this shelf
@@ -97,7 +97,7 @@ public:
 	 */
 	float add_form(AbstractForm *f, int index);
 
-	/**
+	/*!
 	 *  Checks if a form could be placed on this sheld
 	 *
 	 *  @param f 		Pointer to the form that should be checked
@@ -106,7 +106,7 @@ public:
 	 */
 	bool check_if_fit(AbstractForm *f);
 
-	/**
+	/*!
 	 *  Getter for x-offset of shelf on plane:
 	 */
 	float get_offset_x();
@@ -125,12 +125,12 @@ public:
 	 */
 	float get_width();
 
-	/**
+	/*!
 	 *  Getter for remaining width of shelf
 	 */
 	float get_remaining_width();
 
-	/**
+	/*!
 	 *  Get the index of the plane this shelf is placed on
 	 */
 	int get_plane();
@@ -140,7 +140,7 @@ public:
 	 */
 	int get_number_of_forms_on_shelf();
 
-	/**
+	/*!
 	 *  Get index of AbstractForm of ith form on shelf, i.e. a getter for an int in vector<int> indices_of_forms
 	 *
 	 *  @param index_of_form 	the position of the form on this shelf, i.e. the index in vector<int> indices_of_forms

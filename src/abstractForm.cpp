@@ -37,7 +37,7 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 
 	compute_lambda_and_mu(true);
 
-	rotate_convex_hull_to_configuration(find_configuration_with_minimum_bounding_box());
+//	rotate_convex_hull_to_configuration(find_configuration_with_minimum_bounding_box());
     
     compute_size_of_area();
 }

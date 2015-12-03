@@ -38,12 +38,12 @@ public:
      */
 	Setting(Problem *p);
 
-    /**
+    /*!
      *  Returns number_of_planes
      */
     int get_number_of_planes();
 
-    /**
+    /*!
      *  Get a specific Plane
      *
      *  @param i 	The number of the plane to be return
@@ -56,13 +56,20 @@ public:
         else
             return NULL;
     };
+    
+    /*!
+     *  Returns the problem that the setting was created for.
+     *
+     *  @return A Problem to which this Setting might be a solution.
+     */
+    Problem *get_problem(){return problem;};
 
-    /**
+    /*!
      *  Adds a new, empty plane to the setting
      */
     void add_plane();
 
-    /**
+    /*!
      *  Adds a form to a plane at a specific position
      *
      *  @param index_of_plane 		the index of the plane to which the new form should be added
@@ -73,14 +80,14 @@ public:
      */
     void add_form_to_plane_at_position(int index_of_plane, int index_of_form, float dx, float dy, float rot);
 
-    /**
+    /*!
      *  Compute the total efficiency (i.e. utilization) of the current setting
      *
      *  @return     the utilitation as percentage within [0,1]
      */
     float get_total_utilization();
 
-    /**
+    /*!
      *  Function to create an initial legal setting
      *  places every form on its own sheet
      */

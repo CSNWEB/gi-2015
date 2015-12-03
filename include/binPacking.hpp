@@ -12,7 +12,7 @@
 
 using namespace std;
 
-/**
+/*!
  *  Struct FormComparator
  *
  *  Struct used in sorting forms by their x- and y- dimensions
@@ -32,6 +32,10 @@ struct FormComparator
 
 	bool operator()(int index_of_box_1, int index_of_box_2)
 	{
+		#ifdef DEBUG
+			printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+		#endif
+
 		float smaller_edge_box_1;
 		float smaller_edge_box_2;
 		float bigger_edge_box_1;
@@ -72,37 +76,37 @@ struct FormComparator
 class BinPacking
 {
 private:
-	/**
+	/*!
 	 *  A pointer to the problem to acess forms and the size of a plane
 	 */
 	Problem *problem;
 
-	/**
+	/*!
 	 *  The indices of the abstract forms, sorted by height (and width, if heights are equal) of the bounding box.
 	 */
 	vector<int> all_forms_sorted_by_size;
 
-	/**
+	/*!
 	 *  vektor to organize the planes during the algorithm
 	 *  mainly for checking the remaining space 
 	 */
 	vector<BinPackingPlane> bp_planes;
 
-	/**
+	/*!
 	 *  vektor to organize all shelves during the algorithm
 	 *  
 	 *  This should be a priority queue!
 	 */
 	vector<BinPackingShelf> bp_shelves;
 
-	/**
+	/*!
 	 *  Sort all forms by the smaller edge and store the sorted indices in 
 	 *	all_forms_sorted_by_size
 	 */
 	void create_initial_sorting();
 
 public:
-	/**
+	/*!
 	 *  Constructor
 	 *
 	 *  Needs a pointer to an instance of class Problem, otherwise no bin packing can be computed
@@ -111,7 +115,7 @@ public:
 	 */
 	BinPacking(Problem *p);
 
-	/**
+	/*!
 	 *  Use 2-dimensional bin-packing with bounding boxes to create a setting
 	 *  algorithm sorts bounding boxes by height (and width, if heights are equal)
 	 *  then for every form is placed on the first shelf it fits on.
