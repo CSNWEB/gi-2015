@@ -1,3 +1,13 @@
+/*!
+ *  class BinPacking
+ *
+ *  This implements a 2-dimensional bin-packing-algorithm.
+ *  The algorithm uses shelfs that are filled by forms from left to right, considering only the bounding boxes of the forms.
+ *  Starting with the forms with maximum size of the smaller dimension and iterating through all forms by decreasing size, the algorithm
+ *  places each form greedily on the first shelf the form fits on. If there is no such shelf, a new shelf is created on the first plane with
+ *  sufficient space. If there is no such plane, a new plane is created.
+ */
+
 #ifndef BINPACKING_H
 #define BINPACKING_H
 

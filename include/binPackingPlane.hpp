@@ -1,3 +1,9 @@
+/*!
+ *  class BinPackingPlane
+ *
+ *  A binpackingplane is used by the binpacking-algorithm to keep track of the shelfs placed on each plane, and to determine if a shelf of a given height can be placed on a given plane.
+ */
+
 #ifndef BINPACKINGPLANE_H
 #define BINPACKINGPLANE_H
 

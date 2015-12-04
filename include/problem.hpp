@@ -14,11 +14,9 @@
 #define PROBLEM_H
 
 #include <vector>
-//#include <list>
 
 #include "abstractForm.hpp"
 #include "plane.hpp"
-//#include "2DBP_shelf.hpp"
 
 using namespace std;
 
@@ -50,7 +48,7 @@ private:
      */
     vector<int> number_of_forms_needed;
 
-    /**
+    /*!
      *  Check if a given form is small enough to fit on a plane,
      *  i.e. there is a rotation such that the bounding box of the rotated form is in both dimension at most as big as the plane
      *  If it fits, the optimal angle is approximated (i.e. an angle such that the area of the bounding box is minimal)
@@ -121,7 +119,7 @@ public:
      */
     int get_total_number_of_all_forms();
     
-    /**
+    /*!
      *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
      *
      *  @return     true if problem is solveable,

@@ -1,3 +1,9 @@
+/*!
+ *  class Plane
+ *
+ *  A plane is part of a setting, it describes which forms are placed on a specific plane, and how these forms are positioned.
+ */
+
 #ifndef PLANE_H
 #define PLANE_H
 

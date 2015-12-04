@@ -1,10 +1,12 @@
+/*!
+ *  class BinPackingShelf
+ *
+ *  A shelf used in the 2-dim. bin-packing problem. It is a representation of a retangular subset of a plane. 
+ *  During the algorithm, shelfs are created and handled as 1-dimensional subtasks
+ */
+
 #ifndef BinPackingShelf_H
 #define BinPackingShelf_H
-
-/**
- *  A shelf used in the 2-dim. bin-packing problem
- *  this is a representation of a retangular subset of a plane
- */
 
 #include <vector>
 
@@ -111,16 +113,17 @@ public:
 	 */
 	float get_offset_x();
 
-	/**
+	/*!
 	 *  Getter for x-offset of shelf on plane:
 	 */
 	float get_offset_y();
 
-	/**
+	/*!
 	 *  Getter for height of shelf
 	 */
 	float get_height();
-	/**
+	
+	/*!
 	 *	Getter for width of shelf
 	 */
 	float get_width();
