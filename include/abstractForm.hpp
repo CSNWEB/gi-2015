@@ -253,7 +253,7 @@ public:
     /*!
      *  The indices of the points that are part of the convex hull.
      *
-     *  @return A vector containing the indices of the points of the convex hull.
+     *  @return A vector containing the indices of all points of the convex hull, in (counter-clockwise) order.
      */
     vector<int> *get_convex_hull()
     {
@@ -263,11 +263,23 @@ public:
     /*!
      *  Get the certain point of the ones that make up the form.
      *
-     *  @param index The index of the point in the array containing the points of the form.
+     *  @param index    The index of the point in the array containing the points of the form.
      *
-     *  @return The "Point" at the specified index.
+     *  @return         The "Point" at the specified index.
      */
 	Point get_point_at_index(int index){return points[index];};
+
+    /*!
+     *  Check if this form fits on a plane with given dimensions, 
+     *  i.e. check if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane
+     *
+     *  @param plane_width      the width of the plane for which the form should be checked
+     *  @param plane_height     the height of the plane for which the form should be checked
+     *
+     *  @return                 an int: if a legal rotation is found, the int specifies a rotation angle (in degrees), for which the form can be placed on the plane, and the area of the bounding box is minimal
+     *                          if no legal rotation is found (i.e. the form is too big to be placed on the plane), -1 is returned
+     */
+    int check_for_optimal_legal_rotation(float plane_width, floatplane_height);
 
     #ifdef USE_SFML
 
