@@ -184,7 +184,9 @@ private:
     void rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull);
 
     /*!
-     *  Move a form such all points have x- and y-coordinates > 0
+     *  Move a form such all points have x- and y-coordinates >= 0
+     *  and also ensure that width >= height, by flipping form at axis x=y (if necessary).
+     *  Needs curent minimal position!
      *
      *  @param x_min    current minimal position of any point on x-axis
      *  @param y_min    current minimal position of any point on y-axis
@@ -199,7 +201,7 @@ public:
 	AbstractForm(){};
     
     /*!
-     *  Constructor that initializes the form with a name and its points
+     *  Constructor that initializes the form with a name and its points.
      *
      *  @param name     A string that represents the name of the form.
      *  @param points   A vector of type "Point" that form the form.
@@ -279,7 +281,7 @@ public:
      *  @return                 an int: if a legal rotation is found, the int specifies a rotation angle (in degrees), for which the form can be placed on the plane, and the area of the bounding box is minimal
      *                          if no legal rotation is found (i.e. the form is too big to be placed on the plane), -1 is returned
      */
-    int check_for_optimal_legal_rotation(float plane_width, floatplane_height);
+    int check_for_optimal_legal_rotation(float plane_width, float plane_height);
 
     #ifdef USE_SFML
 

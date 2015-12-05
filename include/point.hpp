@@ -91,6 +91,12 @@ public:
      *  @param angle    The angle by which the point will be rotated around the passed center.
      */
 	void rotate(float center_x, float center_y, float angle);
+
+    /*!
+     *  Flips a point along x=y-axis, i.e. swap x- and y-coordinate.
+     *  Needed if whole form should be flipped, e.g. when normalize form such that width >= height.
+     */
+    void flip();
 };
 
 #endif

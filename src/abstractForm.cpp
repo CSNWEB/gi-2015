@@ -37,7 +37,7 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 
 	compute_lambda_and_mu(true);
 
-//	rotate_convex_hull_to_configuration(find_configuration_with_minimum_bounding_box());
+	rotate_convex_hull_to_configuration(find_configuration_with_minimum_bounding_box());
     
     compute_size_of_area();
 }
@@ -464,10 +464,10 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 		printf("\tx_range = %.2f - %.2f\n\ty_range = %.2f - %.2f\n",x_min,x_max,y_min,y_max);
 	#endif
 
-	normalize_position(x_min, y_min);
-
 	this->dx = x_max-x_min;
 	this->dy = y_max-y_min;
+
+	normalize_position(x_min, y_min);
 }
 
 void AbstractForm::normalize_position(float x_min, float y_min)
@@ -476,13 +476,32 @@ void AbstractForm::normalize_position(float x_min, float y_min)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	bool flip = false;
+
+	if (dx < dy)
+		flip = true;
+
 	for (int i=0; i<points.size(); ++i)
 	{
 		points[i].move_rel(-x_min, -y_min);
 
+		if (flip)
+			points[i].flip();
+		
 		#ifdef DEBUG
 			printf("\tPoint %i moved to normalized position %.2f/%.2f\n", i, points[i].get_x(), points[i].get_y());
 		#endif
+	}
+
+	if (flip)
+	{
+		#ifdef DEBUG
+			printf("\tForm got flipped\n");
+		#endif
+
+		float tmp = dx;
+		dx = dy;
+		dy = tmp;
 	}
 }
 

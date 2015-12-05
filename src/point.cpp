@@ -28,6 +28,13 @@ void Point::rotate(float center_x, float center_y, float angle)
     y = ynew + center_y;
 }
 
+void Point::flip()
+{
+	float tmp = x;
+	x = y;
+	y = tmp;
+}
+
 int Point::is_left_of(Point *p_start, Point *p_end)
 {
 	#ifdef DEBUG
