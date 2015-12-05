@@ -14,6 +14,7 @@
 
 #include "point.hpp"
 #include "plane.hpp"
+#include "global.hpp"
 
 #ifdef USE_SFML
     #include <SFML/Graphics.hpp>

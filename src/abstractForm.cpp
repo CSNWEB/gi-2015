@@ -358,6 +358,24 @@ int AbstractForm::find_configuration_with_minimum_bounding_box()
 	return optimal_configuration;
 }
 
+int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plane_height)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	if (dx < plane_width + TOLERANCE && dy < plane_height + TOLERANCE)
+		return 0;
+	else if (dy < plane_width + TOLERANCE && dx < plane_height + TOLERANCE)
+		return 90;
+	else
+	{
+		// "exact" computation, i.e. test every angle between 0 and 90 degrees
+		return -1;
+	}
+
+}
+
 void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull)
 {
 	#ifdef DEBUG
