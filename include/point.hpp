@@ -8,8 +8,7 @@
 
 #include <math.h>
 #include <stdio.h>
-
-#define PI 3.1415926535
+#include "global.hpp"
 
 class Point
 {
@@ -84,13 +83,20 @@ public:
 	void move_rel(float dx, float dy);
     
     /*!
-     *  Rotates a point around a given center.
+     *  Rotates the point around a given center.
      *
      *  @param center_x The x-coordinate of the center around which the point is rotated.
      *  @param center_y The y-coordinate of the center around which the point is rotated.
-     *  @param angle    The angle by which the point will be rotated around the passed center.
+     *  @param angle    The angle in degree by which the point will be rotated around the passed center.
      */
 	void rotate(float center_x, float center_y, float angle);
+
+    /*!
+     *  Rotates the point around the origin (0/0)
+     *
+     *  @param angle    The angle in degree by which the point will be rotated around the passed center.
+     */
+    void rotate(float angle);
 
     /*!
      *  Flips a point along x=y-axis, i.e. swap x- and y-coordinate.

@@ -185,6 +185,13 @@ private:
     void rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull);
 
     /*!
+     *  Rotates the abstract form by a given angle in degrees
+     *
+     *  @param degrees      the angle in degrees defining the rotation
+     */
+    void rotate_form_by_degrees(int degrees);
+
+    /*!
      *  Move a form such all points have x- and y-coordinates >= 0
      *  and also ensure that width >= height, by flipping form at axis x=y (if necessary).
      *  Needs curent minimal position!
@@ -273,8 +280,8 @@ public:
 	Point get_point_at_index(int index){return points[index];};
 
     /*!
-     *  Check if this form fits on a plane with given dimensions, 
-     *  i.e. check if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane
+     *  Check if this form fits on a plane with given dimensions.
+     *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane
      *
      *  @param plane_width      the width of the plane for which the form should be checked
      *  @param plane_height     the height of the plane for which the form should be checked

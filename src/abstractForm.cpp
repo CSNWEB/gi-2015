@@ -370,8 +370,60 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 		return 90;
 	else
 	{
-		// "exact" computation, i.e. test every angle between 0 and 90 degrees
-		return -1;
+		int optimal_angle = -1;
+		float optimal_area_of_bounding_box = -1;
+		for (int angle = 1; angle < 90; ++angle)
+		{
+			#ifdef DEBUG
+				printf("\tCheck angle %i degrees\n", angle);
+			#endif
+
+			float x_min = 0;
+			float x_max = 0;
+			float y_min = 0;
+			float y_max = 0;
+			for (int point_index = 0; point_index < points.size(); ++point_index)
+			{
+				float rotated_x = points[point_index].get_x()*cos(angle * PI/180) - points[point_index].get_y()*sin(angle * PI/180);
+				float rotated_y = points[point_index].get_x()*sin(angle * PI/180) + points[point_index].get_y()*cos(angle * PI/180);
+				if (point_index == 0)
+				{
+					x_min = rotated_x;
+					x_max = rotated_x;
+					y_min = rotated_y;
+					y_max = rotated_y;
+				}
+				else
+				{
+					if (x_min > rotated_x)
+						x_min = rotated_x;
+					else if (x_max < rotated_x)
+						x_max = rotated_x;
+					if (y_min > rotated_y)
+						y_min = rotated_y;
+					else if (y_max < rotated_y)
+						y_max = rotated_y;
+				}
+			}
+
+			float current_dx = x_max-x_min;
+			float current_dy = y_max-y_min;
+
+			if (current_dx < (plane_width+TOLERANCE) && current_dy < (plane_height+TOLERANCE))
+			{
+				float area_of_bounding_box = current_dx * current_dy;
+				if (optimal_angle < 0 || area_of_bounding_box < optimal_area_of_bounding_box)
+				{
+					#ifdef DEBUG
+						printf("\tFound new optimal legal configuration with area %.2f\n", area_of_bounding_box);
+					#endif
+
+					optimal_area_of_bounding_box = area_of_bounding_box;
+					optimal_angle = angle;
+				}
+			}
+		}
+		return optimal_angle;
 	}
 
 }
@@ -486,6 +538,32 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 	this->dy = y_max-y_min;
 
 	normalize_position(x_min, y_min);
+}
+
+void AbstractForm::rotate_form_by_degrees(int degrees)
+{
+	float min_x = 0;
+	float min_y = 0;
+	for (int point_index = 0; point_index < points.size(); ++point_index)
+	{
+		points[point_index].rotate(degrees);
+		float this_x = points[0].get_x();
+		float this_y = points[0].get_y();
+		if (point_index == 0)
+		{
+			min_x = this_x;
+			min_y = this_y;
+		}
+		else
+		{
+			if (this_x < min_x)
+				min_x = this_x;
+			if (this_y < min_y)
+				min_y = this_y;
+		}
+	}
+
+	normalize_position(min_x, min_y);
 }
 
 void AbstractForm::normalize_position(float x_min, float y_min)
