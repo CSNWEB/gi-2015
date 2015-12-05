@@ -7,6 +7,7 @@
  *  If the basic unit is considered to be centimeters, 1E-4 is equal to a micrometer.
  *  We assume this is an irrelevant (or even unmeasureable) error in practical applications.
  */
-const float TOLERANCE = 1E-4;
+const float TOLERANCE 	= 1E-4;
+const float PI 			= 3.14159265;
 
 #endif
