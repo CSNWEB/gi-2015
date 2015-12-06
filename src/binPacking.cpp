@@ -154,7 +154,7 @@ Setting BinPacking::get_packed_setting()
 					#endif
 
 					bp_shelves.push_back(BinPackingShelf(plane_index, size_x, size_y, offset_x, offset_y));
-					bp_planes[plane_index].add_shelf(height_of_current_form);
+					bool success = bp_planes[plane_index].add_shelf(height_of_current_form);
 
 					bp_shelves[bp_shelves.size()-1].add_form(current_form, form_index);
 
