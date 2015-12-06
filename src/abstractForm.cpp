@@ -104,6 +104,28 @@ void AbstractForm::compute_size_of_area()
     size_of_area = fabs(size_of_area);
 }
 
+float AbstractForm::compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2)
+{
+	float p1_orig_x = points[index_of_point_1].get_x();
+	float p1_orig_y = points[index_of_point_1].get_y();
+
+	float p2_orig_x = points[index_of_point_2].get_x();
+	float p2_orig_y = points[index_of_point_2].get_y();
+
+	float d1_squared = ((p1_orig_x - p2_orig_x) * (p1_orig_x - p2_orig_x)) + ((p1_orig_y - p2_orig_y) * (p1_orig_y - p2_orig_y));
+	float d1 = points[index_of_point_1].get_distance_to(&points[index_of_point_2]);
+
+	float p2_rotated_x = p1_orig_x;
+	float p2_rotated_y = p1_orig_y + d1;
+
+	float d2_squared = ((p2_orig_x - p2_rotated_x) * (p2_orig_x - p2_rotated_x)) + ((p2_orig_y- p2_rotated_y) * (p2_orig_y - p2_rotated_y));
+
+	// using law of cosines:
+	float cos_of_angle = - (d2_squared - 2*d1_squared)/(4*d1);
+
+	return acos(cos_of_angle) * 180.0 / PI;
+}
+
 void AbstractForm::compute_lambda_and_mu(bool consider_only_convex_hull)
 {
 	#ifdef DEBUG

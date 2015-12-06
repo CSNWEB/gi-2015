@@ -60,7 +60,7 @@ public:
      *
      *  @return A float resembling the euclidian distance between the receiver and other.
      */
-	float get_distance_to(Point *other){return sqrt((x-other->x)*(x-other->x)+(y-other->y)*(y-other->y));};
+	float get_distance_to(Point *other);
 
 	/*!
 	 *  Function to check if this point is left of line defined by p_start -> p_end

@@ -127,6 +127,17 @@ private:
     void compute_size_of_area();
 
     /*!
+     *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
+     *  and the second point two a larger x-coordinate
+     *
+     *  @param index_of_point_1     the index of the first point in vector<Point> points
+     *  @param index_of_point_2     the index of the second point in vector<Point> points
+     *
+     *  @return                     the angle defining the specified rotation in degrees
+     */
+    float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
+
+    /*!
      *  compute the values for:
      *      relative_point_position_lambda,
      *      relative_point_position_mu

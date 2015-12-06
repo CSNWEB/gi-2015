@@ -42,6 +42,11 @@ void Point::rotate(float angle)
 
 }
 
+float Point::get_distance_to(Point *other)
+{
+	return sqrt((x-other->x)*(x-other->x)+(y-other->y)*(y-other->y));
+}
+
 void Point::flip()
 {
 	float tmp = x;
