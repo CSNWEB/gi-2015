@@ -55,7 +55,7 @@ public:
     /*!
      * consructor that sets the size of the plane
      */
-    Plane(float dx, float dy){this->dx = dx; this->dy = dy;}
+    Plane(float dx, float dy);
     
     /*!
      *  Get number of forms on this plane

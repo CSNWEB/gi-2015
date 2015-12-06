@@ -10,34 +10,38 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	this->points = points;
 	number_of_points = points.size();
 
-	float x_min = points[0].get_x();
+	min_x = points[0].get_x();
 	float x_max = points[0].get_x();
-	float y_min = points[0].get_y();
+	min_y = points[0].get_y();
 	float y_max = points[0].get_y();
 	for (int i=1; i<number_of_points; ++i)
 	{
-		if (points[i].get_x() < x_min)
-			x_min = points[i].get_x();
+		if (points[i].get_x() < min_x)
+			min_x = points[i].get_x();
 		else if (points[i].get_x() > x_max)
 			x_max = points[i].get_x();
 
-		if (points[i].get_y() < y_min)
-			y_min = points[i].get_y();
+		if (points[i].get_y() < min_y)
+			min_y = points[i].get_y();
 		else if (points[i].get_y() > y_max)
 			y_max = points[i].get_y();
 	}
-	dx = x_max-x_min;
-	dy = y_max-y_min;
+	dx = x_max-min_x;
+	dy = y_max-min_y;
+
+	#ifdef DEBUG
+		printf("Created abstractForm with bounding box %.2f/%.2f - %.2f/%.2f\n", min_x, min_y, min_x + dx, min_y + dy);
+	#endif
 
 	convex_hull = vector<int>();
 
 	compute_convex_hull();
 
-	compute_lambda_and_mu();
+	//compute_lambda_and_mu();
 
-	compute_lambda_and_mu(true);
+	//compute_lambda_and_mu(true);
 
-	rotate_convex_hull_to_configuration(find_configuration_with_minimum_bounding_box());
+	//rotate_convex_hull_to_configuration(find_configuration_with_minimum_bounding_box());
     
     compute_size_of_area();
 }
@@ -364,68 +368,81 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (dx < plane_width + TOLERANCE && dy < plane_height + TOLERANCE)
-		return 0;
-	else if (dy < plane_width + TOLERANCE && dx < plane_height + TOLERANCE)
-		return 90;
-	else
+	int optimal_angle = -1;
+	float optimal_area_of_bounding_box = -1;
+	for (int angle = 0; angle < 90; ++angle)
 	{
-		int optimal_angle = -1;
-		float optimal_area_of_bounding_box = -1;
-		for (int angle = 1; angle < 90; ++angle)
+		#ifdef DEBUG
+			printf("\tCheck angle %i degrees\n", angle);
+		#endif
+
+		float x_min = 0;
+		float x_max = 0;
+		float y_min = 0;
+		float y_max = 0;
+		for (int point_index = 0; point_index < convex_hull.size(); ++point_index)
 		{
-			#ifdef DEBUG
-				printf("\tCheck angle %i degrees\n", angle);
-			#endif
-
-			float x_min = 0;
-			float x_max = 0;
-			float y_min = 0;
-			float y_max = 0;
-			for (int point_index = 0; point_index < points.size(); ++point_index)
+			float rotated_x = (points[convex_hull[point_index]].get_x() * cos(angle * PI/180)) - (points[convex_hull[point_index]].get_y() * sin(angle * PI/180));
+			float rotated_y = (points[convex_hull[point_index]].get_x() * sin(angle * PI/180)) + (points[convex_hull[point_index]].get_y() * cos(angle * PI/180));
+			if (point_index == 0)
 			{
-				float rotated_x = points[point_index].get_x()*cos(angle * PI/180) - points[point_index].get_y()*sin(angle * PI/180);
-				float rotated_y = points[point_index].get_x()*sin(angle * PI/180) + points[point_index].get_y()*cos(angle * PI/180);
-				if (point_index == 0)
-				{
-					x_min = rotated_x;
-					x_max = rotated_x;
-					y_min = rotated_y;
-					y_max = rotated_y;
-				}
-				else
-				{
-					if (x_min > rotated_x)
-						x_min = rotated_x;
-					else if (x_max < rotated_x)
-						x_max = rotated_x;
-					if (y_min > rotated_y)
-						y_min = rotated_y;
-					else if (y_max < rotated_y)
-						y_max = rotated_y;
-				}
+				x_min = rotated_x;
+				x_max = rotated_x;
+				y_min = rotated_y;
+				y_max = rotated_y;
 			}
-
-			float current_dx = x_max-x_min;
-			float current_dy = y_max-y_min;
-
-			if (current_dx < (plane_width+TOLERANCE) && current_dy < (plane_height+TOLERANCE))
+			else
 			{
-				float area_of_bounding_box = current_dx * current_dy;
-				if (optimal_angle < 0 || area_of_bounding_box < optimal_area_of_bounding_box)
-				{
-					#ifdef DEBUG
-						printf("\tFound new optimal legal configuration with area %.2f\n", area_of_bounding_box);
-					#endif
-
-					optimal_area_of_bounding_box = area_of_bounding_box;
-					optimal_angle = angle;
-				}
+				if (x_min > rotated_x)
+					x_min = rotated_x;
+				else if (x_max < rotated_x)
+					x_max = rotated_x;
+				if (y_min > rotated_y)
+					y_min = rotated_y;
+				else if (y_max < rotated_y)
+					y_max = rotated_y;
 			}
 		}
-		return optimal_angle;
-	}
 
+		float current_dx = x_max-x_min;
+		float current_dy = y_max-y_min;
+
+		float area_of_bounding_box = current_dx * current_dy;
+
+		if (current_dx < (plane_width+TOLERANCE) && current_dy < (plane_height+TOLERANCE))
+		{
+			#ifdef DEBUG
+				printf("\tRotating by %i degrees is a legal rotation\n", angle);
+			#endif
+
+			if (optimal_angle < 0 || area_of_bounding_box < optimal_area_of_bounding_box)
+			{
+				#ifdef DEBUG
+					printf("\t\tFound new optimal legal configuration with area %.2f\n", area_of_bounding_box);
+				#endif
+
+				optimal_area_of_bounding_box = area_of_bounding_box;
+				optimal_angle = angle;
+			}
+		}
+		if (current_dy < (plane_width+TOLERANCE) && current_dx < (plane_height+TOLERANCE))
+		{
+			#ifdef DEBUG
+				printf("\tRotating by %i degrees is a legal rotation\n", angle+90);
+			#endif
+
+			if (optimal_angle < 0 || area_of_bounding_box < optimal_area_of_bounding_box)
+			{
+				#ifdef DEBUG
+					printf("\t\tFound new optimal legal configuration with area %.2f\n", area_of_bounding_box);
+				#endif
+
+				optimal_area_of_bounding_box = area_of_bounding_box;
+				optimal_angle = angle+90;
+			}
+		}
+	}
+	return optimal_angle;
 }
 
 void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull)
@@ -463,9 +480,9 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 
 	float p3_x, p3_y;
 
-	float x_min = 0;
+	min_x = 0;
 	float x_max = p2_x;
-	float y_min = 0;
+	min_y = 0;
 	float y_max = 0;
 
 	// compute new position of first point of form after pair of points from convex hull
@@ -492,12 +509,12 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 		p3_x = p2_x + (lambda * dx) + (mu * dy);
 		p3_y = p2_y - (mu * dx) + (lambda * dy);
 
-		if (p3_x < x_min)
-			x_min = p3_x;
+		if (p3_x < min_x)
+			min_x = p3_x;
 		else if (p3_x > x_max)
 			x_max = p3_x;
-		if (p3_y < y_min)
-			y_min = p3_y;
+		if (p3_y < min_y)
+			min_y = p3_y;
 		else if (p3_y > y_max)
 			y_max = p3_y;
 
@@ -531,42 +548,57 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 
 	// move form such that minimal positions in x and y dimension are 0
 	#ifdef DEBUG
-		printf("\tx_range = %.2f - %.2f\n\ty_range = %.2f - %.2f\n",x_min,x_max,y_min,y_max);
+		printf("\tx_range = %.2f - %.2f\n\ty_range = %.2f - %.2f\n",min_x,x_max,min_y,y_max);
 	#endif
 
-	this->dx = x_max-x_min;
-	this->dy = y_max-y_min;
-
-	normalize_position(x_min, y_min);
+	this->dx = x_max-min_x;
+	this->dy = y_max-min_y;
 }
 
 void AbstractForm::rotate_form_by_degrees(int degrees)
 {
-	float min_x = 0;
-	float min_y = 0;
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	min_x = 0;
+	float max_x = 0;
+	min_y = 0;
+	float max_y = 0;
 	for (int point_index = 0; point_index < points.size(); ++point_index)
 	{
 		points[point_index].rotate(degrees);
-		float this_x = points[0].get_x();
-		float this_y = points[0].get_y();
+		float this_x = points[point_index].get_x();
+		float this_y = points[point_index].get_y();
+
 		if (point_index == 0)
 		{
 			min_x = this_x;
+			max_x = this_x;
 			min_y = this_y;
+			max_y = this_y;
 		}
 		else
 		{
 			if (this_x < min_x)
 				min_x = this_x;
+			else if (this_x > max_x)
+				max_x = this_x;
 			if (this_y < min_y)
 				min_y = this_y;
+			else if (this_y > max_y)
+				max_y = this_y;
 		}
 	}
+	dx = max_x-min_x;
+	dy = max_y-min_y;
 
-	normalize_position(min_x, min_y);
+	#ifdef DEBUG
+		printf("\tRotated form into positio x_min = %.2f, dx = %.2f - y_min = %.2f, dy = %.2f\n", min_x, dx, min_y, dy);
+	#endif
 }
 
-void AbstractForm::normalize_position(float x_min, float y_min)
+void AbstractForm::normalize_position(float plane_width, float plane_height)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -574,12 +606,12 @@ void AbstractForm::normalize_position(float x_min, float y_min)
 
 	bool flip = false;
 
-	if (dx < dy)
+	if (dx < dy && dy < plane_width)
 		flip = true;
 
 	for (int i=0; i<points.size(); ++i)
 	{
-		points[i].move_rel(-x_min, -y_min);
+		points[i].move_rel(-min_x, -min_y);
 
 		if (flip)
 			points[i].flip();
@@ -588,6 +620,9 @@ void AbstractForm::normalize_position(float x_min, float y_min)
 			printf("\tPoint %i moved to normalized position %.2f/%.2f\n", i, points[i].get_x(), points[i].get_y());
 		#endif
 	}
+
+	min_x = 0;
+	min_y = 0;
 
 	if (flip)
 	{
@@ -739,7 +774,7 @@ int AbstractForm::get_number_of_points()
 		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	return number_of_points;
+	return points.size();
 }
 
 float AbstractForm::get_dx()

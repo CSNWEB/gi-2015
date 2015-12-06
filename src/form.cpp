@@ -25,6 +25,11 @@ Form::Form(AbstractForm* mother)
 	{
 		points[i] = mother->get_point_at_index(i);
 		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
+
+		#ifdef DEBUG
+			printf("\tcheck new edge\n");
+			edges[i-1]._d_print_edge_to_console();
+		#endif
 	}
 
 	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
@@ -53,12 +58,23 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)
 
 	for (int i=1; i<number_of_edges; ++i)
 	{
+		#ifdef DEBUG
+			printf("\tCreate point[%i]\n", i);
+		#endif
+
 		points[i] = Point(mother->get_point_at_index(i));
 		points[i].move_rel(pos_x, pos_y);
 		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
+
+		#ifdef DEBUG
+			printf("\tcheck new edge\n");
+			edges[i-1]._d_print_edge_to_console();
+		#endif
 	}
 
 	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
+
+	_d_print_edges_to_console();
 }
 
 bool Form::check_for_overlap(Form *other)
@@ -153,6 +169,10 @@ Point Form::get_centroid()
     x /= points.size();
     y /= points.size();
 
+    #ifdef DEBUG
+    	printf("Finished get_centroid\n");
+    #endif
+
     return Point(x, y);
 }
 
@@ -175,6 +195,11 @@ void Form::rotate(float center_x, float center_y, float angle)
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
+
+	x_min = center_x;
+	x_max = center_x;
+	y_min = center_y;
+	y_max = center_y;
 
 	for (int i=0; i<points.size(); ++i)
 	{

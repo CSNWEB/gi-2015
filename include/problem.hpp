@@ -38,6 +38,11 @@ private:
     int number_of_different_forms;
 
     /*!
+     *  The indices of all abstract forms, that are too large to fit on a plane
+     */
+    vector<int> too_large_forms;
+
+    /*!
      * All abstract forms describing the forms(shape, name)
      * needed in this problem
      */
@@ -49,16 +54,12 @@ private:
     vector<int> number_of_forms_needed;
 
     /*!
-     *  Check if a given form is small enough to fit on a plane,
-     *  i.e. there is a rotation such that the bounding box of the rotated form is in both dimension at most as big as the plane
-     *  If it fits, the optimal angle is approximated (i.e. an angle such that the area of the bounding box is minimal)
+     *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
      *
-     *  @param index_of_form    the index of vector<AbstractForm> abstract_forms describing the form to be checked
-     *
-     *  @return                 a float describing the optimal rotation angle if the form can be placed on a plane
-     *                          -1 otherwise
+     *  @return     -1 if problem is solveable,
+     *              otherwise the index of the last abstract form in vector<AbstractForm> abstract_forms that does not fit on the plane
      */
-     float find_optimal_angle(int index_of_form);
+    void check_if_solveable();
 
 public:
 
@@ -118,14 +119,12 @@ public:
      *  @return     int: the total number of all forms
      */
     int get_total_number_of_all_forms();
-    
+
     /*!
-     *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
-     *
-     *  @return     true if problem is solveable,
-     *              false otherwise
+     *  Get is_solveable
      */
-    bool check_if_solveable();
+    bool is_solveable();
+
 };
 
 #endif

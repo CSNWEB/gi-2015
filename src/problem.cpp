@@ -12,8 +12,43 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 	number_of_different_forms 	= abstract_forms.size();
 	number_of_forms_needed 		= num_of_forms;
 
+    check_if_solveable();
+
 	//number_of_planes 			= 0;
 	//planes  					= vector<Plane>();
+}
+
+void Problem::check_if_solveable()
+{
+    #ifdef DEBUG
+        printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+    #endif
+
+    for (int index_of_form = 0; index_of_form < abstract_forms.size(); ++index_of_form)
+    {
+        #ifdef DEBUG
+            printf("Check if form %i fits on plane.\n", index_of_form);
+        #endif
+
+        int optimal_rotation = abstract_forms[index_of_form].check_for_optimal_legal_rotation(size_of_sheet_x, size_of_sheet_y);
+        if (optimal_rotation < 0)
+        {
+            #ifdef DEBUG
+                printf("Form %i does not fit on given plane dimensions.\n", index_of_form);
+            #endif
+
+            too_large_forms.push_back(index_of_form);
+        }
+        else
+        {
+            #ifdef DEBUG
+                printf("After rotating by %i degrees, form %i fits optimized on given plane dimensions.\n", optimal_rotation, index_of_form);
+            #endif
+
+            abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation);
+            abstract_forms[index_of_form].normalize_position(size_of_sheet_x, size_of_sheet_y);
+        }
+    }
 }
 
 int Problem::get_total_number_of_all_forms()
@@ -65,6 +100,11 @@ float Problem::get_plane_height()
     #endif
 
     return size_of_sheet_y;
+}
+
+bool Problem::is_solveable()
+{
+    return too_large_forms.size() == 0;
 }
 
 AbstractForm* Problem::get_abstract_form_at_position(int i)

@@ -156,6 +156,8 @@ Problem InputHandler::create_problem()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: InputHandler::create_problem()\n");
+		printf("sx: %.2f\n", size_of_sheet_x);
+		printf("sy: %.2f\n", size_of_sheet_y);
 	#endif
 
 	return Problem(size_of_sheet_x, size_of_sheet_y, forms, number_of_pieces);

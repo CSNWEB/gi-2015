@@ -70,9 +70,7 @@ bool BinPackingShelf::check_if_fit(AbstractForm *f)
 	#endif
 
 	if ((f->get_dy() < height + TOLERANCE) && (f->get_dx() < remaining_width + TOLERANCE))
-	{
 		return true;
-	}
 	else
 		return false;
 }

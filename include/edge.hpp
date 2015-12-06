@@ -19,20 +19,20 @@ class Edge
 private:
     
     /*!
-     *  The points that define the edge.
+     *  The first point of the edge.
      */
-	Point *point_1, *point_2;
+	Point *point_1;
 	
+    /*!
+     *  The second point of the edge.
+     */
+    Point *point_2;
 public:
     
     /*!
      *  Default constructor
      */
-	Edge(){
-    #ifdef DEBUG
-        printf("\t\tConstructor: %s\n", __PRETTY_FUNCTION__);
-    #endif
-    };
+	Edge(){};
 
     /*!
      *  Constructor to initialize an edge with its two points.

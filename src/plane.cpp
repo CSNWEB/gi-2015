@@ -1,5 +1,13 @@
 #include "plane.hpp"
 
+Plane::Plane(float dx, float dy)
+{
+	this->dx = dx;
+	this->dy = dy;
+
+	forms = vector<Form>();
+}
+
 int Plane::get_number_of_forms()
 {
 	return forms.size();
@@ -15,6 +23,10 @@ Form *Plane::get_form_at(int i)
 
 void Plane::add_form_at_position(AbstractForm *form, float pos_x, float pos_y)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
     add_form_at_position_rotation(form, pos_x, pos_y, 0.0);
 }
 
@@ -29,11 +41,20 @@ void Plane::add_form_at_position_rotation(AbstractForm *form,
 
     Form form_object = Form(form, pos_x, pos_y);
     Point centroid = form_object.get_centroid();
-    form_object.rotate(centroid.get_x(),
-                      centroid.get_y(),
-                      rotation);
+    if (rotation > TOLERANCE)
+    {
+    	form_object.rotate(centroid.get_x(),
+        	               centroid.get_y(),
+            	           rotation);
+    }
+    else
+    {
+    	#ifdef DEBUG
+    		printf("No rotation\n");
+    	#endif
+    }
     
-	forms.push_back(form_object);
+    forms.push_back(form_object);
 	number_of_forms++;
 }
 

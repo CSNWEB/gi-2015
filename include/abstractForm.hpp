@@ -42,9 +42,24 @@ private:
 	vector<Point> points;
 	
     /*!
-     *  The size of the bounding box of the form in x and y direction.
+     *  The size of the bounding box of the form in x direction.
      */
-	float dx,dy;
+	float dx;
+
+    /*!
+     *  The size of the bounding box of the form in y direction.
+     */
+    float dy;
+
+    /*!
+     *  The Minimum position on the x-axis of any point of this form
+     */
+    float min_x;
+
+    /*!
+     *  The Minimum position on the y-axis of any point of this form
+     */
+    float min_y;
     
     /*!
      *  The size of the are of the form.
@@ -184,23 +199,6 @@ private:
      */
     void rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull);
 
-    /*!
-     *  Rotates the abstract form by a given angle in degrees
-     *
-     *  @param degrees      the angle in degrees defining the rotation
-     */
-    void rotate_form_by_degrees(int degrees);
-
-    /*!
-     *  Move a form such all points have x- and y-coordinates >= 0
-     *  and also ensure that width >= height, by flipping form at axis x=y (if necessary).
-     *  Needs curent minimal position!
-     *
-     *  @param x_min    current minimal position of any point on x-axis
-     *  @param y_min    current minimal position of any point on y-axis
-     */
-    void normalize_position(float x_min, float y_min);
-
 public:
     
     /*!
@@ -215,6 +213,37 @@ public:
      *  @param points   A vector of type "Point" that form the form.
      */
 	AbstractForm(string name, vector<Point> points);
+
+    /*!
+     *  Check if this form fits on a plane with given dimensions.
+     *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane
+     *
+     *  @param plane_width      the width of the plane for which the form should be checked
+     *  @param plane_height     the height of the plane for which the form should be checked
+     *
+     *  @return                 an int: if a legal rotation is found, the int specifies a rotation angle (in degrees), for which the form can be placed on the plane, and the area of the bounding box is minimal
+     *                          if no legal rotation is found (i.e. the form is too big to be placed on the plane), -1 is returned
+     */
+    int check_for_optimal_legal_rotation(float plane_width, float plane_height);
+
+    /*!
+     *  Rotates the abstract form by a given angle in degrees
+     *
+     *  @param degrees      the angle in degrees defining the rotation
+     */
+    void rotate_form_by_degrees(int degrees);
+
+    /*!
+     *  Move a form such all points have x- and y-coordinates >= 0
+     *  and also ensure that width >= height, by flipping form at axis x=y (if necessary and possible by size of plane).
+     *  Needs curent minimal position and dimensions of plane!
+     *
+     *  @param x_min        current minimal position of any point on x-axis
+     *  @param y_min        current minimal position of any point on y-axis
+     *  @param plane_width  width of the planes where this form should be placed on
+     *  @param plane_height height of the planes where this form should be placed on
+     */
+    void normalize_position(float plane_width, float plane_height);
 
     /*!
      *  A Debugging function that prints the properties of the form to the
@@ -278,18 +307,6 @@ public:
      *  @return         The "Point" at the specified index.
      */
 	Point get_point_at_index(int index){return points[index];};
-
-    /*!
-     *  Check if this form fits on a plane with given dimensions.
-     *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane
-     *
-     *  @param plane_width      the width of the plane for which the form should be checked
-     *  @param plane_height     the height of the plane for which the form should be checked
-     *
-     *  @return                 an int: if a legal rotation is found, the int specifies a rotation angle (in degrees), for which the form can be placed on the plane, and the area of the bounding box is minimal
-     *                          if no legal rotation is found (i.e. the form is too big to be placed on the plane), -1 is returned
-     */
-    int check_for_optimal_legal_rotation(float plane_width, float plane_height);
 
     #ifdef USE_SFML
 

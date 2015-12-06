@@ -203,7 +203,15 @@ Setting BinPacking::get_packed_setting()
 			AbstractForm* form_to_add = problem->get_abstract_form_at_position(all_forms_sorted_by_size[index_of_abst_form]);
 
 			result.get_plane_at(index_of_plane)->add_form_at_position(form_to_add, x_offset_on_current_plane, y_offset_on_current_plane);
+			#ifdef DEBUG
+				printf("Finished adding form %i on shelf.\n", index_of_form_on_shelf);
+			#endif
+
 			x_offset_on_current_plane += form_to_add->get_dx();
+
+			#ifdef DEBUG
+				printf("Finished updating offset.\n", index_of_form_on_shelf);
+			#endif
 		}
 	}
 

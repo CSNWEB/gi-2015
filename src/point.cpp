@@ -20,8 +20,8 @@ void Point::rotate(float center_x, float center_y, float angle)
     y -= center_y;
     
     // rotate point
-    float xnew = x * c - y * s;
-    float ynew = x * s + y * c;
+    float xnew = (x * c) - (y * s);
+    float ynew = (x * s) + (y * c);
     
     // translate point back:
     x = xnew + center_x;
@@ -34,8 +34,8 @@ void Point::rotate(float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	float x_new = x*cos(angle * PI/180) - y*sin(angle * PI/180);
-	float y_new = x*sin(angle * PI/180) + y*cos(angle * PI/180);
+	float x_new = (x * cos(angle * PI/180)) - (y * sin(angle * PI/180));
+	float y_new = (x * sin(angle * PI/180)) + (y * cos(angle * PI/180));
 
 	x = x_new;
 	y = y_new;
