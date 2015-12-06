@@ -36,7 +36,7 @@ void OutputHandler::write_setting_to_txt()
 	//close(file);
 }
 
-void OutputHandler::write_setting_to_svg()
+void OutputHandler::write_setting_to_svg(bool with_covex_hull)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -69,7 +69,8 @@ void OutputHandler::write_setting_to_svg()
                 printf("\t\tThe size of the form is: %f\n", f->get_mother()->get_size_of_area());
             #endif
 
-            f->print_convex_hull_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
+            if (with_covex_hull)
+            	f->print_convex_hull_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
             f->print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
             
 		}

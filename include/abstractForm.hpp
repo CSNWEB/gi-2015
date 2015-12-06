@@ -63,16 +63,14 @@ private:
 	float size_of_area;
 	
     /*!
-     *  Sorts points in x-dimension
+     *  Sorts points in x-dimension.
      *
-     *  uses in-place insertion-sort for small amount of points
-     *  Maybe implement a merge-sort for forms with high number of points?
+     *  Uses in-place insertion-sort for small amount of points
      */
     vector<int> sort_points_dim_x();
 
     /*!
-     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v,
-     *  the parameters lambda and mu are computed here.
+     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v, the parameters lambda and mu are computed here.
      *  Given any two adjacent starting points p_0 and p_1, all points of the form then can be calculated as follows
      *
      *  Let i>=0, i<points.size(),  j=(i+1)%points.size(), k=(j+1)%points.size() 
@@ -84,8 +82,7 @@ private:
     vector<float> relative_point_position_lambda;
 
     /*!
-     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v,
-     *  the parameters lambda and mu are computed here.
+     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v, the parameters lambda and mu are computed here.
      *  Given any two adjacent starting points p_0 and p_1, all points of the form then can be calculated as follows
      *
      *  Let i>=0, i<points.size(),  j=(i+1)%points.size(), k=(j+1)%points.size() 
@@ -121,14 +118,24 @@ private:
     void compute_convex_hull();
     
     /*!
-     *  Computes the size of the area of the shape and stores the result in
-     *  float size_of_area.
+     *  Computes the size of the area of the shape and stores the result in float size_of_area.
      */
     void compute_size_of_area();
 
     /*!
-     *  compute the values for
-     *      relative_point_position_lambda
+     *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
+     *  and the second point two a larger x-coordinate
+     *
+     *  @param index_of_point_1     the index of the first point in vector<Point> points
+     *  @param index_of_point_2     the index of the second point in vector<Point> points
+     *
+     *  @return                     the angle defining the specified rotation in degrees
+     */
+    float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
+
+    /*!
+     *  compute the values for:
+     *      relative_point_position_lambda,
      *      relative_point_position_mu
      *
      *  @param consider_only_convex_hull    if true, the lambda- and mu-values for the edges on the convex hull will be computed
@@ -140,8 +147,7 @@ private:
     void compute_lambda_and_mu(bool consider_only_convex_hull = false);
 
     /*!
-     *  Subfunction of compute_lambda_and_mu:
-     *  compute a certain lambda for a given pair of vertices and a already comuted mu
+     *  Subfunction of compute_lambda_and_mu: compute a certain lambda for a given pair of vertices and a already comuted mu
      *
      *      dx_2 = dx_1 + lambda * dx_1 + mu dy_1
      *  <=> lambda = (dx_2 - dx_1 - (mu * dy_1)) / dx_1
@@ -157,8 +163,7 @@ private:
     float compute_lambda(float d1_x, float d1_y, float d2_x, float d2_y, float mu);
 
     /*!
-     *  Subfunction of compute_lambda_and_mu:
-     *  compute a certain mu for a given pair of vertices
+     *  Subfunction of compute_lambda_and_mu: compute a certain mu for a given pair of vertices
      *
      *      dx_2 = dx_1 + lambda * dx_1 + mu dy_1
      *  <=> lambda = (dx_2 - dx_1 - (mu * dy_1)) / dx_1
@@ -177,9 +182,7 @@ private:
     float compute_mu(float d1_x, float d1_y, float d2_x, float d2_y);
 
     /*!
-     *  Find a rotation of form such that the area of the bounding box is minimal.
-     *  using algorithm by freeman and shapira
-     *  needs O(n^2) time, where n is the number of points on the convex hull
+     *  Find a rotation of form such that the area of the bounding box is minimal. Using algorithm by freeman and shapira. Needs O(n^2) time, where n is the number of points on the convex hull
      *
      *  @return     the index (in te convex hull) of the first point of the pair that defines this configuration
      *              points[convex_hull[i]] and points[convex_hull[i+1]] define a rotation in which both points are placed
@@ -188,8 +191,7 @@ private:
     int find_configuration_with_minimum_bounding_box();
 
     /*!
-     *  Rotates the abstract form to a position defined by two consecutive points on the convex hull
-     *  These points define a rotation by placing them to y=0 and x minimal (i.e. such that all values for x are greater or equal 0)
+     *  Rotates the abstract form to a position defined by two consecutive points on the convex hull. These points define a rotation by placing them to y=0 and x minimal (i.e. such that all values for x are greater or equal 0)
      *
      *  @param  index_of_point_in_convex_hull      the first point of the pair to be placed on y = 0
      */
@@ -212,7 +214,8 @@ public:
 
     /*!
      *  Check if this form fits on a plane with given dimensions.
-     *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane
+     *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane.
+     *  Checks all angles in degrees in {0,1,...,180}
      *
      *  @param plane_width      the width of the plane for which the form should be checked
      *  @param plane_height     the height of the plane for which the form should be checked
@@ -223,11 +226,19 @@ public:
     int check_for_optimal_legal_rotation(float plane_width, float plane_height);
 
     /*!
+     *  Find a rotation of this form such that the area of the bounding box is minimal. Using algorithm by freeman and shapira. Needs O(n^2) time, where n is the number of points on the convex hull.
+     *  Function does not check if the rotated form can still be placed on a plane of a problem.
+     *
+     *  @return     the optimal rotation angle in degrees.
+     */
+    float find_rotation_with_minimum_bounding_box();
+
+    /*!
      *  Rotates the abstract form by a given angle in degrees
      *
      *  @param degrees      the angle in degrees defining the rotation
      */
-    void rotate_form_by_degrees(int degrees);
+    void rotate_form_by_degrees(float degrees);
 
     /*!
      *  Move a form such all points have x- and y-coordinates >= 0
@@ -242,8 +253,7 @@ public:
     void normalize_position(float plane_width, float plane_height);
 
     /*!
-     *  A Debugging function that prints the properties of the form to the
-     *  console
+     *  A Debugging function that prints the properties of the form to the console
      */
 	void _d_print_abstract_form();
 
@@ -255,7 +265,7 @@ public:
 	int get_number_of_points();
     
     /*!
-     *  Get the name of this abstractform
+     *  Get the name of this abstractform.
      *
      *  @return     A string containing the name of this form
      */

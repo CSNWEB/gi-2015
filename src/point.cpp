@@ -2,6 +2,10 @@
 
 void Point::move_rel(float dx, float dy)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	x += dx;
 	y += dy;
 }
@@ -34,12 +38,39 @@ void Point::rotate(float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	float x_new = (x * cos(angle * PI/180)) - (y * sin(angle * PI/180));
-	float y_new = (x * sin(angle * PI/180)) + (y * cos(angle * PI/180));
+	float x_new = compute_pos_after_rotation_x(angle);
+	float y_new = compute_pos_after_rotation_y(angle);
 
 	x = x_new;
 	y = y_new;
+}
 
+float Point::compute_pos_after_rotation_x(float angle)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return (x * cos(angle * PI/180.0)) - (y * sin(angle * PI/180.0));
+}
+
+float Point::compute_pos_after_rotation_y(float angle)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	return (x * sin(angle * PI/180.0)) + (y * cos(angle * PI/180.0));
+}
+
+
+float Point::get_distance_to(Point *other)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
+	return sqrt((x-other->x)*(x-other->x)+(y-other->y)*(y-other->y));
 }
 
 void Point::flip()

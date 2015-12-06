@@ -57,8 +57,10 @@ public:
 
 	/*!
 	 *  writes the current setting of problem to a svg file
+	 *
+	 *  @param with_covex_hull 	if true, the convex hull is added to the svg-file
 	 */
-	void write_setting_to_svg();
+	void write_setting_to_svg(bool with_covex_hull = false);
 };
 
 #endif

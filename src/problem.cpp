@@ -30,22 +30,39 @@ void Problem::check_if_solveable()
             printf("Check if form %i fits on plane.\n", index_of_form);
         #endif
 
-        int optimal_rotation = abstract_forms[index_of_form].check_for_optimal_legal_rotation(size_of_sheet_x, size_of_sheet_y);
-        if (optimal_rotation < 0)
-        {
-            #ifdef DEBUG
-                printf("Form %i does not fit on given plane dimensions.\n", index_of_form);
-            #endif
+        float optimal_rotation_by_convex_hull = abstract_forms[index_of_form].find_rotation_with_minimum_bounding_box();
+        abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation_by_convex_hull);
 
-            too_large_forms.push_back(index_of_form);
-        }
-        else
+        if (abstract_forms[index_of_form].get_dx() > size_of_sheet_x || abstract_forms[index_of_form].get_dy() > size_of_sheet_y)
         {
+            abstract_forms[index_of_form].rotate_form_by_degrees(-optimal_rotation_by_convex_hull);
+            int optimal_rotation = abstract_forms[index_of_form].check_for_optimal_legal_rotation(size_of_sheet_x, size_of_sheet_y);
+
+            if (optimal_rotation < 0)
+            {
+                #ifdef DEBUG
+                    printf("Form %i does not fit on given plane dimensions.\n", index_of_form);
+                #endif
+
+                too_large_forms.push_back(index_of_form);
+            }
+            else
+            {
+                abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation);
+                abstract_forms[index_of_form].normalize_position(size_of_sheet_x, size_of_sheet_y);
+            }
+
             #ifdef DEBUG
                 printf("After rotating by %i degrees, form %i fits optimized on given plane dimensions.\n", optimal_rotation, index_of_form);
             #endif
-
-            abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation);
+        }
+        else
+        {
+            
+            #ifdef DEBUG
+                printf("After rotating by %.2f degrees, form %i fits optimized on given plane dimensions.\n", optimal_rotation_by_convex_hull, index_of_form);
+            #endif
+        
             abstract_forms[index_of_form].normalize_position(size_of_sheet_x, size_of_sheet_y);
         }
     }

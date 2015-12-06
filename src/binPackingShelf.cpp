@@ -1,19 +1,5 @@
 #include "binPackingShelf.hpp"
-/*
-old constructor
-BinPackingShelf::BinPackingShelf(float width, float height)
-{
-	#ifdef DEBUG
-		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
-	#endif
 
-	this->height 			= height;
-	remaining_width 		= width;
-
-	offset_x = 0;
-	is_rotated_subshelf = false;
-}
-*/
 BinPackingShelf::BinPackingShelf(int plane, float width, float height, float offset_x, float offset_y)
 {
 	#ifdef DEBUG
@@ -28,7 +14,6 @@ BinPackingShelf::BinPackingShelf(int plane, float width, float height, float off
 
 	this->offset_x 			= offset_x;
 	this->offset_y 			= offset_y;
-	//this->is_rotated 		= is_rotated;
 }
 
 float BinPackingShelf::add_form(AbstractForm *f, int index)
