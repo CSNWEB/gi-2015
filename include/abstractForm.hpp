@@ -70,42 +70,6 @@ private:
     vector<int> sort_points_dim_x();
 
     /*!
-     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v, the parameters lambda and mu are computed here.
-     *  Given any two adjacent starting points p_0 and p_1, all points of the form then can be calculated as follows
-     *
-     *  Let i>=0, i<points.size(),  j=(i+1)%points.size(), k=(j+1)%points.size() 
-     *  Let v be the vector from p_i to p_j, and let n be the orthogonal vector to v.
-     *  Then p_k = p_i+ lambda[k]*v + mu[k]*n
-     *
-     *  This vector holds all lambda-values.
-     */
-    vector<float> relative_point_position_lambda;
-
-    /*!
-     *  To calculate a point as a linear combination of the vector v defined by the two preceding points and the orthogonal vector to v, the parameters lambda and mu are computed here.
-     *  Given any two adjacent starting points p_0 and p_1, all points of the form then can be calculated as follows
-     *
-     *  Let i>=0, i<points.size(),  j=(i+1)%points.size(), k=(j+1)%points.size() 
-     *  Let v be the vector from p_i to p_j, and let n be the orthogonal vector to v.
-     *  Then p_k = p_i+ lambda[k]*v + mu[k]*n
-     *
-     *  This vector holds all mu-values.
-     */
-    vector<float> relative_point_position_mu;
-
-    /*!
-     *  See vector<float> relative_point_position_lambda
-     *  This vector considers only the points on the convex hull
-     */
-    vector<float> relative_point_position_cv_lambda;
-
-    /*!
-     *  See vector<float> relative_point_position_mu
-     *  This vector considers only the points on the convex hull
-     */
-    vector<float> relative_point_position_cv_mu;
-
-    /*!
      *  All points that belong to the convex hull, stored by their indices in vector<Point> points
      */
     vector<int> convex_hull;
@@ -132,63 +96,6 @@ private:
      *  @return                     the angle defining the specified rotation in degrees
      */
     float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
-
-    /*!
-     *  compute the values for:
-     *      relative_point_position_lambda,
-     *      relative_point_position_mu
-     *
-     *  @param consider_only_convex_hull    if true, the lambda- and mu-values for the edges on the convex hull will be computed
-     *                                      the results are stored in relative_point_position_cv_lambda and -_mu
-     *
-     *                                      else, the edges of the original form are considered
-     *                                      the results are stored in relative_point_position_lambda and -_mu
-     */
-    void compute_lambda_and_mu(bool consider_only_convex_hull = false);
-
-    /*!
-     *  Subfunction of compute_lambda_and_mu: compute a certain lambda for a given pair of vertices and a already comuted mu
-     *
-     *      dx_2 = dx_1 + lambda * dx_1 + mu dy_1
-     *  <=> lambda = (dx_2 - dx_1 - (mu * dy_1)) / dx_1
-     *
-     *  @param d1_x     x-length of first vector
-     *  @param d1_y     y-length of first vector
-     *  @param d2_x     x-length of second vector
-     *  @param d2_y     y-length of second vector
-     *  @param mu       value for mu, as computed by compute_mu(float, float, float, float)
-     *
-     *  @return         float: the lambda value as specified above
-     */
-    float compute_lambda(float d1_x, float d1_y, float d2_x, float d2_y, float mu);
-
-    /*!
-     *  Subfunction of compute_lambda_and_mu: compute a certain mu for a given pair of vertices
-     *
-     *      dx_2 = dx_1 + lambda * dx_1 + mu dy_1
-     *  <=> lambda = (dx_2 - dx_1 - (mu * dy_1)) / dx_1
-     *
-     *      dy_2 = dx_1 + lambda * dy_1 - mu dx_1
-     *  <=> mu = - (dy_2-dy_1 - ((dx_2 -dx_1- mu * d_y1)/dx_1) * dy_1) / dx_1
-     *  <=> mu = - (dy_2 - ((dx_2 * dy_1) / dx_1) / ((dy_1^2)/dx_1 + dx_1)
-     *
-     *  @param d1_x     x-length of first vector
-     *  @param d1_y     y-length of first vector
-     *  @param d2_x     x-length of second vector
-     *  @param d2_y     y-length of second vector
-     *
-     *  @return         float: the mu value as specified above
-     */
-    float compute_mu(float d1_x, float d1_y, float d2_x, float d2_y);
-
-    /*!
-     *  Find a rotation of form such that the area of the bounding box is minimal. Using algorithm by freeman and shapira. Needs O(n^2) time, where n is the number of points on the convex hull
-     *
-     *  @return     the index (in te convex hull) of the first point of the pair that defines this configuration
-     *              points[convex_hull[i]] and points[convex_hull[i+1]] define a rotation in which both points are placed
-     *              on y=0 axis
-     */
-    int find_configuration_with_minimum_bounding_box();
 
     /*!
      *  Rotates the abstract form to a position defined by two consecutive points on the convex hull. These points define a rotation by placing them to y=0 and x minimal (i.e. such that all values for x are greater or equal 0)
