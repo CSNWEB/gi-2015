@@ -11,7 +11,6 @@ BinPacking::BinPacking(Problem *p)
 	create_initial_sorting();
 
 	bp_planes = vector<BinPackingPlane>(1, BinPackingPlane(problem->get_plane_width(), problem->get_plane_height()));
-
 }
 
 void BinPacking::create_initial_sorting()
@@ -71,10 +70,18 @@ void BinPacking::create_initial_sorting()
 
 Setting BinPacking::get_packed_setting()
 {
-	
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
+
+	if (!problem->is_solveable())
+	{
+		#ifdef DEBUG
+			printf("No Setting created because problem is not solveable.\n");
+		#endif
+
+		return NULL;
+	}
 
 	float minimum_height_of_any_form = problem->get_abstract_form_at_position(all_forms_sorted_by_size[all_forms_sorted_by_size.size()-1])->get_dy();
 
@@ -210,7 +217,7 @@ Setting BinPacking::get_packed_setting()
 			x_offset_on_current_plane += form_to_add->get_dx();
 
 			#ifdef DEBUG
-				printf("Finished updating offset.\n", index_of_form_on_shelf);
+				printf("Finished updating offset.\n");
 			#endif
 		}
 	}
