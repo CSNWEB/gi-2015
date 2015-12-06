@@ -1,5 +1,4 @@
 #include "form.hpp"
-#include "gpc.h"
 
 Form::Form(AbstractForm* mother)
 {

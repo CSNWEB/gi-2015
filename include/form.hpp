@@ -14,6 +14,7 @@
 #include "edge.hpp"
 #include "abstractForm.hpp"
 #include "simpleSVG.hpp"
+#include "gpc.h"
 
 class AbstractForm;
 
