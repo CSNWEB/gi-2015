@@ -12,10 +12,6 @@
 #include <vector>
 #include <string>
 
-#ifdef USE_SFML
-#include <SFML/Graphics.hpp>
-#endif
-
 #include "abstractForm.hpp"
 #include "problem.hpp"
 #include "point.hpp"
@@ -72,12 +68,6 @@ public:
 	 *  Debugging function: prints the parsed input to console (only if DEBUG-flag was set by compiler)
 	 */
 	void _d_print_input();
-
-	/**
-	 *	Debugging function: uses SFML-library to paint all forms once
-	 *  only if SFML-flag was set by compiler
-	 */
-	void _d_paint_input();
 };
 
 #endif

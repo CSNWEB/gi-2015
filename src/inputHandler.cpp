@@ -8,7 +8,6 @@ void InputHandler::get_input(char* filename)
 
 	int scanf_result;
 
-	//ifstream file(filename);
 	FILE *file;
 	file = fopen(filename, "r");
 
@@ -92,65 +91,6 @@ void InputHandler::_d_print_input()
 		forms[i]._d_print_abstract_form();
 	}
 }
-
-
-void InputHandler::_d_paint_input()
-{
-	#ifdef USE_SFML
-	#ifdef DEBUG
-		printf("FUNCTION: InputHandler::_d_paint_input()\n");
-	#endif
-
-	int scaling = 50;
-
-	#ifdef DEBUG
-		printf("Start creating shapes\n");
-	#endif
-
-	vector<sf::ConvexShape> shapes = vector<sf::ConvexShape>(number_of_different_forms);
-	float dx = 0;
-	float dy = 0;
-	for (int i=0; i<number_of_different_forms; ++i)
-	{
-		#ifdef DEBUG
-			printf("Create shape %i:\nCreate points:\n",i);
-		#endif
-
-		shapes[i] = forms[i].get_shape(dx,0,scaling);
-
-		dx += forms[i].get_dx()*scaling;
-		if (forms[i].get_dy()*scaling > dy)
-			dy =  forms[i].get_dy()*scaling;
-
-		#ifdef DEBUG
-			printf("Total x-offset is increased to: %f\n", dx);
-			printf("Total y-offset is: %f\n", dy);
-		#endif
-	}
-
-	#ifdef DEBUG
-		printf("Finished creating shapes.\nCreate window next\n");
-	#endif
-
-	sf::RenderWindow window(sf::VideoMode(dx, dy), "TEST");
-
-	#ifdef DEBUG
-		printf("Start Displaying.\n");
-	#endif
-
-	while(window.isOpen())
-	{
-		window.clear();
-		for (int i=0; i<number_of_different_forms; ++i)
-		{
-			window.draw(shapes[i]);
-		}
-		window.display();
-	}
-
-	#endif
-}
-
 
 Problem InputHandler::create_problem()
 {

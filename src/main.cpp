@@ -1,6 +1,5 @@
 #include "abstractForm.hpp"
 #include "form.hpp"
-//#include "randomizedFormFitter.hpp"
 #include "outputHandler.hpp"
 #include "inputHandler.hpp"
 #include "binPacking.hpp"

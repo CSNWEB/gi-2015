@@ -16,10 +16,6 @@
 #include "plane.hpp"
 #include "global.hpp"
 
-#ifdef USE_SFML
-    #include <SFML/Graphics.hpp>
-#endif
-
 using namespace std;
 
 class AbstractForm
@@ -307,25 +303,6 @@ public:
      *  @return         The "Point" at the specified index.
      */
 	Point get_point_at_index(int index){return points[index];};
-
-    #ifdef USE_SFML
-
-    /*!
-     *  Creates a ConvexShape representation of this AbstractForm.
-     *
-     *  @param pos_x The position of the form on the x-axis.
-     *  @param pos_y The position of the form on the y-axis.
-     *  @param scale The scale of the form.
-     *
-     *  @return An object of type "ConvexShape" that represents this AbstractForm.
-     */
-	sf::ConvexShape get_shape(int pos_x, int pos_y, int scale);
-
-    /*!
-     * TO DO: a function that returns an array of line segments
-     */
-
-    #endif
 };
 
 #endif
