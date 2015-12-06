@@ -94,9 +94,28 @@ public:
     /*!
      *  Rotates the point around the origin (0/0)
      *
-     *  @param angle    The angle in degree by which the point will be rotated around the passed center.
+     *  @param angle    The angle in degrees by which the point will be rotated around the passed center.
      */
     void rotate(float angle);
+
+    /*!
+     *  Computes the new x-coordinate of the point if it was rotated by an angle given in degrees.
+     *
+     *  @param angle    The angle in degrees
+     *
+     *  @return         the x-coordinate of this point it would have after rotation by angle
+     */
+    float compute_pos_after_rotation_x(float angle);
+
+
+    /*!
+     *  Computes the new y-coordinate of the point if it was rotated by an angle given in degrees.
+     *
+     *  @param angle    The angle in degrees
+     *
+     *  @return         the y-coordinate of this point it would have after rotation by angle
+     */
+    float compute_pos_after_rotation_y(float angle);
 
     /*!
      *  Flips a point along x=y-axis, i.e. swap x- and y-coordinate.

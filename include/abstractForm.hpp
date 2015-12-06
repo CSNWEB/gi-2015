@@ -218,7 +218,8 @@ public:
 
     /*!
      *  Check if this form fits on a plane with given dimensions.
-     *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane
+     *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane.
+     *  Checks all angles in degrees in {0,1,...,180}
      *
      *  @param plane_width      the width of the plane for which the form should be checked
      *  @param plane_height     the height of the plane for which the form should be checked
@@ -229,11 +230,19 @@ public:
     int check_for_optimal_legal_rotation(float plane_width, float plane_height);
 
     /*!
+     *  Find a rotation of this form such that the area of the bounding box is minimal. Using algorithm by freeman and shapira. Needs O(n^2) time, where n is the number of points on the convex hull.
+     *  Function does not check if the rotated form can still be placed on a plane of a problem.
+     *
+     *  @return     the optimal rotation angle in degrees.
+     */
+    float find_rotation_with_minimum_bounding_box();
+
+    /*!
      *  Rotates the abstract form by a given angle in degrees
      *
      *  @param degrees      the angle in degrees defining the rotation
      */
-    void rotate_form_by_degrees(int degrees);
+    void rotate_form_by_degrees(float degrees);
 
     /*!
      *  Move a form such all points have x- and y-coordinates >= 0

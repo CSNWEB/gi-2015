@@ -106,6 +106,11 @@ void AbstractForm::compute_size_of_area()
 
 float AbstractForm::compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		printf("\t\tPoint1 = %i\n\t\tPoint2 = %i\n", index_of_point_1, index_of_point_2);
+	#endif
+
 	float p1_orig_x = points[index_of_point_1].get_x();
 	float p1_orig_y = points[index_of_point_1].get_y();
 
@@ -115,13 +120,18 @@ float AbstractForm::compute_rotation_angle_for_points_parallel_to_axis(int index
 	float d1_squared = ((p1_orig_x - p2_orig_x) * (p1_orig_x - p2_orig_x)) + ((p1_orig_y - p2_orig_y) * (p1_orig_y - p2_orig_y));
 	float d1 = points[index_of_point_1].get_distance_to(&points[index_of_point_2]);
 
-	float p2_rotated_x = p1_orig_x;
-	float p2_rotated_y = p1_orig_y + d1;
+	float p2_rotated_x = p1_orig_x + d1;
+	float p2_rotated_y = p1_orig_y;
 
 	float d2_squared = ((p2_orig_x - p2_rotated_x) * (p2_orig_x - p2_rotated_x)) + ((p2_orig_y- p2_rotated_y) * (p2_orig_y - p2_rotated_y));
 
 	// using law of cosines:
-	float cos_of_angle = - (d2_squared - 2*d1_squared)/(4*d1);
+	float cos_of_angle = ((2*d1_squared) - d2_squared)/(2*d1_squared);
+
+	#ifdef DEBUG
+		printf ("\t\tcosine of angle = %.2f\n",cos_of_angle);
+	#endif
+
 
 	return acos(cos_of_angle) * 180.0 / PI;
 }
@@ -288,6 +298,65 @@ float AbstractForm::compute_mu(float d1_x, float d1_y, float d2_x, float d2_y)
 		
 		return - ((d2_y - (d2_x*d1_y)/d1_x)/((d1_y*d1_y)/d1_x + d1_x));	
 	}
+}
+
+float AbstractForm::find_rotation_with_minimum_bounding_box()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	float optimal_angle = 0;
+	float minimum_area_of_bounding_box = -1;
+
+	for (int configuration = 0; configuration < convex_hull.size()-1; ++configuration)
+	{
+		#ifdef DEBUG
+			printf("Consider configuration %i\n", configuration);
+		#endif
+
+		float current_angle = compute_rotation_angle_for_points_parallel_to_axis(convex_hull[configuration], convex_hull[(configuration+1) % (convex_hull.size()-1)]);
+		float x_min = 0;
+		float x_max = 0;
+		float y_min = 0;
+		float y_max = 0;
+		for (int index_of_hullpoint = 0; index_of_hullpoint < convex_hull.size(); ++index_of_hullpoint)
+		{
+			float this_x = points[convex_hull[index_of_hullpoint]].compute_pos_after_rotation_x(current_angle);
+			float this_y = points[convex_hull[index_of_hullpoint]].compute_pos_after_rotation_y(current_angle);
+
+			if (index_of_hullpoint == 0)
+			{
+				x_min = this_x;
+				x_max = this_x;
+				y_min = this_y;
+				y_max = this_y;
+			}
+			else
+			{
+				if (x_min > this_x)
+					x_min = this_x;
+				else if (x_max < this_x)
+					x_max = this_x;
+				if (y_min > this_y)
+					y_min = this_y;
+				else if (y_max < this_y)
+					y_max = this_y;
+			}
+		}
+		float current_area = (x_max-x_min) * (y_max-y_min);
+		if (configuration == 0 || current_area < minimum_area_of_bounding_box)
+		{
+			minimum_area_of_bounding_box = current_area;
+			optimal_angle = current_angle;
+		}
+
+		#ifdef DEBUG
+			printf("\tCurrente angle: %.2f\n\tArea of bounding box in current configuration: %.2f\n\t optimal configuration so far hast area: %.2f\n", current_angle, current_area, minimum_area_of_bounding_box);
+		#endif
+	}
+
+	return optimal_angle;
 }
 
 int AbstractForm::find_configuration_with_minimum_bounding_box()
@@ -577,10 +646,11 @@ void AbstractForm::rotate_convex_hull_to_configuration(int index_of_point_in_con
 	this->dy = y_max-min_y;
 }
 
-void AbstractForm::rotate_form_by_degrees(int degrees)
+void AbstractForm::rotate_form_by_degrees(float degrees)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		printf("rotate form by %.2f degrees\n", degrees);
 	#endif
 
 	min_x = 0;
@@ -590,6 +660,11 @@ void AbstractForm::rotate_form_by_degrees(int degrees)
 	for (int point_index = 0; point_index < points.size(); ++point_index)
 	{
 		points[point_index].rotate(degrees);
+
+		#ifdef DEBUG
+			printf("Rotated point %i to position (%.2f/%.2f)\n",point_index, points[point_index].get_x(), points[point_index].get_y());
+		#endif
+
 		float this_x = points[point_index].get_x();
 		float this_y = points[point_index].get_y();
 
@@ -616,7 +691,7 @@ void AbstractForm::rotate_form_by_degrees(int degrees)
 	dy = max_y-min_y;
 
 	#ifdef DEBUG
-		printf("\tRotated form into positio x_min = %.2f, dx = %.2f - y_min = %.2f, dy = %.2f\n", min_x, dx, min_y, dy);
+		printf("\tRotated form into position x_min = %.2f, dx = %.2f - y_min = %.2f, dy = %.2f\n", min_x, dx, min_y, dy);
 	#endif
 }
 
