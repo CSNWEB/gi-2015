@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 {
-    
+
     #ifdef DEBUG
         printf("Debugging is enabled!\n");
     #endif
@@ -18,14 +18,15 @@ int main(int argc, char* argv[])
 
     if (argc < 2)
     {
-        printf("missing filename of input file!\n");
+        printf("Missing filename of input file!\n");
+        printf("Usage:\n\tsolver inputfilename.txt [outputfilename]\n");
         return 0;
     }
 
     if (argc < 3)
     {
-        printf("Missing output file name!\n");
-        printf("Using default output file names:\nout.txt, out.svg\n");
+        printf("No output file name given.\n");
+        printf("Using default output file names:\n\tout.txt, out.svg\n");
         output_filename_txt = "out.txt";
         output_filename_svg = "out.svg";
     }
@@ -45,14 +46,14 @@ int main(int argc, char* argv[])
     Problem problem = ih.create_problem();
 
     if (!problem.is_solveable())
-        printf("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!\n"); 
+        printf("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!\n");
     else
     {
         BinPacking bin_packing(&problem);
 
         Setting bin_packed = bin_packing.get_packed_setting();
 
-        
+
         OutputHandler oh(&problem, &bin_packed, output_filename_txt, output_filename_svg);
         oh.write_setting_to_txt();
         oh.write_setting_to_svg();
@@ -73,7 +74,7 @@ int main(int argc, char* argv[])
                 }
             }
         #endif
-        
+
     }
 	return 0;
 }
