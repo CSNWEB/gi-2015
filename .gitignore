@@ -29,7 +29,7 @@
 
 #IDE
 nbproject
-/build/
+/build*
 test
 
 out.svg

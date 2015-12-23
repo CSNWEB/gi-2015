@@ -49,7 +49,7 @@ void OutputHandler::write_setting_to_svg(bool with_covex_hull)
     int planeHeight = floor(problem->get_plane_height() * factor);
       
     svg::Dimensions dimensions((planeWidth + spacing) * planes, planeHeight + spacing);
-    svg::Document doc("./"+filename_svg, svg::Layout(dimensions, svg::Layout::TopLeft));
+    svg::Document doc(filename_svg, svg::Layout(dimensions, svg::Layout::TopLeft));
 
 	for (int i=0; i<planes; ++i)
 	{
