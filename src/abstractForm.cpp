@@ -321,6 +321,18 @@ void AbstractForm::rotate_form_by_degrees(float degrees)
 	#endif
 }
 
+void AbstractForm::mirror()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	for (int p=0; p<get_number_of_points(); ++p)
+	{
+		points[p].move_rel(-2*points[p].get_x(), 0);
+	}
+}
+
 void AbstractForm::normalize_position(float plane_width, float plane_height)
 {
 	#ifdef DEBUG
