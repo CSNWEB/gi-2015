@@ -33,6 +33,11 @@ private:
 	string name;
 
     /*!
+     *  A global unique id of this abstract form
+     */
+    int id;
+
+    /*!
      *  The points that make up the form.
      */
 	vector<Point> points;
@@ -98,7 +103,7 @@ public:
     /*!
      *  Default constructor
      */
-	AbstractForm(){};
+	AbstractForm(){id = -1};
     
     /*!
      *  Constructor that initializes the form with a name and its points.
@@ -106,7 +111,7 @@ public:
      *  @param name     A string that represents the name of the form.
      *  @param points   A vector of type "Point" that form the form.
      */
-	AbstractForm(string name, vector<Point> points);
+	AbstractForm(string name, vector<Point> points, int id = -1);
 
     /*!
      *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
@@ -183,6 +188,13 @@ public:
      *  @return     A string containing the name of this form
      */
     string get_name(){return name;};
+
+    /*!
+     *  Get the id of this abstractform
+     *
+     *  @return     An int containing the id
+     */
+    int get_id(){return id;}; 
 
     /*!
      *  Get the size of the bounding box of the form in x direction.

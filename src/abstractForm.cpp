@@ -1,6 +1,6 @@
 #include "abstractForm.hpp"
 
-AbstractForm::AbstractForm(string name, vector<Point> points)
+AbstractForm::AbstractForm(string name, vector<Point> points, int id)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
@@ -8,6 +8,8 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 		
 	this->name = name;
 	this->points = points;
+	this->id = id;
+
 	number_of_points = points.size();
 
 	min_x = points[0].get_x();
