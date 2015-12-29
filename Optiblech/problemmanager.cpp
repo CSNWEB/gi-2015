@@ -39,3 +39,6 @@ void ProblemManager::initAbsFormList()
     }
 }
 
+Problem ProblemManager::getProblem(){
+    return problem;
+}

@@ -41,33 +41,34 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_solveButton_clicked()
 {
-    std::string output_filename = ui->outputFile->text().toUtf8().constData();
     std::string output_filename_txt;
     std::string output_filename_svg;
 
+    if(!QDir("tmp").exists()){
+        QDir().mkdir("tmp");
+    }
 
-    output_filename_txt = output_filename + QDir::separator().toLatin1() + "out.txt";
-    output_filename_svg = output_filename + QDir::separator().toLatin1() + "out.svg";
+    //output_filename_txt = 'tmp' + QDir::separator().toLatin1() + "out.txt";
+    output_filename_svg = 'tmp' + QDir::separator().toLatin1() + "out.svg";
 
-    InputHandler ih;
 
-    /*ih.get_input(ui->inputFile->text().toLatin1().data());
 
-    Problem problem = ih.create_problem();
+    Problem problem = pm->getProblem();
 
     if (!problem.is_solveable())
-        printf("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!\n");
+        QMessageBox::warning(this, tr("Warning"), tr("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!"));
     else
     {
         BinPacking bin_packing(&problem);
 
         Setting bin_packed = bin_packing.get_packed_setting();
         OutputHandler oh(&problem, &bin_packed, output_filename_txt, output_filename_svg);
-        QMessageBox::information(this, tr("Info"), tr("Writing text output"));
-        oh.write_setting_to_txt();
-        QMessageBox::information(this, tr("Info"), tr("Writing svg Output"));
+        //oh.write_setting_to_txt();
         oh.write_setting_to_svg(true);
-    }*/
+        QFile file(QString::fromStdString(output_filename_svg));
+        m_view->openFile(file);
+        ui->tabWidget->setCurrentIndex(2);
+    }
 }
 
 

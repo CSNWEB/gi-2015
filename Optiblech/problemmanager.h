@@ -15,6 +15,7 @@ public:
 
     void initAbsFormList();
     void loadFromFile(QString fileName);
+    Problem getProblem();
 
 private:
     Problem problem;
