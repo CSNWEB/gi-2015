@@ -9,6 +9,7 @@
 #include <QtWidgets>
 
 #include <svgview.h>
+#include <problemmanager.h>
 
 #include "abstractForm.hpp"
 #include "form.hpp"
@@ -16,18 +17,20 @@
 #include "inputHandler.hpp"
 #include "binPacking.hpp"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_view(new SvgView)
+    m_view(new SvgView),
+    pm(new ProblemManager(ui))
 {
     ui->setupUi(this);
 
    ui->svgContainer->addWidget(m_view);
 
-   QFile file("/Users/Christoph/Code/gi-2015/out.svg");
+   //QFile file("/Users/Christoph/Code/gi-2015/out.svg");
+   //m_view->openFile(file);
 
-   m_view->openFile(file);
 }
 
 MainWindow::~MainWindow()
@@ -83,27 +86,7 @@ void MainWindow::on_selectInputButton_clicked()
             return;
         }
         file.close();
-
-        InputHandler ih;
-        ih.get_input(fileName.toLatin1().data());
-
-        Problem problem = ih.create_problem();
-
-        ui->absFormList->clear();
-        for(int i = 0; i < problem.get_number_of_different_forms(); ++i){
-            //Add name
-            QString item = QString::fromStdString(problem.get_name_of_form(i));
-
-            //Add points
-            AbstractForm * form = problem.get_abstract_form_at_position(i);
-            item += " (" + QString::number(form->get_number_of_points()) + " Points)";
-
-            //Add number of Forms
-            item += " (" + QString::number(problem.get_number_of_form_needed(i)) + " times)";
-
-            ui->absFormList->addItem(item);
-        }
-
+        pm->loadFromFile(fileName);
     }
 }
 
@@ -126,4 +109,11 @@ void MainWindow::on_selectOutputButton_clicked()
 void MainWindow::on_pushButton_clicked()
 {
     ui->tabWidget->setCurrentIndex(1);
+}
+
+
+
+void MainWindow::on_absFormList_currentRowChanged(int currentRow)
+{
+    QMessageBox::information(this, tr("Info"), QString::number(currentRow));
 }

@@ -1,5 +1,6 @@
 #include "problem.hpp"
 
+
 Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms, vector<string> name_forms)
 {
 	#ifdef DEBUG

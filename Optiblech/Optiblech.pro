@@ -30,10 +30,12 @@ SOURCES += main.cpp\
     ../src/problem.cpp \
     ../src/setting.cpp \
     ../src/simpleSVG.cpp \
-    svgview.cpp
+    svgview.cpp \
+    problemmanager.cpp
 
 HEADERS  += mainwindow.h \
-    svgview.h
+    svgview.h \
+    problemmanager.h
 
 FORMS    += mainwindow.ui
 

@@ -3,8 +3,11 @@
 
 #include <QMainWindow>
 #include <QString>
+#include <problem.hpp>
+
 
 class SvgView;
+class ProblemManager;
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -34,12 +37,17 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_absFormList_currentRowChanged(int currentRow);
+
 private:
     Ui::MainWindow *ui;
 
     SvgView *m_view;
 
     QString m_currentPath;
+
+    ProblemManager *pm;
+
 };
 
 #endif // MAINWINDOW_H
