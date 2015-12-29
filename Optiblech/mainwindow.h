@@ -2,6 +2,16 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
+
+class SvgView;
+
+QT_BEGIN_NAMESPACE
+class QAction;
+class QGraphicsView;
+class QGraphicsScene;
+class QGraphicsRectItem;
+QT_END_NAMESPACE
 
 namespace Ui {
 class MainWindow;
@@ -22,8 +32,14 @@ private slots:
 
     void on_selectOutputButton_clicked();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+
+    SvgView *m_view;
+
+    QString m_currentPath;
 };
 
 #endif // MAINWINDOW_H

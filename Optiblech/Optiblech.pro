@@ -4,7 +4,9 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui svg
+
+qtHaveModule(opengl): QT += opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -27,9 +29,11 @@ SOURCES += main.cpp\
     ../src/point.cpp \
     ../src/problem.cpp \
     ../src/setting.cpp \
-    ../src/simpleSVG.cpp
+    ../src/simpleSVG.cpp \
+    svgview.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    svgview.h
 
 FORMS    += mainwindow.ui
 
