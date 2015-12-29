@@ -103,7 +103,7 @@ void MainWindow::on_selectOutputButton_clicked()
     QString path = dialog.getExistingDirectory(this, tr("Choose Directory"));
 
     if (!path.isEmpty()) {
-        ui->outputFile->setText(path);
+        //ui->outputFile->setText(path);
     }
 }
 
