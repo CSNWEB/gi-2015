@@ -22,6 +22,7 @@ void InputHandler::get_input(char* filename)
 	
 	forms			 = vector<AbstractForm>(number_of_different_forms);
 	number_of_pieces = vector<int>(number_of_different_forms);
+    name_of_forms = vector<string>(number_of_different_forms);
 
 	string 	tmp_name_of_form;
 	char	tmp_char_of_name;
@@ -52,6 +53,8 @@ void InputHandler::get_input(char* filename)
 			printf("Required number of pieces: %i\n", number_of_pieces[i]);
 			printf("Input all points: number of points: %i\n", tmp_number_of_points);
 		#endif
+
+        name_of_forms[i] = tmp_name_of_form;
 
 		vector<Point> points = vector<Point>(tmp_number_of_points);
 		for (int j=0; j<tmp_number_of_points; ++j)
@@ -100,5 +103,5 @@ Problem InputHandler::create_problem()
 		printf("sy: %.2f\n", size_of_sheet_y);
 	#endif
 
-	return Problem(size_of_sheet_x, size_of_sheet_y, forms, number_of_pieces);
+    return Problem(size_of_sheet_x, size_of_sheet_y, forms, number_of_pieces, name_of_forms);
 }

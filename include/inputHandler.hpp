@@ -45,6 +45,12 @@ private:
 	 * A vector that stores the needed amount of forms for each individual form in vector<AbstractForm> forms
 	 */
 	vector<int> number_of_pieces;
+    
+    /**
+     * A vector that stores the name of forms for each individual form in vector<AbstractForm> forms
+     */
+    vector<string> name_of_forms;
+    
 public:
 	/**
 	*  Default constructor.

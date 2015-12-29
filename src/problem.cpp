@@ -1,6 +1,6 @@
 #include "problem.hpp"
 
-Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms)
+Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms, vector<string> name_forms)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
@@ -11,6 +11,7 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 	abstract_forms 				= abst_forms;
 	number_of_different_forms 	= abstract_forms.size();
 	number_of_forms_needed 		= num_of_forms;
+    name_of_forms = name_forms;
 
     check_if_solveable();
 
@@ -98,6 +99,17 @@ int Problem::get_number_of_form_needed(int i)
 
     if (i>=0 && i<number_of_different_forms)
         return number_of_forms_needed[i];
+    else return 0;
+}
+
+string Problem::get_name_of_form(int i)
+{
+    #ifdef DEBUG
+        printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+    #endif
+
+    if (i>=0 && i<number_of_different_forms)
+        return name_of_forms[i];
     else return 0;
 }
 

@@ -52,6 +52,11 @@ private:
      * The number of forms needed for each abstract form
      */
     vector<int> number_of_forms_needed;
+    
+    /*!
+     * The name for each abstract form
+     */
+    vector<string> name_of_forms;
 
     /*!
      *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
@@ -76,7 +81,7 @@ public:
      *  @param abst_forms 		A vector of abstract forms
      *  @param num_of_forms 	A vector of integers describing the number of forms needed (for each abstract form)
      */
-    Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms);
+    Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms, vector<string> name_forms);
 
     /*!
      * Get the plane width
@@ -119,6 +124,15 @@ public:
      *  @return     int: the total number of all forms
      */
     int get_total_number_of_all_forms();
+    
+    /*!
+     * Get the name of abstract form [i]
+     *
+     * @param i    the index of the abstract form in question
+     *
+     * @return     the name for abstract_form[i]
+     */
+    string get_name_of_form(int i);
 
     /*!
      *  Get is_solveable

@@ -49,7 +49,6 @@ void MainWindow::on_solveButton_clicked()
     InputHandler ih;
 
     /*ih.get_input(ui->inputFile->text().toLatin1().data());
-    //ih._d_print_input();
 
     Problem problem = ih.create_problem();
 
@@ -77,16 +76,34 @@ void MainWindow::on_selectInputButton_clicked()
 
 
     if (!fileName.isEmpty()) {
-        //ui->inputFile->setText(fileName);
-        /*QFile file(fileName);
+
+        QFile file(fileName);
         if (!file.open(QIODevice::ReadOnly)) {
             QMessageBox::critical(this, tr("Error"), tr("Could not open file"));
             return;
         }
-        QTextStream in(&file);
-        ui->textEdit->setText(in.readAll());
-        file.close();*/
-        //ui->tableWidget->
+        file.close();
+
+        InputHandler ih;
+        ih.get_input(fileName.toLatin1().data());
+
+        Problem problem = ih.create_problem();
+
+        ui->absFormList->clear();
+        for(int i = 0; i < problem.get_number_of_different_forms(); ++i){
+            //Add name
+            QString item = QString::fromStdString(problem.get_name_of_form(i));
+
+            //Add points
+            AbstractForm * form = problem.get_abstract_form_at_position(i);
+            item += " (" + QString::number(form->get_number_of_points()) + " Points)";
+
+            //Add number of Forms
+            item += " (" + QString::number(problem.get_number_of_form_needed(i)) + " times)";
+
+            ui->absFormList->addItem(item);
+        }
+
     }
 }
 
