@@ -133,6 +133,36 @@ public:
      * @return     the name for abstract_form[i]
      */
     string get_name_of_form(int i);
+    
+    
+    /*!
+     * Set the plane width
+     * @return void
+     */
+    void set_plane_width(float width);
+    
+    /*!
+     * Set the plane height
+     * @return void
+     */
+    void set_plane_height(float height);
+    
+    /*!
+     * Adds an abstract Form to the problem
+     * @return void
+     */
+    void add_abstract_form(string name, AbstractForm form);
+    
+    
+    /*!
+     *  Erases a specific abstract form
+     *
+     *  @param i    the index of the abstract form to be erased
+     *
+     *  @return     void
+     */
+    void erase_abstract_form(int i);
+    
 
     /*!
      *  Get is_solveable

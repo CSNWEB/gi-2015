@@ -22,11 +22,12 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_view(new SvgView),
-    pm(new ProblemManager(ui))
+    pm(new ProblemManager())
 {
     ui->setupUi(this);
 
-   ui->svgContainer->addWidget(m_view);
+    pm->setLists(ui->absFormList,ui->pointList);
+    ui->svgContainer->addWidget(m_view);
 
    //QFile file("/Users/Christoph/Code/gi-2015/out.svg");
    //m_view->openFile(file);
@@ -87,23 +88,9 @@ void MainWindow::on_selectInputButton_clicked()
             return;
         }
         file.close();
-        pm->loadFromFile(fileName);
-    }
-}
-
-void MainWindow::on_selectOutputButton_clicked()
-{
-   // QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QString(),
-     //                                               tr("Filename (*)"));
-
-    QFileDialog dialog;
-    dialog.setFileMode(QFileDialog::Directory);
-    dialog.setOption(QFileDialog::ShowDirsOnly);
-
-    QString path = dialog.getExistingDirectory(this, tr("Choose Directory"));
-
-    if (!path.isEmpty()) {
-        //ui->outputFile->setText(path);
+        QSizeF size = pm->loadFromFile(fileName);
+        ui->planeWidth->setValue(size.width());
+        ui->planeHeight->setValue(size.height());
     }
 }
 
@@ -116,5 +103,26 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_absFormList_currentRowChanged(int currentRow)
 {
-    QMessageBox::information(this, tr("Info"), QString::number(currentRow));
+    if(currentRow > -1){
+        int amount = pm->initPoints(currentRow);
+        ui->pointAmount->setValue(amount);
+    }else{
+        ui->pointList->clear();
+    }
+}
+
+void MainWindow::on_saveSVG_clicked()
+{
+         QFileDialog dialog;
+         dialog.setFileMode(QFileDialog::AnyFile);
+         dialog.setDirectory(QDir::homePath());
+
+         QString file = dialog.getSaveFileName(this, tr("Save file"));
+
+         if (!file.isEmpty()) {
+             if(!file.endsWith('.svg')){
+                 file += ".svg";
+             }
+             //ui->outputFile->setText(path);
+         }
 }

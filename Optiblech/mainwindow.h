@@ -33,11 +33,11 @@ private slots:
 
     void on_selectInputButton_clicked();
 
-    void on_selectOutputButton_clicked();
-
     void on_pushButton_clicked();
 
     void on_absFormList_currentRowChanged(int currentRow);
+
+    void on_saveSVG_clicked();
 
 private:
     Ui::MainWindow *ui;

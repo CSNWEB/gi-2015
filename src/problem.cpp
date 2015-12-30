@@ -14,8 +14,6 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 	number_of_forms_needed 		= num_of_forms;
     name_of_forms = name_forms;
 
-    check_if_solveable();
-
 	//number_of_planes 			= 0;
 	//planes  					= vector<Plane>();
 }
@@ -134,6 +132,7 @@ float Problem::get_plane_height()
 
 bool Problem::is_solveable()
 {
+    check_if_solveable();
     return too_large_forms.size() == 0;
 }
 
@@ -146,4 +145,27 @@ AbstractForm* Problem::get_abstract_form_at_position(int i)
     if (i >= 0 && i < number_of_different_forms)
         return &abstract_forms[i];
     else return 0;
+}
+
+
+void Problem::set_plane_width(float width){
+    size_of_sheet_x = width;
+}
+
+void Problem::set_plane_height(float height){
+    size_of_sheet_y = height;
+}
+
+void Problem::add_abstract_form(string name, AbstractForm form){
+    abstract_forms.push_back(form);
+    ++number_of_different_forms;
+    number_of_forms_needed.push_back(0);
+    name_of_forms.push_back(name);
+}
+
+void Problem::erase_abstract_form(int i){
+    abstract_forms.erase(abstract_forms.begin() + i);
+    --number_of_different_forms;
+    number_of_forms_needed.erase(number_of_forms_needed.begin() +i);
+    name_of_forms.erase(name_of_forms.begin() +i);
 }
