@@ -18,6 +18,7 @@
 #include "binPackingPlane.hpp"
 #include "binPackingShelf.hpp"
 #include "abstractForm.hpp"
+#include "abstractFormConfiguration.hpp"
 #include "global.hpp"
 
 using namespace std;

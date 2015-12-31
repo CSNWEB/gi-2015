@@ -8,6 +8,16 @@
 #ifndef FORMCOMBINER_H
 #define FORMCOMBINER_H
 
+#include "abstractForm.hpp"
+#include "abstractFormConfiguration.hpp"
+#include "problem.hpp"
+
+#include <list>
+#include <iterator>
+#include <vector>
+
+using namespace std;
+
 class FormCombiner
 {
 private:
@@ -22,10 +32,9 @@ private:
 	AbstractForm* abstract_form_1;
 
 	/*!
-	 *  A pointer to the second AbstractForm
+	 *  A list of possible AbstractFormConfigurations, sorted by optimality of area utilization of the bounding box
 	 */
-	AbstractForm* abstract_form_2;
-
+	list<AbstractFormConfiguration> possible_configurations
 
 public:
 	/*!
@@ -36,12 +45,17 @@ public:
 	/*!
 	 *  Search all other forms for optimal configurated tuple
 	 */
-	ReturnType search_for_optimal_configuratioon_global();
+	void search_for_optimal_configuratioon_global();
 
 	/*!
 	 *  Search for optimal configuration with specific form
 	 */
-	ReturnType search_for_optimal_configuratioon_local(AbstractForm* other_form);
+	void search_for_optimal_configuratioon_local(AbstractForm* other_form);
+
+	/*!
+	 *  Get the best AbstractFormConfiguration that doe not use any AbstractForm from a given vector
+	 */
+	AbstractFormConfiguration get_best_configuration(vector<int> forbidden_forms);
 
 };
 
