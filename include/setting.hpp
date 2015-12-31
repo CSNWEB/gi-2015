@@ -27,6 +27,11 @@ private:
      */
 	vector<Plane> planes;
 
+    /*!
+     *  A vector of the amount of missing pieces of each form
+     */
+    //vector<int> missing_forms; 
+
 public:
     /*!
      *  Default Constructor.
@@ -86,6 +91,15 @@ public:
      *  @return     the utilitation as percentage within [0,1]
      */
     float get_total_utilization();
+
+    /*!
+     *  Get the number of missing pieces of a specific form
+     *
+     *  @param form_index   the index of the form
+     *
+     *  @return             the number of pieces that still have to be added for form at form_index
+     */
+    int get_number_of_missing_pieces_of_form(int form_index);
 
     /*!
      *  Function to create an initial legal setting

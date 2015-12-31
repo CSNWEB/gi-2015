@@ -9,6 +9,10 @@ Setting::Setting(Problem *p)
 	problem = p;
 
 	planes = vector<Plane>();
+
+	missing_forms = vector<int>(problem->get_number_of_different_forms());
+	for (int i=0; i<missing_forms.size(); ++i)
+		missing_forms[i] = problem->get_number_of_form_needed(i);
 }
 
 
@@ -42,6 +46,8 @@ void Setting::create_initial_setting()
 	for (int i=0; i<problem->get_number_of_different_forms(); ++i)
 		number_of_planes += problem->get_number_of_form_needed(i);
 	planes = vector<Plane>(number_of_planes);
+
+	missing_forms = vector<int>(problem->get_number_of_different_forms(), 0);
 
 	int k=0;
 
@@ -78,4 +84,23 @@ int Setting::get_number_of_planes()
 	#endif
 		
     return planes.size();
+}
+
+int get_number_of_missing_pieces_of_form(int form_index)
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	int current_number_of_forms = 0;
+	for (int current_plane = 0; current_plane < get_number_of_planes(); ++current_plane)
+	{
+		for (int current_form = 0; current_form < planes[current_plane].get_number_of_fomrs(); ++current_form)
+		{
+			if (planes[current_plane].get_form_at(current_form)->get_mother()->get_id() == form_index)
+				current_number_of_forms++;
+		}
+	}
+
+	return get_problem()->get_number_of_form_needed(form_index)-current_number_of_forms;
 }
