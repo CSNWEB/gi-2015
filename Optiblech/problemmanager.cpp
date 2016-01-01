@@ -48,15 +48,20 @@ QString ProblemManager::getAbsFormListItem(int i){
     return item;
 }
 
+QString ProblemManager::getPointListItem(int form, int i)
+{
+    Point point = problem.get_abstract_form_at_position(form)->get_point_at_index(i);
+    QString item = QString::number(point.get_x()) + ", " + QString::number(point.get_y());
+    return item;
+}
+
 int ProblemManager::initPoints(int selectedForm)
 {
     pointList->clear();
     AbstractForm * form = problem.get_abstract_form_at_position(selectedForm);
 
-    for(int i=0; i< form->get_number_of_points(); ++i){
-        Point point = form->get_point_at_index(i);
-        QString item = QString::number(point.get_x()) + ", " + QString::number(point.get_y());
-
+    for(int i=0; i< form->get_number_of_points(); ++i){        
+        QString item = getPointListItem(selectedForm, i);
         pointList->addItem(item);
     }
 
@@ -96,4 +101,44 @@ void ProblemManager::delForm(int selectedForm){
         selectedForm = absFormList->count()-1;
     }
     absFormList->setCurrentRow(selectedForm);
+}
+
+void ProblemManager::addPointToForm(int selectedForm, float x, float y)
+{
+    problem.get_abstract_form_at_position(selectedForm)->add_point_to_form(x,y);
+    int row = problem.get_abstract_form_at_position(selectedForm)->get_number_of_points()-1;
+    pointList->addItem(getPointListItem(selectedForm,row));
+    pointList->setCurrentRow(row);
+}
+
+void ProblemManager::editPointOfForm(int selectedForm, int selectedPoint, float x, float y)
+{
+    problem.get_abstract_form_at_position(selectedForm)->set_xy_of_point(selectedPoint, x, y);
+    pointList->item(selectedPoint)->setText(getPointListItem(selectedForm, selectedPoint));
+}
+
+void ProblemManager::delPointOfForm(int selectedForm, int selectedPoint)
+{
+    problem.get_abstract_form_at_position(selectedForm)->erase_point_at_index(selectedPoint);
+    initPoints(selectedForm);
+    if(selectedPoint >= pointList->count()){
+        selectedPoint = pointList->count()-1;
+    }
+    pointList->setCurrentRow(selectedPoint);
+}
+
+void ProblemManager::movePointUp(int selectedForm, int selectedPoint){
+    problem.get_abstract_form_at_position(selectedForm)->move_up_point_at_index(selectedPoint);
+    initPoints(selectedForm);
+    if(selectedPoint > 0){
+        pointList->setCurrentRow(selectedPoint-1);
+    }
+}
+
+void ProblemManager::movePointDown(int selectedForm, int selectedPoint){
+    problem.get_abstract_form_at_position(selectedForm)->move_down_point_at_index(selectedPoint);
+    initPoints(selectedForm);
+    if(selectedPoint < pointList->count()-1){
+        pointList->setCurrentRow(selectedPoint+1);
+    }
 }

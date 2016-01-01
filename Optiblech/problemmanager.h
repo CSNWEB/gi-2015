@@ -28,10 +28,10 @@ public:
     void delForm(int selectedForm);
 
     void addPointToForm(int selectedForm, float x, float y);
-    void editPointOfForm(int selectedForm, float x, float y);
-    void delPointOfForm(int selectedForm);
-    void movePointUp(int selectedPoint);
-    void movePointDown(int selectedPoint);
+    void editPointOfForm(int selectedForm, int selectedPoint, float x, float y);
+    void delPointOfForm(int selectedForm, int selectedPoint);
+    void movePointUp(int selectedForm, int selectedPoint);
+    void movePointDown(int selectedForm, int selectedPoint);
 
 private:
     Problem problem;
@@ -39,6 +39,7 @@ private:
     QListWidget* pointList;
 
     QString getAbsFormListItem(int i);
+    QString getPointListItem(int form, int point);
 };
 
 #endif // PROBLEMMANAGER_H
