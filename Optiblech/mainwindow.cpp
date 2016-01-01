@@ -77,7 +77,8 @@ void MainWindow::on_solveButton_clicked()
 
 void MainWindow::on_selectInputButton_clicked()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QString(),
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), QDir::homePath(),
                                                     tr("Text Files (*.txt)"));
 
 
@@ -124,7 +125,6 @@ void MainWindow::on_saveSVG_clicked()
              if(!file.endsWith('.svg')){
                  file += ".svg";
              }
-             //ui->outputFile->setText(path);
          }
 }
 
