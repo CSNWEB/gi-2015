@@ -141,7 +141,7 @@ void MainWindow::on_planeHeight_valueChanged(double arg1)
 
 void MainWindow::on_addFormButton_clicked()
 {
-    AddFormDialog dialog(this, pm, false);
+    AddFormDialog dialog(this, pm, -1);
     dialog.exec();
 }
 
@@ -150,4 +150,17 @@ void MainWindow::on_delFormButton_clicked()
     if(ui->absFormList->currentRow() >= 0){
         pm->delForm(ui->absFormList->currentRow());
     }
+    /*for(int i = 0; i < editFormDialogs.size(); ++i){
+        editFormDialogs[i].close();
+    }
+    editFormDialogs.clear();*/
+}
+
+void MainWindow::on_editFormButton_clicked()
+{
+    int row = ui->absFormList->currentRow();
+    AddFormDialog dialog(this, pm, row);
+    dialog.setName(QString::fromStdString(pm->getProblem()->get_name_of_form(row)));
+    dialog.exec();
+    //editFormDialogs.push_back(dialog);
 }

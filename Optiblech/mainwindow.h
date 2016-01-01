@@ -47,6 +47,8 @@ private slots:
 
     void on_delFormButton_clicked();
 
+    void on_editFormButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -55,6 +57,8 @@ private:
     QString m_currentPath;
 
     ProblemManager *pm;
+
+    vector<QDialog> editFormDialogs;
 
 };
 

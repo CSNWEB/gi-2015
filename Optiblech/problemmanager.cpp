@@ -83,6 +83,12 @@ void ProblemManager::addForm(QString name){
     absFormList->setCurrentRow(row);
 }
 
+void ProblemManager::renameForm(int selectedForm, QString name){
+    problem.rename_abstract_form(selectedForm,name.toUtf8().data());
+    QString item = getAbsFormListItem(selectedForm);
+    absFormList->item(selectedForm)->setText(item);
+}
+
 void ProblemManager::delForm(int selectedForm){
     problem.erase_abstract_form(selectedForm);
     initAbsFormList();

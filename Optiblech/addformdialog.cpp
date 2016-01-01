@@ -2,13 +2,13 @@
 #include "ui_addformdialog.h"
 #include "problemmanager.h"
 
-AddFormDialog::AddFormDialog(QWidget *parent, ProblemManager * pm, bool edit ) :
+AddFormDialog::AddFormDialog(QWidget *parent, ProblemManager * pm, int toedit ) :
     QDialog(parent),
     ui(new Ui::AddFormDialog)
 {
     ui->setupUi(this);
     this->pm = pm;
-    this->edit = edit;
+    this->toedit = toedit;
 }
 
 AddFormDialog::~AddFormDialog()
@@ -18,9 +18,15 @@ AddFormDialog::~AddFormDialog()
 
 void AddFormDialog::on_Controls_accepted()
 {
-    if(edit){
-
+    if(toedit >= 0){
+        pm->renameForm(toedit, ui->formName->text());
     }else{
      pm->addForm(ui->formName->text());
     }
+}
+
+void AddFormDialog::setName(QString name)
+{
+    ui->formName->setText(name);
+    setWindowTitle("Edit form " + name);
 }
