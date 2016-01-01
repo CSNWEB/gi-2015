@@ -19,13 +19,20 @@ public:
     void initAbsFormList();
     int initPoints(int selectedForm);
     QSizeF loadFromFile(QString fileName);
-    Problem getProblem();
+    Problem* getProblem();
 
+    void setPlaneWidth(float width);
+    void setPlaneHeight(float height);
+    void addForm(QString name);
+    void renameForm(int selectedForm, QString name);
+    void delForm(int selectedForm);
 
 private:
     Problem problem;
     QListWidget* absFormList;
     QListWidget* pointList;
+
+    QString getAbsFormListItem(int i);
 };
 
 #endif // PROBLEMMANAGER_H

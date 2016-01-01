@@ -16,7 +16,7 @@
 #include "outputHandler.hpp"
 #include "inputHandler.hpp"
 #include "binPacking.hpp"
-
+#include "addformdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -54,16 +54,16 @@ void MainWindow::on_solveButton_clicked()
 
 
 
-    Problem problem = pm->getProblem();
+    Problem* problem = pm->getProblem();
 
-    if (!problem.is_solveable())
+    if (!problem->is_solveable())
         QMessageBox::warning(this, tr("Warning"), tr("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!"));
     else
     {
-        BinPacking bin_packing(&problem);
+        BinPacking bin_packing(problem);
 
         Setting bin_packed = bin_packing.get_packed_setting();
-        OutputHandler oh(&problem, &bin_packed, output_filename_txt, output_filename_svg);
+        OutputHandler oh(problem, &bin_packed, output_filename_txt, output_filename_svg);
         //oh.write_setting_to_txt();
         oh.write_setting_to_svg(true);
         QFile file(QString::fromStdString(output_filename_svg));
@@ -125,4 +125,29 @@ void MainWindow::on_saveSVG_clicked()
              }
              //ui->outputFile->setText(path);
          }
+}
+
+void MainWindow::on_planeWidth_valueChanged(double arg1)
+{
+    pm->setPlaneWidth(arg1);
+}
+
+void MainWindow::on_planeHeight_valueChanged(double arg1)
+{
+    pm->setPlaneHeight(arg1);
+}
+
+
+
+void MainWindow::on_addFormButton_clicked()
+{
+    AddFormDialog dialog(this, pm, false);
+    dialog.exec();
+}
+
+void MainWindow::on_delFormButton_clicked()
+{
+    if(ui->absFormList->currentRow() >= 0){
+        pm->delForm(ui->absFormList->currentRow());
+    }
 }

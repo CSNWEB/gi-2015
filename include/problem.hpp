@@ -152,7 +152,15 @@ public:
      * @return void
      */
     void add_abstract_form(string name, AbstractForm form);
-    
+
+    /*!
+     *  Renames a specific abstract form
+     *
+     *  @param i    the index of the abstract form to be renamed
+     *
+     *  @return     void
+     */
+    void rename_abstract_form(int i, string name);
     
     /*!
      *  Erases a specific abstract form

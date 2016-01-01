@@ -39,6 +39,14 @@ private slots:
 
     void on_saveSVG_clicked();
 
+    void on_planeWidth_valueChanged(double arg1);
+
+    void on_planeHeight_valueChanged(double arg1);
+
+    void on_addFormButton_clicked();
+
+    void on_delFormButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 

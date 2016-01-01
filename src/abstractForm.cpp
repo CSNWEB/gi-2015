@@ -136,6 +136,10 @@ float AbstractForm::find_rotation_with_minimum_bounding_box()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+    if(convex_hull.size() == 0){
+        return 0.0;
+    }
+
 	float optimal_angle = 0;
 	float minimum_area_of_bounding_box = -1;
 
@@ -143,8 +147,7 @@ float AbstractForm::find_rotation_with_minimum_bounding_box()
 	{
 		#ifdef DEBUG
 			printf("Consider configuration %i\n", configuration);
-		#endif
-
+		#endif        
 		float current_angle = compute_rotation_angle_for_points_parallel_to_axis(convex_hull[configuration], convex_hull[(configuration+1) % (convex_hull.size()-1)]);
 		float x_min = 0;
 		float x_max = 0;

@@ -83,6 +83,13 @@ Setting BinPacking::get_packed_setting()
 		return NULL;
 	}
 
+    if(all_forms_sorted_by_size.size() == 0){
+        #ifdef DEBUG
+            printf("No Forms in Problem.\n");
+        #endif
+        return NULL;
+    }
+
 	float minimum_height_of_any_form = problem->get_abstract_form_at_position(all_forms_sorted_by_size[all_forms_sorted_by_size.size()-1])->get_dy();
 
 	for (int form_index = 0; form_index<all_forms_sorted_by_size.size(); ++form_index)

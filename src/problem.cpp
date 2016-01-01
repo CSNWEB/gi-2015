@@ -132,6 +132,7 @@ float Problem::get_plane_height()
 
 bool Problem::is_solveable()
 {
+    too_large_forms.clear();
     check_if_solveable();
     return too_large_forms.size() == 0;
 }
@@ -161,6 +162,13 @@ void Problem::add_abstract_form(string name, AbstractForm form){
     ++number_of_different_forms;
     number_of_forms_needed.push_back(0);
     name_of_forms.push_back(name);
+}
+
+void Problem::rename_abstract_form(int i, string name)
+{
+    if(i < number_of_different_forms){
+        name_of_forms[i] = name;
+    }
 }
 
 void Problem::erase_abstract_form(int i){
