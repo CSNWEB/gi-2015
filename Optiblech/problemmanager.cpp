@@ -119,7 +119,9 @@ void ProblemManager::editPointOfForm(int selectedForm, int selectedPoint, float 
 
 void ProblemManager::delPointOfForm(int selectedForm, int selectedPoint)
 {
+    qDebug( "Start deleting");
     problem.get_abstract_form_at_position(selectedForm)->erase_point_at_index(selectedPoint);
+    qDebug("Finished deleting");
     initPoints(selectedForm);
     if(selectedPoint >= pointList->count()){
         selectedPoint = pointList->count()-1;
@@ -132,6 +134,8 @@ void ProblemManager::movePointUp(int selectedForm, int selectedPoint){
     initPoints(selectedForm);
     if(selectedPoint > 0){
         pointList->setCurrentRow(selectedPoint-1);
+    }else{
+        pointList->setCurrentRow(0);
     }
 }
 
@@ -140,5 +144,7 @@ void ProblemManager::movePointDown(int selectedForm, int selectedPoint){
     initPoints(selectedForm);
     if(selectedPoint < pointList->count()-1){
         pointList->setCurrentRow(selectedPoint+1);
+    }else{
+        pointList->setCurrentRow(pointList->count()-1);
     }
 }

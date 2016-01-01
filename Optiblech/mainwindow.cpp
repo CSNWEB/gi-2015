@@ -17,6 +17,7 @@
 #include "inputHandler.hpp"
 #include "binPacking.hpp"
 #include "manageformdialog.h"
+#include "managepointsdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -163,4 +164,46 @@ void MainWindow::on_editFormButton_clicked()
     dialog.setName(QString::fromStdString(pm->getProblem()->get_name_of_form(row)));
     dialog.exec();
     //editFormDialogs.push_back(dialog);
+}
+
+void MainWindow::on_pointUpButton_clicked()
+{
+    if(ui->absFormList->currentRow() >= 0 && ui->pointList->currentRow() >= 0){
+        pm->movePointUp(ui->absFormList->currentRow(), ui->pointList->currentRow());
+    }
+}
+
+void MainWindow::on_pointDownButton_clicked()
+{
+    if(ui->absFormList->currentRow() >= 0 && ui->pointList->currentRow() >= 0){
+        pm->movePointDown(ui->absFormList->currentRow(), ui->pointList->currentRow());
+    }
+}
+
+void MainWindow::on_delPointButton_clicked()
+{
+    if(ui->absFormList->currentRow() >= 0 && ui->pointList->currentRow() >= 0){
+        pm->delPointOfForm(ui->absFormList->currentRow(), ui->pointList->currentRow());
+    }
+}
+
+
+void MainWindow::on_addPointButton_clicked()
+{
+    if(ui->absFormList->currentRow() >= 0){
+        ManagePointsDialog dialog(this, pm, ui->absFormList->currentRow(), -1);
+        dialog.exec();
+    }
+}
+
+void MainWindow::on_editPointButton_clicked()
+{
+    int selectedForm = ui->absFormList->currentRow();
+    int selectedPoint = ui->pointList->currentRow();
+    if(selectedForm >= 0 && selectedPoint >= 0){
+        ManagePointsDialog dialog(this, pm, selectedForm, selectedPoint);
+        AbstractForm * form = pm->getProblem()->get_abstract_form_at_position(selectedForm);
+        dialog.setPoint(form->get_point_at_index(selectedPoint).get_x(), form->get_point_at_index(selectedPoint).get_y());
+        dialog.exec();
+    }
 }

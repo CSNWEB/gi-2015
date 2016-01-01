@@ -27,7 +27,12 @@ vector<int> AbstractForm::sort_points_dim_x()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	vector<int> ordered_indices = vector<int>(points.size(),0);
+    if(points.size() == 0){
+        return vector<int>();
+    }
+
+	vector<int> ordered_indices = vector<int>(points.size(),0);        
+
 	for (int i=0; i<points.size(); ++i)
 		ordered_indices[i] = i;
 
@@ -49,7 +54,7 @@ vector<int> AbstractForm::sort_points_dim_x()
 	#ifdef DEBUG
 		printf("finished sorting. result:\n");
 		for (int i=0; i<ordered_indices.size(); ++i)
-			printf("%i ",ordered_indices[i]);
+            printf("%i ",ordered_indices[i]);
 		printf("\n");
 	#endif
 
@@ -63,8 +68,12 @@ void AbstractForm::compute_size_of_area()
 	#ifdef DEBUG
 		printf("FUNCITON: %s\n", __PRETTY_FUNCTION__);
 	#endif
-    
+
     size_of_area = 0.0;
+
+    if(points.size() == 0){
+        return;
+    }
     
     vector<Point> closed_points = points;
     closed_points.push_back(closed_points[0]);
@@ -350,8 +359,10 @@ void AbstractForm::compute_convex_hull()
 	#endif
 
 	vector<int> ordered_indices = sort_points_dim_x();
-
-	if (points.size() == 3)
+    if(points.size() == 0){
+        convex_hull.clear();
+    }
+    else if (points.size() == 3)
 	{
 		convex_hull = ordered_indices;
 		convex_hull.push_back(ordered_indices[0]);
@@ -507,7 +518,7 @@ void AbstractForm::_d_print_abstract_form()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 
 		printf("Name of form: %s\n", name.c_str());
-		printf("Number of points: %i\n", number_of_points);
+        printf("Number of points: %i\n", number_of_points);
 
 		for (int i=0; i<number_of_points; ++i)
 			printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
@@ -517,22 +528,29 @@ void AbstractForm::_d_print_abstract_form()
 
 void AbstractForm::calc_bounding_box()
 {
-    min_x = points[0].get_x();
-    max_x = points[0].get_x();
-    min_y = points[0].get_y();
-    max_y = points[0].get_y();
-    for (int i=1; i<number_of_points; ++i)
-    {
-        if (points[i].get_x() < min_x)
-            min_x = points[i].get_x();
-        else if (points[i].get_x() > max_x)
-            max_x = points[i].get_x();
+    if(points.size() == 0){
+       min_x = max_x = min_y = max_y = 0;
 
-        if (points[i].get_y() < min_y)
-            min_y = points[i].get_y();
-        else if (points[i].get_y() > max_y)
-            max_y = points[i].get_y();
+    }else{
+        min_x = points[0].get_x();
+        max_x = points[0].get_x();
+        min_y = points[0].get_y();
+        max_y = points[0].get_y();
+        for (int i=1; i<number_of_points; ++i)
+        {
+            if (points[i].get_x() < min_x)
+                min_x = points[i].get_x();
+            else if (points[i].get_x() > max_x)
+                max_x = points[i].get_x();
+
+            if (points[i].get_y() < min_y)
+                min_y = points[i].get_y();
+            else if (points[i].get_y() > max_y)
+                max_y = points[i].get_y();
+        }
     }
+
+
     dx = max_x-min_x;
     dy = max_y-min_y;
 }
@@ -558,6 +576,7 @@ void AbstractForm::update_bounding_box(float x, float y)
 void AbstractForm::update_values(){
     compute_convex_hull();
     compute_size_of_area();
+    number_of_points = points.size();
 }
 
 void AbstractForm::add_point_to_form(float x, float y)
@@ -571,16 +590,20 @@ void AbstractForm::add_point_to_form(float x, float y)
 void AbstractForm::set_xy_of_point(int point, float x, float y)
 {
     points[point].set_x(x);
-    points[point].set_x(y);
+    points[point].set_y(y);
     update_bounding_box(x,y);
     update_values();
 }
 
 void AbstractForm::erase_point_at_index(int index)
 {
+
     points.erase(points.begin()+index);
+
     calc_bounding_box();
+
     update_values();
+
 }
 
 

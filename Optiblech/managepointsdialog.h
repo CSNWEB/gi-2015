@@ -13,7 +13,7 @@ class ManagePointsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ManagePointsDialog(QWidget *parent = 0, ProblemManager * pm = 0, int toedit = -1);
+    explicit ManagePointsDialog(QWidget *parent = 0, ProblemManager * pm = 0, int selectedForm = 0, int toedit = -1);
     ~ManagePointsDialog();
 
     void setPoint(float x, float y);
@@ -23,6 +23,7 @@ private slots:
 private:
     Ui::ManagePointsDialog *ui;
     ProblemManager * pm;
+    int selectedForm;
     int toedit;
 };
 
