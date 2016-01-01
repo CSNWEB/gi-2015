@@ -10,24 +10,7 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	this->points = points;
 	number_of_points = points.size();
 
-	min_x = points[0].get_x();
-	float x_max = points[0].get_x();
-	min_y = points[0].get_y();
-	float y_max = points[0].get_y();
-	for (int i=1; i<number_of_points; ++i)
-	{
-		if (points[i].get_x() < min_x)
-			min_x = points[i].get_x();
-		else if (points[i].get_x() > x_max)
-			x_max = points[i].get_x();
-
-		if (points[i].get_y() < min_y)
-			min_y = points[i].get_y();
-		else if (points[i].get_y() > y_max)
-			y_max = points[i].get_y();
-	}
-	dx = x_max-min_x;
-	dy = y_max-min_y;
+    calc_bounding_box();
 
 	#ifdef DEBUG
 		printf("Created abstractForm with bounding box %.2f/%.2f - %.2f/%.2f\n", min_x, min_y, min_x + dx, min_y + dy);
@@ -35,9 +18,7 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 
 	convex_hull = vector<int>();
 
-	compute_convex_hull();
-    
-    compute_size_of_area();
+    update_values();
 }
 
 vector<int> AbstractForm::sort_points_dim_x()
@@ -493,7 +474,6 @@ void AbstractForm::compute_convex_hull()
 	#endif
 }
 
-
 int AbstractForm::get_number_of_points()
 {
 	#ifdef DEBUG
@@ -533,4 +513,99 @@ void AbstractForm::_d_print_abstract_form()
 			printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
 
 	#endif
+}
+
+void AbstractForm::calc_bounding_box()
+{
+    min_x = points[0].get_x();
+    max_x = points[0].get_x();
+    min_y = points[0].get_y();
+    max_y = points[0].get_y();
+    for (int i=1; i<number_of_points; ++i)
+    {
+        if (points[i].get_x() < min_x)
+            min_x = points[i].get_x();
+        else if (points[i].get_x() > max_x)
+            max_x = points[i].get_x();
+
+        if (points[i].get_y() < min_y)
+            min_y = points[i].get_y();
+        else if (points[i].get_y() > max_y)
+            max_y = points[i].get_y();
+    }
+    dx = max_x-min_x;
+    dy = max_y-min_y;
+}
+
+void AbstractForm::update_bounding_box(float x, float y)
+{
+    if(x > max_x){
+        max_x = x;
+    }
+    if(x < min_x){
+        min_x = x;
+    }
+    if(y > max_y){
+        max_y = y;
+    }
+    if(y < min_y){
+        y = min_y;
+    }
+    dx = max_x-min_x;
+    dy = max_y-min_y;
+}
+
+void AbstractForm::update_values(){
+    compute_convex_hull();
+    compute_size_of_area();
+}
+
+void AbstractForm::add_point_to_form(float x, float y)
+{
+    Point new_point(x,y);
+    points.push_back(new_point);
+    update_bounding_box(x,y);
+    update_values();
+}
+
+void AbstractForm::set_xy_of_point(int point, float x, float y)
+{
+    points[point].set_x(x);
+    points[point].set_x(y);
+    update_bounding_box(x,y);
+    update_values();
+}
+
+void AbstractForm::erase_point_at_index(int index)
+{
+    points.erase(points.begin()+index);
+    calc_bounding_box();
+    update_values();
+}
+
+
+void AbstractForm::move_up_point_at_index(int index)
+{
+    if(index <= 0){
+        return;
+    }
+    if(index >= points.size()){
+        return;
+    }
+    Point h = points[index-1];
+    points[index-1] = points[index];
+    points[index] = h;
+}
+
+void AbstractForm::move_down_point_at_index(int index)
+{
+    if(index < 0){
+        return;
+    }
+    if(index >= points.size()-1){
+        return;
+    }
+    Point h = points[index+1];
+    points[index+1] = points[index];
+    points[index] = h;
 }

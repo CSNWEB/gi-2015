@@ -58,6 +58,17 @@ private:
     float min_y;
     
     /*!
+     *  The Maximum position on the x-axis of any point of this form
+     */
+    float max_x;
+    
+    /*!
+     *  The Maximum position on the y-axis of any point of this form
+     */
+    float max_y;
+
+    
+    /*!
      *  The size of the are of the form.
      */
 	float size_of_area;
@@ -103,6 +114,12 @@ private:
      *  @param  index_of_point_in_convex_hull      the first point of the pair to be placed on y = 0
      */
     void rotate_convex_hull_to_configuration(int index_of_point_in_convex_hull);
+    
+    void calc_bounding_box();
+    
+    void update_bounding_box(float x, float y);
+    
+    void update_values();
 
 public:
     
@@ -184,6 +201,7 @@ public:
      *  @return A float representing size of the bounding box of the form in x direction.
      */
 	float get_dx();
+
     
     /*!
      *  Get the size of the bounding box of the form in y direction.
@@ -191,6 +209,7 @@ public:
      *  @return A float representing the size of the bounding box of the form in y direction.
      */
 	float get_dy();
+    
     
     /*!
      *  The size of the area of the abstract form.
@@ -215,11 +234,50 @@ public:
     /*!
      *  Get the certain point of the ones that make up the form.
      *
-     *  @param index    The index of the point in the array containing the points of the form.
+     *  @param index    The index of the point in the vector points.
      *
      *  @return         The "Point" at the specified index.
      */
 	Point get_point_at_index(int index){return points[index];};
+    
+    /*!
+     * Adds an point to the form
+     *
+     * @param x         The x coordinate of the point
+     * @param y         The y coordinate of the point
+     */
+    void add_point_to_form(float x, float y);
+
+    /*!
+     * Set new coordinates for an given point of the form
+     *
+     * @param point     The index of the point in points
+     * @param x         The x coordinate of the point
+     * @param y         The y coordinate of the point
+     */
+    void set_xy_of_point(int point, float x, float y);
+    
+    /*!
+     *  Erases the pont with the given index
+     *
+     *  @param index    The index of the point in points
+     */
+    void erase_point_at_index(int index);
+    
+    /*!
+     *  Moves the point with the given index one place up in the vector
+     *
+     *  @param index    The index of the point in points
+     */
+    void move_up_point_at_index(int index);
+    
+    /*!
+     *  Moves the point with the given index one place down in the vector
+     *
+     *  @param index    The index of the point in points
+     */
+    void move_down_point_at_index(int index);
+    
 };
 
 #endif

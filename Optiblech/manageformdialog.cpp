@@ -1,5 +1,5 @@
-#include "addformdialog.h"
-#include "ui_addformdialog.h"
+#include "manageformdialog.h"
+#include "ui_manageformdialog.h"
 #include "problemmanager.h"
 
 AddFormDialog::AddFormDialog(QWidget *parent, ProblemManager * pm, int toedit ) :

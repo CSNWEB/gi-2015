@@ -16,7 +16,7 @@
 #include "outputHandler.hpp"
 #include "inputHandler.hpp"
 #include "binPacking.hpp"
-#include "addformdialog.h"
+#include "manageformdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),

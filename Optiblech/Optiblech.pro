@@ -32,14 +32,17 @@ SOURCES += main.cpp\
     ../src/simpleSVG.cpp \
     svgview.cpp \
     problemmanager.cpp \
-    addformdialog.cpp
+    manageformdialog.cpp \
+    managepointsdialog.cpp
 
 HEADERS  += mainwindow.h \
     svgview.h \
     problemmanager.h \
-    addformdialog.h
+    manageformdialog.h \
+    managepointsdialog.h
 
 FORMS    += mainwindow.ui \
-    addformdialog.ui
+    manageformdialog.ui \
+    managepointsdialog.ui
 
 INCLUDEPATH = ../include
