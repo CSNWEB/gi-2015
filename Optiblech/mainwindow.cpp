@@ -207,3 +207,8 @@ void MainWindow::on_editPointButton_clicked()
         dialog.exec();
     }
 }
+
+void MainWindow::on_saveTXT_clicked()
+{
+
+}

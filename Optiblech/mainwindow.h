@@ -59,6 +59,8 @@ private slots:
 
     void on_editPointButton_clicked();
 
+    void on_saveTXT_clicked();
+
 private:
     Ui::MainWindow *ui;
 

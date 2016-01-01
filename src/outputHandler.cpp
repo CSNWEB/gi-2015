@@ -1,6 +1,6 @@
 #include "outputHandler.hpp"
 
-OutputHandler::OutputHandler(Problem *p, Setting *s, string name_txt, string name_svg)
+OutputHandler::OutputHandler(Problem *p, Setting *s)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
@@ -8,18 +8,16 @@ OutputHandler::OutputHandler(Problem *p, Setting *s, string name_txt, string nam
 	problem = p;
 	setting = s;
 
-	filename_txt = name_txt;
-	filename_svg = name_svg;
 }
 
-void OutputHandler::write_setting_to_txt()
+void OutputHandler::write_setting_to_txt(string filename)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	FILE *file;
-	file = fopen(filename_txt.c_str(), "w");
+    file = fopen(filename.c_str(), "w");
 	fprintf(file, "%i\n", (int)(setting->get_total_utilization()*100));
 	fprintf(file, "%i\n", setting->get_number_of_planes());
 	for (int i=0; i<setting->get_number_of_planes(); ++i)
@@ -36,7 +34,7 @@ void OutputHandler::write_setting_to_txt()
 	//close(file);
 }
 
-void OutputHandler::write_setting_to_svg(bool with_covex_hull)
+void OutputHandler::write_setting_to_svg(string filename, bool with_covex_hull)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -49,7 +47,7 @@ void OutputHandler::write_setting_to_svg(bool with_covex_hull)
     int planeHeight = floor(problem->get_plane_height() * factor);
       
     svg::Dimensions dimensions((planeWidth + spacing) * planes, planeHeight + spacing);
-    svg::Document doc(filename_svg, svg::Layout(dimensions, svg::Layout::TopLeft));
+    svg::Document doc(filename, svg::Layout(dimensions, svg::Layout::TopLeft));
 
 	for (int i=0; i<planes; ++i)
 	{

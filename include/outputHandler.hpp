@@ -29,15 +29,6 @@ private:
 	 */
 	Setting *setting;
 	
-	/**
-	 *  A filename with which the txt-output is saved
-	 */
-	string filename_txt;
-
-	/**
-	 *  A filename with which the svg-output is saved
-	 */
-	string filename_svg;
 
 public:
 	/*!
@@ -48,19 +39,22 @@ public:
 	 *  @param name_txt 	a string defining the filename for txt-output
 	 *  @param name_svg 	a string defining the filename for svg-output
 	 */
-	OutputHandler(Problem *p, Setting *s, string name_txt = "out.txt", string name_svg = "out.svg");
+	OutputHandler(Problem *p, Setting *s);
 
 	/*!
 	 *  writes the current setting of problem in defined format into a txt file
+     *
+     *  @param filename         the path and name of the output file
 	 */
-	void write_setting_to_txt();
+	void write_setting_to_txt(string filename);
 
 	/*!
 	 *  writes the current setting of problem to a svg file
-	 *
+	 *     
+     *  @param filename         the path and name of the output file
 	 *  @param with_covex_hull 	if true, the convex hull is added to the svg-file
 	 */
-	void write_setting_to_svg(bool with_covex_hull = false);
+	void write_setting_to_svg(string filename, bool with_covex_hull = false);
 };
 
 #endif
