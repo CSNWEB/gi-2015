@@ -112,9 +112,9 @@ void SvgView::openFile(const QFile &file)
     QRectF bound = m_svgItem->boundingRect();
     s->setSceneRect(bound);
 
-    float realwidth = container->width() - 20;
+    float realwidth = container->width() - 50;
     float width = bound.width();
-    float realheight = container->height() - 20;
+    float realheight = container->height() - 50;
     float height = bound.height();
 
     float relw = 1;
