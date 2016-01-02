@@ -7,6 +7,7 @@
 #include <QTextStream>
 #include <QDir>
 #include <QtWidgets>
+#include <QTextStream>
 
 #include <svgview.h>
 #include <problemmanager.h>
@@ -235,4 +236,37 @@ void MainWindow::on_saveTXT_clicked()
 void MainWindow::on_pointAmount_valueChanged(int arg1)
 {
     pm->setAmountOfForm(ui->absFormList->currentRow(), arg1);
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setDirectory(QDir::homePath());
+
+    QString filename = dialog.getSaveFileName(this, tr("Save file"));
+    if (!filename.isEmpty()) {
+        if(!filename.endsWith(".txt")){
+            filename += ".txt";
+        }
+        QFile file(filename);
+        if (file.open(QIODevice::ReadWrite)) {
+                QTextStream stream(&file);
+                stream << pm->getProblem()->get_plane_width() << endl
+                        << pm->getProblem()->get_plane_height() << endl
+                        << pm->getProblem()->get_number_of_different_forms() << endl;
+                for(int i = 0; i<pm->getProblem()->get_number_of_different_forms(); ++i){
+                    AbstractForm * form = pm->getProblem()->get_abstract_form_at_position(i);
+                    stream << QString::fromStdString(pm->getProblem()->get_name_of_form(i)) << endl
+                           << pm->getProblem()->get_number_of_form_needed(i) << endl
+                           << form->get_number_of_points() << endl;
+                    for(int j=0; j < form->get_number_of_points(); ++j){
+                        stream << form->get_point_at_index(j).get_x() << " " << form->get_point_at_index(j).get_y() << endl;
+                    }
+                }
+                file.close();
+        }
+
+
+    }
 }

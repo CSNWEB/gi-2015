@@ -63,6 +63,8 @@ private slots:
 
     void on_pointAmount_valueChanged(int arg1);
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 
