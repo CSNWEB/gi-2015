@@ -177,3 +177,10 @@ void Problem::erase_abstract_form(int i){
     number_of_forms_needed.erase(number_of_forms_needed.begin() +i);
     name_of_forms.erase(name_of_forms.begin() +i);
 }
+
+void Problem::set_amount_of_form(int i, int amount)
+{
+    if(i >= 0 && i < number_of_forms_needed.size()){
+        number_of_forms_needed[i] = amount;
+    }
+}

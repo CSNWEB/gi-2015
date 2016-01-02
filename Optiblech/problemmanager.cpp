@@ -148,3 +148,8 @@ void ProblemManager::movePointDown(int selectedForm, int selectedPoint){
         pointList->setCurrentRow(pointList->count()-1);
     }
 }
+
+void ProblemManager::setAmountOfForm(int selectedForm, int amount)
+{
+    problem.set_amount_of_form(selectedForm,amount);
+}

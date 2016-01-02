@@ -148,6 +148,14 @@ public:
     void set_plane_height(float height);
     
     /*!
+     * Set the number of forms needed for a given form
+     * 
+     * @param i         the index of the abstract form to be erased
+     * @param amount    the new amount of the form
+     */
+    void set_amount_of_form(int i, int amount);
+    
+    /*!
      * Adds an abstract Form to the problem
      * @return void
      */

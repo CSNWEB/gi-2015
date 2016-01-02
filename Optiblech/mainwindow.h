@@ -61,6 +61,8 @@ private slots:
 
     void on_saveTXT_clicked();
 
+    void on_pointAmount_valueChanged(int arg1);
+
 private:
     Ui::MainWindow *ui;
 

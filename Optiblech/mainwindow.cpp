@@ -230,3 +230,8 @@ void MainWindow::on_saveTXT_clicked()
         oh.write_setting_to_txt(file.toUtf8().data());
     }
 }
+
+void MainWindow::on_pointAmount_valueChanged(int arg1)
+{
+    pm->setAmountOfForm(ui->absFormList->currentRow(), arg1);
+}

@@ -27,7 +27,7 @@ public:
     void renameForm(int selectedForm, QString name);
     void delForm(int selectedForm);
 
-    void setAmountOfForm(int selectedForm);
+    void setAmountOfForm(int selectedForm, int amount);
 
     void addPointToForm(int selectedForm, float x, float y);
     void editPointOfForm(int selectedForm, int selectedPoint, float x, float y);
