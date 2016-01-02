@@ -109,6 +109,7 @@ void ProblemManager::addPointToForm(int selectedForm, float x, float y)
     int row = problem.get_abstract_form_at_position(selectedForm)->get_number_of_points()-1;
     pointList->addItem(getPointListItem(selectedForm,row));
     pointList->setCurrentRow(row);
+    absFormList->item(selectedForm)->setText(getAbsFormListItem(selectedForm));
 }
 
 void ProblemManager::editPointOfForm(int selectedForm, int selectedPoint, float x, float y)
@@ -127,6 +128,7 @@ void ProblemManager::delPointOfForm(int selectedForm, int selectedPoint)
         selectedPoint = pointList->count()-1;
     }
     pointList->setCurrentRow(selectedPoint);
+    absFormList->item(selectedForm)->setText(getAbsFormListItem(selectedForm));
 }
 
 void ProblemManager::movePointUp(int selectedForm, int selectedPoint){
@@ -152,4 +154,5 @@ void ProblemManager::movePointDown(int selectedForm, int selectedPoint){
 void ProblemManager::setAmountOfForm(int selectedForm, int amount)
 {
     problem.set_amount_of_form(selectedForm,amount);
+    absFormList->item(selectedForm)->setText(getAbsFormListItem(selectedForm));
 }
