@@ -103,20 +103,37 @@ void SvgView::openFile(const QFile &file)
     m_svgItem->setCacheMode(QGraphicsItem::NoCache);
     m_svgItem->setZValue(0);
 
-    QSizeF sizerec = m_svgItem->boundingRect().size();
-
-
 
     //s->addItem(m_backgroundItem);
     s->addItem(m_svgItem);
     //s->addItem(m_outlineItem);
 
-    float realwidth = parentWidget()->size().width();
-    float rel =  realwidth / s->width();
+
+    QRectF bound = m_svgItem->boundingRect();
+    s->setSceneRect(bound);
+
+    float realwidth = container->width() - 20;
+    float width = bound.width();
+    float realheight = container->height() - 20;
+    float height = bound.height();
+
+    float relw = 1;
+    if(width > 0){
+        relw =  realwidth / width;
+    }
+
+    float relh = 1;
+    if(height > 0){
+        relh = realheight / height;
+    }
+
+    float rel = relw;
+    if(relh < relw){
+        rel = relh;
+    }
 
     scale(rel,rel);
 
-    QTextStream(stdout) << rel << endl << s->width() << endl << realwidth << endl;
 
     //s->setSceneRect(m_outlineItem->boundingRect().adjusted(-1, -1, 1, 1));
 }
@@ -185,4 +202,8 @@ void SvgView::wheelEvent(QWheelEvent *event)
     event->accept();
 }
 
+void SvgView::setContainer(QWidget *_container)
+{
+    container = _container;
+}
 

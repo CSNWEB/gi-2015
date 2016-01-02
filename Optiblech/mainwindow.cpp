@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     pm->setLists(ui->absFormList,ui->pointList);
-    ui->svgContainer->addWidget(m_view);    
-
+    ui->svgContainer->addWidget(m_view);
+    m_view->setContainer(ui->svgContainer_2);
 
    //QFile file("/Users/Christoph/Code/gi-2015/out.svg");
    //m_view->openFile(file);
@@ -67,10 +67,11 @@ void MainWindow::on_solveButton_clicked()
         OutputHandler oh(problem, &setting);
         oh.write_setting_to_svg(output_filename_svg, true);
 
+        ui->tabWidget->setCurrentIndex(2);
+
         //Open file and show result
         QFile file(QString::fromStdString(output_filename_svg));
         m_view->openFile(file);
-        ui->tabWidget->setCurrentIndex(2);
         ui->saveContainer->setEnabled(true);
     }
 }

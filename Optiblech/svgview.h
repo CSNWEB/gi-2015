@@ -61,6 +61,7 @@ public:
     void openFile(const QFile &file);
     void setRenderer(RendererType type = Native);
     void drawBackground(QPainter *p, const QRectF &rect);
+    void setContainer(QWidget * _container);
 
 public slots:
     void setHighQualityAntialiasing(bool highQualityAntialiasing);
@@ -79,5 +80,7 @@ private:
     QGraphicsRectItem *m_outlineItem;
 
     QImage m_image;
+
+    QWidget * container;
 };
 #endif // SVGVIEW_H
