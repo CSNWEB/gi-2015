@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <problem.hpp>
-
+#include <setting.hpp>
 
 class SvgView;
 class ProblemManager;
@@ -71,6 +71,8 @@ private:
     ProblemManager *pm;
 
     vector<QDialog> editFormDialogs;
+
+    Setting setting;
 
 };
 

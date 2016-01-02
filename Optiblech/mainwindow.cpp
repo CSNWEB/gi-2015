@@ -28,7 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     pm->setLists(ui->absFormList,ui->pointList);
-    ui->svgContainer->addWidget(m_view);
+    ui->svgContainer->addWidget(m_view);    
+
 
    //QFile file("/Users/Christoph/Code/gi-2015/out.svg");
    //m_view->openFile(file);
@@ -50,7 +51,6 @@ void MainWindow::on_solveButton_clicked()
         QDir().mkdir("tmp");
     }
 
-    //output_filename_txt = 'tmp' + QDir::separator().toLatin1() + "out.txt";
     output_filename_svg = 'tmp' + QDir::separator().toLatin1() + "out.svg";
 
 
@@ -63,13 +63,15 @@ void MainWindow::on_solveButton_clicked()
     {
         BinPacking bin_packing(problem);
 
-        Setting bin_packed = bin_packing.get_packed_setting();
-        OutputHandler oh(problem, &bin_packed, output_filename_txt, output_filename_svg);
-        //oh.write_setting_to_txt();
-        oh.write_setting_to_svg(true);
+        setting = bin_packing.get_packed_setting();
+        OutputHandler oh(problem, &setting);
+        oh.write_setting_to_svg(output_filename_svg, true);
+
+        //Open file and show result
         QFile file(QString::fromStdString(output_filename_svg));
         m_view->openFile(file);
         ui->tabWidget->setCurrentIndex(2);
+        ui->saveContainer->setEnabled(true);
     }
 }
 
@@ -108,7 +110,9 @@ void MainWindow::on_absFormList_currentRowChanged(int currentRow)
     if(currentRow > -1){
         int amount = pm->initPoints(currentRow);
         ui->pointAmount->setValue(amount);
+        ui->currentFormBox->setEnabled(true);
     }else{
+        ui->currentFormBox->setEnabled(false);
         ui->pointList->clear();
     }
 }
@@ -122,9 +126,11 @@ void MainWindow::on_saveSVG_clicked()
          QString file = dialog.getSaveFileName(this, tr("Save file"));
 
          if (!file.isEmpty()) {
-             if(!file.endsWith('.svg')){
+             if(!file.endsWith(".svg")){
                  file += ".svg";
              }
+             OutputHandler oh(pm->getProblem(), &setting);
+             oh.write_setting_to_svg(file.toUtf8().data(), false);
          }
 }
 
@@ -210,5 +216,17 @@ void MainWindow::on_editPointButton_clicked()
 
 void MainWindow::on_saveTXT_clicked()
 {
+    QFileDialog dialog;
+    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setDirectory(QDir::homePath());
 
+    QString file = dialog.getSaveFileName(this, tr("Save file"));
+
+    if (!file.isEmpty()) {
+        if(!file.endsWith(".txt")){
+            file += ".txt";
+        }
+        OutputHandler oh(pm->getProblem(), &setting);
+        oh.write_setting_to_txt(file.toUtf8().data());
+    }
 }

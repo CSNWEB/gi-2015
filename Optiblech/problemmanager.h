@@ -27,11 +27,14 @@ public:
     void renameForm(int selectedForm, QString name);
     void delForm(int selectedForm);
 
+    void setAmountOfForm(int selectedForm);
+
     void addPointToForm(int selectedForm, float x, float y);
     void editPointOfForm(int selectedForm, int selectedPoint, float x, float y);
     void delPointOfForm(int selectedForm, int selectedPoint);
     void movePointUp(int selectedForm, int selectedPoint);
     void movePointDown(int selectedForm, int selectedPoint);
+
 
 private:
     Problem problem;
