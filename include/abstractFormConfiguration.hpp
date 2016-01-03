@@ -36,6 +36,26 @@ private:
 	 */
 	vector<float> rotation_of_forms;
 
+    /*!
+     *  The minimum position on the x-axis of any point of this configuration
+     */
+	float min_x;
+
+    /*!
+     *  The maximum position on the x-axis of any point of this configuration
+     */
+	float max_x;
+
+    /*!
+     *  The minimum position on the y-axis of any point of this configuration
+     */
+	float min_y;
+
+    /*!
+     *  The maximum position on the y-axis of any point of this configuration
+     */
+	float max_y;
+
 	/*!
      *  The size of the combined bounding box of the forms in x direction.
      */
@@ -46,6 +66,27 @@ private:
      */
 	float dy;
 
+	/*!
+	 *  The total used area by all forms of this configuration
+	 */
+	float used_area;
+
+	/*!
+	 *  The total utilization of this configuration
+	 */
+	float utilization;
+
+	/*!
+	 *  Updates the float-values describing the bounding box and used_area after a form was added to this configuration.
+	 *
+	 *  @param form 			the new form, which points have to be considered for the update
+	 *  @param pos_x 			the distance in x-direction this form has been moved from its normalized position
+	 *  @param pos_y 			the distance in y-direction this form has been moved from its normalized position
+	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
+	 *  @param is_initialized	set to true, if the bounding box of this configuration is already initialized, set to false, if this is the initial update of this configuration.
+	 */
+	void update_bounding_box(AbstractForm *form, float pos_x, float pos_y, float rotation, bool is_initialized);
+
 public:
 	/*!
 	 *  Default constructor
@@ -54,27 +95,61 @@ public:
 
 	/*!
 	 *  Constructor initializing a single form
+	 *	
+	 *	@param position_x 		the distance in x-direction this form has been moved from its normalized position
+	 *	@param position_y 		the distance in y-direction this form has been moved from its normalized position
+	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
+	 *  @param min_x 			the minimum x-dimension of the bounding box
+	 *  @param max_x			the maximum x-dimension of the bounding box
+	 *  @param min_y 			the minimum y-imension of the bounding box
+	 *  @param max_y			the maximum y-imension of the bounding box
 	 */
-	AbstractFormConfiguration(AbstractForm *form, float dx, float dy, float rotation);
+	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, float min_x, float max_x, float min_y, float max_y);
+
+	/*!
+	 *  Constructor initializing a single form. This constructor needs less informations than the one above. The bounding box has to be computed.
+	 *	
+	 *	@param position_x 		the distance in x-direction this form has been moved from its normalized position
+	 *	@param position_y 		the distance in y-direction this form has been moved from its normalized position
+	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
+	 */
+	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation;
+
+	/*!
+	 *  Compare-operator, needed to sort configurations by utilization
+	 */
+	bool operator>(AbstractFormConfiguration &afc1, AbstractFormConfiguration &afc2)
+	{return afc1.utilization > afc2.utilization;};
 
     /*!
      *  Get the size of the bounding box in x direction.
      *
      *  @return A float representing size of the bounding box  in x direction.
      */
-	float get_dx();
+	float get_dx()
+	{return dx;};
     
     /*!
      *  Get the size of the bounding box in y direction.
      *
      *  @return A float representing the size of the bounding box in y direction.
      */
-	float get_dy();
+	float get_dy()
+	{return dy;};
+
+	/*!
+	 *  Get the total utilization of area of the bounding box of this configuration
+	 *
+	 *  @return 	A float representing the total utilization of area within the bounding box of this configuration
+	 */
+	float get_utilization()
+	{return utilization;};
 
 	/*!
 	 *  Getter for the number of AbstractForms
 	 */
-	int get_number_of_forms(){return abstractforms.size();};
+	int get_number_of_forms()
+	{return abstractforms.size();};
 
 	/*!
 	 *  Test if this configuration contains a specific AbstractForm
@@ -87,8 +162,12 @@ public:
 
 	/*!
 	 *  Method to add a new abstract form to this setting:
+	 *
+	 *	@param position_x 		the distance in x-direction this form has been moved from its normalized position
+	 *	@param position_y 		the distance in y-direction this form has been moved from its normalized position
+	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
 	 */
-	void add_abstract_form(AbstractForm* form, float dx, float dy, float rotation);
+	void add_abstract_form(AbstractForm* form, float position_x, float position_y, float rotation);
 
 	/*!
 	 *  Method to get configuration for a specific AbstractForm of this setting:

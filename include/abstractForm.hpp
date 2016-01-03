@@ -63,7 +63,7 @@ private:
     float min_y;
     
     /*!
-     *  The size of the are of the form.
+     *  The size of the area of the form.
      */
 	float size_of_area;
 	

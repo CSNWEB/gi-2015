@@ -48,12 +48,12 @@ public:
 	void search_for_optimal_configuratioon_global();
 
 	/*!
-	 *  Search for optimal configuration with specific form
+	 *  Search for optimal configuration with a specific form. The found configuration is added to the list possible_configurations
 	 */
 	void search_for_optimal_configuratioon_local(AbstractForm* other_form);
 
 	/*!
-	 *  Get the best AbstractFormConfiguration that doe not use any AbstractForm from a given vector
+	 *  Get the best AbstractFormConfiguration that does not use any AbstractForm from a given vector
 	 */
 	AbstractFormConfiguration get_best_configuration(vector<int> forbidden_forms);
 

@@ -19,7 +19,7 @@ AbstractFormConfiguration FormCombiner::search_for_optimal_configuration_global(
 	// return best
 }
 
-AbstractFormConfiguration FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_form)
+void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_form)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -182,11 +182,12 @@ AbstractFormConfiguration FormCombiner::search_for_optimal_configuration_local(A
 	{
 		// a merged configuration with optimized bounding box was found.
 		// create an abstractFormConfiguration:
-		result = AbstractFormConfiguration(abstract_form_1,
-								  opt_position_form1_x,
-								  opt_position_form1_y,
-								  opt_rotation_form1
-								  );
+		result = AbstractFormConfiguration(
+								abstract_form_1,
+								opt_position_form1_x,
+								opt_position_form1_y,
+								opt_rotation_form1
+								);
 		if (point_2_mirrored)
 			result.add_abstract_form(
 								other_form_mirrored,
@@ -207,11 +208,13 @@ AbstractFormConfiguration FormCombiner::search_for_optimal_configuration_local(A
 		result = AbstractFormConfiguration(abstract_form_1, 0, 0, 0);
 	}
 
-	// insert result in possible_configurations
+	possible_configurations.push_back(result);
 }
 
 AbstractFormConfiguration FormCombiner::get_best_configuration(vector<int> forbidden_forms)
 {
+	// TO DO: sort possible_configurations
+
 	bool found = false;
 	list<AbstractFormConfiguration>::iterator it;
 	for (it = possible_configurations.begin(); it != possible_configurations.end() && !found; it++)
