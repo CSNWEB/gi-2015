@@ -22,6 +22,8 @@ AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm* form, float p
 
 	used_area = form->get_size_of_area();
 	utilization = used_area / (dx*dy);
+
+	number_of_usages = -1;
 }
 
 AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation)
@@ -37,6 +39,8 @@ AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float p
 	mirrored_forms = vector<bool>(1, false);
 
 	update_bounding_box(form, position_x, position_y, rotation, false);
+
+	number_of_usages = -1;
 }
 
 void AbstractFormConfiguration::update_bounding_box(AbstractForm *form, float pos_x, float pos_y, float rotation, bool is_initialized)

@@ -13,12 +13,13 @@
 
 #include <vector>
 
-#include "problem.hpp"
-#include "setting.hpp"
-#include "binPackingPlane.hpp"
-#include "binPackingShelf.hpp"
 #include "abstractForm.hpp"
 #include "abstractFormConfiguration.hpp"
+#include "binPackingPlane.hpp"
+#include "binPackingShelf.hpp"
+#include "formCombiner.hpp"
+#include "problem.hpp"
+#include "setting.hpp"
 #include "global.hpp"
 
 using namespace std;

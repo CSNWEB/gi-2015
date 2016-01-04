@@ -82,6 +82,11 @@ private:
 	float utilization;
 
 	/*!
+	 *  For usage in binPacking?
+	 */
+	int number_of_usages;
+
+	/*!
 	 *  Updates the float-values describing the bounding box and used_area after a form was added to this configuration.
 	 *
 	 *  @param form 			the new form, which points have to be considered for the update
