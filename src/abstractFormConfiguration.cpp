@@ -1,11 +1,16 @@
 #include "abstractFormConfiguration.hpp"
 
-AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, float min_x, float max_x, float min_y, float max_y)
+AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm* form, float position_x, float position_y, float rotation, float min_x, float max_x, float min_y, float max_y)
 {
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	abstractforms = vector<AbstractForm*>(1, form);
 	position_x_of_forms = vector<float>(1, position_x);
 	position_y_of_forms = vector<float>(1, position_y);
 	rotation_of_forms = vector<float>(1, rotation);
+	mirrored_forms = vector<bool>(1, false);
 
 	this->min_x = min_x;
 	this->max_x = max_x;
@@ -19,18 +24,27 @@ AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y
 	utilization = used_area / (dx*dy);
 }
 
-AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation)
+AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation)
 {
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	abstractforms = vector<AbstractForm*>(1, form);
 	position_x_of_forms = vector<float>(1, position_x);
 	position_y_of_forms = vector<float>(1, position_y);
 	rotation_of_forms = vector<float>(1, rotation);
+	mirrored_forms = vector<bool>(1, false);
 
 	update_bounding_box(form, position_x, position_y, rotation, false);
 }
 
 void AbstractFormConfiguration::update_bounding_box(AbstractForm *form, float pos_x, float pos_y, float rotation, bool is_initialized)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	if (!is_initialized)
 	{
 		Point p_temp = form->get_point_at_index(0);
@@ -69,31 +83,40 @@ void AbstractFormConfiguration::update_bounding_box(AbstractForm *form, float po
 	utilization = used_area / (dx*dy);
 }
 
-void AbstractFormConfiguration::add_abstract_form(AbstractForm* form, float position_x, float position_y, float rotation)
+void AbstractFormConfiguration::add_abstract_form(AbstractForm* form, float position_x, float position_y, float rotation, bool is_mirrored)
 {
 	abstractforms.push_back(form);
 	position_x_of_forms.push_back(position_x);
 	position_y_of_forms.push_back(position_y);
 	rotation_of_forms.push_back(rotation);
+	mirrored_forms.push_back(is_mirrored);
 
 	update_bounding_box(form, position_x, position_y, rotation, true);
 }
 
 bool AbstractFormConfiguration::get_configuration_of_form(int index_of_form, float &dx, float &dy, float &rotation)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	if (index_of_form >= abstractforms.size())
 		return false;
 	
-	dx = position_x_of_forms(index_of_form);
-	dy = position_y_of_forms(index_of_form);
-	rotation = rotation_of_forms(index_of_form);
+	dx = position_x_of_forms[index_of_form];
+	dy = position_y_of_forms[index_of_form];
+	rotation = rotation_of_forms[index_of_form];
 }
 
 bool AbstractFormConfiguration::contains_form(int id_of_form)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	for (int i=0; i<abstractforms.size(); ++i)
 	{
-		if (abstractforms[i].get_id() == id_of_form)
+		if (abstractforms[i]->get_id() == id_of_form)
 			return true;
 	}
 

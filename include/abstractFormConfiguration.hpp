@@ -36,6 +36,11 @@ private:
 	 */
 	vector<float> rotation_of_forms;
 
+	/*!
+	 *  A vector specifiing which forms are mirrored
+	 */
+	vector<bool> mirrored_forms;
+
     /*!
      *  The minimum position on the x-axis of any point of this configuration
      */
@@ -113,14 +118,23 @@ public:
 	 *	@param position_y 		the distance in y-direction this form has been moved from its normalized position
 	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
 	 */
-	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation;
+	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation);
 
 	/*!
 	 *  Compare-operator, needed to sort configurations by utilization
 	 */
-	bool operator>(AbstractFormConfiguration &afc1, AbstractFormConfiguration &afc2)
+	friend bool operator> (const AbstractFormConfiguration &afc1, const AbstractFormConfiguration &afc2)
 	{return afc1.utilization > afc2.utilization;};
-
+/*
+	bool operator>=(AbstractFormConfiguration &afc1, AbstractFormConfiguration &afc2)
+	{return afc1.utilization >= afc2.utilization;};
+*/
+	friend bool operator< (const AbstractFormConfiguration &afc1, const AbstractFormConfiguration &afc2)
+	{return afc1.utilization < afc2.utilization;};
+/*
+	bool operator<=(AbstractFormConfiguration &afc1, AbstractFormConfiguration &afc2)
+	{return afc1.utilization <= afc2.utilization;};
+*/
     /*!
      *  Get the size of the bounding box in x direction.
      *
@@ -166,8 +180,9 @@ public:
 	 *	@param position_x 		the distance in x-direction this form has been moved from its normalized position
 	 *	@param position_y 		the distance in y-direction this form has been moved from its normalized position
 	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
+	 *  @param is_mirrored 		true, if this form is mirrored at an axis
 	 */
-	void add_abstract_form(AbstractForm* form, float position_x, float position_y, float rotation);
+	void add_abstract_form(AbstractForm* form, float position_x, float position_y, float rotation, bool is_mirrored);
 
 	/*!
 	 *  Method to get configuration for a specific AbstractForm of this setting:

@@ -5,18 +5,6 @@ FormCombiner::FormCombiner(Problem* problem, AbstractForm* abstract_form)
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
-
-}
-
-AbstractFormConfiguration FormCombiner::search_for_optimal_configuration_global()
-{
-	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
-
-	// for each AbstractForm in problem->abstract_forms:
-	// 		search_for_optimal_configuration_local (form)
-	// return best
 }
 
 void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_form)
@@ -42,7 +30,7 @@ void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_fo
 	float dx_1[3] = {abstract_form_1->get_dx(), abstract_form_1->get_dy(), abstract_form_1->get_dy()};
 	float dx_2[3] = {other_form->get_dy(),  other_form->get_dx(),  other_form->get_dy()};
 	float dy_1[3] = {abstract_form_1->get_dy(), abstract_form_1->get_dx(), abstract_form_1->get_dx()};
-	float dy_2[3] = {other_form->get_dx(), other_form->get_dy(), other_form->get_dx()}
+	float dy_2[3] = {other_form->get_dx(), other_form->get_dy(), other_form->get_dx()};
 
 	for (int i=0; i<4; ++i)
 	{
@@ -88,14 +76,14 @@ void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_fo
 	float opt_position_form2_y = 0;
 	float opt_rotation_form2 = 0;
 
-	AbstractForm other_form_mirrored = &other_form;
+	AbstractForm other_form_mirrored = *other_form;
 	other_form_mirrored.mirror();
 
 	for (int point_1=0; point_1 < abstract_form_1->get_number_of_points(); ++point_1)
 	{
 		Form f1 = Form(abstract_form_1);
 
-		float rotation_1 = abstract_form_1->compute_rotation_angle_for_points_parallel_to_axis(point_1, (point_1+1)%abstract_form_1->get_number_of_points());
+		float rotation_form1 = abstract_form_1->compute_rotation_angle_for_points_parallel_to_axis(point_1, (point_1+1)%abstract_form_1->get_number_of_points());
 		float position_form1_x = -(f1.get_point_at(point_1))->get_x();
 		float position_form1_y = -(f1.get_point_at(point_1))->get_y();
 		f1.rotate(0,0,rotation_form1);
@@ -107,7 +95,7 @@ void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_fo
 
 			float rotation_form2 = other_form->compute_rotation_angle_for_points_parallel_to_axis(point_2, (point_2+1)%other_form->get_number_of_points());
 			float position_form2_x = -(f2.get_point_at(point_2))->get_x();
-			float position_form2_y = -(f2.get_point_at(point_2))->get_y()
+			float position_form2_y = -(f2.get_point_at(point_2))->get_y();
 			f2.rotate(0,0,rotation_form2);
 			f2.move_rel(position_form2_x, position_form2_y);
 
@@ -115,10 +103,10 @@ void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_fo
 			// if no, get new bounding box, check if minimal
 			if (!f1.check_for_overlap(&f2))
 			{
-				float current_xmin = min(f1.get_bounding_xmin(), f2.get_bounding_xmin())
-				float current_xmax = max(f1.get_bounding_xmax(), f2.get_bounding_xmax())
-				float current_ymin = min(f1.get_bounding_ymin(), f2.get_bounding_ymin())
-				float current_ymax = max(f1.get_bounding_ymax(), f2.get_bounding_ymax())
+				float current_xmin = min(f1.get_bounding_xmin(), f2.get_bounding_xmin());
+				float current_xmax = max(f1.get_bounding_xmax(), f2.get_bounding_xmax());
+				float current_ymin = min(f1.get_bounding_ymin(), f2.get_bounding_ymin());
+				float current_ymax = max(f1.get_bounding_ymax(), f2.get_bounding_ymax());
 
 				float current_area = (current_xmax - current_xmin)*(current_ymax - current_ymin);
 				if (current_area < minimum_configuration_area)
@@ -151,10 +139,10 @@ void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_fo
 				// if no, get new bounding box, check if minimal
 				if (!f1.check_for_overlap(&f2_m))
 				{
-					float current_xmin = min(f1.get_bounding_xmin(), f2_m.get_bounding_xmin())
-					float current_xmax = max(f1.get_bounding_xmax(), f2_m.get_bounding_xmax())
-					float current_ymin = min(f1.get_bounding_ymin(), f2_m.get_bounding_ymin())
-					float current_ymax = max(f1.get_bounding_ymax(), f2_m.get_bounding_ymax())
+					float current_xmin = min(f1.get_bounding_xmin(), f2_m.get_bounding_xmin());
+					float current_xmax = max(f1.get_bounding_xmax(), f2_m.get_bounding_xmax());
+					float current_ymin = min(f1.get_bounding_ymin(), f2_m.get_bounding_ymin());
+					float current_ymax = max(f1.get_bounding_ymax(), f2_m.get_bounding_ymax());
 
 					float current_area = (current_xmax - current_xmin)*(current_ymax - current_ymin);
 					if (current_area < minimum_configuration_area)
@@ -190,17 +178,19 @@ void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_fo
 								);
 		if (point_2_mirrored)
 			result.add_abstract_form(
-								other_form_mirrored,
+								other_form,
 								opt_position_form2_x,
 								opt_position_form2_y,
-								opt_rotation_form2
+								opt_rotation_form2,
+								true
 								);
 		else
 			result.add_abstract_form(
 								other_form,
 								opt_position_form2_x,
 								opt_position_form2_y,
-								opt_rotation_form2
+								opt_rotation_form2,
+								false
 								);
 	}
 	else
@@ -213,7 +203,11 @@ void FormCombiner::search_for_optimal_configuration_local(AbstractForm* other_fo
 
 AbstractFormConfiguration FormCombiner::get_best_configuration(vector<int> forbidden_forms)
 {
-	// TO DO: sort possible_configurations
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	possible_configurations.sort();
 
 	bool found = false;
 	list<AbstractFormConfiguration>::iterator it;

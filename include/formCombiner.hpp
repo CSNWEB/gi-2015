@@ -34,7 +34,7 @@ private:
 	/*!
 	 *  A list of possible AbstractFormConfigurations, sorted by optimality of area utilization of the bounding box
 	 */
-	list<AbstractFormConfiguration> possible_configurations
+	list<AbstractFormConfiguration> possible_configurations;
 
 public:
 	/*!
@@ -45,12 +45,12 @@ public:
 	/*!
 	 *  Search all other forms for optimal configurated tuple
 	 */
-	void search_for_optimal_configuratioon_global();
+	//void search_for_optimal_configuratioon_global();
 
 	/*!
 	 *  Search for optimal configuration with a specific form. The found configuration is added to the list possible_configurations
 	 */
-	void search_for_optimal_configuratioon_local(AbstractForm* other_form);
+	void search_for_optimal_configuration_local(AbstractForm* other_form);
 
 	/*!
 	 *  Get the best AbstractFormConfiguration that does not use any AbstractForm from a given vector

@@ -1,5 +1,14 @@
 #include "abstractForm.hpp"
 
+AbstractForm::AbstractForm(string name, vector<Point> points)
+{
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	AbstractForm(name, points, -1);
+}
+
 AbstractForm::AbstractForm(string name, vector<Point> points, int id)
 {
 	#ifdef DEBUG

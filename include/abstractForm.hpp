@@ -103,15 +103,24 @@ public:
     /*!
      *  Default constructor
      */
-	AbstractForm(){id = -1};
-    
+	AbstractForm(){id = -1;};
+
     /*!
      *  Constructor that initializes the form with a name and its points.
      *
      *  @param name     A string that represents the name of the form.
      *  @param points   A vector of type "Point" that form the form.
      */
-	AbstractForm(string name, vector<Point> points, int id = -1);
+    AbstractForm(string name, vector<Point> points);
+
+    /*!
+     *  Constructor that initializes the form with a name and its points.
+     *
+     *  @param name     A string that represents the name of the form.
+     *  @param points   A vector of type "Point" that form the form.
+     *  @param id       A global (i.e. problem-wide) identifier for this AbstractForm.
+     */
+	AbstractForm(string name, vector<Point> points, int id);
 
     /*!
      *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,

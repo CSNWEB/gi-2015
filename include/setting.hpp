@@ -30,7 +30,7 @@ private:
     /*!
      *  A vector of the amount of missing pieces of each form
      */
-    //vector<int> missing_forms; 
+    vector<int> missing_forms; 
 
 public:
     /*!

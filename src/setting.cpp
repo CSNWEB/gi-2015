@@ -86,7 +86,7 @@ int Setting::get_number_of_planes()
     return planes.size();
 }
 
-int get_number_of_missing_pieces_of_form(int form_index)
+int Setting::get_number_of_missing_pieces_of_form(int form_index)
 {
 	#ifdef DEBUG
 		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
@@ -95,7 +95,7 @@ int get_number_of_missing_pieces_of_form(int form_index)
 	int current_number_of_forms = 0;
 	for (int current_plane = 0; current_plane < get_number_of_planes(); ++current_plane)
 	{
-		for (int current_form = 0; current_form < planes[current_plane].get_number_of_fomrs(); ++current_form)
+		for (int current_form = 0; current_form < planes[current_plane].get_number_of_forms(); ++current_form)
 		{
 			if (planes[current_plane].get_form_at(current_form)->get_mother()->get_id() == form_index)
 				current_number_of_forms++;
