@@ -99,6 +99,16 @@ private:
 	Setting setting;
 
 	/*!
+	 *  A boolean describing if the algorithm has been initialized
+	 */
+	bool is_initialized;
+
+	/*!
+	 *  An index describing the form which has to be added to the setting in the next step. This index is an index for the internal vector all_forms_sorted_by_size.
+	 */
+	int index_of_current_form;
+
+	/*!
 	 *  The minimum height of any form defined in the problem. Gives a lower bound on the size of a shelf.
 	 */
 	float minimum_height_of_any_form;
@@ -127,6 +137,25 @@ private:
 	 */
 	void create_initial_sorting();
 
+	/*!
+	 *  Tries to add form specified by form_index (index of form in all_forms_sorted_by_size) on an existing shelf, es described in 2DBP
+	 *
+	 *  @param
+	 *
+	 *  @return 		true, if form was placed. False, if form could not be placed on any shelf
+	 */
+	bool try_add_form_on_existing_shelf(int form_index);
+
+	/*!
+	 *  Creates a new shelf (and a new plane, if necessary) and adds the form to the shelf
+	 */
+	void add_form_on_new_shelf(int form_index);
+
+	void create_shelf(int index_of_mothershelf, float size_x, float size_y, float offset_x, float offset_y);
+	void create_subshelf(int index_of_mothershelf, AbstractForm* form_on_top, float remaining_height);
+
+	//bool add_form_to_setting(int shelf_index, form_index);
+
 public:
 	/*!
 	 *  Constructor
@@ -136,6 +165,29 @@ public:
 	 *  @param p 	a pointer to a problem for which the binpacking should be computed
 	 */
 	BinPacking(Problem *p);
+
+	/*!
+	 *  Add next form to the setting
+	 *
+	 *  @return 		true   if form was added
+	 					false  if all forms are already added to setting
+	 */
+	bool next_step_of_algorithm();
+
+	/*!
+	 *  Get the number of forms that have to be added
+	 */
+	int get_number_of_missing_forms();
+
+	/*!
+	 *  Initialize the algorithm for the given problem. If it was initialized, reset everything.
+	 */
+	void initialize_algorithm();
+
+	/*!
+	 *  Get the current Setting.
+	 */
+	Setting get_current_setting();
 
 	/*!
 	 *  Use 2-dimensional bin-packing with bounding boxes to create a setting

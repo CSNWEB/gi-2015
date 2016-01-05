@@ -104,3 +104,24 @@ int Setting::get_number_of_missing_pieces_of_form(int form_index)
 
 	return get_problem()->get_number_of_form_needed(form_index)-current_number_of_forms;
 }
+
+Plane* Setting::get_plane_at(int i)
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+    if (i < planes.size() && i>= 0)
+        return &planes[i];
+    else
+        return NULL;
+}
+
+Problem* Setting::get_problem()
+{
+	#ifdef DEBUG
+		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
+	return problem;
+}

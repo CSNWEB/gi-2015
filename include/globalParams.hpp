@@ -9,6 +9,7 @@
 #define GLOBALPARAMS_H
 
 #include <math.h>
+#include <stdio.h>
 
 class GlobalParams
 {
