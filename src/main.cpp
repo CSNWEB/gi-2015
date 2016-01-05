@@ -54,9 +54,9 @@ int main(int argc, char* argv[])
         Setting bin_packed = bin_packing.get_packed_setting();
 
 
-        OutputHandler oh(&problem, &bin_packed, output_filename_txt, output_filename_svg);
-        oh.write_setting_to_txt();
-        oh.write_setting_to_svg();
+        OutputHandler oh(&problem, &bin_packed);
+        oh.write_setting_to_txt(output_filename_txt);
+        oh.write_setting_to_svg(output_filename_svg);
 
         #ifdef DEBUG
             printf("check in %s\n", __PRETTY_FUNCTION__);

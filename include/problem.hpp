@@ -74,14 +74,25 @@ public:
     Problem(){};
 
     /*!
-     *  Constructor called by inputHandler
+     *  Constructor called by GUI
      *
      *  @param sx 				A float describing the size of the sheet in dim x
      *  @param sy 				A float describing the size of the sheet in dim y
      *  @param abst_forms 		A vector of abstract forms
      *  @param num_of_forms 	A vector of integers describing the number of forms needed (for each abstract form)
+     *  @param name_forms       A vector with names
      */
     Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms, vector<string> name_forms);
+
+    /*!
+     *  Constructor called by inputHandler
+     *
+     *  @param sx               A float describing the size of the sheet in dim x
+     *  @param sy               A float describing the size of the sheet in dim y
+     *  @param abst_forms       A vector of abstract forms
+     *  @param num_of_forms     A vector of integers describing the number of forms needed (for each abstract form)
+     */
+    Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms);
 
     /*!
      * Get the plane width

@@ -1,6 +1,5 @@
 #include "problem.hpp"
 
-
 Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms, vector<string> name_forms)
 {
 	#ifdef DEBUG
@@ -12,10 +11,20 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 	abstract_forms 				= abst_forms;
 	number_of_different_forms 	= abstract_forms.size();
 	number_of_forms_needed 		= num_of_forms;
-    name_of_forms = name_forms;
+    name_of_forms               = name_forms;
+}
 
-	//number_of_planes 			= 0;
-	//planes  					= vector<Plane>();
+Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms)
+{
+    #ifdef DEBUG
+        printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+    #endif
+        
+    size_of_sheet_x             = sx;
+    size_of_sheet_y             = sy;
+    abstract_forms              = abst_forms;
+    number_of_different_forms   = abstract_forms.size();
+    number_of_forms_needed      = num_of_forms;
 }
 
 void Problem::check_if_solveable()
