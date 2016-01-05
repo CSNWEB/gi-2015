@@ -76,7 +76,11 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="planeHeight"/>
+             <widget class="QDoubleSpinBox" name="planeHeight">
+              <property name="maximum">
+               <double>98.989999999999995</double>
+              </property>
+             </widget>
             </item>
            </layout>
           </item>
@@ -89,7 +93,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Import from file</string>
+             <string>Open Problem</string>
             </property>
            </widget>
           </item>
@@ -249,6 +253,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
          <widget class="QPushButton" name="solveButton">
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>Solve</string>
           </property>

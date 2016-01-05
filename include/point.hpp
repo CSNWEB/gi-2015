@@ -57,14 +57,14 @@ public:
      *
      *  @param x        new x value
      */
-    float set_x(float newx) {x = newx;};
+    void set_x(float newx) {x = newx;};
     
     /**
      *  Setter for the y coordinate of the point.
      *
      *  @param y        new y value
      */
-    float set_y(float newy) {y = newy;};
+    void set_y(float newy) {y = newy;};
 	
     /*!
      *  Calculates the euclidian distance between the receiver and the passed

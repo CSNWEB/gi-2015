@@ -52,7 +52,9 @@ void MainWindow::on_solveButton_clicked()
         QDir().mkdir("tmp");
     }
 
-    output_filename_svg = 'tmp' + QDir::separator().toLatin1() + "out.svg";
+    QString tmp = QString("tmp") + QDir::separator() + "out.svg";
+
+    output_filename_svg = tmp.toUtf8().data();
 
 
 
