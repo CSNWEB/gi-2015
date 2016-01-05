@@ -41,7 +41,7 @@ void Plane::add_form_at_position_rotation(AbstractForm *form,
 
     Form form_object = Form(form, pos_x, pos_y);
     Point centroid = form_object.get_centroid();
-    if (rotation > TOLERANCE)
+    if (rotation > GlobalParams::get_tolerance())
     {
     	form_object.rotate(centroid.get_x(),
         	               centroid.get_y(),

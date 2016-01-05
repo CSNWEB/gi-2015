@@ -14,7 +14,7 @@
 
 #include "point.hpp"
 #include "plane.hpp"
-#include "global.hpp"
+#include "globalParams.hpp"
 
 using namespace std;
 

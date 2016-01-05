@@ -25,7 +25,7 @@ float BinPackingShelf::add_form(AbstractForm *f, int index)
 	float max_h = f->get_dy();
 	float max_w = f->get_dx();
 
-	if ((max_h < height + TOLERANCE) && (max_w < remaining_width + TOLERANCE))
+	if ((max_h < height + GlobalParams::get_tolerance()) && (max_w < remaining_width + GlobalParams::get_tolerance()))
 	{
 		#ifdef DEBUG
 			printf("\tForm sucessfully added to shelf:\n");
@@ -54,7 +54,7 @@ bool BinPackingShelf::check_if_fit(AbstractForm *f)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if ((f->get_dy() < height + TOLERANCE) && (f->get_dx() < remaining_width + TOLERANCE))
+	if ((f->get_dy() < height + GlobalParams::get_tolerance()) && (f->get_dx() < remaining_width + GlobalParams::get_tolerance()))
 		return true;
 	else
 		return false;

@@ -16,8 +16,8 @@ void Point::rotate(float center_x, float center_y, float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 	
-    float s = sin(angle * PI/180);
-    float c = cos(angle * PI/180);
+    float s = sin(angle * GlobalParams::pi()/180);
+    float c = cos(angle * GlobalParams::pi()/180);
     
     // translate point back to origin:
     x -= center_x;
@@ -51,7 +51,7 @@ float Point::compute_pos_after_rotation_x(float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	return (x * cos(angle * PI/180.0)) - (y * sin(angle * PI/180.0));
+	return (x * cos(angle * GlobalParams::pi()/180.0)) - (y * sin(angle * GlobalParams::pi()/180.0));
 }
 
 float Point::compute_pos_after_rotation_y(float angle)
@@ -60,7 +60,7 @@ float Point::compute_pos_after_rotation_y(float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	return (x * sin(angle * PI/180.0)) + (y * cos(angle * PI/180.0));
+	return (x * sin(angle * GlobalParams::pi()/180.0)) + (y * cos(angle * GlobalParams::pi()/180.0));
 }
 
 

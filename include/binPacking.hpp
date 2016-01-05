@@ -20,7 +20,7 @@
 #include "formCombiner.hpp"
 #include "problem.hpp"
 #include "setting.hpp"
-#include "global.hpp"
+#include "globalParams.hpp"
 
 using namespace std;
 
@@ -77,11 +77,11 @@ struct FormComparator
 			bigger_edge_box_2  = form_2->get_dx();
 		}
 
-		if (smaller_edge_box_1 - smaller_edge_box_2 > TOLERANCE)
+		if (smaller_edge_box_1 - smaller_edge_box_2 > GlobalParams::get_tolerance())
 			return true;
-		else if (smaller_edge_box_2 - smaller_edge_box_1 > TOLERANCE)
+		else if (smaller_edge_box_2 - smaller_edge_box_1 > GlobalParams::get_tolerance())
 			return false; 
-		else return (bigger_edge_box_1 - bigger_edge_box_2 > TOLERANCE);
+		else return (bigger_edge_box_1 - bigger_edge_box_2 > GlobalParams::get_tolerance());
 	};
 };
 
@@ -92,6 +92,16 @@ private:
 	 *  A pointer to the problem to acess forms and the size of a plane
 	 */
 	Problem *problem;
+
+	/*!
+	 *  The setting that is created during the algorithm
+	 */
+	Setting setting;
+
+	/*!
+	 *  The minimum height of any form defined in the problem. Gives a lower bound on the size of a shelf.
+	 */
+	float minimum_height_of_any_form;
 
 	/*!
 	 *  The indices of the abstract forms, sorted by height (and width, if heights are equal) of the bounding box.

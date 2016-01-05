@@ -10,6 +10,8 @@ BinPacking::BinPacking(Problem *p)
 
 	create_initial_sorting();
 
+	minimum_height_of_any_form = problem->get_abstract_form_at_position(all_forms_sorted_by_size[all_forms_sorted_by_size.size()-1])->get_dy();
+
 	bp_planes = vector<BinPackingPlane>(1, BinPackingPlane(problem->get_plane_width(), problem->get_plane_height()));
 }
 
@@ -83,7 +85,7 @@ Setting BinPacking::get_packed_setting()
 		return NULL;
 	}
 
-	float minimum_height_of_any_form = problem->get_abstract_form_at_position(all_forms_sorted_by_size[all_forms_sorted_by_size.size()-1])->get_dy();
+	//float minimum_height_of_any_form = problem->get_abstract_form_at_position(all_forms_sorted_by_size[all_forms_sorted_by_size.size()-1])->get_dy();
 
 	for (int form_index = 0; form_index<all_forms_sorted_by_size.size(); ++form_index)
 	{
@@ -116,7 +118,7 @@ Setting BinPacking::get_packed_setting()
 				#endif
 				form_added_successfully = true;
 
-				if (result + TOLERANCE > minimum_height_of_any_form)
+				if (result + GlobalParams::get_tolerance() > minimum_height_of_any_form)
 				{
 					float offset_x = bp_shelves[shelf_index].get_offset_x() + bp_shelves[shelf_index].get_width() - bp_shelves[shelf_index].get_remaining_width() - current_form->get_dx();
 					float offset_y = bp_shelves[shelf_index].get_offset_y() + current_form->get_dy();
@@ -142,7 +144,7 @@ Setting BinPacking::get_packed_setting()
 
 			for (int plane_index = 0; plane_index < bp_planes.size() && !form_added_successfully; ++plane_index)
 			{
-				if (bp_planes[plane_index].get_remaining_height() + TOLERANCE > height_of_current_form)
+				if (bp_planes[plane_index].get_remaining_height() + GlobalParams::get_tolerance() > height_of_current_form)
 				{
 					float offset_x = 0;
 					float offset_y = problem->get_plane_height()-bp_planes[plane_index].get_remaining_height();
