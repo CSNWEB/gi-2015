@@ -8,7 +8,7 @@
 
 #include <math.h>
 #include <stdio.h>
-#include "global.hpp"
+#include "globalParams.hpp"
 
 class Point
 {

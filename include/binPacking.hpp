@@ -13,12 +13,14 @@
 
 #include <vector>
 
-#include "problem.hpp"
-#include "setting.hpp"
+#include "abstractForm.hpp"
+#include "abstractFormConfiguration.hpp"
 #include "binPackingPlane.hpp"
 #include "binPackingShelf.hpp"
-#include "abstractForm.hpp"
-#include "global.hpp"
+#include "formCombiner.hpp"
+#include "problem.hpp"
+#include "setting.hpp"
+#include "globalParams.hpp"
 
 using namespace std;
 
@@ -75,11 +77,11 @@ struct FormComparator
 			bigger_edge_box_2  = form_2->get_dx();
 		}
 
-		if (smaller_edge_box_1 - smaller_edge_box_2 > TOLERANCE)
+		if (smaller_edge_box_1 - smaller_edge_box_2 > GlobalParams::get_tolerance())
 			return true;
-		else if (smaller_edge_box_2 - smaller_edge_box_1 > TOLERANCE)
+		else if (smaller_edge_box_2 - smaller_edge_box_1 > GlobalParams::get_tolerance())
 			return false; 
-		else return (bigger_edge_box_1 - bigger_edge_box_2 > TOLERANCE);
+		else return (bigger_edge_box_1 - bigger_edge_box_2 > GlobalParams::get_tolerance());
 	};
 };
 
@@ -90,6 +92,26 @@ private:
 	 *  A pointer to the problem to acess forms and the size of a plane
 	 */
 	Problem *problem;
+
+	/*!
+	 *  The setting that is created during the algorithm
+	 */
+	Setting setting;
+
+	/*!
+	 *  A boolean describing if the algorithm has been initialized
+	 */
+	bool is_initialized;
+
+	/*!
+	 *  An index describing the form which has to be added to the setting in the next step. This index is an index for the internal vector all_forms_sorted_by_size.
+	 */
+	int index_of_current_form;
+
+	/*!
+	 *  The minimum height of any form defined in the problem. Gives a lower bound on the size of a shelf.
+	 */
+	float minimum_height_of_any_form;
 
 	/*!
 	 *  The indices of the abstract forms, sorted by height (and width, if heights are equal) of the bounding box.
@@ -115,6 +137,24 @@ private:
 	 */
 	void create_initial_sorting();
 
+	/*!
+	 *  Tries to add form specified by form_index (index of form in all_forms_sorted_by_size) on an existing shelf, es described in 2DBP
+	 *
+	 *  @param
+	 *
+	 *  @return 		true, if form was placed. False, if form could not be placed on any shelf
+	 */
+	bool try_add_form_on_existing_shelf(int form_index);
+
+	/*!
+	 *  Creates a new shelf (and a new plane, if necessary) and adds the form to the shelf
+	 */
+	void add_form_on_new_shelf(int form_index);
+
+	void create_shelf(int index_of_mothershelf, float size_x, float size_y, float offset_x, float offset_y);
+	
+	void create_subshelf(int index_of_mothershelf, AbstractForm* form_on_top, float remaining_height);
+
 public:
 	/*!
 	 *  Constructor
@@ -124,6 +164,29 @@ public:
 	 *  @param p 	a pointer to a problem for which the binpacking should be computed
 	 */
 	BinPacking(Problem *p);
+
+	/*!
+	 *  Add next form to the setting
+	 *
+	 *  @return 		true   if form was added
+	 					false  if all forms are already added to setting
+	 */
+	bool next_step_of_algorithm();
+
+	/*!
+	 *  Get the number of forms that have to be added
+	 */
+	int get_number_of_missing_forms();
+
+	/*!
+	 *  Initialize the algorithm for the given problem. If it was initialized, reset everything.
+	 */
+	void initialize_algorithm();
+
+	/*!
+	 *  Get the current Setting.
+	 */
+	Setting get_current_setting();
 
 	/*!
 	 *  Use 2-dimensional bin-packing with bounding boxes to create a setting

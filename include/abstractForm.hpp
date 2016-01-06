@@ -14,7 +14,7 @@
 
 #include "point.hpp"
 #include "plane.hpp"
-#include "global.hpp"
+#include "globalParams.hpp"
 
 using namespace std;
 
@@ -31,6 +31,11 @@ private:
      *  The name of the form.
      */
 	string name;
+
+    /*!
+     *  A global unique id of this abstract form
+     */
+    int id;
 
     /*!
      *  The points that make up the form.
@@ -69,7 +74,7 @@ private:
 
     
     /*!
-     *  The size of the are of the form.
+     *  The size of the area of the form.
      */
 	float size_of_area;
 	
@@ -98,17 +103,6 @@ private:
     void compute_size_of_area();
 
     /*!
-     *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
-     *  and the second point two a larger x-coordinate
-     *
-     *  @param index_of_point_1     the index of the first point in vector<Point> points
-     *  @param index_of_point_2     the index of the second point in vector<Point> points
-     *
-     *  @return                     the angle defining the specified rotation in degrees
-     */
-    float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
-
-    /*!
      *  Rotates the abstract form to a position defined by two consecutive points on the convex hull. These points define a rotation by placing them to y=0 and x minimal (i.e. such that all values for x are greater or equal 0)
      *
      *  @param  index_of_point_in_convex_hull      the first point of the pair to be placed on y = 0
@@ -126,15 +120,35 @@ public:
     /*!
      *  Default constructor
      */
-	AbstractForm(){};
-    
+	AbstractForm(){id = -1;};
+
     /*!
      *  Constructor that initializes the form with a name and its points.
      *
      *  @param name     A string that represents the name of the form.
      *  @param points   A vector of type "Point" that form the form.
      */
-	AbstractForm(string name, vector<Point> points);
+    AbstractForm(string name, vector<Point> points);
+
+    /*!
+     *  Constructor that initializes the form with a name and its points.
+     *
+     *  @param name     A string that represents the name of the form.
+     *  @param points   A vector of type "Point" that form the form.
+     *  @param id       A global (i.e. problem-wide) identifier for this AbstractForm.
+     */
+	AbstractForm(string name, vector<Point> points, int id);
+
+    /*!
+     *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
+     *  and the second point two a larger x-coordinate
+     *
+     *  @param index_of_point_1     the index of the first point in vector<Point> points
+     *  @param index_of_point_2     the index of the second point in vector<Point> points
+     *
+     *  @return                     the angle defining the specified rotation in degrees
+     */
+    float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
 
     /*!
      *  Check if this form fits on a plane with given dimensions.
@@ -163,6 +177,12 @@ public:
      *  @param degrees      the angle in degrees defining the rotation
      */
     void rotate_form_by_degrees(float degrees);
+
+    /*!
+     *  Mirrors the form at x-axis
+     *
+     */
+    void mirror();
 
     /*!
      *  Move a form such all points have x- and y-coordinates >= 0
@@ -194,6 +214,13 @@ public:
      *  @return     A string containing the name of this form
      */
     string get_name(){return name;};
+
+    /*!
+     *  Get the id of this abstractform
+     *
+     *  @return     An int containing the id
+     */
+    int get_id(){return id;}; 
 
     /*!
      *  Get the size of the bounding box of the form in x direction.

@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "abstractForm.hpp"
-#include "global.hpp"
+#include "globalParams.hpp"
 
 class BinPacking;
 
