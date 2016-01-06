@@ -45,6 +45,12 @@ public:
 	 *  Set the relevant digits of the tolerance 
 	 */
 	static void set_significant_digits(int digits);
+
+	/*!
+	 *  Get the number of relevant decimal digits of the tolerance
+	 */
+	static int get_siginificant_digits()
+	{return tolerance_digits;};
 };
 
 #endif
