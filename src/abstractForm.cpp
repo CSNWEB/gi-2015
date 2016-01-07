@@ -649,3 +649,34 @@ void AbstractForm::move_down_point_at_index(int index)
     points[index+1] = points[index];
     points[index] = h;
 }
+
+bool AbstractForm::overlaps_itself()
+{
+    std::cout << "Points size = " << points.size() << std::endl;
+    
+    // Looping over all edges
+    for (unsigned int first_index = 0;
+         first_index < points.size() - 1;
+         first_index++)
+    {
+        for (unsigned int second_index = first_index + 1;
+             second_index < points.size() - 1;
+             second_index++)
+        {
+            Edge first_edge = Edge(&points[first_index], &points[first_index + 1]);
+            Edge second_edge = Edge(&points[second_index], &points[second_index + 1]);
+         
+            // Checking whether the edges cross
+            if (first_edge.crosses(&second_edge))
+            {
+                return true;
+            }
+        }
+        
+        // Checking with the closing edge.
+        Edge first_edge = Edge(&points[first_index], &points[first_index + 1]);
+        Edge second_edge = Edge(&points[points.size() - 1], &points[0]);
+    }
+    
+    return false;
+}
