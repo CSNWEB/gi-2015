@@ -6,12 +6,6 @@ float GlobalParams::get_tolerance()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (tolerance_digits == 0)
-	{
-		tolerance_digits = 4;
-		tolerance = 1E-4;
-	}
-
 	return tolerance;
 }
 

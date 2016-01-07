@@ -21,6 +21,10 @@ using namespace std;
 class AbstractForm
 {
 private:
+    /*!
+     *  The total number of AbstractForms, used as id
+     */
+    static int total_number_of_abstract_forms;
     
     /*!
      *  The number of points that the form is made of.
@@ -120,7 +124,7 @@ public:
     /*!
      *  Default constructor
      */
-	AbstractForm(){id = -1;};
+	AbstractForm() : AbstractForm("", vector<Point>(0)){};
 
     /*!
      *  Constructor that initializes the form with a name and its points.
@@ -128,16 +132,7 @@ public:
      *  @param name     A string that represents the name of the form.
      *  @param points   A vector of type "Point" that form the form.
      */
-    AbstractForm(string name, vector<Point> points);
-
-    /*!
-     *  Constructor that initializes the form with a name and its points.
-     *
-     *  @param name     A string that represents the name of the form.
-     *  @param points   A vector of type "Point" that form the form.
-     *  @param id       A global (i.e. problem-wide) identifier for this AbstractForm.
-     */
-	AbstractForm(string name, vector<Point> points, int id);
+	AbstractForm(string name, vector<Point> points);
 
     /*!
      *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
