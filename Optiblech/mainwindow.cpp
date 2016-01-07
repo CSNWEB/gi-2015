@@ -10,6 +10,7 @@
 #include <QTextStream>
 
 #include <svgview.h>
+#include <formview.h>
 #include <problemmanager.h>
 
 #include "abstractForm.hpp"
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_view(new SvgView),
+    m_formview(new FormView),
     pm(new ProblemManager())
 {
     ui->setupUi(this);
@@ -32,6 +34,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->svgContainer->addWidget(m_view);
     m_view->setContainer(ui->svgContainer_2);
 
+    ui->formViewer->addWidget(m_formview);
+    m_formview->setContainer(ui->formViewerWidget);
+    m_formview->showForm();
    //QFile file("/Users/Christoph/Code/gi-2015/out.svg");
    //m_view->openFile(file);
 
@@ -115,6 +120,7 @@ void MainWindow::on_absFormList_currentRowChanged(int currentRow)
         int amount = pm->initPoints(currentRow);
         ui->pointAmount->setValue(amount);
         ui->currentFormBox->setEnabled(true);
+        m_formview->showForm(pm->getForm(currentRow));
     }else{
         ui->currentFormBox->setEnabled(false);
         ui->pointList->clear();

@@ -8,6 +8,7 @@
 
 class SvgView;
 class ProblemManager;
+class FormView;
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -69,6 +70,8 @@ private:
     Ui::MainWindow *ui;
 
     SvgView *m_view;
+
+    FormView *m_formview;
 
     QString m_currentPath;
 

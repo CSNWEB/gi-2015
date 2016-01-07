@@ -33,13 +33,15 @@ SOURCES += main.cpp\
     svgview.cpp \
     problemmanager.cpp \
     manageformdialog.cpp \
-    managepointsdialog.cpp
+    managepointsdialog.cpp \
+    formview.cpp
 
 HEADERS  += mainwindow.h \
     svgview.h \
     problemmanager.h \
     manageformdialog.h \
-    managepointsdialog.h
+    managepointsdialog.h \
+    formview.h
 
 FORMS    += mainwindow.ui \
     manageformdialog.ui \
