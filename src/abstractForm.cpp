@@ -1,23 +1,16 @@
 #include "abstractForm.hpp"
 
+int AbstractForm::total_number_of_abstract_forms = 0;
+
 AbstractForm::AbstractForm(string name, vector<Point> points)
-{
-	#ifdef DEBUG
-		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
-	#endif
-
-	AbstractForm(name, points, -1);
-}
-
-AbstractForm::AbstractForm(string name, vector<Point> points, int id)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 		
 	this->name = name;
-	this->points = points;
-	this->id = id;
+	this->points = vector<Point>(points);
+	this->id = total_number_of_abstract_forms++;
 
 	number_of_points = points.size();
 
@@ -512,6 +505,7 @@ int AbstractForm::get_number_of_points()
 {
 	#ifdef DEBUG
 		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+		printf("Number of points: %i\n", points.size());
 	#endif
 
 	return points.size();

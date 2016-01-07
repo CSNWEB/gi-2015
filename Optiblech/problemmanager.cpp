@@ -156,3 +156,7 @@ void ProblemManager::setAmountOfForm(int selectedForm, int amount)
     problem.set_amount_of_form(selectedForm,amount);
     absFormList->item(selectedForm)->setText(getAbsFormListItem(selectedForm));
 }
+
+AbstractForm* ProblemManager::getForm(int selectedForm){
+    return problem.get_abstract_form_at_position(selectedForm);
+}

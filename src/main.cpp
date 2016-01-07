@@ -3,6 +3,7 @@
 #include "outputHandler.hpp"
 #include "inputHandler.hpp"
 #include "binPacking.hpp"
+#include "tests.hpp"
 
 #include <stdio.h>
 
@@ -20,11 +21,16 @@ int main(int argc, char* argv[])
     {
         printf("Missing filename of input file!\n");
         printf("Usage:\n\tsolver inputfilename.txt [outputfilename]\n");
+       
+        printf("Test test_everything\n");
+        Tests::test_everything();
+        
         return 0;
     }
 
     if (argc < 3)
     {
+    
         printf("No output file name given.\n");
         printf("Using default output file names:\n\tout.txt, out.svg\n");
         output_filename_txt = "out.txt";

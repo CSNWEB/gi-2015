@@ -35,6 +35,8 @@ public:
     void movePointUp(int selectedForm, int selectedPoint);
     void movePointDown(int selectedForm, int selectedPoint);
 
+    AbstractForm* getForm(int selectedForm);
+
 
 private:
     Problem problem;
