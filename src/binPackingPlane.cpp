@@ -20,7 +20,7 @@ bool BinPackingPlane::add_shelf(float height_of_shelf)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (remaining_height + TOLERANCE > height_of_shelf)
+	if (remaining_height + GlobalParams::get_tolerance() > height_of_shelf)
 	{
 		//shelfs.push_back(BinPackingShelf(dx, height_of_shelf));
 		remaining_height -= height_of_shelf;

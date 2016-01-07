@@ -5,9 +5,20 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
+
+	AbstractForm(name, points, -1);
+}
+
+AbstractForm::AbstractForm(string name, vector<Point> points, int id)
+{
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
 		
 	this->name = name;
 	this->points = points;
+	this->id = id;
+
 	number_of_points = points.size();
 
     calc_bounding_box();
@@ -117,7 +128,7 @@ float AbstractForm::compute_rotation_angle_for_points_parallel_to_axis(int index
 	#endif
 
 
-	return acos(cos_of_angle) * 180.0 / PI;
+	return acos(cos_of_angle) * 180.0 / GlobalParams::pi();
 }
 
 float AbstractForm::find_rotation_with_minimum_bounding_box()
@@ -202,8 +213,8 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 		float y_max = 0;
 		for (int point_index = 0; point_index < convex_hull.size(); ++point_index)
 		{
-			float rotated_x = (points[convex_hull[point_index]].get_x() * cos(angle * PI/180)) - (points[convex_hull[point_index]].get_y() * sin(angle * PI/180));
-			float rotated_y = (points[convex_hull[point_index]].get_x() * sin(angle * PI/180)) + (points[convex_hull[point_index]].get_y() * cos(angle * PI/180));
+			float rotated_x = (points[convex_hull[point_index]].get_x() * cos(angle * GlobalParams::pi()/180)) - (points[convex_hull[point_index]].get_y() * sin(angle * GlobalParams::pi()/180));
+			float rotated_y = (points[convex_hull[point_index]].get_x() * sin(angle * GlobalParams::pi()/180)) + (points[convex_hull[point_index]].get_y() * cos(angle * GlobalParams::pi()/180));
 			if (point_index == 0)
 			{
 				x_min = rotated_x;
@@ -229,7 +240,7 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 
 		float area_of_bounding_box = current_dx * current_dy;
 
-		if (current_dx < (plane_width+TOLERANCE) && current_dy < (plane_height+TOLERANCE))
+		if (current_dx < (plane_width+GlobalParams::get_tolerance()) && current_dy < (plane_height+GlobalParams::get_tolerance()))
 		{
 			#ifdef DEBUG
 				printf("\tRotating by %i degrees is a legal rotation\n", angle);
@@ -245,7 +256,7 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 				optimal_angle = angle;
 			}
 		}
-		if (current_dy < (plane_width+TOLERANCE) && current_dx < (plane_height+TOLERANCE))
+		if (current_dy < (plane_width+GlobalParams::get_tolerance()) && current_dx < (plane_height+GlobalParams::get_tolerance()))
 		{
 			#ifdef DEBUG
 				printf("\tRotating by %i degrees is a legal rotation\n", angle+90);
@@ -312,6 +323,18 @@ void AbstractForm::rotate_form_by_degrees(float degrees)
 	#ifdef DEBUG
 		printf("\tRotated form into position x_min = %.2f, dx = %.2f - y_min = %.2f, dy = %.2f\n", min_x, dx, min_y, dy);
 	#endif
+}
+
+void AbstractForm::mirror()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	for (int p=0; p<get_number_of_points(); ++p)
+	{
+		points[p].move_rel(-2*points[p].get_x(), 0);
+	}
 }
 
 void AbstractForm::normalize_position(float plane_width, float plane_height)

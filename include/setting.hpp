@@ -27,6 +27,11 @@ private:
      */
 	vector<Plane> planes;
 
+    /*!
+     *  A vector of the amount of missing pieces of each form
+     */
+    vector<int> missing_forms; 
+
 public:
     /*!
      *  Default Constructor.
@@ -50,19 +55,14 @@ public:
      *
      *  @return 	the Plane at planes[i]
      */
-    Plane* get_plane_at(int i) {
-        if (i < planes.size() && i>= 0)
-            return &planes[i];
-        else
-            return NULL;
-    };
+    Plane* get_plane_at(int i);
     
     /*!
      *  Returns the problem that the setting was created for.
      *
      *  @return A Problem to which this Setting might be a solution.
      */
-    Problem *get_problem(){return problem;};
+    Problem *get_problem();
 
     /*!
      *  Adds a new, empty plane to the setting
@@ -86,6 +86,15 @@ public:
      *  @return     the utilitation as percentage within [0,1]
      */
     float get_total_utilization();
+
+    /*!
+     *  Get the number of missing pieces of a specific form
+     *
+     *  @param form_index   the index of the form
+     *
+     *  @return             the number of pieces that still have to be added for form at form_index
+     */
+    int get_number_of_missing_pieces_of_form(int form_index);
 
     /*!
      *  Function to create an initial legal setting

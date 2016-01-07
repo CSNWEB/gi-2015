@@ -66,7 +66,7 @@ void InputHandler::get_input(char* filename)
 				printf("Point %i at position %.1f/%.1f\n", j, tmp_x, tmp_y);
 			#endif
 		}
-		forms[i] = AbstractForm(tmp_name_of_form, points);
+		forms[i] = AbstractForm(tmp_name_of_form, points, i);
 
 		#ifdef DEBUG
 			printf("Input of form complete!\n\n");

@@ -127,6 +127,15 @@ public:
     float get_bounding_dy(){return y_max - y_min;};
 	
     /*!
+     *  Getter for a specific point
+     *
+     *  @param point_index      the index of the point that should be returned
+     *
+     *  @return                 the pointer to the point at position point_index
+     */
+    Point* get_point_at(int point_index){return &points[point_index];};
+
+    /*!
      *  A vector containing the points that belong to the form.
      *
      *  @return A vector containing the points of the form.
