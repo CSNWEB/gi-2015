@@ -11,13 +11,13 @@
 
 using namespace std;
 
-class AbstractFormConfigurationTuple
+class AbstractFormConfiguration
 {
 private:
 	/*!
 	 *  A pointer to the contained AbstractForm
 	 */
-	vAbstractForm* form;
+	AbstractForm* form;
 
 	/*!
 	 *  A float describing the movement in dimension x of the form
@@ -60,9 +60,14 @@ private:
 	float max_y;
 
 	/*!
-	 *  For usage in binPacking?
+	 *  For usage in binPacking
 	 */
-	int number_of_usages;
+	int number_of_forms_needed;
+
+	/*!
+	 *  Compute the bounding box in absolute values for a moved and rotated configuration
+	 */
+	void update_bounding_box(AbstractForm *form, float pos_x, float pos_y, float rotation, bool is_initialized);
 
 public:
 	/*!
@@ -81,7 +86,7 @@ public:
 	 *  @param min_y 			the minimum y-imension of the bounding box
 	 *  @param max_y			the maximum y-imension of the bounding box
 	 */
-	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, float min_x, float max_x, float min_y, float max_y);
+	//AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, float min_x, float max_x, float min_y, float max_y);
 
 	/*!
 	 *  Constructor initializing a single form. This constructor needs less informations than the one above. The bounding box has to be computed.
@@ -89,8 +94,16 @@ public:
 	 *	@param position_x 		the distance in x-direction this form has been moved from its normalized position
 	 *	@param position_y 		the distance in y-direction this form has been moved from its normalized position
 	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
+	 *  @param mirrored 		describes if the form is mirrored or not
 	 */
-	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation);
+	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, bool mirrored, int number_of_forms_needed = -1);
+
+	/*!
+	 *  Constructor initializing a single form. This constructor needs less informations than the one above. The bounding box has to be computed.
+	 *	
+	 *  form 		the AbstractForm described by this configuration
+	 */
+	AbstractFormConfiguration(AbstractForm *form, int number_of_forms_needed = -1) : AbstractFormConfiguration(form, 0,0,0,false, number_of_forms_needed){};
 
 	/*!
 	 *  Getter for x-position of form
@@ -114,7 +127,7 @@ public:
 	 *  Check if form is mirrored
 	 */
 	bool is_mirrored()
-	{return is_mirrored;};
+	{return mirrored_form;};
 
     /*!
      *  Get the size of the bounding box in x direction.
@@ -143,6 +156,18 @@ public:
 	 */
 	int get_id_of_form()
 	{return form->get_id();};
+
+	/*!
+	 *  Get the amount of forms needed as defined in the problem
+	 */
+	int get_number_of_forms_needed()
+	{return number_of_forms_needed;};
+
+	/*!
+	 *  Get the AbstractForm
+	 */
+	AbstractForm* get_form()
+	{return form;};
 };
 
 #endif

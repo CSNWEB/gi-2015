@@ -33,7 +33,8 @@ void Plane::add_form_at_position(AbstractForm *form, float pos_x, float pos_y)
 void Plane::add_form_at_position_rotation(AbstractForm *form,
                                           float pos_x,
                                           float pos_y,
-                                          float rotation)
+                                          float rotation,
+                                          bool mirror)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);

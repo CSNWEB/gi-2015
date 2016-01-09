@@ -4,6 +4,7 @@
 #include "inputHandler.hpp"
 #include "binPacking.hpp"
 #include "tests.hpp"
+#include "validator.hpp"
 
 #include <stdio.h>
 
@@ -59,6 +60,16 @@ int main(int argc, char* argv[])
 
         Setting bin_packed = bin_packing.get_packed_setting();
 
+        bool is_valid = Validator::is_setting_valid(&bin_packed);
+
+        if (is_valid)
+        {
+            printf("A valid setting was created.\n");
+        }
+        else
+        {
+            printf("Error! The created setting is not valid!\n");
+        }
 
         OutputHandler oh(&problem, &bin_packed);
         oh.write_setting_to_txt(output_filename_txt);

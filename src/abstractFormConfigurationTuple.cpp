@@ -68,8 +68,29 @@ AbstractFormConfigurationTuple::AbstractFormConfigurationTuple(vector<AbstractFo
 	number_of_usages = -1;
 }
 
+/*
+void AbstractFormConfigurationTuple::compute_optimal_configuration()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	FormCombiner fc(this);
+	if (!fc.compute_optimal_configuration())
+	{
+		#ifdef DEBUG
+			printf("Computation of optimal configuration failed!\n");
+		#endif
+	}
+}
+*/
+
 void AbstractFormConfigurationTuple::update_bounding_box()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
 	if (abstract_form_configs.size() > 0)
 	{
 		float x_min = abstract_form_configs[0].get_x();
@@ -92,6 +113,15 @@ void AbstractFormConfigurationTuple::update_bounding_box()
 	}
 }
 
+void AbstractFormConfigurationTuple::set_number_of_usages(int number)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	number_of_usages = number;
+}
+
 bool AbstractFormConfigurationTuple::contains_form(int id_of_form)
 {
 	#ifdef DEBUG
@@ -107,7 +137,7 @@ bool AbstractFormConfigurationTuple::contains_form(int id_of_form)
 	return false;
 }
 
-AbstractFormConfiguration AbstractFormConfigurationTuple::get_configuration_of_form(int index_of_form)
+AbstractFormConfiguration *AbstractFormConfigurationTuple::get_configuration_of_form(int index_of_form)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -115,12 +145,12 @@ AbstractFormConfiguration AbstractFormConfigurationTuple::get_configuration_of_f
 
 	if (index_of_form < abstract_form_configs.size())
 	{
-		return abstract_form_configs[index_of_form];
+		return &abstract_form_configs[index_of_form];
 	}	
 	else
 	{
 		#ifdef DEBUG
-			printf("ERROR: specified form not contained in AbstractFormConfigurationTuple")
+			printf("ERROR: specified form not contained in AbstractFormConfigurationTuple");
 		#endif
 
 		return NULL;

@@ -110,6 +110,21 @@ int Problem::get_number_of_form_needed(int i)
     else return 0;
 }
 
+/*
+int Problem::get_number_of_form_needed_by_id(int id)
+{
+    #ifdef DEBUG
+        printf("GETTER: %s\n", __PRETTY_FUNCTION__);
+    #endif
+
+    for (int i=0; i<abstract_forms.size(); ++i)
+        if (abstract_forms[i].get_id() == id)
+            return number_of_forms_needed[i];
+
+    return 0;
+}
+*/
+
 string Problem::get_name_of_form(int i)
 {
     #ifdef DEBUG

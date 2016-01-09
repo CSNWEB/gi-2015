@@ -3,7 +3,8 @@
 float GlobalParams::get_tolerance()
 {
 	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		//printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		//printf("TOLERACE is %f\n", tolerance);
 	#endif
 
 	return tolerance;

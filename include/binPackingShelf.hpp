@@ -11,6 +11,8 @@
 #include <vector>
 
 #include "abstractForm.hpp"
+#include "abstractFormConfiguration.hpp"
+#include "abstractFormConfigurationTuple.hpp"
 #include "globalParams.hpp"
 
 class BinPacking;
@@ -29,10 +31,9 @@ private:
 	int index_of_plane;
 
 	/*!
-	 *  The indices of all forms placed on this shelf,
-	 *  in order from left to right.
+	 *  The number of forms on this shelf
 	 */
-	vector<int> indices_of_forms;
+	int number_of_forms;
 
 	/*!
 	 *  The position in y-dim of this shelf on its plane
@@ -88,16 +89,15 @@ public:
 	BinPackingShelf(int plane, float width, float height, float offset_x, float offset_y);
 
 	/*!
-	 *  Adds a form on this shelf. Also checks if there is enough space on this shelf
+	 *  Adds a form-tuple on this shelf. Also checks if there is enough space on this shelf
 	 *  
-	 *  @param f 			Pointer to the form that should be added to this shelf
-	 *  @param index 		index of Form
+	 *  @param tuple 			Pointer to the tuple that should be added to this shelf
 	 *
 	 *  @return 			a float >=0 if the form could be added to the shelf.
 	 *						the float describes the height of the free space below the newly added form
 	 * 						returns -1 if the form could not be added
 	 */
-	float add_form(AbstractForm *f, int index);
+	float try_add_form_config_tuple(AbstractFormConfigurationTuple *tuple);
 
 	/*!
 	 *  Checks if a form could be placed on this sheld

@@ -129,6 +129,15 @@ public:
      */
     int get_number_of_form_needed(int i);
 
+     /*!
+     *  Get the number of forms needed of abstract form specified by id
+     *
+     *  @param id   the global id of the abstract form in question
+     *
+     *  @return     the number of forms needed for the abstract_form with the specified id
+     */
+    //int get_number_of_form_needed_by_id(int id);
+
     /*!
      *  Get the total number of all forms that have to be placed
      *

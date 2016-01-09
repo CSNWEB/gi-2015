@@ -101,11 +101,13 @@ public:
      *  @param pos_x    x-position on plane where the top-left corner of the bounding-box of form is placed
      *  @param pos_y    y-position on plane where the top-left corner of the bounding-box of form is placed
      *  @param rotation A float representing how much the form is rotated around its centroid.
+     *  @param mirror   A bool describing if the abstractform is mirrored.
      */
     void add_form_at_position_rotation(AbstractForm *form,
                                        float pos_x,
                                        float pos_y,
-                                       float rotation);
+                                       float rotation,
+                                       bool mirror = false);
     
     /*!
      * computes which forms overlap pairwise and saves result in bool-matrix overlappings

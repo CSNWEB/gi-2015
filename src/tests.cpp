@@ -25,6 +25,11 @@ bool Tests::test_everything()
     {
         return false;
     }
+
+    if (!test_bin_packing())
+    {
+        return false;
+    }
     
     std::cout << "All tests: [SUCCEEDED]" << std::endl;
     return true;
@@ -1036,4 +1041,313 @@ bool Tests::test_validator()
     
     std::cout << "All validator tests: [SUCCEEDED]" << std::endl;
     return true;
+}
+
+#pragma mark - BinPacking
+
+/*!
+ *  Given a vector of AbstractFormConfigurationTuple with different area utilization, test if the relation operator defined in TupleComparatorUtilization orders them correct
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_sort_tuple_utilization_correct()
+{
+    /**
+     *  General Initialization
+     */
+    bool success_all_tests = true;
+
+    // create an AbstractFormConfiguration with good area utilization:
+    vector<Point> pts_form_1{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    AbstractForm form_1("form_1", pts_form_1);
+    int id_1 = form_1.get_id();
+
+    AbstractFormConfigurationTuple tuple_1(
+        AbstractFormConfiguration(
+            &form_1, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with medium area utilization:
+    vector<Point> pts_form_2{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 0.0)
+    };
+
+    AbstractForm form_2("form_2", pts_form_2);
+    int id_2 = form_2.get_id();
+
+    AbstractFormConfigurationTuple tuple_2(
+        AbstractFormConfiguration(
+            &form_2, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with bad area utilization:
+    vector<Point> pts_form_3{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(0.1, 0.1),
+        Point(1.0, 0.0)
+    };
+
+    AbstractForm form_3("form_3", pts_form_3);
+    int id_3 = form_3.get_id();
+
+    AbstractFormConfigurationTuple tuple_3(
+        AbstractFormConfiguration(
+            &form_3, 0, 0, 0, false));
+
+    /**
+     *  Initialization of test instances and testing:
+     */
+
+    // case: vector is sorted:
+    vector<AbstractFormConfigurationTuple> afct_vector_1{
+        tuple_1,
+        tuple_2,
+        tuple_3
+    };
+
+    TupleComparatorUtilization tcu(&afct_vector_1);
+
+    std::sort(afct_vector_1.begin(), afct_vector_1.end(), tcu);
+
+    if(!(
+        afct_vector_1[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector_1[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector_1[2].get_configuration_of_form(0)->get_id_of_form() == id_3
+         ) == true)
+        success_all_tests = false;
+
+    // case: vector is reverse sorted:
+    vector<AbstractFormConfigurationTuple> afct_vector_2{
+        tuple_3,
+        tuple_2,
+        tuple_1
+    };
+
+    tcu = TupleComparatorUtilization(&afct_vector_2);
+
+    std::sort(afct_vector_2.begin(), afct_vector_2.end(), tcu);
+
+    if(!(
+        afct_vector_2[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector_2[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector_2[2].get_configuration_of_form(0)->get_id_of_form() == id_3
+         ) == true)
+        success_all_tests = false;
+
+    // case: vector is unsorted:
+    vector<AbstractFormConfigurationTuple> afct_vector_3{
+        tuple_2,
+        tuple_1,
+        tuple_3
+    };
+
+    tcu = TupleComparatorUtilization(&afct_vector_3);
+
+    std::sort(afct_vector_3.begin(), afct_vector_3.end(), tcu);
+
+    if(!(
+        afct_vector_3[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector_3[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector_3[2].get_configuration_of_form(0)->get_id_of_form() == id_3
+        ) == true)
+        success_all_tests = false;
+
+    return success_all_tests;
+}
+
+/*!
+ *  Given a vector of AbstractFormConfigurationTuple with different dimension, test if the relation operator defined in TupleComparatorDimension orders them correct
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_sort_tuple_dimension_correct()
+{
+    /**
+     *  General Initialization
+     */
+
+    bool success_all_tests = true;
+
+    // create an AbstractFormConfiguration with large x-dim and large y_dim:
+    vector<Point> pts_form_lxly{
+        Point(0.0, 0.0),
+        Point(0.0, 2.0),
+        Point(2.0, 2.0),
+        Point(2.0, 0.0)
+    };
+    AbstractForm form_1("form_1", pts_form_lxly);
+    int id_1 = form_1.get_id();
+    AbstractFormConfigurationTuple tuple_lxly(
+        AbstractFormConfiguration(
+            &form_1, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with large x-dim and small y_dim:
+    vector<Point> pts_form_lxsy{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(3.0, 1.0),
+        Point(3.0, 0.0)
+    };
+    AbstractForm form_2("form_2", pts_form_lxsy);
+    int id_2 = form_2.get_id();
+    AbstractFormConfigurationTuple tuple_lxsy(
+        AbstractFormConfiguration(
+            &form_2, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with small x-dim and large y_dim:
+    vector<Point> pts_form_sxly{
+        Point(0.0, 0.0),
+        Point(0.0, 2.0),
+        Point(1.0, 2.0),
+        Point(1.0, 0.0)
+    };
+    AbstractForm form_3("form_3", pts_form_sxly);
+    int id_3 = form_3.get_id();
+    AbstractFormConfigurationTuple tuple_sxly(
+        AbstractFormConfiguration(
+            &form_3, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with small x-dim and small y_dim:
+    vector<Point> pts_form_sxsy{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    AbstractForm form_4("form_4", pts_form_sxsy);
+    int id_4 = form_4.get_id();
+    AbstractFormConfigurationTuple tuple_sxsy(
+        AbstractFormConfiguration(
+            &form_4, 0, 0, 0, false));
+
+    /**
+     *  Initialization of test instances and testing:
+     */
+
+    // initialize an instance of TupleComparatorDimension:
+    vector<AbstractFormConfigurationTuple> afct_vector{
+        tuple_sxsy,
+        tuple_sxly,
+        tuple_lxsy,
+        tuple_lxly
+    };
+    TupleComparatorDimension tcd(&afct_vector);
+
+    // Case 1 - sorted:
+    vector<int> case_1{
+        3,2,1,0
+    };
+
+/*
+    #ifdef DEBUG
+        printf("Pre sorting case 1:\n");
+        for (int i=0; i<4; ++i)
+           printf("\tForm %i with id: %i\n\tDimension: %.2f/%.2f\n", i, afct_vector[case_1[i]].get_configuration_of_form(0)->get_id_of_form(), afct_vector[case_1[i]].get_dx(), afct_vector[case_1[i]].get_dy());
+    #endif
+*/
+
+    std::sort(case_1.begin(), case_1.end(), tcd);
+
+/*
+    #ifdef DEBUG
+        printf("Post sorting case 1:\n");
+        for (int i=0; i<4; ++i)
+            printf("\tForm %i with id: %i\n\tDimension: %.2f/%.2f\n", i, afct_vector[case_1[i]].get_configuration_of_form(0)->get_id_of_form(), afct_vector[case_1[i]].get_dx(), afct_vector[case_1[i]].get_dy());
+    #endif
+*/
+
+    if(!(
+        afct_vector[case_1[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_1[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_1[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_1[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    // Case 2 - reverse sorted:
+    vector<int> case_2{
+        0,1,2,3
+    };
+
+    std::sort(case_2.begin(), case_2.end(), tcd);
+
+    if(!(
+        afct_vector[case_2[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_2[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_2[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_2[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    // Case 3 - unsorted 1:
+    vector<int> case_3{
+        2,0,3,1
+    };
+
+    std::sort(case_3.begin(), case_3.end(), tcd);
+
+    if(!(
+        afct_vector[case_3[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_3[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_3[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_3[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    // Case 4 - unsorted 2:
+    vector<int> case_4{
+        3,0,1,2
+    };
+
+    std::sort(case_4.begin(), case_4.end(), tcd);
+
+    if(!(
+        afct_vector[case_4[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_4[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_4[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_4[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    return success_all_tests;
+}
+
+/*!
+ *  Tests whether methods of the bin-packing-algorithm work as intended.
+ *
+ *  @return True, if all tests are successful, false if at least one test fails.
+ */
+bool Tests::test_bin_packing()
+{
+
+    bool success = true;
+    std::cout << "Testing TupleComparatorUtilization: ";
+    if (test_sort_tuple_utilization_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        success = false;
+        std::cout << "[FAILED]" << std::endl;
+    }
+
+    std::cout << "Testing TupleComparatorDimension: ";
+    if (test_sort_tuple_dimension_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        success = false;
+        std::cout << "[FAILED]" << std::endl;
+    }
+
+    return success;
 }

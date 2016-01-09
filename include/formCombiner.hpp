@@ -10,17 +10,27 @@
 
 #include "abstractForm.hpp"
 #include "abstractFormConfiguration.hpp"
+#include "abstractFormConfigurationTuple.hpp"
 #include "problem.hpp"
 
-#include <list>
+//#include <list>
 #include <iterator>
 #include <vector>
+
+class AbstractFormConfigurationTuple;
 
 using namespace std;
 
 class FormCombiner
 {
 private:
+	/*!
+	 *
+	 */
+	AbstractFormConfiguration *form_config_1;
+
+	AbstractFormConfiguration *form_config_2;
+
 	/*!
 	 *  A pointer to the problem. Needed to decide if a combined form still fits on plane.
 	 */
@@ -29,18 +39,18 @@ private:
 	/*!
 	 *  A pointer to the first AbstractForm
 	 */
-	AbstractForm* abstract_form_1;
+	//AbstractForm* abstract_form_1;
 
 	/*!
 	 *  A list of possible AbstractFormConfigurations, sorted by optimality of area utilization of the bounding box
 	 */
-	list<AbstractFormConfiguration> possible_configurations;
+	//list<AbstractFormConfigurationTuple> possible_configurations;
 
 public:
 	/*!
 	 *  Default Constructor
 	 */
-	FormCombiner(Problem *problem, AbstractForm* abstract_form);
+	FormCombiner(Problem *p, AbstractFormConfiguration *form_config_1, AbstractFormConfiguration *form_config_2);
 
 	/*!
 	 *  Search all other forms for optimal configurated tuple
@@ -48,14 +58,16 @@ public:
 	//void search_for_optimal_configuratioon_global();
 
 	/*!
-	 *  Search for optimal configuration with a specific form. The found configuration is added to the list possible_configurations
+	 *  Compute optimal configuration for the two AbstractForms and creates an AbstractFormConfigurationTuple
+	 *
+	 *  @return 	the constructed AbstractFormConfigurationTuple, or Null if no efficient combination was found
 	 */
-	void search_for_optimal_configuration_local(AbstractForm* other_form);
+	AbstractFormConfigurationTuple compute_optimal_configuration();
 
 	/*!
 	 *  Get the best AbstractFormConfiguration that does not use any AbstractForm from a given vector
 	 */
-	AbstractFormConfiguration get_best_configuration(vector<int> forbidden_forms);
+	//AbstractFormConfigurationTuple get_best_tuple(vector<int> forbidden_forms);
 
 };
 

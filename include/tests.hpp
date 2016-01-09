@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "abstractForm.hpp"
+#include "binPacking.hpp"
 #include "edge.hpp"
 #include "form.hpp"
 #include "point.hpp"
@@ -152,6 +153,22 @@ private:
      *  @return True if the test passes, false if not.
      */
     static bool test_validator_correct();
+
+#pragma mark - Comparator
+
+    /*!
+     *  Given two instances of AbstractFormConfigurationTuple with different area utilization, test if the relation operator defined in TupleComparatorUtilization orders them correct
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_sort_tuple_utilization_correct();
+
+    /*!
+     *  Given two instances of AbstractFormConfigurationTuple with different dimension, test if the relation operator defined in TupleComparatorDimension orders them correct
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_sort_tuple_dimension_correct();
     
 public:
     
@@ -190,6 +207,15 @@ public:
      *  @return True, if all tests are successful, false if at least one test fails.
      */
     static bool test_validator();
+
+#pragma mark - BinPacking
+
+    /*!
+     *  Tests whether methods of the bin-packing-algorithm work as intended.
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_bin_packing();
     
 };
 

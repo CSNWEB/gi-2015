@@ -125,3 +125,23 @@ Problem* Setting::get_problem()
 		
 	return problem;
 }
+
+bool Setting::add_form_to_plane_at_position(
+	AbstractForm *form,
+	int index_of_plane,
+	float position_x,
+	float position_y,
+	float rot,
+	bool mirror)
+{
+	#ifdef DEBUG
+		printf("FUNCITON: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	if (index_of_plane < planes.size())
+	{
+		planes[index_of_plane].add_form_at_position_rotation(form, position_x, position_y, rot, mirror);
+	}
+	else
+		return false;
+}
