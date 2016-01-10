@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 
         OutputHandler oh(&problem, &bin_packed);
         oh.write_setting_to_txt(output_filename_txt);
-        oh.write_setting_to_svg(output_filename_svg);
+        oh.write_setting_to_svg(output_filename_svg, true);
 
         #ifdef DEBUG
             printf("check in %s\n", __PRETTY_FUNCTION__);

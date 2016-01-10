@@ -140,9 +140,9 @@ public:
      *
      *  @return A vector containing the points of the form.
      */
-    vector<Point> get_points()
+    vector<Point> *get_points()
     {
-        return points;
+        return &points;
     }
     
     /*!

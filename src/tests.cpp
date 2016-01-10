@@ -30,6 +30,11 @@ bool Tests::test_everything()
     {
         return false;
     }
+
+    if (!test_point_set_algo())
+    {
+        return false;
+    }
     
     std::cout << "All tests: [SUCCEEDED]" << std::endl;
     return true;
@@ -1350,4 +1355,127 @@ bool Tests::test_bin_packing()
     }
 
     return success;
+}
+
+#pragma mark - PointSetAlgorithms
+
+bool Tests::test_sort_points_by_x_dimension_correct()
+{
+    bool success_all_tests = true;
+
+    // case 1: sorted
+    vector<Point> points_1{
+        Point(1,2),
+        Point(2,2),
+        Point(3,1),
+        Point(4,2)
+    };
+
+    vector<int> res_1{
+        0,1,2,3
+    };
+
+    PointComparator pc_1(&points_1);
+
+    std::sort(res_1.begin(), res_1.end(), pc_1);
+
+    if(!(
+        res_1[0] == 0 &&
+        res_1[1] == 1 &&
+        res_1[2] == 2 &&
+        res_1[3] == 3 
+        ) == true)
+        success_all_tests = false;
+
+    // Case 2: reverse sorted
+    vector<int> res_2{
+        3,2,1,0
+    };
+
+    PointComparator pc_2(&points_1);
+
+    std::sort(res_2.begin(), res_2.end(), pc_2);
+
+    if(!(
+        res_2[0] == 3 &&
+        res_2[1] == 2 &&
+        res_2[2] == 1 &&
+        res_2[3] == 0 
+        ) == true)
+        success_all_tests = false;
+
+    // Case 3: sorted, but with all x equal:
+    vector<Point> points_3{
+        Point(1,4),
+        Point(1,3),
+        Point(1,2),
+        Point(1,1)
+    };
+
+    vector<int> res_3{
+        0,1,2,3
+    };
+
+    PointComparator pc_3(&points_3);
+
+    std::sort(res_3.begin(), res_3.end(), pc_3);
+
+    if(!(
+        res_3[0] == 0 &&
+        res_3[1] == 1 &&
+        res_3[2] == 2 &&
+        res_3[3] == 3 
+        ) == true)
+        success_all_tests = false;
+
+    // Case 4: unsorted
+    vector<Point> points_4{
+        Point(1,5),  // 0
+        Point(5,4),  // 7
+        Point(3,1),  // 5
+        Point(1,1),  // 1
+        Point(5,2),  // 8
+        Point(2,2),  // 3
+        Point(2,1),  // 4
+        Point(2,3),  // 2
+        Point(4,1)   // 6
+    };
+
+    vector<int> res_4{
+        0,1,2,3,4,5,6,7,8
+    };
+
+    PointComparator pc_4(&points_4);
+
+    std::sort(res_4.begin(), res_4.end(), pc_4);
+
+    if(!(
+        res_4[0] == 0 &&
+        res_4[1] == 3 &&
+        res_4[2] == 7 &&
+        res_4[3] == 5 && 
+        res_4[4] == 6 &&
+        res_4[5] == 2 &&
+        res_4[6] == 8 &&
+        res_4[7] == 1 &&
+        res_4[8] == 4
+        ) == true)
+        success_all_tests = false;
+}
+
+bool Tests::test_point_set_algo()
+{
+    std::cout << "Testing PointSetAlgorithms: " << std::endl;
+    
+    std::cout << "Testing sort points by x dimension: ";
+    if (test_sort_points_by_x_dimension_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
 }

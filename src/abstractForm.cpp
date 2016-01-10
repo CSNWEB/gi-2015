@@ -25,46 +25,6 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
     update_values();
 }
 
-vector<int> AbstractForm::sort_points_dim_x()
-{
-	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
-
-    if(points.size() == 0){
-        return vector<int>();
-    }
-
-	vector<int> ordered_indices = vector<int>(points.size(),0);        
-
-	for (int i=0; i<points.size(); ++i)
-		ordered_indices[i] = i;
-
-	for (int i=0; i<points.size()-1; ++i)
-	{
-		for (int j=i; j<points.size(); ++j)
-		{
-			if (points[ordered_indices[i]].get_x() > points[ordered_indices[j]].get_x() ||
-				(points[ordered_indices[i]].get_x() == points[ordered_indices[j]].get_x() &&
-				 points[ordered_indices[i]].get_y() > points[ordered_indices[j]].get_y()) )
-			{
-				int tmp = ordered_indices[i];
-				ordered_indices[i] = ordered_indices[j];
-				ordered_indices[j] = tmp;
-			}
-		}
-	}
-
-	#ifdef DEBUG
-		printf("finished sorting. result:\n");
-		for (int i=0; i<ordered_indices.size(); ++i)
-            printf("%i ",ordered_indices[i]);
-		printf("\n");
-	#endif
-
-	return ordered_indices;
-}
-
 void AbstractForm::compute_size_of_area()
 {
     // Calculate the size of the area (according to http://www.mathopenref.com/coordpolygonarea.html )
@@ -92,6 +52,7 @@ void AbstractForm::compute_size_of_area()
     size_of_area = fabs(size_of_area);
 }
 
+/*
 float AbstractForm::compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2)
 {
 	#ifdef DEBUG
@@ -123,6 +84,8 @@ float AbstractForm::compute_rotation_angle_for_points_parallel_to_axis(int index
 
 	return acos(cos_of_angle) * 180.0 / GlobalParams::pi();
 }
+*/
+
 
 float AbstractForm::find_rotation_with_minimum_bounding_box()
 {
@@ -130,60 +93,7 @@ float AbstractForm::find_rotation_with_minimum_bounding_box()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-    if(convex_hull.size() == 0){
-        return 0.0;
-    }
-
-	float optimal_angle = 0;
-	float minimum_area_of_bounding_box = -1;
-
-	for (int configuration = 0; configuration < convex_hull.size()-1; ++configuration)
-	{
-		#ifdef DEBUG
-			printf("Consider configuration %i\n", configuration);
-		#endif        
-		float current_angle = compute_rotation_angle_for_points_parallel_to_axis(convex_hull[configuration], convex_hull[(configuration+1) % (convex_hull.size()-1)]);
-		float x_min = 0;
-		float x_max = 0;
-		float y_min = 0;
-		float y_max = 0;
-		for (int index_of_hullpoint = 0; index_of_hullpoint < convex_hull.size(); ++index_of_hullpoint)
-		{
-			float this_x = points[convex_hull[index_of_hullpoint]].compute_pos_after_rotation_x(current_angle);
-			float this_y = points[convex_hull[index_of_hullpoint]].compute_pos_after_rotation_y(current_angle);
-
-			if (index_of_hullpoint == 0)
-			{
-				x_min = this_x;
-				x_max = this_x;
-				y_min = this_y;
-				y_max = this_y;
-			}
-			else
-			{
-				if (x_min > this_x)
-					x_min = this_x;
-				else if (x_max < this_x)
-					x_max = this_x;
-				if (y_min > this_y)
-					y_min = this_y;
-				else if (y_max < this_y)
-					y_max = this_y;
-			}
-		}
-		float current_area = (x_max-x_min) * (y_max-y_min);
-		if (configuration == 0 || current_area < minimum_area_of_bounding_box)
-		{
-			minimum_area_of_bounding_box = current_area;
-			optimal_angle = current_angle;
-		}
-
-		#ifdef DEBUG
-			printf("\tCurrente angle: %.2f\n\tArea of bounding box in current configuration: %.2f\n\t optimal configuration so far hast area: %.2f\n", current_angle, current_area, minimum_area_of_bounding_box);
-		#endif
-	}
-
-	return optimal_angle;
+	return PointSetAlgorithms::find_rotation_with_minimum_bounding_box(&points, &convex_hull);
 }
 
 int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plane_height)
@@ -374,6 +284,7 @@ void AbstractForm::compute_convex_hull()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	/*
 	vector<int> ordered_indices = sort_points_dim_x();
     if(points.size() == 0){
         convex_hull.clear();
@@ -499,6 +410,9 @@ void AbstractForm::compute_convex_hull()
 		for (int i=0; i<convex_hull.size(); ++i)
 			printf("\t%i\n", convex_hull[i]);
 	#endif
+	*/
+
+	convex_hull = PointSetAlgorithms::compute_convex_hull(&points);
 }
 
 int AbstractForm::get_number_of_points()

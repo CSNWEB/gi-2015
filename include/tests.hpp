@@ -169,6 +169,15 @@ private:
      *  @return True if the test passes, false if not.
      */
     static bool test_sort_tuple_dimension_correct();
+
+#pragma mark - PointSetAlgorithms
+
+    /*!
+     *  Given a set of points, test if PointSetAlgorithms sorts them correct first by x- and second by y-dimension
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_sort_points_by_x_dimension_correct();
     
 public:
     
@@ -216,6 +225,13 @@ public:
      *  @return True, if all tests are successful, false if at least one test fails.
      */
     static bool test_bin_packing();
+
+    /*!
+     *  Test whether the methods of the PointSetAlgorithm work as intended
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_point_set_algo();
     
 };
 

@@ -26,9 +26,13 @@ void OutputHandler::write_setting_to_txt(string filename)
 		for (int j=0; j<setting->get_plane_at(i)->get_number_of_forms(); ++j)
 		{
 			fprintf(file, "%s\n", ((setting->get_plane_at(i))->get_form_at(j)->get_mother())->get_name().c_str());
-			vector<Point> points_of_current_form = (setting->get_plane_at(i))->get_form_at(j)->get_points();
-			for (int k=0; k<points_of_current_form.size(); ++k)
-				fprintf(file, "%.2f %.2f\n", points_of_current_form[k].get_x(), points_of_current_form[k].get_y());
+			vector<Point> *points_of_current_form = 
+				setting->
+				get_plane_at(i)->
+				get_form_at(j)->
+				get_points();
+			for (int k=0; k<points_of_current_form->size(); ++k)
+				fprintf(file, "%.2f %.2f\n", (*points_of_current_form)[k].get_x(), (*points_of_current_form)[k].get_y());
 		}
 	}
 	//close(file);

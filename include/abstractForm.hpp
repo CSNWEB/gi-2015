@@ -14,6 +14,7 @@
 
 #include "point.hpp"
 #include "plane.hpp"
+#include "pointSetAlgorithms.hpp"
 #include "globalParams.hpp"
 
 using namespace std;
@@ -81,13 +82,6 @@ private:
      *  The size of the area of the form.
      */
 	float size_of_area;
-	
-    /*!
-     *  Sorts points in x-dimension.
-     *
-     *  Uses in-place insertion-sort for small amount of points
-     */
-    vector<int> sort_points_dim_x();
 
     /*!
      *  All points that belong to the convex hull, stored by their indices in vector<Point> points
@@ -143,7 +137,7 @@ public:
      *
      *  @return                     the angle defining the specified rotation in degrees
      */
-    float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
+    //float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
 
     /*!
      *  Check if this form fits on a plane with given dimensions.
@@ -182,7 +176,7 @@ public:
     /*!
      *  Move a form such all points have x- and y-coordinates >= 0
      *  and also ensure that width >= height, by flipping form at axis x=y (if necessary and possible by size of plane).
-     *  Needs curent minimal position and dimensions of plane!
+     *  Needs current minimal position and dimensions of plane!
      *
      *  @param x_min        current minimal position of any point on x-axis
      *  @param y_min        current minimal position of any point on y-axis
@@ -223,7 +217,6 @@ public:
      *  @return A float representing size of the bounding box of the form in x direction.
      */
 	float get_dx();
-
     
     /*!
      *  Get the size of the bounding box of the form in y direction.
@@ -231,7 +224,6 @@ public:
      *  @return A float representing the size of the bounding box of the form in y direction.
      */
 	float get_dy();
-    
     
     /*!
      *  The size of the area of the abstract form.

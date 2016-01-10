@@ -27,15 +27,33 @@ void BinPacking::create_configuration_tuples()
 		#endif
 
 		// iterate through all forms and optimal configuration of each tuple:
-		/*
-		for (int index_form_2 = 0; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
+		
+		for (int index_form_2 = index_form_1; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
 		{
-			AbstractFormConfiguration form_config_2(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
-			FormCombiner fc(problem, &form_config_1, &form_config_2);
+			#ifdef DEBUG
+				printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
+			#endif
 
-			all_efficient_form_tuples.push_back(fc.compute_optimal_configuration());
+			if (index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1)
+			{
+				AbstractFormConfiguration form_config_2(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
+				FormCombiner fc(problem, &form_config_1, &form_config_2);
+
+				all_efficient_form_tuples.push_back(fc.compute_optimal_configuration());
+				
+				#ifdef DEBUG
+					printf("Created tuple %s\n", all_efficient_form_tuples[all_efficient_form_tuples.size()-1].to_string().c_str());
+				#endif
+			}
 		}
-		*/
+
+		#ifdef DEBUG
+			printf("All created tuples:\n");
+			for (int i=0; i < all_efficient_form_tuples.size(); ++i)
+			{
+				printf("\t%i : %s\n", i, all_efficient_form_tuples[i].to_string().c_str());
+			}
+		#endif
 	}
 }
 
@@ -140,24 +158,6 @@ void BinPacking::create_initial_sorting()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	//int total_number_of_all_form_tuples_to_use = 0;
-	/*
-	for (int tuple_index = 0; tuple_index < all_form_tuples_to_use.size(); ++tuple_index)
-		total_number_of_all_form_tuples_to_use += all_form_tuples_to_use[tuple_index]..get_number_of_usages();
-
-	if (total_number_of_all_form_tuples_to_use == 0)
-		return;
-
-	all_tuples_to_use_sorted_by_size = vector<int> (total_number_of_all_form_tuples_to_use, 0);
-
-	#ifdef DEBUG
-		printf("\tTotal number of all forms: %i\n", total_number_of_all_form_tuples_to_use);
-	#endif
-
-	int number_of_different_tuples = all_form_tuples_to_use.size();
-
-	int k=0;
-	*/
 	all_tuples_to_use_sorted_by_size = vector<int>(0);
 
 	for (int tuple_index = 0; tuple_index < all_form_tuples_to_use.size(); ++tuple_index)

@@ -12,8 +12,8 @@
 #include "abstractFormConfiguration.hpp"
 #include "abstractFormConfigurationTuple.hpp"
 #include "problem.hpp"
+#include "pointSetAlgorithms.hpp"
 
-//#include <list>
 #include <iterator>
 #include <vector>
 
