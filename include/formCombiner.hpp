@@ -1,8 +1,7 @@
 /*!
  * class FORMCOMBINER
  *
- * Checks if a specified form can be aligned with any other form (or a specified second form) such that their combined bounding box has better space utilization than the two original bounding boxes.
- * Can create instances of AbstractFormMulti
+ * Computes a optimized combination of two given AbstractFormConfigurations, such that their combined bounding box has better space utilization than the two original bounding boxes.
  */
 
 #ifndef FORMCOMBINER_H
