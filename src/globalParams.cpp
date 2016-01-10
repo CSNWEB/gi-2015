@@ -22,3 +22,4 @@ void GlobalParams::set_significant_digits(int digits)
 
 float GlobalParams::tolerance = 1E-4;
 int GlobalParams::tolerance_digits = 4;
+bool GlobalParams::option_pre_merge_form = true;

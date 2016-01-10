@@ -56,7 +56,12 @@ private:
 	float minimum_height_of_any_tuple;
 
 	/*!
-	 *  All area-efficient AbstractFormConfigurationTuples, i.e. tuples that are more efficient than using the single forms
+	 *  All AbstractFormConfigurationTuples that contain only a single AbstractForm
+	 */
+	vector<AbstractFormConfigurationTuple> all_single_form_tuples;
+
+	/*!
+	 *  All computed area-efficient AbstractFormConfigurationTuples, i.e. tuples that are more efficient than using the single forms
 	 */
 	vector<AbstractFormConfigurationTuple> all_efficient_form_tuples;
 

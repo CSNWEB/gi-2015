@@ -20,30 +20,36 @@ void BinPacking::create_configuration_tuples()
 	{
 		AbstractFormConfiguration form_config_1(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
 		AbstractFormConfigurationTuple simple_tuple(form_config_1);
-		all_efficient_form_tuples.push_back(simple_tuple);
+		all_single_form_tuples.push_back(simple_tuple);
 
 		#ifdef DEBUG
 			printf("Created tuple %s\n", simple_tuple.to_string().c_str());
 		#endif
 
-		// iterate through all forms and optimal configuration of each tuple:
-		
-		for (int index_form_2 = index_form_1; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
-		{
-			#ifdef DEBUG
-				printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
-			#endif
+		// if the current form has bad area utilization iterate through all forms and optimal configuration of each tuple:
 
-			if (index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1)
+		GlobalParams::set_option_pre_merge(false);
+
+		//if (simple_tuple.get_utilization() < (1.0 - GlobalParams::get_tolerance()))
+		if (GlobalParams::do_pre_merge_merge())
+		{		
+			for (int index_form_2 = index_form_1; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
 			{
-				AbstractFormConfiguration form_config_2(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
-				FormCombiner fc(problem, &form_config_1, &form_config_2);
-
-				all_efficient_form_tuples.push_back(fc.compute_optimal_configuration());
-				
 				#ifdef DEBUG
-					printf("Created tuple %s\n", all_efficient_form_tuples[all_efficient_form_tuples.size()-1].to_string().c_str());
+					printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
 				#endif
+
+				if (index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1)
+				{
+					AbstractFormConfiguration form_config_2(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
+					FormCombiner fc(problem, &form_config_1, &form_config_2);
+
+					all_efficient_form_tuples.push_back(fc.compute_optimal_configuration());
+					
+					#ifdef DEBUG
+						printf("Created tuple %s\n", all_efficient_form_tuples[all_efficient_form_tuples.size()-1].to_string().c_str());
+					#endif
+				}
 			}
 		}
 
@@ -63,8 +69,14 @@ void BinPacking::create_all_tuples_to_use()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	TupleComparatorUtilization tcu(&all_efficient_form_tuples);
-	std::sort(all_efficient_form_tuples.begin(), all_efficient_form_tuples.end(), tcu);
+	if (all_efficient_form_tuples.size() > 1)
+	{
+		TupleComparatorUtilization tcu(&all_efficient_form_tuples);
+		std::sort(all_efficient_form_tuples.begin(), all_efficient_form_tuples.end(), tcu);
+	}
+
+	// after sorting, append single-form-tuples at the end:
+	all_efficient_form_tuples.insert(all_efficient_form_tuples.end(), all_single_form_tuples.begin(), all_single_form_tuples.end());
 
 	#ifdef DEBUG
 		printf("all efficient tuples sorted:\n");
