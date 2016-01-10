@@ -11,6 +11,7 @@
 
 #include <vector>
 
+#include "globalParams.hpp"
 #include "edge.hpp"
 #include "abstractForm.hpp"
 #include "simpleSVG.hpp"
@@ -170,6 +171,11 @@ public:
      *  @param degree   The amount that the Form is rotated by.
      */
 	void rotate(float center_x, float center_y, float angle);
+
+    /*!
+     *  Mirrors the form at an axis parallel to the x-axis and such that its bounding box is not affected.
+     */
+    void mirror();
 	
     /*!
      *  Checks if the receiver overlaps with the passed Form.

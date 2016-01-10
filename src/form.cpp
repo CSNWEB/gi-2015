@@ -88,8 +88,10 @@ bool Form::check_for_overlap(Form *other)
      *	else check overlapping of edges pairwise
      */
 	bool overlap_bounding = false;
-	if (x_max > other->x_min && x_min < other->x_max)
-		if (y_max > other->y_min && y_min < other->y_max)
+	if ((x_max - other->x_min > GlobalParams::get_tolerance()) &&
+		(other->x_max - x_min > GlobalParams::get_tolerance()))
+		if ((y_max - other->y_min > GlobalParams::get_tolerance())&&
+			(other->y_max - y_min > GlobalParams::get_tolerance()))
 			overlap_bounding = true;
 
 	// The bounding boxes overlap, so the forms might as well.
@@ -195,39 +197,57 @@ void Form::rotate(float center_x, float center_y, float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	x_min = center_x;
-	x_max = center_x;
-	y_min = center_y;
-	y_max = center_y;
-
-	for (int i=0; i<points.size(); ++i)
+	if (angle > GlobalParams::get_tolerance())
 	{
-		points[i].rotate(center_x, center_y, angle);
-		if (points[i].get_x() < x_min)
-			x_min = points[i].get_x();
-		if (points[i].get_x() > x_max)
-			x_max = points[i].get_x();
-		if (points[i].get_y() < y_min)
-			y_min = points[i].get_y();
-		if (points[i].get_y() > y_max)
-			y_max = points[i].get_y();
+		points[0].rotate(center_x, center_y, angle);
+		x_min = points[0].get_x();
+		x_max = points[0].get_x();
+		y_min = points[0].get_y();
+		y_max = points[0].get_y();
+
+		for (int i=1; i<points.size(); ++i)
+		{
+			points[i].rotate(center_x, center_y, angle);
+			if (points[i].get_x() < x_min)
+				x_min = points[i].get_x();
+			else if (points[i].get_x() > x_max)
+				x_max = points[i].get_x();
+
+			if (points[i].get_y() < y_min)
+				y_min = points[i].get_y();
+			else if (points[i].get_y() > y_max)
+				y_max = points[i].get_y();
+		}
 	}
 
 	#ifdef DEBUG
 		printf("\tBounding box updated to:\n\t(%.2f,%.2f) - (%.2f,%.2f)\n",x_min, y_min, x_max, y_max);
 	#endif
 }
+
+void Form::mirror()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	for (int point_index = 0; point_index < points.size(); ++point_index)
+	{
+		float current_x = points[point_index].get_x();
+		points[point_index].set_x(x_max + x_min - current_x);
+	}
+}
 	
 void Form::_d_print_points_to_console()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
 		
 		printf("Number of points: %i\n", points.size());
 
 		for (int i=0; i<points.size(); ++i)
 			printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
-	#endif
 }
 
 void Form::_d_print_edges_to_console()
@@ -250,6 +270,7 @@ void Form::_d_print_convex_hull_to_console()
 		printf("Convex hull of form has %i points\n", hull->size());
 		for (int i=0; i<hull->size(); ++i)
 			printf("Point %2i at %.1f/%.1f\n", i, points[(*hull)[i]].get_x(), points[(*hull)[i]].get_y());
+
 	#endif
 }
 
