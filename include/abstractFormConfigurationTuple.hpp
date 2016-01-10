@@ -92,6 +92,16 @@ public:
 	 */
 	void set_number_of_usages(int number);
 
+	/*!
+	 *  Adds a rotataion to all contained AbstractFormConfigurations
+	 */
+	void rotate(float angle);
+
+	/*!
+	 *  Moves this tuple to normalized position, such that the bounding box touches (0,0) and all coordinates are >= 0
+	 */
+	void normalize_position();
+
 	int get_number_of_usages()
 	{return number_of_usages;};
 

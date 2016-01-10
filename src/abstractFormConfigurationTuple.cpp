@@ -68,22 +68,38 @@ AbstractFormConfigurationTuple::AbstractFormConfigurationTuple(vector<AbstractFo
 	number_of_usages = -1;
 }
 
-/*
-void AbstractFormConfigurationTuple::compute_optimal_configuration()
+void AbstractFormConfigurationTuple::rotate(float angle)
 {
-	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
-
-	FormCombiner fc(this);
-	if (!fc.compute_optimal_configuration())
-	{
-		#ifdef DEBUG
-			printf("Computation of optimal configuration failed!\n");
-		#endif
-	}
+	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
+		abstract_form_configs[config_index].rotate(angle);
 }
-*/
+
+void AbstractFormConfigurationTuple::normalize_position()
+{
+	float x_min;
+	float y_min;
+	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
+	{
+		float x_tmp = abstract_form_configs[config_index].get_x();
+		float y_tmp = abstract_form_configs[config_index].get_y();
+		if (config_index == 0)
+		{
+			x_min = x_tmp;
+			y_min = y_tmp;
+		}
+		else
+		{
+			if (x_tmp < x_min)
+				x_min = x_tmp;
+			if (y_tmp < y_min)
+				y_min = y_tmp;
+		}
+	}
+
+	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
+		abstract_form_configs[config_index].move((-1) * x_min, (-1) *y_min);
+
+}
 
 void AbstractFormConfigurationTuple::update_bounding_box()
 {

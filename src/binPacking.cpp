@@ -25,8 +25,6 @@ void BinPacking::create_configuration_tuples()
 		#ifdef DEBUG
 			printf("Created tuple %s\n", simple_tuple.to_string().c_str());
 		#endif
-		
-		GlobalParams::set_option_pre_merge(false);
 
 		// if the current form has bad area utilization iterate through all forms and optimal configuration of each tuple:
 
@@ -44,7 +42,7 @@ void BinPacking::create_configuration_tuples()
 					AbstractFormConfiguration form_config_2(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
 					FormCombiner fc(problem, &form_config_1, &form_config_2);
 
-					all_efficient_form_tuples.push_back(fc.compute_optimal_configuration());
+					all_efficient_form_tuples.push_back(fc.get_optimal_configured_tuple());
 					
 					#ifdef DEBUG
 						printf("Created tuple %s\n", all_efficient_form_tuples[all_efficient_form_tuples.size()-1].to_string().c_str());

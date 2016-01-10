@@ -67,7 +67,7 @@ private:
 	/*!
 	 *  Compute the bounding box in absolute values for a moved and rotated configuration
 	 */
-	void update_bounding_box(AbstractForm *form, float pos_x, float pos_y, float rotation, bool is_initialized);
+	void update_bounding_box(float pos_x, float pos_y, float rotation, bool is_initialized);
 
 public:
 	/*!
@@ -104,6 +104,16 @@ public:
 	 *  form 		the AbstractForm described by this configuration
 	 */
 	AbstractFormConfiguration(AbstractForm *form, int number_of_forms_needed = -1) : AbstractFormConfiguration(form, 0,0,0,false, number_of_forms_needed){};
+
+	/*!
+	 *  Move the position of this configuration
+	 */
+	void move(float dx, float dy);
+
+	/*!
+	 *  Rotates this configuration. Also rotates the movement that has been done so far
+	 */
+	void rotate(float angle);
 
 	/*!
 	 *  Getter for x-position of form
