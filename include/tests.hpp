@@ -119,6 +119,22 @@ private:
      */
     static bool test_non_overlap_triangle();
     
+    /**
+     *  A simple square and trinagle that do not overlap theirselves. The test
+     *  checks whether the function recognizes this.
+     *
+     *  @return true, if the test passes, false if not.
+     */
+    static bool test_abstract_form_overlaps_itself_not();
+    
+    /**
+     *  An hourglass form and a malformed bucket where each is overlapping 
+     *  itself. The test checks whether the function recognizes this.
+     *
+     *  @return true, if the test passes, false if not.
+     */
+    static bool test_abstract_form_overlaps_itself();
+    
 #pragma mark - Validator (Private)
     
     /*!

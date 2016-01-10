@@ -98,7 +98,7 @@ Point* Edge::intersection_with_edge(Edge *other)
     return new Point(x, y);
 }
 
-bool Edge::check_if_crosses(Edge *other)
+bool Edge::crosses(Edge *other)
 {
     Point *intersection = intersection_with_edge(other);
     

@@ -292,6 +292,13 @@ public:
      */
     void move_down_point_at_index(int index);
     
+    /*!
+     *  Determines whether the form overlaps itself, i.e. at least one edge
+     *  of the AbstractForm is crossing another one.
+     *
+     *  @return true if at least one edge of the form crosses another one, false if not.
+     */
+    bool overlaps_itself();
 };
 
 #endif

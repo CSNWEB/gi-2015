@@ -144,8 +144,8 @@ bool Tests::test_crossing_edges()
      *
      *  The test passes if both times the cross is recognized.
      */
-    if (top_left_to_bottom_right.check_if_crosses(&top_right_to_bottom_left) &&
-        top_right_to_bottom_left.check_if_crosses(&top_left_to_bottom_right))
+    if (top_left_to_bottom_right.crosses(&top_right_to_bottom_left) &&
+        top_right_to_bottom_left.crosses(&top_left_to_bottom_right))
     {
         return true;
     }
@@ -176,8 +176,8 @@ bool Tests::test_parallel_edges()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right.check_if_crosses(&bottom_left_to_bottom_right) &&
-        !bottom_left_to_bottom_right.check_if_crosses(&top_left_to_top_right))
+    if (!top_left_to_top_right.crosses(&bottom_left_to_bottom_right) &&
+        !bottom_left_to_bottom_right.crosses(&top_left_to_top_right))
     {
         return true;
     }
@@ -208,8 +208,8 @@ bool Tests::test_edges_same_points()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right_1.check_if_crosses(&top_left_to_top_right_2) &&
-        !top_left_to_top_right_2.check_if_crosses(&top_left_to_top_right_1))
+    if (!top_left_to_top_right_1.crosses(&top_left_to_top_right_2) &&
+        !top_left_to_top_right_2.crosses(&top_left_to_top_right_1))
     {
         return true;
     }
@@ -239,8 +239,8 @@ bool Tests::test_meeting_edges()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right.check_if_crosses(&bottom_left_to_top_left) &&
-        !bottom_left_to_top_left.check_if_crosses(&top_left_to_top_right))
+    if (!top_left_to_top_right.crosses(&bottom_left_to_top_left) &&
+        !bottom_left_to_top_left.crosses(&top_left_to_top_right))
     {
         return true;
     }
@@ -600,6 +600,68 @@ bool Tests::test_non_overlap_triangle()
 }
 
 /**
+ *  A simple square and trinagle that do not overlap theirselves. The test 
+ *  checks whether the function recognizes this.
+ *
+ *  @return true, if the test passes, false if not.
+ */
+bool Tests::test_abstract_form_overlaps_itself_not()
+{
+    // A square of length one. One corner is at the origin.
+    std::vector<Point> square_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm square = AbstractForm("square", square_points);
+    
+    // A triangle pointing to the right
+    std::vector<Point> triangle_right_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(0.5, 0.5),
+    };
+    
+    AbstractForm triangle = AbstractForm("triangle", triangle_right_points);
+    
+    return !square.overlaps_itself() && ! triangle.overlaps_itself();
+}
+
+/**
+ *  An hourglass form and a malformed bucket where each is overlapping itself. 
+ *  The test checks whether the function recognizes this.
+ *
+ *  @return true, if the test passes, false if not.
+ */
+bool Tests::test_abstract_form_overlaps_itself()
+{
+    // An hourglass form. One corner is at the origin.
+    std::vector<Point> hourglass_points {
+        Point(0.0, 0.0),
+        Point(1.0, 1.0),
+        Point(0.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm hourglass = AbstractForm("square", hourglass_points);
+    
+    // A malformed bucket
+    std::vector<Point> bucket_points {
+        Point(1.0, 0.0),
+        Point(1.0, 4.0),
+        Point(2.0, 4.0),
+        Point(0.0, 2.0),
+        Point(2.0, 0.0),
+    };
+    
+    AbstractForm bucket = AbstractForm("bucket", bucket_points);
+    
+    return hourglass.overlaps_itself() && bucket.overlaps_itself();
+}
+
+/**
  *  Tests whether methods dealing with edge crosses work as intended.
  *
  *  @return True, if all tests are successful, false if at least one test fails.
@@ -698,8 +760,34 @@ bool Tests::test_form_overlap()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
+    
+    // Square not overlapping itself
+    
+    std::cout << "Testing abstractforms not overlapping themselves: ";
+    if (test_abstract_form_overlaps_itself_not())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Hourglass overlapping itself
+    
+    std::cout << "Testing abstractforms overlapping themselves: ";
+    if (test_abstract_form_overlaps_itself())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
 
-    std::cout << "All edge tests: [SUCCEEDED]" << std::endl;
+    std::cout << "All overlap tests: [SUCCEEDED]" << std::endl;
     return true;
 }
 
