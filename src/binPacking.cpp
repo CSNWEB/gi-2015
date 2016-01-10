@@ -25,10 +25,10 @@ void BinPacking::create_configuration_tuples()
 		#ifdef DEBUG
 			printf("Created tuple %s\n", simple_tuple.to_string().c_str());
 		#endif
+		
+		GlobalParams::set_option_pre_merge(false);
 
 		// if the current form has bad area utilization iterate through all forms and optimal configuration of each tuple:
-
-		GlobalParams::set_option_pre_merge(false);
 
 		//if (simple_tuple.get_utilization() < (1.0 - GlobalParams::get_tolerance()))
 		if (GlobalParams::do_pre_merge_merge())
