@@ -11,6 +11,11 @@ bool Tests::test_everything()
 {
     std::cout << "Testing everthing:" << std::endl;
 
+    if (!test_points())
+    {
+        return false;
+    }
+
     if (!test_edge_cross())
     {
         return false;
@@ -37,6 +42,82 @@ bool Tests::test_everything()
     }
     
     std::cout << "All tests: [SUCCEEDED]" << std::endl;
+    return true;
+}
+
+#pragma mark - Points
+
+bool Tests::test_is_left_of()
+{
+    bool success_all_tests = true;
+    Point point_line_1 = Point(0, 0);
+    Point point_line_2 = Point(2, 0);
+
+    Point point_left = Point(1,1);
+    Point point_right = Point(1,-1);
+
+    Point point_left_b = Point(0,1);
+    Point point_right_b = Point(0,-1);
+
+    Point point_left_c = Point(2,1);
+    Point point_right_c = Point(2,-1);
+
+    if (!(point_left.is_left_of(&point_line_1, &point_line_2) > 0))
+    {
+        std::cout << "[FAILED] on case 1";
+        success_all_tests =  false;
+    }
+
+    if (!(point_right.is_left_of(&point_line_1, &point_line_2) < 0))
+    {
+        std::cout << "[FAILED] on case 2";
+        success_all_tests =  false;
+    }
+
+    if (!(point_left_b.is_left_of(&point_line_1, &point_line_2) > 0))
+    {
+        std::cout << "[FAILED] on case 3";
+        success_all_tests =  false;
+    }
+
+    if (!(point_right_b.is_left_of(&point_line_1, &point_line_2) < 0))
+    {
+        std::cout << "[FAILED] on case 4";
+        success_all_tests =  false;
+    }
+
+    if (!(point_left_c.is_left_of(&point_line_1, &point_line_2) > 0))
+    {
+        std::cout << "[FAILED] on case 5";
+        success_all_tests =  false;
+    }
+
+    if (!(point_right_c.is_left_of(&point_line_1, &point_line_2) < 0))
+    {
+        std::cout << "[FAILED] on case 6";
+        success_all_tests =  false;
+    }
+
+    return success_all_tests;
+}
+
+bool Tests::test_points()
+{
+    std::cout << "Testing points: " << std::endl;
+
+    // Crossing edges
+
+    std::cout << "Testing is-left-of: ";
+    if (test_is_left_of())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
     return true;
 }
 
@@ -1371,13 +1452,7 @@ bool Tests::test_sort_points_by_x_dimension_correct()
         Point(4,2)
     };
 
-    vector<int> res_1{
-        0,1,2,3
-    };
-
-    PointComparator pc_1(&points_1);
-
-    std::sort(res_1.begin(), res_1.end(), pc_1);
+    vector<int> res_1 = PointSetAlgorithms::sort_points_by_dim_x(&points_1);
 
     if(!(
         res_1[0] == 0 &&
@@ -1385,16 +1460,25 @@ bool Tests::test_sort_points_by_x_dimension_correct()
         res_1[2] == 2 &&
         res_1[3] == 3 
         ) == true)
+    {
         success_all_tests = false;
+        printf("[FAILED] in case 1\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_1[i]);
+        #endif
+    }
 
     // Case 2: reverse sorted
-    vector<int> res_2{
-        3,2,1,0
+    vector<Point> points_2{
+        Point(4,2),
+        Point(3,2),
+        Point(2,1),
+        Point(1,2)
     };
 
-    PointComparator pc_2(&points_1);
-
-    std::sort(res_2.begin(), res_2.end(), pc_2);
+    vector<int> res_2 = PointSetAlgorithms::sort_points_by_dim_x(&points_2);
 
     if(!(
         res_2[0] == 3 &&
@@ -1402,23 +1486,25 @@ bool Tests::test_sort_points_by_x_dimension_correct()
         res_2[2] == 1 &&
         res_2[3] == 0 
         ) == true)
+    {
         success_all_tests = false;
+        printf("[FAILED] in case 2\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_2[i]);
+        #endif
+    }
 
     // Case 3: sorted, but with all x equal:
     vector<Point> points_3{
-        Point(1,4),
-        Point(1,3),
+        Point(1,1),
         Point(1,2),
-        Point(1,1)
+        Point(1,3),
+        Point(1,4)
     };
 
-    vector<int> res_3{
-        0,1,2,3
-    };
-
-    PointComparator pc_3(&points_3);
-
-    std::sort(res_3.begin(), res_3.end(), pc_3);
+    vector<int> res_3 = PointSetAlgorithms::sort_points_by_dim_x(&points_3);
 
     if(!(
         res_3[0] == 0 &&
@@ -1426,41 +1512,257 @@ bool Tests::test_sort_points_by_x_dimension_correct()
         res_3[2] == 2 &&
         res_3[3] == 3 
         ) == true)
+    {
         success_all_tests = false;
+        printf("[FAILED] in case 3\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_3[i]);
+        #endif
+    }
 
     // Case 4: unsorted
     vector<Point> points_4{
-        Point(1,5),  // 0
-        Point(5,4),  // 7
+        Point(1,5),  // 1
+        Point(5,4),  // 8
         Point(3,1),  // 5
-        Point(1,1),  // 1
-        Point(5,2),  // 8
+        Point(1,1),  // 3
+        Point(5,2),  // 7
         Point(2,2),  // 3
-        Point(2,1),  // 4
-        Point(2,3),  // 2
+        Point(2,1),  // 2
+        Point(2,3),  // 4
         Point(4,1)   // 6
     };
 
-    vector<int> res_4{
-        0,1,2,3,4,5,6,7,8
-    };
-
-    PointComparator pc_4(&points_4);
-
-    std::sort(res_4.begin(), res_4.end(), pc_4);
+    vector<int> res_4 = PointSetAlgorithms::sort_points_by_dim_x(&points_4);
 
     if(!(
-        res_4[0] == 0 &&
-        res_4[1] == 3 &&
-        res_4[2] == 7 &&
+        res_4[0] == 3 &&
+        res_4[1] == 0 &&
+        res_4[2] == 6 &&
         res_4[3] == 5 && 
-        res_4[4] == 6 &&
+        res_4[4] == 7 &&
         res_4[5] == 2 &&
         res_4[6] == 8 &&
-        res_4[7] == 1 &&
-        res_4[8] == 4
+        res_4[7] == 4 &&
+        res_4[8] == 1
         ) == true)
+    {
         success_all_tests = false;
+        printf("[FAILED] in case 4\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<9; ++i)
+                printf("\t%i\n", res_4[i]);
+        #endif
+    }
+
+    // case 5: identical points:
+    vector<Point> points_5{
+        Point(2,1),
+        Point(3,2),
+        Point(2,1),
+        Point(1,1)
+    };
+
+    vector<int> res_5{
+        0,1,2,3
+    };
+
+    PointComparator pc_5(&points_5);
+
+    std::sort(res_5.begin(), res_5.end(), pc_5);
+
+    if(!(
+        res_5[0] == 3 &&
+        (
+            (res_5[1] == 0 && res_5[2] == 2) ||
+            (res_5[1] == 2 && res_5[2] == 0)) &&
+        res_5[3] == 1
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 5\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_5[i]);
+        #endif
+    }
+
+    return success_all_tests;
+}
+
+bool Tests::test_compute_convex_hull_correct()
+{
+    bool success_all_tests = true;
+
+    // case 1: simple form 3 points
+    vector<Point> points_1{
+        Point(0,0),
+        Point(1,1),
+        Point(1,0)
+    };
+
+    vector<int> convex_hull_1 = PointSetAlgorithms::compute_convex_hull(&points_1);
+
+    if(!(
+        convex_hull_1[0] == 0 &&
+        convex_hull_1[1] == 1 &&
+        convex_hull_1[2] == 2 &&
+        convex_hull_1[3] == 0 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 1\n");
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", convex_hull_1[i]);
+        #endif
+    }
+
+    // case 2: simple form 3 points
+    vector<Point> points_2{
+        Point(0,0),
+        Point(1,-1),
+        Point(1,1)
+    };
+
+    vector<int> convex_hull_2 = PointSetAlgorithms::compute_convex_hull(&points_2);
+
+    if(!(
+        convex_hull_2[0] == 0 &&
+        convex_hull_2[1] == 1 &&
+        convex_hull_2[2] == 2 &&
+        convex_hull_2[3] == 0 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 2\n");
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", convex_hull_2[i]);
+        #endif
+    }
+
+    // case 3: simple form 4 points
+    vector<Point> points_3{
+        Point(0,0),
+        Point(1,0),
+        Point(1,1),
+        Point(0,1)
+    };
+
+    vector<int> convex_hull_3 = PointSetAlgorithms::compute_convex_hull(&points_3);
+
+    if(!(
+        convex_hull_3[0] == 0 &&
+        convex_hull_3[1] == 1 &&
+        convex_hull_3[2] == 2 &&
+        convex_hull_3[3] == 3 &&
+        convex_hull_3[4] == 0
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 3\n");
+        #ifdef DEBUG
+            for (int i=0; i<5; ++i)
+                printf("\t%i\n", convex_hull_3[i]);
+        #endif
+    }
+
+    // case 4: l-shaped form 6 points
+    vector<Point> points_4{
+        Point(0,0),
+        Point(3,0),
+        Point(3,1),
+        Point(1,1),
+        Point(1,3),
+        Point(0,3)
+    };
+
+    vector<int> convex_hull_4 = PointSetAlgorithms::compute_convex_hull(&points_4);
+
+    if(!(
+        convex_hull_4[0] == 0 &&
+        convex_hull_4[1] == 1 &&
+        convex_hull_4[2] == 2 &&
+        convex_hull_4[3] == 4 &&
+        convex_hull_4[4] == 5 &&
+        convex_hull_4[5] == 0
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 4\n");
+        #ifdef DEBUG
+            for (int i=0; i<6; ++i)
+                printf("\t%i\n", convex_hull_4[i]);
+        #endif
+    }
+    
+    // case 5: star-shaped form 8 points
+    vector<Point> points_5{
+        Point(1,1),
+        Point(3,0),
+        Point(1,-1),
+        Point(0,-3),
+        Point(-1,-1),
+        Point(-3,0),
+        Point(-1,1),
+        Point(0, 3)
+    };
+
+    vector<int> convex_hull_5 = PointSetAlgorithms::compute_convex_hull(&points_5);
+
+    if(!(
+        convex_hull_5[0] == 5 &&
+        convex_hull_5[1] == 7 &&
+        convex_hull_5[2] == 1 &&
+        convex_hull_5[3] == 3 &&
+        convex_hull_5[4] == 5
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 5\n");
+        #ifdef DEBUG
+            for (int i=0; i<5; ++i)
+                printf("\t%i\n", convex_hull_5[i]);
+        #endif
+    }
+
+    // case 6: eight-shaped form 8 points
+    vector<Point> points_6{
+        Point(0, 0),
+        Point(1, 0),
+        Point(1, 1),
+        Point(2, 1),
+        Point(2, 2),
+        Point(1, 2),
+        Point(1, 1),
+        Point(0, 1)
+    };
+
+    vector<int> convex_hull_6 = PointSetAlgorithms::compute_convex_hull(&points_6);
+
+    if(!(
+        convex_hull_6[0] == 0 &&
+        convex_hull_6[1] == 1 &&
+        convex_hull_6[2] == 3 &&
+        convex_hull_6[3] == 4 &&
+        convex_hull_6[4] == 5 &&
+        convex_hull_6[5] == 7 &&
+        convex_hull_6[6] == 0 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 6\n");
+        #ifdef DEBUG
+            for (int i=0; i<7; ++i)
+                printf("\t%i\n", convex_hull_6[i]);
+        #endif
+    }
+    return success_all_tests;
 }
 
 bool Tests::test_point_set_algo()
@@ -1469,6 +1771,17 @@ bool Tests::test_point_set_algo()
     
     std::cout << "Testing sort points by x dimension: ";
     if (test_sort_points_by_x_dimension_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
+    std::cout << "Testing compute convex hull: ";
+    if (test_compute_convex_hull_correct())
     {
         std::cout << "[SUCCEEDED]" << std::endl;
     }

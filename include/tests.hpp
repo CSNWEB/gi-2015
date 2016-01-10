@@ -21,6 +21,14 @@
 class Tests
 {
 private:
+
+#pragma mark - Points (Private)
+    /*!
+     *  Tests whether the function correctly decides is_left_of
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_is_left_of();
     
 #pragma mark - Edges (Private)
     
@@ -178,6 +186,13 @@ private:
      *  @return True if the test passes, false if not.
      */
     static bool test_sort_points_by_x_dimension_correct();
+
+    /*!
+     *  Given a set of points that define a form, test if PointSetAlgorithms computes the correct convex hull
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_compute_convex_hull_correct();
     
 public:
     
@@ -190,6 +205,15 @@ public:
      */
     static bool test_everything();
     
+#pragma mark - Points
+
+    /*!
+     *  Tests whether methods dealing with point positions work as intended.
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_points();
+
 #pragma mark - Edges
     
     /*!

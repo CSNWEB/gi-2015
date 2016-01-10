@@ -39,8 +39,19 @@ struct PointComparator
 
 class PointSetAlgorithms
 {
+private:
+    /*!
+     *  For a set of points, check if there a multiple points describing the same (x/y)-coordinates. This is a necessary pre-computing step for computing the convex hull, because the algorithm cannot deal with points not in general position. Creates an int-vector with indices of points, where each (x/y)-point is contained exactly once.
+     *
+     *  @param points 		A pointer to a vector of Point, for which the index-vector should be unified.
+     *  @param indices 		A sorted vector of ints that containes all indices of points in the vector points.
+     *
+     *  @return 			True, if points have been deleted. False otherwise.
+     */
+    static bool unique_indicies_of_points(vector<Point> *points, vector<int> *indices);
 
 public:
+
 	/*!
 	 *  Sort the points of a given set by their position on x-dimension
 	 *
