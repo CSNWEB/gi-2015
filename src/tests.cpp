@@ -26,6 +26,11 @@ bool Tests::test_everything()
         return false;
     }
 
+    if (!test_form_movement())
+    {
+        return false;
+    }
+
     if (!test_validator())
     {
         return false;
@@ -661,6 +666,71 @@ bool Tests::test_abstract_form_overlaps_itself()
     return hourglass.overlaps_itself() && bucket.overlaps_itself();
 }
 
+bool Tests::test_form_rotation()
+{
+    bool success_all_tests = true;
+
+    // init forms:
+    // simple square
+    vector<Point> points_square{
+        Point(0,0),
+        Point(1,0),
+        Point(1,1),
+        Point(0,1)
+    };
+
+    AbstractForm abst_square("Form1", points_square);
+
+    // case 1: rotate by 90 degrees at (0/0)
+    Form form_square_1(&abst_square);
+    form_square_1.rotate(0,0,90);
+
+    //form_square_1._d_print_points_to_console();
+    if (!(
+        abs(form_square_1.get_point_at(0)->get_x() - 0)   < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(0)->get_y() - 0)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(1)->get_x() - 0)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(1)->get_y() - 1)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(2)->get_x() - (-1)) < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(2)->get_y() - 1)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(3)->get_x() - (-1)) < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(3)->get_y() - 0)    < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 2: rotate by 90 degrees at (1/1)
+    Form form_square_2(&abst_square);
+    form_square_2.rotate(1,1,90);
+    if (!(
+        abs(form_square_2.get_point_at(0)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(1)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(2)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(3)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(3)->get_y() - 0) < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 3: rotate by 90 degrees at (2/0)
+    Form form_square_3(&abst_square);
+    form_square_3.rotate(2,0,90);
+    if (!(
+        abs(form_square_3.get_point_at(0)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(0)->get_y() + 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(1)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(1)->get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(3)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(3)->get_y() + 2) < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    return success_all_tests;
+}
+
 /**
  *  Tests whether methods dealing with edge crosses work as intended.
  *
@@ -789,6 +859,28 @@ bool Tests::test_form_overlap()
 
     std::cout << "All overlap tests: [SUCCEEDED]" << std::endl;
     return true;
+}
+
+bool Tests::test_form_movement()
+{
+    std::cout << "Testing form movement: " << std::endl;
+
+    // Disjoint forms
+
+    std::cout << "Testing forms rotation: ";
+    if (test_form_rotation())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
+    std::cout << "All form movement tests: [SUCCEEDED]" << std::endl;
+    return true;
+
 }
 
 #pragma mark - Validator
@@ -1523,6 +1615,7 @@ bool Tests::test_bin_packing()
         std::cout << "[FAILED]" << std::endl;
     }
 
+    std::cout << "All bin packing tests: [SUCCEEDED]" << std::endl;
     return success;
 }
 
@@ -1878,5 +1971,8 @@ bool Tests::test_point_set_algo()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
+
+    std::cout << "All point set algo tests: [SUCCEEDED]" << std::endl;
+    return true;
 
 }

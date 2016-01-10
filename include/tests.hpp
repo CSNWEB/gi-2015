@@ -134,6 +134,11 @@ private:
      *  @return true, if the test passes, false if not.
      */
     static bool test_abstract_form_overlaps_itself();
+
+    /**
+     *  Test if form rotation works as intenden
+     */
+    static bool test_form_rotation();
     
 #pragma mark - Validator (Private)
     
@@ -247,6 +252,13 @@ public:
      *  @return True, if all tests are successful, false if at least one test fails.
      */
     static bool test_form_overlap();
+
+    /*!
+     *  Tests whether methods dealing with form movement work as intenden.
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_form_movement();
     
 #pragma mark - Validator
     
