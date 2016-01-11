@@ -275,3 +275,8 @@ int BinPacking::get_number_of_missing_forms()
 	else
 		return problem->get_total_number_of_all_forms();
 }
+
+Setting BinPacking::get_current_setting()
+{
+    return setting;
+}

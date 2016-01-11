@@ -4,6 +4,9 @@
 #include <QGraphicsSvgItem>
 #include <qmath.h>
 #include <QTextStream>
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 #ifndef QT_NO_OPENGL
 #include <QGLWidget>
@@ -110,5 +113,114 @@ void FormView::showForm(AbstractForm * form)
     //s->setSceneRect(m_outlineItem->boundingRect().adjusted(-1, -1, 1, 1));
 }
 
+void FormView::showSetting(Setting *setting)
+{
+    QGraphicsScene *s = scene();
+
+    s->clear();
+    resetTransform();
 
 
+    int scale_fac = 10;
+    int spacing = 20;
+    int planeWidth = setting->get_problem()->get_plane_width()*scale_fac;
+    int planeHeight = setting->get_problem()->get_plane_height()*scale_fac;
+    QRectF bound;
+    for (int i=0; i<setting->get_number_of_planes(); ++i)
+    {
+        int x_offset = i*(planeWidth+spacing)+(spacing/2);
+        int y_offset = (spacing/2);
+        QRectF plane(x_offset,y_offset,planeWidth, planeHeight);
+        s->addRect(plane,QPen(), QBrush(QColor(188, 198, 204),Qt::SolidPattern));
+        for (int j=0; j<setting->get_plane_at(i)->get_number_of_forms(); ++j)
+        {
+            QPolygonF polygon;
+            vector<Point> points_of_current_form = (setting->get_plane_at(i))->get_form_at(j)->get_points();
+            for (int k=0; k<points_of_current_form.size(); ++k){
+                Point point = points_of_current_form[k];
+                polygon.push_back(QPointF(point.get_x()*scale_fac, point.get_y()*scale_fac));
+            }
+
+            QGraphicsPolygonItem * polyitem = s->addPolygon(polygon, QPen(), QBrush(Qt::SolidPattern));
+            polyitem->setPos(x_offset, y_offset);
+            bound = polygon.boundingRect();
+        }
+    }
+
+
+    float realwidth = container->width() - 50;
+    float width = setting->get_number_of_planes()*(planeWidth+spacing);
+    float realheight = container->height() - 50;
+    float height = planeHeight+spacing;
+    s->setSceneRect(0,0,width,height);
+    //QRectF rect = s->sceneRect();
+    //s->setSceneRect(0,0,100,100);
+
+    /*float realwidth = container->width() - 50;
+    float width = bound.width();
+    float realheight = container->height() - 50;
+    float height = bound.height();*/
+
+    float relw = 1;
+    if(width > 0){
+        relw =  realwidth / width;
+    }
+
+    float relh = 1;
+    if(height > 0){
+        relh = realheight / height;
+    }
+
+    float rel = relw;
+    if(relh < relw){
+        rel = relh;
+    }
+
+    scale(rel,rel);
+
+}
+
+
+
+/*
+for (int i=0; i<planes; ++i)
+{
+    #ifdef DEBUG
+        printf("\tPaint plane %i\n",i+1);
+    #endif
+
+    Plane *p = setting->get_plane_at(i);
+    doc << svg::Rectangle(svg::Point(i*(planeWidth+spacing)+(spacing/2), (spacing/2)), planeWidth, planeHeight, svg::Color(255,255,200));
+
+    for (int j=0; j<p->get_number_of_forms(); ++j)
+    {
+        Form *f = p->get_form_at(j);
+
+        #ifdef DEBUG
+            printf("\tPaint form %i\n",j+1);
+            printf("\t\tThe size of the form is: %f\n", f->get_mother()->get_size_of_area());
+        #endif
+
+        if (with_covex_hull)
+            f->print_convex_hull_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
+        f->print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
+
+    }
+    #ifdef DEBUG
+        printf("\n");
+    #endif
+}
+*/
+
+
+void FormView::wheelEvent(QWheelEvent *event)
+{
+    qreal factor = qPow(1.2, event->delta() / 240.0);
+    scale(factor, factor);
+    event->accept();
+}
+
+void FormView::paintEvent(QPaintEvent *event)
+{
+        QGraphicsView::paintEvent(event);
+}

@@ -8,6 +8,8 @@
 #include <QDir>
 #include <QtWidgets>
 #include <QTextStream>
+#include <QtConcurrent/QtConcurrentRun>
+#include <QTimer>
 
 #include <svgview.h>
 #include <formview.h>
@@ -20,25 +22,36 @@
 #include "binPacking.hpp"
 #include "manageformdialog.h"
 #include "managepointsdialog.h"
+#include "globalParams.hpp"
+
+
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     m_view(new SvgView),
     m_formview(new FormView),
-    pm(new ProblemManager())
+    m_resultview(new FormView),
+    pm(new ProblemManager()),
+    bin_packing(0)
 {
     ui->setupUi(this);
 
     pm->setLists(ui->absFormList,ui->pointList);
-    ui->svgContainer->addWidget(m_view);
-    m_view->setContainer(ui->svgContainer_2);
+    /*ui->svgContainer->addWidget(m_view);
+    m_view->setContainer(ui->svgContainer_2);*/
+
+    ui->svgContainer->addWidget(m_resultview);
+    m_resultview->setContainer(ui->svgContainer_2);
 
     ui->formViewer->addWidget(m_formview);
     m_formview->setContainer(ui->formViewerWidget);
-    m_formview->showForm();
+    //m_formview->showForm();
    //QFile file("/Users/Christoph/Code/gi-2015/out.svg");
    //m_view->openFile(file);
+
+    ui->toleranceSpinBox->setValue(GlobalParams::get_tolerance_digits());
 
 }
 
@@ -47,11 +60,52 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::updateResultView(){
+    if(bin_packing.next_step_of_algorithm()){
+        setting = bin_packing.get_current_setting();
+        m_resultview->showSetting(&setting);
+        QTimer::singleShot(ceil(ui->delaySpinBox->value()*1000), this, SLOT(updateResultView()));
+    }
+}
+
+
+void MainWindow::stepByStep(BinPacking bin_packing, string output_filename_svg, Problem* problem)
+{
+   int i = 0;
+    while(bin_packing.next_step_of_algorithm()){
+        setting = bin_packing.get_current_setting();
+        OutputHandler oh(problem, &setting);
+        //oh.write_setting_to_svg(output_filename_svg, true);
+        //QFile file(QString::fromStdString(output_filename_svg));
+        //m_view->openFile(file);
+
+        m_resultview->showSetting(&setting);
+        qDebug("Step");
+        ++i;
+        QThread::msleep(500);
+    }
+    setting = bin_packing.get_current_setting();
+    qDebug("Done");
+
+    /*QFile file;
+
+    while(bin_packing.next_step_of_algorithm()){
+        setting = bin_packing.get_current_setting();
+        file.setFileName(QString::fromStdString(output_filename_svg));
+        OutputHandler oh(problem, &setting);
+        oh.write_setting_to_svg(output_filename_svg, true);
+
+        qDebug("Step");
+        sleep(ceil(ui->delaySpinBox->value()));
+    }
+    OutputHandler oh(problem, &setting);
+    oh.write_setting_to_svg(output_filename_svg, true);
+    m_view->openFile(file);*/
+}
 
 void MainWindow::on_solveButton_clicked()
 {
-    std::string output_filename_txt;
-    std::string output_filename_svg;
+
 
     if(!QDir("tmp").exists()){
         QDir().mkdir("tmp");
@@ -59,7 +113,7 @@ void MainWindow::on_solveButton_clicked()
 
     QString tmp = QString("tmp") + QDir::separator() + "out.svg";
 
-    output_filename_svg = tmp.toUtf8().data();
+    string output_filename_svg = tmp.toUtf8().data();
 
 
 
@@ -69,17 +123,18 @@ void MainWindow::on_solveButton_clicked()
         QMessageBox::warning(this, tr("Warning"), tr("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!"));
     else
     {
-        BinPacking bin_packing(problem);
+        bin_packing = BinPacking(problem);
 
-        setting = bin_packing.get_packed_setting();
-        OutputHandler oh(problem, &setting);
-        oh.write_setting_to_svg(output_filename_svg, true);
+        if(ui->showCaseCheckBox->isChecked()){
 
+            //QtConcurrent::run(ui->tabWidget, &QTabWidget::setCurrentIndex, 2);
+            //QtConcurrent::run(this, &MainWindow::stepByStep, bin_packing, output_filename_svg, problem);
+             QTimer::singleShot(0, this, SLOT(updateResultView()));
+        }else{
+            setting = bin_packing.get_packed_setting();
+            m_resultview->showSetting(&setting);
+        }
         ui->tabWidget->setCurrentIndex(2);
-
-        //Open file and show result
-        QFile file(QString::fromStdString(output_filename_svg));
-        m_view->openFile(file);
         ui->saveContainer->setEnabled(true);
     }
 }
@@ -277,4 +332,24 @@ void MainWindow::on_pushButton_2_clicked()
 
 
     }
+}
+
+
+void MainWindow::on_toleranceSpinBox_valueChanged(int arg1)
+{
+    GlobalParams::set_significant_digits(arg1);
+}
+
+void MainWindow::on_showCaseCheckBox_clicked(bool checked)
+{
+    if(checked){
+        ui->showCaseGroup->setEnabled(true);
+    }else{
+        ui->showCaseGroup->setEnabled(false);
+    }
+}
+
+void MainWindow::on_solveButton_clicked(bool checked)
+{
+    //ui->tabWidget->setCurrentIndex(2);
 }

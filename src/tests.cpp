@@ -234,12 +234,7 @@ bool Tests::test_edge_cross()
 bool Tests::test_overlap_disjoint()
 {
     // A square of length one. One corner is at the origin.
-    std::vector<Point> square_points {
-        Point(0.0, 0.0),
-        Point(0.0, 1.0),
-        Point(1.0, 1.0),
-        Point(1.0, 0.0)
-    };
+    std::vector<Point> square_points = { Point(0.0, 0.0), Point(0.0, 1.0), Point(1.0, 1.0), Point(1.0, 0.0) };
 
     AbstractForm square = AbstractForm("square", square_points);
 

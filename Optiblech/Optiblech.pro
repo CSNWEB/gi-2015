@@ -34,7 +34,11 @@ SOURCES += main.cpp\
     problemmanager.cpp \
     manageformdialog.cpp \
     managepointsdialog.cpp \
-    formview.cpp
+    formview.cpp \
+    ../src/abstractFormConfiguration.cpp \
+    ../src/formCombiner.cpp \
+    ../src/globalParams.cpp \
+    ../src/validator.cpp
 
 HEADERS  += mainwindow.h \
     svgview.h \
