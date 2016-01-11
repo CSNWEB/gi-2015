@@ -19,15 +19,14 @@ void BinPacking::create_configuration_tuples()
 	AbstractFormConfiguration form_config_1;
 	AbstractFormConfiguration form_config_2;
 
-	FormCombiner fc;
+	// FormCombiner fc;
 
-	AbstractFormConfigurationTuple new_tuple;
+	// new_tuple;
 
 	for (int index_form_1 = 0; index_form_1 < problem->get_number_of_different_forms(); ++index_form_1)
 	{
 		form_config_1 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
-		AbstractFormConfigurationTuple simple_tuple(form_config_1);
-		all_single_form_tuples.push_back(simple_tuple);
+		all_single_form_tuples.push_back(AbstractFormConfigurationTuple(form_config_1));
 
 		#ifdef DEBUG
 			printf("Created tuple %s\n", simple_tuple.to_string().c_str());
@@ -40,36 +39,40 @@ void BinPacking::create_configuration_tuples()
 		{	
 			for (int index_form_2 = index_form_1; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
 			{
-				//#ifdef DEBUG
+				#ifdef DEBUG
 					printf("Next configuration: %i-%i\n", index_form_1, index_form_2);
 					printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
-				//#endif
-
-				printf("number of forms for form %i: ", index_form_1);
-				printf("%i\n", problem->get_number_of_form_needed(index_form_1));
+				#endif
 
 				if (index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1)
 				{
-					printf("\tBegin\n");
+					//printf("\tBegin\n");
 					form_config_2 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
 
-					printf("\tform_config_2 created\n");
+					//printf("\tform_config_2 created\n");
 
-					fc = FormCombiner(problem, &form_config_1, &form_config_2);
+					FormCombiner fc(problem, &form_config_1, &form_config_2);
 
-					printf("\tFormCombiner initialized\n");
+					//printf("\tFormCombiner initialized\n");
 
-					new_tuple = fc.get_optimal_configured_tuple();
+					AbstractFormConfigurationTuple new_tuple = fc.get_optimal_configured_tuple();
 
-					printf("Created new tuple %s\n", new_tuple.to_string().c_str());
+					//printf("Created new tuple %s\n", new_tuple.to_string().c_str());
 
 					if (new_tuple.get_number_of_forms() > 1)
 					{
 						all_efficient_form_tuples.push_back(new_tuple);
-						printf("Added new tuple to all_efficient_form_tuples\n");
+	
+						#ifdef DEBUG
+							printf("Added new tuple to all_efficient_form_tuples\n");
+						#endif						
 					}
 					else
-						printf("Tuple was not added to all_efficient_form_tuples\n");
+					{
+						#ifdef DEBUG
+							printf("Tuple was not added to all_efficient_form_tuples\n");
+						#endif
+					}
 				}
 				//printf("Finished setting %i-%i\n",index_form_1, index_form_2);
 			}
@@ -99,6 +102,10 @@ void BinPacking::create_all_tuples_to_use()
 
 	// after sorting, append single-form-tuples at the end:
 	all_efficient_form_tuples.insert(all_efficient_form_tuples.end(), all_single_form_tuples.begin(), all_single_form_tuples.end());
+
+	// delete all_single_form_tuples:
+	all_single_form_tuples.clear();
+	all_single_form_tuples.shrink_to_fit();
 
 	#ifdef DEBUG
 		printf("all efficient tuples sorted:\n");

@@ -95,8 +95,9 @@ void AbstractFormConfigurationTuple::normalize_position()
 				y_min = y_tmp;
 		}
 	}
-
-	printf("normalize_position:\n\tmin x = %.2f\n\tmin y = %.2f\n", x_min, y_min);
+	#ifdef DEBUG
+		printf("normalize_position:\n\tmin x = %.2f\n\tmin y = %.2f\n", x_min, y_min);
+	#endif
 
 	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
 		abstract_form_configs[config_index].move((-1) * x_min, (-1) *y_min);

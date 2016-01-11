@@ -1,12 +1,10 @@
 #include "formCombiner.hpp"
 
-#define DEBUG
-
 FormCombiner::FormCombiner(Problem *p, AbstractFormConfiguration *form_config_1, AbstractFormConfiguration *form_config_2)
 {
-	//#ifdef DEBUG
+	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
-	//#endif
+	#endif
 
 	this->problem       = p;
 	this->form_config_1 = form_config_1;
@@ -186,14 +184,12 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	vector<Point>::iterator insert_point_2 = allpoints.begin() + index_of_point_1 + index_of_point_2;
 	allpoints.insert(insert_point_2, begin_of_f2_points, begin_of_f2_hull);
 
-	//#ifdef DEBUG
+	#ifdef DEBUG
 		printf("allpoints initialized\n");
 
 		for (int i=0; i<allpoints.size(); ++i)
 			printf("Point %i: (%.2f/%.2f)\n", i, allpoints[i].get_x(), allpoints[i].get_y());
-	//#endif
-
-	printf("\nBLA\n\n");
+	#endif
 
 	// compute convex hull
 	PointSetAlgorithms::compute_convex_hull(allpoints, hull_of_tuple);
@@ -399,11 +395,11 @@ void FormCombiner::compute_optimal_configuration()
 				
 				compute_config_form_2(point_2, true);
 
-				//#ifdef DEBUG
+				#ifdef DEBUG
 					printf("Consider mirrored configuration:\n\tForm 1: point %i\n\tForm 2: point %i\n", point_1, point_2);
 					f1._d_print_points_to_console();
 					f2_m._d_print_points_to_console();
-				//#endif
+				#endif
 
 				// check if f1 and f2_m overlap
 				// if no:
@@ -414,22 +410,22 @@ void FormCombiner::compute_optimal_configuration()
 				// get new bounding box, check if minimal:
 				if (!f1.check_for_overlap(&f2_m))
 				{
-					//#ifdef DEBUG
+					#ifdef DEBUG
 						printf("Forms do not overlap:\n\tConfiguration okay\n");
-					//#endif
+					#endif
 
 					compute_optimal_rotation_and_area_for_tuple_config(point_1, point_2);
-					//#ifdef DEBUG
+					#ifdef DEBUG
 						printf("Combined bounding box has area %.2f\n\tcurrent minimum has area %.2f\n", cur_configuration_area, opt_configuration_area);
-					//#endif
+					#endif
 
 					update_if_better();
 				}
 				else
 				{		
-					//#ifdef DEBUG
+					#ifdef DEBUG
 						printf("Forms do overlap:\n\tConfiguration illegal!\n");
-					//#endif
+					#endif
 				}
 */
 			}
@@ -449,5 +445,3 @@ AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
 		compute_optimal_configuration();
 	return 	create_config_tuple();;
 }
-
-#undef DEBUG

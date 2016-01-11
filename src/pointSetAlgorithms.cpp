@@ -1,7 +1,5 @@
 #include "pointSetAlgorithms.hpp"
 
-#define DEBUG
-
 bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector<int> &indices)
 {
 	#ifdef DEBUG
@@ -70,7 +68,10 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 
 	if (points.size() < 3)
 	{
-		printf("No hull created\n");
+		#ifdef DEBUG
+			printf("No hull created\n");
+		#endif
+
 		hull = convex_hull;
 		return false;
 	}
@@ -78,8 +79,6 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 	vector<int> convex_hull_lower	= vector<int>(0);
 	vector<int> ordered_indices		= vector<int>(0);
 	vector<int> convex_hull_upper	= vector<int>(0);
-
-	printf("Init.\n");
 
 	ordered_indices = PointSetAlgorithms::sort_points_by_dim_x(points);
 
@@ -330,5 +329,3 @@ float PointSetAlgorithms::find_rotation_with_minimum_bounding_box(vector<Point> 
 
 	return optimal_angle;
 }
-
-#undef DEFINE
