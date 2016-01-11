@@ -1879,4 +1879,6 @@ bool Tests::test_point_set_algo()
         return false;
     }
 
+    std::cout << "All PointSetAlgorithms tests: [SUCCEEDED]" << std::endl;
+    return true;
 }
