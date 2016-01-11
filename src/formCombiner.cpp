@@ -174,7 +174,7 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	#endif
 
 	// compute combined pointset of both Forms:
-	/*vector<Point>*/ allpoints = vector<Point>(f1.get_points()->begin(), f1.get_points()->end());
+	allpoints = vector<Point>(f1.get_points()->begin(), f1.get_points()->end());
 	vector<Point>::iterator insert_point = allpoints.begin() + index_of_point_1;
 	vector<Point>::iterator begin_of_f2_points = f2_temp->get_points()->begin();
 	vector<Point>::iterator end_of_f2_points = f2_temp->get_points()->end();
@@ -191,25 +191,15 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 			printf("Point %i: (%.2f/%.2f)\n", i, allpoints[i].get_x(), allpoints[i].get_y());
 	#endif
 
-	// compute convex hull
 	PointSetAlgorithms::compute_convex_hull(allpoints, hull_of_tuple);
-
-	#ifdef DEBUG
-		printf("convex hull computed\n");
-	#endif
 
 	cur_total_rotation = PointSetAlgorithms::find_rotation_with_minimum_bounding_box(&allpoints, &hull_of_tuple);
 
-	#ifdef DEBUG
-		printf("optimal rotation computed\n");
-	#endif
-
-	//printf("Rotate by %.2f degrees...\n", cur_total_rotation);
 	f1.rotate(0,0, cur_total_rotation);
 	f2_temp->rotate(0,0, cur_total_rotation);
 
 	#ifdef DEBUG
-		printf("Forms post-rotation:\n");
+		printf("Form rotated in optimized box configuration:\n");
 		f1._d_print_points_to_console();
 		f2_temp->_d_print_points_to_console();
 	#endif
@@ -221,7 +211,6 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 
 	cur_configuration_area = (current_xmax - current_xmin)*(current_ymax - current_ymin);
 	#ifdef DEBUG
-		printf("xmin = %.2f, xmax = %.2f, ymin = %.2f, ymax = %.2f\n", current_xmin, current_xmax, current_ymin, current_ymax);
 		printf("Computed minimum area: %.2f x %.2f\nArea is %.2f\n", current_xmax - current_xmin, current_ymax - current_ymin, cur_configuration_area);
 	#endif
 }
@@ -246,8 +235,6 @@ bool FormCombiner::update_if_better()
 		opt_mirror_form_2     = cur_mirror_form_2;
 
 		float opt_crit = opt_configuration_area - area_of_biggest_box_of_forms;
-
-		//printf("Optimum criteria: %.2f - %.2f = %.2f\n", opt_configuration_area, area_of_biggest_box_of_forms, opt_crit);
 
 		if (opt_crit < GlobalParams::get_tolerance())
 		{
@@ -330,27 +317,6 @@ void FormCombiner::compute_optimal_configuration()
 		printf("\tAdded area of both bounding boxes is %.2f\n", sum_of_bounding_boxes);
 	#endif
 
-	// temp_opt = seperated setting
-	// for each p in form_1->points:
-	// 		for each q in form_2->points:
-	//			temp_bounding_box = form_1->bounding_box
-	//			compute angle a of vector p -> (p+1)
-	//			place q at p and (q+1) in direction defined by a
-	//			compute shift of form_2
-	//			for each r in form_2->points:
-	//				compute new position of r
-	//				update temp_bounding_box
-	//				if form_2 crosses form_1
-	//					is_legal = false
-	//					break
-	//			if is_legal
-	//				if utilizaion of combined form  is better than (form_1->utilization + form_2->utilization) / 2
-	//					temp_opt = this configuration
-
-	//int config_point_1 = -1;
-	//int config_point_2 = -1;
-	//bool point_2_mirrored = false;
-
 	for (int point_1=0; point_1 < form_1->get_number_of_points() && !optimum_found; ++point_1)
 	{
 		#ifdef DEBUG
@@ -366,8 +332,6 @@ void FormCombiner::compute_optimal_configuration()
 
 			#ifdef DEBUG
 				printf("Consider configuration:\n\tForm 1: point %i\n\tForm 2: point %i\n", point_1, point_2);
-				//f1._d_print_points_to_console();
-				//f2._d_print_points_to_console();
 			#endif
 
 			// check if f1 and f2 overlap:
