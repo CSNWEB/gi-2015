@@ -15,11 +15,11 @@ bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> *points, vector
 	{
 		float x1 = points->at(indices->at(i-1)).get_x();
 		float x2 = points->at(indices->at(i)).get_x();
-		if (abs(x1 - x2) < GlobalParams::get_tolerance())
+        if (fabs(x1 - x2) < GlobalParams::get_tolerance())
 		{
 			float y1 = points->at(indices->at(i-1)).get_y();
 			float y2 = points->at(indices->at(i)).get_y();
-			if (abs(y1 - y2) < GlobalParams::get_tolerance())
+            if (fabs(y1 - y2) < GlobalParams::get_tolerance())
 			{
 				points_deleted = true;
 				indices->erase(indices->begin()+i);
