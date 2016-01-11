@@ -164,6 +164,7 @@ void FormView::showSetting(Setting *setting)
 }
 
 
+
 void FormView::wheelEvent(QWheelEvent *event)
 {
     qreal factor = qPow(1.2, event->delta() / 240.0);
