@@ -39,17 +39,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     pm->setLists(ui->absFormList,ui->pointList);
-    /*ui->svgContainer->addWidget(m_view);
-    m_view->setContainer(ui->svgContainer_2);*/
 
     ui->svgContainer->addWidget(m_resultview);
     m_resultview->setContainer(ui->svgContainer_2);
 
     ui->formViewer->addWidget(m_formview);
     m_formview->setContainer(ui->formViewerWidget);
-    //m_formview->showForm();
-   //QFile file("/Users/Christoph/Code/gi-2015/out.svg");
-   //m_view->openFile(file);
+
 
     ui->toleranceSpinBox->setValue(GlobalParams::get_tolerance_digits());
 
@@ -68,40 +64,6 @@ void MainWindow::updateResultView(){
     }
 }
 
-
-void MainWindow::stepByStep(BinPacking bin_packing, string output_filename_svg, Problem* problem)
-{
-   int i = 0;
-    while(bin_packing.next_step_of_algorithm()){
-        setting = bin_packing.get_current_setting();
-        OutputHandler oh(problem, &setting);
-        //oh.write_setting_to_svg(output_filename_svg, true);
-        //QFile file(QString::fromStdString(output_filename_svg));
-        //m_view->openFile(file);
-
-        m_resultview->showSetting(&setting);
-        qDebug("Step");
-        ++i;
-        QThread::msleep(500);
-    }
-    setting = bin_packing.get_current_setting();
-    qDebug("Done");
-
-    /*QFile file;
-
-    while(bin_packing.next_step_of_algorithm()){
-        setting = bin_packing.get_current_setting();
-        file.setFileName(QString::fromStdString(output_filename_svg));
-        OutputHandler oh(problem, &setting);
-        oh.write_setting_to_svg(output_filename_svg, true);
-
-        qDebug("Step");
-        sleep(ceil(ui->delaySpinBox->value()));
-    }
-    OutputHandler oh(problem, &setting);
-    oh.write_setting_to_svg(output_filename_svg, true);
-    m_view->openFile(file);*/
-}
 
 void MainWindow::on_solveButton_clicked()
 {
@@ -127,8 +89,6 @@ void MainWindow::on_solveButton_clicked()
 
         if(ui->showCaseCheckBox->isChecked()){
 
-            //QtConcurrent::run(ui->tabWidget, &QTabWidget::setCurrentIndex, 2);
-            //QtConcurrent::run(this, &MainWindow::stepByStep, bin_packing, output_filename_svg, problem);
              QTimer::singleShot(0, this, SLOT(updateResultView()));
         }else{
             setting = bin_packing.get_packed_setting();
@@ -347,9 +307,4 @@ void MainWindow::on_showCaseCheckBox_clicked(bool checked)
     }else{
         ui->showCaseGroup->setEnabled(false);
     }
-}
-
-void MainWindow::on_solveButton_clicked(bool checked)
-{
-    //ui->tabWidget->setCurrentIndex(2);
 }

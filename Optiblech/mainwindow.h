@@ -72,11 +72,7 @@ private slots:
 
     void on_toleranceSpinBox_valueChanged(int arg1);
 
-    void on_showCaseCheckBox_clicked(bool checked);
-
-    void on_solveButton_clicked(bool checked);
-
-    void stepByStep(BinPacking bin_packing, string output_filename_svg, Problem* problem);
+    void on_showCaseCheckBox_clicked(bool checked);       
 
 private:
     Ui::MainWindow *ui;

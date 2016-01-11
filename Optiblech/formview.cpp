@@ -47,16 +47,6 @@ void FormView::setContainer(QWidget *_container)
 
 
 
-/*void FormView:drawBackground(QPainter *p, const QRectF &)
-{
-    p->save();
-    p->resetTransform();
-    p->drawTiledPixmap(viewport()->rect(), backgroundBrush().texture());
-    p->restore();
-}*/
-
-
-
 
 void FormView::showForm(AbstractForm * form)
 {
@@ -79,7 +69,7 @@ void FormView::showForm(AbstractForm * form)
         polygon.push_back(QPointF(point.get_x(), point.get_y()));
     }
 
-    //s->addItem(m_svgItem);
+
 
     s->addPolygon(polygon, QPen(), QBrush(Qt::SolidPattern));
 
@@ -110,7 +100,7 @@ void FormView::showForm(AbstractForm * form)
     scale(rel,rel);
 
 
-    //s->setSceneRect(m_outlineItem->boundingRect().adjusted(-1, -1, 1, 1));
+
 }
 
 void FormView::showSetting(Setting *setting)
@@ -153,13 +143,6 @@ void FormView::showSetting(Setting *setting)
     float realheight = container->height() - 50;
     float height = planeHeight+spacing;
     s->setSceneRect(0,0,width,height);
-    //QRectF rect = s->sceneRect();
-    //s->setSceneRect(0,0,100,100);
-
-    /*float realwidth = container->width() - 50;
-    float width = bound.width();
-    float realheight = container->height() - 50;
-    float height = bound.height();*/
 
     float relw = 1;
     if(width > 0){
@@ -179,38 +162,6 @@ void FormView::showSetting(Setting *setting)
     scale(rel,rel);
 
 }
-
-
-
-/*
-for (int i=0; i<planes; ++i)
-{
-    #ifdef DEBUG
-        printf("\tPaint plane %i\n",i+1);
-    #endif
-
-    Plane *p = setting->get_plane_at(i);
-    doc << svg::Rectangle(svg::Point(i*(planeWidth+spacing)+(spacing/2), (spacing/2)), planeWidth, planeHeight, svg::Color(255,255,200));
-
-    for (int j=0; j<p->get_number_of_forms(); ++j)
-    {
-        Form *f = p->get_form_at(j);
-
-        #ifdef DEBUG
-            printf("\tPaint form %i\n",j+1);
-            printf("\t\tThe size of the form is: %f\n", f->get_mother()->get_size_of_area());
-        #endif
-
-        if (with_covex_hull)
-            f->print_convex_hull_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
-        f->print_form_to_svg(&doc, i*(planeWidth+spacing)+(spacing/2), (spacing/2), factor);
-
-    }
-    #ifdef DEBUG
-        printf("\n");
-    #endif
-}
-*/
 
 
 void FormView::wheelEvent(QWheelEvent *event)
