@@ -175,3 +175,24 @@ AbstractFormConfiguration *AbstractFormConfigurationTuple::get_configuration_of_
 		return NULL;
 	}
 }
+
+string AbstractFormConfigurationTuple::to_string()
+{
+	ostringstream s;
+	s << "Tuple:\n";
+
+	for (int i=0; i<abstract_form_configs.size(); ++i)
+	{
+		AbstractForm *f = abstract_form_configs[i].get_form();
+		s << "form " << abstract_form_configs[i].get_id_of_form() << ": ";
+		for (int j=0; j<f->get_number_of_points(); ++j)
+		{
+			s << "(" << f->get_point_at_index(j).get_x() << "/" << f->get_point_at_index(j).get_y() << ") "; 
+		}
+		s << "\n\tat position (" << abstract_form_configs[i].get_x() << "/" << abstract_form_configs[i].get_y() << ")\n";
+		s << "\twith rotation by " << abstract_form_configs[i].get_rotation() << " degrees\n";
+		if (abstract_form_configs[i].is_mirrored())
+		s << "\tform is mirrored\n";
+	}
+	return s.str();
+}

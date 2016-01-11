@@ -165,22 +165,8 @@ public:
 	 */
 	AbstractFormConfiguration *get_configuration_of_form(int index_of_form);
 
-	//#ifdef DEBUG
 
-
-		string to_string()
-		{
-			//printf("Start to_string");
-			ostringstream s;
-			s << "Tuple_";
-
-			for (int i=0; i<abstract_form_configs.size(); ++i)
-				s << abstract_form_configs[i].get_id_of_form() << "_";
-
-
-			return s.str();
-		}
-	//#endif
+	string to_string();
 
 };
 
