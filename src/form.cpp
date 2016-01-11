@@ -197,28 +197,7 @@ void Form::rotate(float center_x, float center_y, float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (angle > GlobalParams::get_tolerance())
-	{
-		points[0].rotate(center_x, center_y, angle);
-		x_min = points[0].get_x();
-		x_max = points[0].get_x();
-		y_min = points[0].get_y();
-		y_max = points[0].get_y();
-
-		for (int i=1; i<points.size(); ++i)
-		{
-			points[i].rotate(center_x, center_y, angle);
-			if (points[i].get_x() < x_min)
-				x_min = points[i].get_x();
-			else if (points[i].get_x() > x_max)
-				x_max = points[i].get_x();
-
-			if (points[i].get_y() < y_min)
-				y_min = points[i].get_y();
-			else if (points[i].get_y() > y_max)
-				y_max = points[i].get_y();
-		}
-	}
+	PointSetAlgorithms::rotate_pointset_at_point(points, center_x, center_y, angle, x_min, x_max, y_min, y_max);
 
 	#ifdef DEBUG
 		printf("\tBounding box updated to:\n\t(%.2f,%.2f) - (%.2f,%.2f)\n",x_min, y_min, x_max, y_max);
@@ -231,11 +210,7 @@ void Form::mirror()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	for (int point_index = 0; point_index < points.size(); ++point_index)
-	{
-		float current_x = points[point_index].get_x();
-		points[point_index].set_x(x_max + x_min - current_x);
-	}
+	PointSetAlgorithms::mirror_pointset_at_axis(points, x_min, x_max);
 }
 	
 void Form::_d_print_points_to_console()

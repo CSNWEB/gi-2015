@@ -52,6 +52,53 @@ private:
     static bool unique_indicies_of_points(vector<Point> &points, vector<int> &indices);
 
 public:
+	/*!
+	 *  Rotates a vector of points in-place around a specified point
+	 *
+	 *	@param points 		the points to rotate
+	 *	@param center_x		x-position of center of rotation
+	 *	@param center_y		y-position of center of rotation
+	 *	@param angle 		the angle in degrees
+	 *
+	 *	@return 			true, if points have been rotated. False otherwise or if points was empty.
+	 */
+	static bool rotate_pointset_at_point(vector<Point> &points, float center_x, float center_y, float angle);
+
+	/*!
+	 *  Rotates a vector of points in-place around a specified point. Also computes the minimum and maximum coordinates in each dimension for the rotated point set
+	 *
+	 *	@param points 		the points to rotate
+	 *	@param center_x		x-position of center of rotation
+	 *	@param center_y		y-position of center of rotation
+	 *	@param angle 		the angle in degrees
+	 *	@param x_min 		Field to store the new minimum x position
+	 *	@param x_max		Field to store the new maximum x position
+	 *	@param y_min		Field to store the new minimum y position
+	 *	@param y_max		Field to store the new maximum y position
+	 *
+	 *	@return 			true, if points have been rotated. False otherwise or if points was empty.
+	 */
+	static bool rotate_pointset_at_point(
+		vector<Point> &points,
+		float center_x,
+		float center_y,
+		float angle,
+		float &x_min,
+		float &x_max,
+		float &y_min,
+		float &y_max
+	);
+
+	/*!
+	 *  Mirrors a vector of points in-place at an axis, that is parallel to the x-axis and centered in y-dimension within the box. The bounding box and the global position of the pointset are unaffected.
+	 *
+	 *	@param points 		the points to rotate
+	 *	@param x_min 		the minimum position of any point on the x-axis
+	 *	@param x_max 		the maximum position of any point on the x-axis
+	 *
+	 *	@return 			true, if points have been mirrored. False otherwise or if points was empty.
+	 */
+	static bool mirror_pointset_at_axis(vector<Point> &points, float x_min, float x_max);
 
 	/*!
 	 *  Sort the points of a given set by their position on x-dimension

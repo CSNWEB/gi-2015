@@ -32,6 +32,84 @@ bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector
 	indices = vector<int>(unique_points.begin(), unique_points.end());
 }
 
+bool PointSetAlgorithms::rotate_pointset_at_point(vector<Point> &points, float center_x, float center_y, float angle)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	if (points.size() < 1)
+		return false;
+
+	if (angle > GlobalParams::get_tolerance())
+		for (int i=0; i<points.size(); ++i)
+			points[i].rotate(center_x, center_y, angle);
+			
+	return true;
+}
+
+bool PointSetAlgorithms::rotate_pointset_at_point(
+		vector<Point> &points,
+		float center_x,
+		float center_y,
+		float angle,
+		float &x_min,
+		float &x_max,
+		float &y_min,
+		float &y_max
+	)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	if (points.size() < 1)
+		return false;
+
+	if (angle > GlobalParams::get_tolerance())
+	{
+		points[0].rotate(center_x, center_y, angle);
+		x_min = points[0].get_x();
+		x_max = points[0].get_x();
+		y_min = points[0].get_y();
+		y_max = points[0].get_y();
+
+		for (int i=1; i<points.size(); ++i)
+		{
+			points[i].rotate(center_x, center_y, angle);
+			if (points[i].get_x() < x_min)
+				x_min = points[i].get_x();
+			else if (points[i].get_x() > x_max)
+				x_max = points[i].get_x();
+
+			if (points[i].get_y() < y_min)
+				y_min = points[i].get_y();
+			else if (points[i].get_y() > y_max)
+				y_max = points[i].get_y();
+		}
+	}
+			
+	return true;
+}
+
+bool PointSetAlgorithms::mirror_pointset_at_axis(vector<Point> &points, float x_min, float x_max)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	if (points.size() < 1)
+		return false;
+
+	for (int point_index = 0; point_index < points.size(); ++point_index)
+	{
+		float current_x = points[point_index].get_x();
+		points[point_index].set_x(x_max + x_min - current_x);
+	}
+
+	return true;
+}
+
 vector<int> PointSetAlgorithms::sort_points_by_dim_x(vector<Point> &points)
 {
 	#ifdef DEBUG

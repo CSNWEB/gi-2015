@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "globalParams.hpp"
+#include "pointSetAlgorithms.hpp"
 #include "edge.hpp"
 #include "abstractForm.hpp"
 #include "simpleSVG.hpp"

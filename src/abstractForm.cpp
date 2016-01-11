@@ -186,40 +186,7 @@ void AbstractForm::rotate_form_by_degrees(float degrees)
 		printf("rotate form by %.2f degrees\n", degrees);
 	#endif
 
-	min_x = 0;
-	float max_x = 0;
-	min_y = 0;
-	float max_y = 0;
-	for (int point_index = 0; point_index < points.size(); ++point_index)
-	{
-		points[point_index].rotate(degrees);
-
-		#ifdef DEBUG
-			printf("Rotated point %i to position (%.2f/%.2f)\n",point_index, points[point_index].get_x(), points[point_index].get_y());
-		#endif
-
-		float this_x = points[point_index].get_x();
-		float this_y = points[point_index].get_y();
-
-		if (point_index == 0)
-		{
-			min_x = this_x;
-			max_x = this_x;
-			min_y = this_y;
-			max_y = this_y;
-		}
-		else
-		{
-			if (this_x < min_x)
-				min_x = this_x;
-			else if (this_x > max_x)
-				max_x = this_x;
-			if (this_y < min_y)
-				min_y = this_y;
-			else if (this_y > max_y)
-				max_y = this_y;
-		}
-	}
+		PointSetAlgorithms::rotate_pointset_at_point(points, 0, 0, degrees, min_x, max_x, min_y, max_y);
 	dx = max_x-min_x;
 	dy = max_y-min_y;
 
@@ -234,10 +201,7 @@ void AbstractForm::mirror()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	for (int p=0; p<get_number_of_points(); ++p)
-	{
-		points[p].move_rel(-2*points[p].get_x(), 0);
-	}
+	PointSetAlgorithms::mirror_pointset_at_axis(points, min_x, max_x);
 }
 
 void AbstractForm::normalize_position(float plane_width, float plane_height)
