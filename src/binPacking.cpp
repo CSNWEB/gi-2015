@@ -19,17 +19,13 @@ void BinPacking::create_configuration_tuples()
 	AbstractFormConfiguration form_config_1;
 	AbstractFormConfiguration form_config_2;
 
-	// FormCombiner fc;
-
-	// new_tuple;
-
 	for (int index_form_1 = 0; index_form_1 < problem->get_number_of_different_forms(); ++index_form_1)
 	{
 		form_config_1 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
 		all_single_form_tuples.push_back(AbstractFormConfigurationTuple(form_config_1));
 
 		#ifdef DEBUG
-			printf("Created tuple %s\n", simple_tuple.to_string().c_str());
+			printf("Created tuple based on form at index %i\n", index_form_1);
 		#endif
 
 		// if the current form has bad area utilization iterate through all forms and optimal configuration of each tuple:
@@ -46,35 +42,41 @@ void BinPacking::create_configuration_tuples()
 
 				if (index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1)
 				{
-					//printf("\tBegin\n");
 					form_config_2 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
 
-					//printf("\tform_config_2 created\n");
+					// compute area utilization. if good enough, skip merging:
+					float utilization_of_unmerged_configuration = 
+						(form_config_1.get_used_area()/(form_config_1.get_dx() * form_config_1.get_dy()) +
+						(form_config_2.get_used_area()/(form_config_2.get_dx() * form_config_2.get_dy()) )) / 2.0;
 
-					FormCombiner fc(problem, &form_config_1, &form_config_2);
-
-					//printf("\tFormCombiner initialized\n");
-
-					AbstractFormConfigurationTuple new_tuple = fc.get_optimal_configured_tuple();
-
-					//printf("Created new tuple %s\n", new_tuple.to_string().c_str());
-
-					if (new_tuple.get_number_of_forms() > 1)
+					if ((1.0 - utilization_of_unmerged_configuration) >GlobalParams::get_tolerance())
 					{
-						all_efficient_form_tuples.push_back(new_tuple);
-	
-						#ifdef DEBUG
-							printf("Added new tuple to all_efficient_form_tuples\n");
-						#endif						
+						FormCombiner fc(problem, &form_config_1, &form_config_2);
+
+						AbstractFormConfigurationTuple new_tuple = fc.get_optimal_configured_tuple();
+
+						if (new_tuple.get_number_of_forms() > 1)
+						{
+							all_efficient_form_tuples.push_back(new_tuple);
+		
+							#ifdef DEBUG
+								printf("Added new tuple to all_efficient_form_tuples\n");
+							#endif						
+						}
+						else
+						{
+							#ifdef DEBUG
+								printf("Tuple was not added to all_efficient_form_tuples\n");
+							#endif
+						}
 					}
 					else
 					{
 						#ifdef DEBUG
-							printf("Tuple was not added to all_efficient_form_tuples\n");
+							printf("No tuple was created because unmerged area utilization was sufficient good.\n");
 						#endif
 					}
 				}
-				//printf("Finished setting %i-%i\n",index_form_1, index_form_2);
 			}
 		}
 
@@ -281,8 +283,6 @@ bool BinPacking::next_step_of_algorithm()
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
-
-	// TO DO: Check if problem is solveable and contains forms
 
 	if (!is_initialized)
 		initialize_algorithm();
