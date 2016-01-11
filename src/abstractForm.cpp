@@ -412,7 +412,7 @@ void AbstractForm::compute_convex_hull()
 	#endif
 	*/
 
-	convex_hull = PointSetAlgorithms::compute_convex_hull(&points);
+	PointSetAlgorithms::compute_convex_hull(points, convex_hull);
 }
 
 int AbstractForm::get_number_of_points()

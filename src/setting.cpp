@@ -141,6 +141,7 @@ bool Setting::add_form_to_plane_at_position(
 	if (index_of_plane < planes.size())
 	{
 		planes[index_of_plane].add_form_at_position_rotation(form, position_x, position_y, rot, mirror);
+		return true;
 	}
 	else
 		return false;

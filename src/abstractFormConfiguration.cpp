@@ -1,33 +1,5 @@
 #include "abstractFormConfiguration.hpp"
 
-/*
-AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm* form, float position_x, float position_y, float rotation, float min_x, float max_x, float min_y, float max_y)
-{
-	#ifdef DEBUG
-		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
-	#endif
-
-	abstractforms = vector<AbstractForm*>(1, form);
-	position_x_of_forms = vector<float>(1, position_x);
-	position_y_of_forms = vector<float>(1, position_y);
-	rotation_of_forms = vector<float>(1, rotation);
-	mirrored_forms = vector<bool>(1, false);
-
-	this->min_x = min_x;
-	this->max_x = max_x;
-	this->min_y = min_y;
-	this->max_y = max_y;
-
-	dx = max_x-min_x;
-	dy = max_y-min_y;
-
-	used_area = form->get_size_of_area();
-	utilization = used_area / (dx*dy);
-
-	number_of_forms_needed = -1;
-}
-*/
-
 AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, bool mirrored, int number_of_forms_needed)
 {
 	#ifdef DEBUG
@@ -54,7 +26,7 @@ void AbstractFormConfiguration::update_bounding_box(float pos_x, float pos_y, fl
 	if (!is_initialized)
 	{
 		Point p_temp = form->get_point_at_index(0);
-		p_temp.rotate(rotation);
+		p_temp.rotate(pos_x, pos_y, rotation);
 		p_temp.move_rel(pos_x, pos_y);
 		min_x = p_temp.get_x();
 		max_x = min_x;
@@ -65,7 +37,7 @@ void AbstractFormConfiguration::update_bounding_box(float pos_x, float pos_y, fl
 	for (int i=1; i < form->get_number_of_points(); ++i)
 	{
 		Point p_temp = form->get_point_at_index(i);
-		p_temp.rotate(rotation);
+		p_temp.rotate(pos_x, pos_y, rotation);
 		p_temp.move_rel(pos_x, pos_y);
 		
 		float temp_x = p_temp.get_x();

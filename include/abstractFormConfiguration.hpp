@@ -76,19 +76,6 @@ public:
 	AbstractFormConfiguration(){};
 
 	/*!
-	 *  Constructor initializing a single form
-	 *	
-	 *	@param position_x 		the distance in x-direction this form has been moved from its normalized position
-	 *	@param position_y 		the distance in y-direction this form has been moved from its normalized position
-	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
-	 *  @param min_x 			the minimum x-dimension of the bounding box
-	 *  @param max_x			the maximum x-dimension of the bounding box
-	 *  @param min_y 			the minimum y-imension of the bounding box
-	 *  @param max_y			the maximum y-imension of the bounding box
-	 */
-	//AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, float min_x, float max_x, float min_y, float max_y);
-
-	/*!
 	 *  Constructor initializing a single form. This constructor needs less informations than the one above. The bounding box has to be computed.
 	 *	
 	 *	@param position_x 		the distance in x-direction this form has been moved from its normalized position

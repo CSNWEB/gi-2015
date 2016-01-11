@@ -1,45 +1,46 @@
 #include "pointSetAlgorithms.hpp"
 
-bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> *points, vector<int> *indices)
+#define DEBUG
+
+bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector<int> &indices)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (indices->size() < 2)
+	if (indices.size() < 2)
 		return false;
 
 	bool points_deleted = false;
 
-	for (int i=1; i<indices->size(); ++i)
+	list<int> unique_points(1, indices[0]);
+
+	for (int i=1; i<indices.size(); ++i)
 	{
-		float x1 = points->at(indices->at(i-1)).get_x();
-		float x2 = points->at(indices->at(i)).get_x();
+		float x1 = points[indices[i-1]].get_x();
+		float x2 = points[indices[i]].get_x();
 		if (abs(x1 - x2) < GlobalParams::get_tolerance())
 		{
-			float y1 = points->at(indices->at(i-1)).get_y();
-			float y2 = points->at(indices->at(i)).get_y();
+			float y1 = points[indices[i-1]].get_y();
+			float y2 = points[indices[i]].get_y();
 			if (abs(y1 - y2) < GlobalParams::get_tolerance())
-			{
 				points_deleted = true;
-				indices->erase(indices->begin()+i);
-				--i;
-
-				#ifdef DEBUG
-					printf("Deleted point at index %i\n", i+1);
-				#endif
-			}
+			else
+				unique_points.push_back(indices[i]);
 		}
+		else
+			unique_points.push_back(indices[i]);
 	}
+	indices = vector<int>(unique_points.begin(), unique_points.end());
 }
 
-vector<int> PointSetAlgorithms::sort_points_by_dim_x(vector<Point> *points)
+vector<int> PointSetAlgorithms::sort_points_by_dim_x(vector<Point> &points)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	int number_of_entries = points->size();
+	int number_of_entries = points.size();
 
 	if (number_of_entries == 0)
 		return vector<int>();
@@ -50,29 +51,48 @@ vector<int> PointSetAlgorithms::sort_points_by_dim_x(vector<Point> *points)
 	for (int i=0; i<number_of_entries; ++i)
 		sorted_indices[i] = i;
 
-	PointComparator pc(points);
+	PointComparator pc(&points);
 	sort(sorted_indices.begin(), sorted_indices.end(), pc);
 
 	return sorted_indices;
 }
 
-vector<int> PointSetAlgorithms::compute_convex_hull(vector<Point> *points)
+bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> &hull)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+
+		for (int i=0; i<points.size(); ++i)
+			printf("Point %i: (%.2f/%.2f)\n", i, points[i].get_x(), points[i].get_y());
 	#endif
 
-	vector<int> convex_hull = vector<int>(0);
+	vector<int> convex_hull 		= vector<int>(0);
 
-	if (points->size() < 3)
-		return convex_hull;
+	if (points.size() < 3)
+	{
+		printf("No hull created\n");
+		hull = convex_hull;
+		return false;
+	}
 
-	vector<int> ordered_indices = PointSetAlgorithms::sort_points_by_dim_x(points);
+	vector<int> convex_hull_lower	= vector<int>(0);
+	vector<int> ordered_indices		= vector<int>(0);
+	vector<int> convex_hull_upper	= vector<int>(0);
 
-	PointSetAlgorithms::unique_indicies_of_points(points, &ordered_indices);
+	printf("Init.\n");
 
-   	vector<int> convex_hull_lower = vector<int>();
-	convex_hull_lower.push_back(ordered_indices[0]);
+	ordered_indices = PointSetAlgorithms::sort_points_by_dim_x(points);
+
+	PointSetAlgorithms::unique_indicies_of_points(points, ordered_indices);
+
+	#ifdef DEBUG
+		printf("Back in compute_convex_hull.\nOrdered indices:\n");
+		for (int i=0; i<ordered_indices.size(); ++i)
+			printf("\t%i\n", ordered_indices[i]);
+	#endif
+
+	//int first_element = *ordered_indices.begin();
+	convex_hull_lower = vector<int>(1, ordered_indices[0]);
 	convex_hull_lower.insert(convex_hull_lower.end(), ordered_indices.begin(), ordered_indices.end());
 
 	#ifdef DEBUG
@@ -96,10 +116,10 @@ vector<int> PointSetAlgorithms::compute_convex_hull(vector<Point> *points)
 			printf("now check if %i is left of %i->%i\n", ind_p2, ind_p1, ind_p3);
 		#endif
 
-		Point line_begin = (*points)[ind_p1];
-		Point line_end   = (*points)[ind_p3];
+		Point line_begin = points[ind_p1];
+		Point line_end   = points[ind_p3];
 
-		if ((*points)[ind_p2].is_left_of(&line_begin, &line_end) > 0)
+		if (points[ind_p2].is_left_of(&line_begin, &line_end) > 0)
 		{
 			// p2 is not part of convex hull
 			#ifdef DEBUG
@@ -122,7 +142,7 @@ vector<int> PointSetAlgorithms::compute_convex_hull(vector<Point> *points)
 			printf("\tpoint %i is %i\n", k, convex_hull_lower[k]);
 	#endif
 
-	vector<int> convex_hull_upper = ordered_indices;
+	convex_hull_upper = ordered_indices;
 	convex_hull_upper.push_back(ordered_indices[ordered_indices.size()-1]);
 
 	#ifdef DEBUG
@@ -145,7 +165,7 @@ vector<int> PointSetAlgorithms::compute_convex_hull(vector<Point> *points)
 			printf("now check if %i is left of %i->%i\n", ind_p2, ind_p1, ind_p3);
 		#endif
 
-		if ((*points)[ind_p2].is_left_of(&(*points)[ind_p1], &(*points)[ind_p3]) > 0)
+		if (points[ind_p2].is_left_of(&(points[ind_p1]), &(points[ind_p3])) > 0)
 		{
 			// p2 is not part of convex hull
 			#ifdef DEBUG
@@ -192,7 +212,8 @@ vector<int> PointSetAlgorithms::compute_convex_hull(vector<Point> *points)
 			printf("\t%i\n", convex_hull[i]);
 	#endif
 
-	return convex_hull;
+		hull = convex_hull;
+	return true;
 }
 
 
@@ -309,3 +330,5 @@ float PointSetAlgorithms::find_rotation_with_minimum_bounding_box(vector<Point> 
 
 	return optimal_angle;
 }
+
+#undef DEFINE

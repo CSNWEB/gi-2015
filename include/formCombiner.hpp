@@ -181,10 +181,16 @@ private:
 	 */
 	bool is_finished;
 
+
 	/*!
-	 *	The created AbstractFormConfigurationTuple
+	 *  A temporary needed array of points. During the algorithm, it tracks all Points of the combined form in a specific order, such that all points in order give all edges of this tuple of forms
 	 */
-	//AbstractFormConfigurationTuple optimal_configured_tuple;
+	vector<Point> allpoints;
+
+	/*!
+	 *  A temporary needed array of indices, describes the points in the convex hull of the tuple in the current configuration
+	 */
+	vector<int> hull_of_tuple;
 
 	/*!
 	 *  Initialize the algorithm.
@@ -200,6 +206,11 @@ private:
 	 *  For a given index of a point, compute the configuration of form 2 such that the point lies on (0/0) and the edge to the next point lies on the x-axis.
 	 */
 	void compute_config_form_2(int index_of_point, bool is_mirrored);
+
+	/*!
+	 *  Reset the Form f1 to its initial state after it was potentially moved and rotated during the last iteration of Form 2
+	 */
+	void reset_form_1();	
 	
 	/*!
 	 *  Computes the convex hull of the current configuration of f1 and f2. Uses the convex hull to compute optimal rotation and the area of the bounding box. Needs indices of the configuration-defining points to create a correct combination of the point-vectors.
@@ -217,6 +228,11 @@ private:
 	AbstractFormConfigurationTuple create_config_tuple();
 
 public:
+	/*!
+	 *  Empty Constructor
+	 */
+	FormCombiner(){};
+
 	/*!
 	 *  Default Constructor
 	 */

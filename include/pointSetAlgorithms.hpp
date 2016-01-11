@@ -3,6 +3,7 @@
 #define POINTSETALGOS_H
 
 #include <vector>
+#include <list>
 #include <algorithm>
 #include <math.h>
 
@@ -48,7 +49,7 @@ private:
      *
      *  @return 			True, if points have been deleted. False otherwise.
      */
-    static bool unique_indicies_of_points(vector<Point> *points, vector<int> *indices);
+    static bool unique_indicies_of_points(vector<Point> &points, vector<int> &indices);
 
 public:
 
@@ -59,16 +60,17 @@ public:
 	 *
 	 *  @return 		A vector of ints containing the indices of the points in increasing order.
 	 */
-	static vector<int> sort_points_by_dim_x(vector<Point> *points);
+	static vector<int> sort_points_by_dim_x(vector<Point> &points);
 
 	/*!
 	 *  Computes the convex hull of a given set of 2-dim points.
 	 *
-	 *  @param points 	A pointer to a vector of Point, for which the convex hull should be computed.
+	 *  @param points 	A reference to a vector of Point, for which the convex hull should be computed.
+	 *  @param hull 	A reference to a vector of ints, where the result as indices of the points of the convex hull will be stored
 	 *
-	 *  @return 		A vector of ints containing the indices of the points of the convex hull.
+	 *  @return 		True, if a convex hull was created. Otherwise false.
 	 */
-	static vector<int> compute_convex_hull(vector<Point> *points);
+	static bool compute_convex_hull(vector<Point> &points, vector<int> &hull);
 
 	/*!
      *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis, and the second point two a larger x-coordinate

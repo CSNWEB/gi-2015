@@ -40,12 +40,16 @@ void Plane::add_form_at_position_rotation(AbstractForm *form,
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-    Form form_object = Form(form, pos_x, pos_y);
+    Form form_object = Form(form, 0, 0);
+
+    if (mirror)
+    	form_object.mirror();
+
     if (rotation > GlobalParams::get_tolerance())
     {
-    	Point centroid = form_object.get_centroid();
-    	form_object.rotate(centroid.get_x(),
-        	               centroid.get_y(),
+    	//Point centroid = form_object.get_centroid();
+    	form_object.rotate(0,
+        	               0,
             	           rotation);
     }
     else
@@ -54,6 +58,8 @@ void Plane::add_form_at_position_rotation(AbstractForm *form,
     		printf("No rotation\n");
     	#endif
     }
+
+    form_object.move_rel(pos_x, pos_y);
     
     forms.push_back(form_object);
 	number_of_forms++;

@@ -16,9 +16,16 @@ void BinPacking::create_configuration_tuples()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	AbstractFormConfiguration form_config_1;
+	AbstractFormConfiguration form_config_2;
+
+	FormCombiner fc;
+
+	AbstractFormConfigurationTuple new_tuple;
+
 	for (int index_form_1 = 0; index_form_1 < problem->get_number_of_different_forms(); ++index_form_1)
 	{
-		AbstractFormConfiguration form_config_1(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
+		form_config_1 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
 		AbstractFormConfigurationTuple simple_tuple(form_config_1);
 		all_single_form_tuples.push_back(simple_tuple);
 
@@ -30,32 +37,49 @@ void BinPacking::create_configuration_tuples()
 
 		//if (simple_tuple.get_utilization() < (1.0 - GlobalParams::get_tolerance()))
 		if (GlobalParams::do_pre_merge_merge())
-		{		
+		{	
 			for (int index_form_2 = index_form_1; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
 			{
-				#ifdef DEBUG
+				//#ifdef DEBUG
+					printf("Next configuration: %i-%i\n", index_form_1, index_form_2);
 					printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
-				#endif
+				//#endif
+
+				printf("number of forms for form %i: ", index_form_1);
+				printf("%i\n", problem->get_number_of_form_needed(index_form_1));
 
 				if (index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1)
 				{
-					AbstractFormConfiguration form_config_2(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
-					FormCombiner fc(problem, &form_config_1, &form_config_2);
+					printf("\tBegin\n");
+					form_config_2 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
 
-					all_efficient_form_tuples.push_back(fc.get_optimal_configured_tuple());
-					
-					#ifdef DEBUG
-						printf("Created tuple %s\n", all_efficient_form_tuples[all_efficient_form_tuples.size()-1].to_string().c_str());
-					#endif
+					printf("\tform_config_2 created\n");
+
+					fc = FormCombiner(problem, &form_config_1, &form_config_2);
+
+					printf("\tFormCombiner initialized\n");
+
+					new_tuple = fc.get_optimal_configured_tuple();
+
+					printf("Created new tuple %s\n", new_tuple.to_string().c_str());
+
+					if (new_tuple.get_number_of_forms() > 1)
+					{
+						all_efficient_form_tuples.push_back(new_tuple);
+						printf("Added new tuple to all_efficient_form_tuples\n");
+					}
+					else
+						printf("Tuple was not added to all_efficient_form_tuples\n");
 				}
+				//printf("Finished setting %i-%i\n",index_form_1, index_form_2);
 			}
 		}
 
 		#ifdef DEBUG
 			printf("All created tuples:\n");
-			for (int i=0; i < all_efficient_form_tuples.size(); ++i)
+			for (int i=0; i < all_single_form_tuples.size(); ++i)
 			{
-				printf("\t%i : %s\n", i, all_efficient_form_tuples[i].to_string().c_str());
+				printf("\t%i : %s\n", i, all_single_form_tuples[i].to_string().c_str());
 			}
 		#endif
 	}
@@ -89,28 +113,36 @@ void BinPacking::create_all_tuples_to_use()
 		// init the number of usages:
 		int use_number = -1;
 
-		for (int form_index = 0; form_index < all_efficient_form_tuples[tuple_index].get_number_of_forms(); ++form_index)
-		{
-			int current_form_id = all_efficient_form_tuples[tuple_index].get_configuration_of_form(form_index)->get_id_of_form();
-			int current_form_amount = number_of_forms_needed[current_form_id];
-			if (use_number == -1)
-				use_number = current_form_amount;
-			else if (current_form_amount < use_number)
-				use_number = current_form_amount;
-
-			#ifdef DEBUG
-				printf("Considering form %i of tuple %i:\n", form_index, tuple_index);
-				printf("\tHas id: %i and amount: %i\n", current_form_id, current_form_amount);
-			#endif
-		}
-		if (use_number > 0)
+		// check if tuple has only single form or is small enough to fit on a plane:
+		if ((all_efficient_form_tuples[tuple_index].get_number_of_forms() < 2) ||
+			(all_efficient_form_tuples[tuple_index].get_dx() - problem->get_plane_width()< GlobalParams::get_tolerance() &&
+			all_efficient_form_tuples[tuple_index].get_dy() - problem->get_plane_height()< GlobalParams::get_tolerance()) ||
+			(all_efficient_form_tuples[tuple_index].get_dy() - problem->get_plane_width() < GlobalParams::get_tolerance() &&
+			all_efficient_form_tuples[tuple_index].get_dx() - problem->get_plane_height()< GlobalParams::get_tolerance()))
 		{
 			for (int form_index = 0; form_index < all_efficient_form_tuples[tuple_index].get_number_of_forms(); ++form_index)
 			{
-				number_of_forms_needed[all_efficient_form_tuples[tuple_index].get_configuration_of_form(form_index)->get_id_of_form()] -= use_number;
+				int current_form_id = all_efficient_form_tuples[tuple_index].get_configuration_of_form(form_index)->get_id_of_form();
+				int current_form_amount = number_of_forms_needed[current_form_id];
+				if (use_number == -1)
+					use_number = current_form_amount;
+				else if (current_form_amount < use_number)
+					use_number = current_form_amount;
+
+				#ifdef DEBUG
+					printf("Considering form %i of tuple %i:\n", form_index, tuple_index);
+					printf("\tHas id: %i and amount: %i\n", current_form_id, current_form_amount);
+				#endif
 			}
-			all_efficient_form_tuples[tuple_index].set_number_of_usages(use_number);
-			all_form_tuples_to_use.push_back(all_efficient_form_tuples[tuple_index]);
+			if (use_number > 0)
+			{
+				for (int form_index = 0; form_index < all_efficient_form_tuples[tuple_index].get_number_of_forms(); ++form_index)
+				{
+					number_of_forms_needed[all_efficient_form_tuples[tuple_index].get_configuration_of_form(form_index)->get_id_of_form()] -= use_number;
+				}
+				all_efficient_form_tuples[tuple_index].set_number_of_usages(use_number);
+				all_form_tuples_to_use.push_back(all_efficient_form_tuples[tuple_index]);
+			}
 		}
 	}
 
