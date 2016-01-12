@@ -1,5 +1,7 @@
 #include "formCombiner.hpp"
 
+#define DEBUG
+
 FormCombiner::FormCombiner(Problem *p, AbstractFormConfiguration *form_config_1, AbstractFormConfiguration *form_config_2)
 {
 	#ifdef DEBUG
@@ -407,6 +409,11 @@ void FormCombiner::compute_optimal_configuration()
 			}
 		}
 	}
+	#ifdef DEBUG
+		printf("Optimal configuration found.\n\tf1: %.2f/%.2f, r: %.2f\n\tf2: %.2f/%.2f, r: %.2f\n", opt_position_form_1_x, opt_position_form_1_y, opt_rotation_form_1, opt_position_form_2_x, opt_position_form_2_y, opt_rotation_form_2
+			);
+		printf("\tArea: %.2f\n",opt_configuration_area);
+	#endif
 
 	is_finished = true;
 }
@@ -421,3 +428,5 @@ AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
 		compute_optimal_configuration();
 	return 	create_config_tuple();;
 }
+
+#undef DEBUG
