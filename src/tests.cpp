@@ -1766,51 +1766,69 @@ bool Tests::test_compute_rotation_angle_correct()
         Point(0,1)
     };
 
-    float res_1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 0,1);
+    float res_s1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 0,1);
 
-    if (abs(res_1 > GlobalParams::get_tolerance()))
+    if (res_s1 > 1)
     {
         success_all_tests = false;
-        printf("[FAILED] in case 1\n");
-
+        printf("[FAILED] in case square 1\n");
         #ifdef DEBUG
-            printf("\t%i\n", res_1);
+        printf("\tgot: %.6f - exp: %i\n", res_s1, 0);
         #endif
     }
 
-    float res_2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 1,2);
+    float res_s2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 1,2);
     
-    if (abs(res_2 - 90 > GlobalParams::get_tolerance()))
+    if (fabs(res_s2 - 270) > 1)
     {
         success_all_tests = false;
-        printf("[FAILED] in case 2\n");
-
+        printf("[FAILED] in case square 2\n");
         #ifdef DEBUG
-            printf("\t%i\n", res_2);
+        printf("\tgot: %.6f - exp: %i\n", res_s2, 270);
         #endif
     }
 
-    float res_3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 2,3);
+    float res_s3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 2,3);
     
-    if (abs(res_3 - 180 > GlobalParams::get_tolerance()))
+    if (fabs(res_s3 - 180) > 1)
     {
         success_all_tests = false;
-        printf("[FAILED] in case 3\n");
-
+        printf("[FAILED] in case square 3\n");
         #ifdef DEBUG
-            printf("\t%i\n", res_3);
+        printf("\tgot: %.6f - exp: %i\n", res_s3, 180);
         #endif
     }
 
-    float res_4 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 3,0);
+    float res_s4 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 3,0);
     
-    if (abs(res_4 - 270 > GlobalParams::get_tolerance()))
+    if (fabs(res_s4 - 90) > 1)
     {
         success_all_tests = false;
-        printf("[FAILED] in case 4\n");
-
+        printf("[FAILED] in case square 4\n");
         #ifdef DEBUG
-            printf("\t%i\n", res_4);
+        printf("\tgot: %.6f - exp: %i\n", res_s4, 270);
+        #endif
+    }
+
+    float res_s5 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 0,3);
+    
+    if (fabs(res_s5 - 270) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 5\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s5, 270);
+        #endif
+    }
+
+    float res_s6 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 2,0);
+    
+    if (fabs(res_s6 - 135) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 6\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s6, 135);
         #endif
     }
 
@@ -1821,39 +1839,36 @@ bool Tests::test_compute_rotation_angle_correct()
         Point(1,1)
     };
 
-    float res_5 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,1);
+    float res_t1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,1);
     
-    if (abs(res_5 > GlobalParams::get_tolerance()))
+    if (fabs(res_t1) > 1)
     {
         success_all_tests = false;
-        printf("[FAILED] in case 5\n");
-
+        printf("[FAILED] in case triangle 1\n");
         #ifdef DEBUG
-            printf("\t%i\n", res_5);
+        printf("\tgot: %.6f - exp: %i\n", res_t1, 0);
         #endif
     }
 
-    float res_6 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,2);
+    float res_t2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,2);
     
-    if (abs(res_6 - 45 > GlobalParams::get_tolerance()))
+    if (fabs(res_t2 - 315) > 1)
     {
         success_all_tests = false;
-        printf("[FAILED] in case 6\n");
-
+        printf("[FAILED] in case triangle 2\n");
         #ifdef DEBUG
-            printf("\t%i\n", res_6);
+        printf("\tgot: %.6f - exp: %i\n", res_t2, 315);
         #endif
     }
 
-    float res_7 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 2, 0);
+    float res_t3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 2, 0);
     
-    if (abs(res_7 - 135 > GlobalParams::get_tolerance()))
+    if (fabs(res_t3 - 135) > 1)
     {
         success_all_tests = false;
-        printf("[FAILED] in case 7\n");
-
+        printf("[FAILED] in case triangle 3\n");
         #ifdef DEBUG
-            printf("\t%i\n", res_7);
+        printf("\tgot: %.6f - exp: %i\n", res_t3, 135);
         #endif
     }
 

@@ -301,29 +301,37 @@ float PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(vec
 		printf("\t\tPoint1 = %i\n\t\tPoint2 = %i\n", index_of_point_1, index_of_point_2);
 	#endif
 
+	float result_angle;
+
 	float p1_orig_x = (*points)[index_of_point_1].get_x();
 	float p1_orig_y = (*points)[index_of_point_1].get_y();
 
 	float p2_orig_x = (*points)[index_of_point_2].get_x();
 	float p2_orig_y = (*points)[index_of_point_2].get_y();
 
-	float d1_squared = ((p1_orig_x - p2_orig_x) * (p1_orig_x - p2_orig_x)) + ((p1_orig_y - p2_orig_y) * (p1_orig_y - p2_orig_y));
-	float d1 = (*points)[index_of_point_1].get_distance_to(&(*points)[index_of_point_2]);
+	if (p1_orig_y < p2_orig_y)
+		result_angle =  180 + compute_rotation_angle_for_points_parallel_to_axis(points, index_of_point_2, index_of_point_1);
+	else
+	{
+		float d1_squared = ((p1_orig_x - p2_orig_x) * (p1_orig_x - p2_orig_x)) + ((p1_orig_y - p2_orig_y) * (p1_orig_y - p2_orig_y));
+		float d1 = (*points)[index_of_point_1].get_distance_to(&(*points)[index_of_point_2]);
 
-	float p2_rotated_x = p1_orig_x + d1;
-	float p2_rotated_y = p1_orig_y;
+		float p2_rotated_x = p1_orig_x + d1;
+		float p2_rotated_y = p1_orig_y;
 
-	float d2_squared = ((p2_orig_x - p2_rotated_x) * (p2_orig_x - p2_rotated_x)) + ((p2_orig_y- p2_rotated_y) * (p2_orig_y - p2_rotated_y));
+		float d2_squared = ((p2_orig_x - p2_rotated_x) * (p2_orig_x - p2_rotated_x)) + ((p2_orig_y- p2_rotated_y) * (p2_orig_y - p2_rotated_y));
 
-	// using law of cosines:
-	float cos_of_angle = ((2*d1_squared) - d2_squared)/(2*d1_squared);
+		// using law of cosines:
+		float cos_of_angle = ((2*d1_squared) - d2_squared)/(2*d1_squared);
 
-	#ifdef DEBUG
-		printf ("\t\tcosine of angle = %.2f\n",cos_of_angle);
-	#endif
+		#ifdef DEBUG
+			printf ("\t\tcosine of angle = %.2f\n",cos_of_angle);
+		#endif
 
+		result_angle =  acos(cos_of_angle) * 180.0 / GlobalParams::pi();
+	}
 
-	return acos(cos_of_angle) * 180.0 / GlobalParams::pi();
+	return result_angle;
 }
 
 float PointSetAlgorithms::find_rotation_with_minimum_bounding_box(vector<Point> *points, vector<int> *convex_hull)
