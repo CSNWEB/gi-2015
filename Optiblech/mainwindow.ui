@@ -109,7 +109,7 @@
              </size>
             </property>
             <property name="text">
-             <string>Configure parameters --&gt;</string>
+             <string>Next</string>
             </property>
            </widget>
           </item>
@@ -288,7 +288,7 @@
         <bool>true</bool>
        </property>
        <attribute name="title">
-        <string>Configure Parameters</string>
+        <string>Run Solver</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -302,12 +302,28 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Tolerance </string>
+             <string>Tolerance</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="toleranceSpinBox"/>
+           <widget class="QDoubleSpinBox" name="toleranceSpinBox">
+            <property name="decimals">
+             <number>4</number>
+            </property>
+            <property name="minimum">
+             <double>0.000100000000000</double>
+            </property>
+            <property name="maximum">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.001000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.000100000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -387,14 +403,17 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <property name="enabled">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <attribute name="title">
-        <string>Result</string>
+        <string>View Result</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
          <widget class="QWidget" name="svgContainer_2" native="true">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>

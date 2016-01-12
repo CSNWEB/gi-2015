@@ -79,14 +79,14 @@ void MainWindow::on_solveButton_clicked()
 
 
 
-    Problem* problem = pm->getProblem();
+    Problem problem = *pm->getProblem();
 
-    if (!problem->is_solveable())
+    if (!problem.is_solveable())
         QMessageBox::warning(this, tr("Warning"), tr("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!"));
     else
     {
         ui->tabWidget->setCurrentIndex(2);
-        bin_packing = BinPacking(problem);
+        bin_packing = BinPacking(&problem);
 
         if(ui->showCaseCheckBox->isChecked()){
              QTimer::singleShot(0, this, SLOT(updateResultView()));
