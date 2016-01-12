@@ -13,6 +13,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Optiblech
 TEMPLATE = app
 
+QT_QWS_FONTDIR=:/fonts
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -52,3 +53,6 @@ FORMS    += mainwindow.ui \
     managepointsdialog.ui
 
 INCLUDEPATH = ../include
+
+RESOURCES += \
+    resources.qrc
