@@ -75,6 +75,10 @@ float Point::get_distance_to(Point *other)
 
 void Point::flip()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
 	float tmp = x;
 	x = y;
 	y = tmp;
@@ -84,7 +88,6 @@ int Point::is_left_of(Point *p_start, Point *p_end)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-		//printf("points:\n\tstart: %.2f/%.2f\n\tend: %.2f/%.2f\n", p_start->get_x(), p_start->get_y(), p_end->get_x(), p_end->get_y() );
 	#endif
 		
 	/**
@@ -94,10 +97,6 @@ int Point::is_left_of(Point *p_start, Point *p_end)
 	 * 		1 	x 			y
 	 */
 	float det = ((x - p_start->get_x()) * (y - p_end->get_y())) - ((y - p_start->get_y()) * (x - p_end->get_x()));
-
-	#ifdef DEBUG
-		//printf("Compute\n\t(%.2f - %.2f) * (%.2f - %.2f) - (%.2f - %.2f) * (%.2f - %.2f) = %.2f\n", x, p_start->get_x(), y, p_end->get_y(), y, p_start->get_y(), x, p_end->get_x(), det);
-	#endif
 
 	if (det > GlobalParams::get_tolerance())
 		return 1;

@@ -39,8 +39,12 @@ void Problem::check_if_solveable()
             printf("Check if form %i fits on plane.\n", index_of_form);
         #endif
 
+        abstract_forms[index_of_form]._d_print_abstract_form();
+
         float optimal_rotation_by_convex_hull = abstract_forms[index_of_form].find_rotation_with_minimum_bounding_box();
         abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation_by_convex_hull);
+
+        abstract_forms[index_of_form]._d_print_abstract_form();
 
         if (abstract_forms[index_of_form].get_dx() > size_of_sheet_x || abstract_forms[index_of_form].get_dy() > size_of_sheet_y)
         {
@@ -109,21 +113,6 @@ int Problem::get_number_of_form_needed(int i)
         return number_of_forms_needed[i];
     else return 0;
 }
-
-/*
-int Problem::get_number_of_form_needed_by_id(int id)
-{
-    #ifdef DEBUG
-        printf("GETTER: %s\n", __PRETTY_FUNCTION__);
-    #endif
-
-    for (int i=0; i<abstract_forms.size(); ++i)
-        if (abstract_forms[i].get_id() == id)
-            return number_of_forms_needed[i];
-
-    return 0;
-}
-*/
 
 string Problem::get_name_of_form(int i)
 {

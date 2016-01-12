@@ -202,6 +202,11 @@ private:
 #pragma mark - PointSetAlgorithms
 
     /*!
+     *  Given a set of points and the bounds on the y-dimension of the set, tests if mirror_pointset_at_axis() works as intended.
+     */
+    static bool test_mirror();
+
+    /*!
      *  Given a set of points, test if PointSetAlgorithms sorts them correct first by x- and second by y-dimension
      *
      *  @return True if the test passes, false if not.

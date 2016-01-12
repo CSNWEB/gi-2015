@@ -21,11 +21,18 @@ void BinPacking::create_configuration_tuples()
 
 	for (int index_form_1 = 0; index_form_1 < problem->get_number_of_different_forms(); ++index_form_1)
 	{
+		//printf("Consider the next form:\n");
+		problem->get_abstract_form_at_position(index_form_1)->_d_print_abstract_form();
 		form_config_1 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
-		all_single_form_tuples.push_back(AbstractFormConfigurationTuple(form_config_1));
+
+		AbstractFormConfigurationTuple simple_tuple(form_config_1);
+
+		//printf("Created tuple:\n%s\n", simple_tuple.to_string().c_str());
+
+		all_single_form_tuples.push_back(simple_tuple);
 
 		#ifdef DEBUG
-			printf("Created tuple based on form at index %i\n", index_form_1);
+			printf("Created simple tuple based on form at index %i\n", index_form_1);
 		#endif
 
 		// if the current form has bad area utilization iterate through all forms and optimal configuration of each tuple:
@@ -82,6 +89,10 @@ void BinPacking::create_configuration_tuples()
 
 		#ifdef DEBUG
 			printf("All created tuples:\n");
+			for (int i=0; i < all_efficient_form_tuples.size(); ++i)
+			{
+				printf("\t%i : %s\n", i, all_efficient_form_tuples[i].to_string().c_str());
+			}
 			for (int i=0; i < all_single_form_tuples.size(); ++i)
 			{
 				printf("\t%i : %s\n", i, all_single_form_tuples[i].to_string().c_str());
@@ -112,7 +123,10 @@ void BinPacking::create_all_tuples_to_use()
 	#ifdef DEBUG
 		printf("all efficient tuples sorted:\n");
 		for (int i=0; i < all_efficient_form_tuples.size(); ++i)
+		{
 			printf("\t%i with efficiency %.2f\n", i, all_efficient_form_tuples[i].get_utilization());
+			printf("\t%s\n", all_efficient_form_tuples[i].to_string().c_str());
+		}
 	#endif
 
 	int total_number_of_all_form_tuples = all_efficient_form_tuples.size();
@@ -298,6 +312,8 @@ bool BinPacking::next_step_of_algorithm()
 	if (get_number_of_missing_tuples() > 0)
 	{
 		AbstractFormConfigurationTuple *current_tuple = &all_form_tuples_to_use[all_tuples_to_use_sorted_by_size[index_of_current_tuple]];
+
+		//printf("%s\n",current_tuple->to_string().c_str());
 
 		if (!try_add_form_configuration_tuple_on_existing_shelf(current_tuple))
 			add_form_configuration_tuple_on_new_shelf(current_tuple);

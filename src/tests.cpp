@@ -1668,6 +1668,92 @@ bool Tests::test_bin_packing()
 
 #pragma mark - PointSetAlgorithms
 
+bool Tests::test_mirror()
+{
+    bool success_all_tests = true;
+
+    //case 1: square at (0/0)
+    vector<Point> points_square_1{
+        Point(0,0),
+        Point(0,1),
+        Point(1,1),
+        Point(1,0)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_square_1, 0,1);
+
+    if(!(
+        points_square_1[0].get_x() == 0 && points_square_1[0].get_y() == 1 &&
+        points_square_1[1].get_x() == 0 && points_square_1[1].get_y() == 0 &&
+        points_square_1[2].get_x() == 1 && points_square_1[2].get_y() == 0 &&
+        points_square_1[3].get_x() == 1 && points_square_1[3].get_y() == 1
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 1\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("(%.2f/%.2f) ", points_square_1[i].get_x(), points_square_1[i].get_y());
+            printf("\n");        
+        #endif   
+    }
+
+    //case 2: square at (1/1)
+    vector<Point> points_square_2{
+        Point(1,1),
+        Point(1,2),
+        Point(2,2),
+        Point(2,1)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_square_2, 1,2);
+
+    if(!(
+        points_square_2[0].get_x() == 1 && points_square_2[0].get_y() == 2 &&
+        points_square_2[1].get_x() == 1 && points_square_2[1].get_y() == 1 &&
+        points_square_2[2].get_x() == 2 && points_square_2[2].get_y() == 1 &&
+        points_square_2[3].get_x() == 2 && points_square_2[3].get_y() == 2
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 2\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("(%.2f/%.2f) ", points_square_2[i].get_x(), points_square_2[i].get_y());
+            printf("\n");        
+        #endif   
+    }
+
+    // case 3: big triangle
+    vector<Point> points_triangle{
+        Point(-2,-2),
+        Point( 0, 3),
+        Point( 2,-2)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_triangle, -2, 3);
+
+    if(!(
+        points_triangle[0].get_x() == -2 && points_triangle[0].get_y() == 3  &&
+        points_triangle[1].get_x() == 0  && points_triangle[1].get_y() == -2 &&
+        points_triangle[2].get_x() == 2  && points_triangle[2].get_y() == 3
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 3\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<3; ++i)
+                printf("(%.2f/%.2f) ", points_triangle[i].get_x(), points_triangle[i].get_y());
+            printf("\n");                
+        #endif   
+    }
+
+    return success_all_tests;
+}
+
 bool Tests::test_sort_points_by_x_dimension_correct()
 {
     bool success_all_tests = true;
@@ -2002,7 +2088,18 @@ bool Tests::test_compute_convex_hull_correct()
 bool Tests::test_point_set_algo()
 {
     std::cout << "Testing PointSetAlgorithms: " << std::endl;
-    
+ 
+     std::cout << "Testing mirror point set: ";
+    if (test_mirror())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
     std::cout << "Testing sort points by x dimension: ";
     if (test_sort_points_by_x_dimension_correct())
     {

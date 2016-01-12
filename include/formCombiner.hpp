@@ -49,17 +49,17 @@ private:
 	AbstractForm form_2_mirrored;
 
 	/*!
-	 *  The two actual Forms, needed to compute rotations, positions and to check if both forms overlap.
+	 *  The two actual Forms, needed to compute area of bounding box and to compute rotations, positions and to check if both forms overlap.
 	 */
 	Form f1;
 
 	/*!
-	 *  The two actual Forms, needed to compute rotations, positions and to check if both forms overlap.
+	 *  The two actual Forms, needed to compute area of bounding box and check if both forms overlap.
 	 */
 	Form f2;
 
 	/*!
-	 *  The two actual Forms, needed to compute rotations, positions and to check if both forms overlap. The mirrored variant of the second form.
+	 *  The two actual Forms, needed to compute area of bounding box and to compute rotations, positions and to check if both forms overlap. The mirrored variant of the second form.
 	 */
 	Form f2_m;
 

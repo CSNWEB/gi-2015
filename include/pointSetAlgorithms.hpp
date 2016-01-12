@@ -93,12 +93,12 @@ public:
 	 *  Mirrors a vector of points in-place at an axis, that is parallel to the x-axis and centered in y-dimension within the box. The bounding box and the global position of the pointset are unaffected.
 	 *
 	 *	@param points 		the points to rotate
-	 *	@param x_min 		the minimum position of any point on the x-axis
-	 *	@param x_max 		the maximum position of any point on the x-axis
+	 *	@param y_min 		the minimum position of any point on the y-axis
+	 *	@param y_max 		the maximum position of any point on the y-axis
 	 *
 	 *	@return 			true, if points have been mirrored. False otherwise or if points was empty.
 	 */
-	static bool mirror_pointset_at_axis(vector<Point> &points, float x_min, float x_max);
+	static bool mirror_pointset_at_axis(vector<Point> &points, float y_min, float y_max);
 
 	/*!
 	 *  Sort the points of a given set by their position on x-dimension

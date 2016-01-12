@@ -101,6 +101,7 @@ void FormCombiner::compute_config_form_1(int index_of_point)
 
 	cur_rotation_form_1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(f1.get_points(), index_of_point, (index_of_point+1)%form_1->get_number_of_points());
 	f1.rotate(0,0,cur_rotation_form_1);
+
 	cur_position_form_1_x = -(f1.get_point_at(index_of_point))->get_x();
 	cur_position_form_1_y = -(f1.get_point_at(index_of_point))->get_y();
 	f1.move_rel(cur_position_form_1_x, cur_position_form_1_y);
@@ -132,8 +133,12 @@ void FormCombiner::compute_config_form_2(int index_of_point, bool is_mirrored)
 
 	cur_mirror_form_2 = is_mirrored;
 
+	if (cur_mirror_form_2)
+		f->mirror();
+
 	cur_rotation_form_2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(f->get_points(), index_of_point, (index_of_point+1)%form_2->get_number_of_points());
 	f->rotate(0,0,cur_rotation_form_2);
+
 	cur_position_form_2_x = -(f->get_point_at(index_of_point))->get_x();
 	cur_position_form_2_y = -(f->get_point_at(index_of_point))->get_y();
 	f->move_rel(cur_position_form_2_x, cur_position_form_2_y);
@@ -175,6 +180,7 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 
 	// compute combined pointset of both Forms:
 	allpoints = vector<Point>(f1.get_points()->begin(), f1.get_points()->end());
+
 	vector<Point>::iterator insert_point = allpoints.begin() + index_of_point_1;
 	vector<Point>::iterator begin_of_f2_points = f2_temp->get_points()->begin();
 	vector<Point>::iterator end_of_f2_points = f2_temp->get_points()->end();
@@ -289,8 +295,19 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 		#endif
 
 		optimal_configured_tuple = AbstractFormConfigurationTuple(result_configs);
+
+		#ifdef DEBUG
+		printf("New tuple pre-correction:\n");
+		printf("%s\n",optimal_configured_tuple.to_string().c_str());
+		#endif
+
 		optimal_configured_tuple.rotate(opt_total_rotation);
 		optimal_configured_tuple.normalize_position();
+
+		#ifdef DEBUG
+		printf("New tuple post-correction:\n");
+		printf("%s\n",optimal_configured_tuple.to_string().c_str());
+		#endif
 	}
 	else
 	{
@@ -355,8 +372,9 @@ void FormCombiner::compute_optimal_configuration()
 				#ifdef DEBUG
 					printf("Forms do overlap:\n\tConfiguration illegal!\n");
 				#endif
-/*
 				
+				// compute mirrored configuration:
+				reset_form_1();
 				compute_config_form_2(point_2, true);
 
 				#ifdef DEBUG
@@ -364,12 +382,6 @@ void FormCombiner::compute_optimal_configuration()
 					f1._d_print_points_to_console();
 					f2_m._d_print_points_to_console();
 				#endif
-
-				// check if f1 and f2_m overlap
-				// if no:
-				// 1) merge point sets, compute convex hull
-				// 2) get optimized rotation
-				// 3) get new bounding box, check if minimal
 
 				// get new bounding box, check if minimal:
 				if (!f1.check_for_overlap(&f2_m))
@@ -391,7 +403,7 @@ void FormCombiner::compute_optimal_configuration()
 						printf("Forms do overlap:\n\tConfiguration illegal!\n");
 					#endif
 				}
-*/
+
 			}
 		}
 	}

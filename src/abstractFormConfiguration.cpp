@@ -12,51 +12,74 @@ AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float p
 	rotation_of_form   = rotation;
 	mirrored_form      = mirrored;
 
-	update_bounding_box(position_x, position_y, rotation, false);
+	min_x = form->get_x();
+	max_x = min_x + form->get_dx();
+
+	min_y = form->get_y();
+	max_y = min_y + form->get_dy();
 
 	this->number_of_forms_needed = number_of_forms_needed;
 }
 
-void AbstractFormConfiguration::update_bounding_box(float pos_x, float pos_y, float rotation, bool is_initialized)
+void AbstractFormConfiguration::compute_bounding_box()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (!is_initialized)
+	vector<Point> p_temp(form->get_number_of_points());
+
+	for (int i=0; i<p_temp.size(); ++i)
 	{
-		Point p_temp = form->get_point_at_index(0);
-		p_temp.rotate(pos_x, pos_y, rotation);
-		p_temp.move_rel(pos_x, pos_y);
-		min_x = p_temp.get_x();
-		max_x = min_x;
-		min_y = p_temp.get_y();
-		max_y = min_y;
+		p_temp[i] = form->get_point_at_index(i);
+		if (i==0)
+		{
+			min_x = p_temp[0].get_x();
+			max_x = min_x;
+			min_y = p_temp[0].get_y();
+			max_y = min_y;
+		}
+		else
+		{
+			float x_temp = p_temp[i].get_x();
+			if(x_temp < min_x)
+				min_x = x_temp;
+			else if (x_temp > max_x)
+				max_x = x_temp;
+			float y_temp = p_temp[i].get_y();
+			if(y_temp < min_y)
+				min_y = y_temp;
+			else if (y_temp > max_y)
+				max_y = y_temp;
+		}
 	}
 
-	for (int i=1; i < form->get_number_of_points(); ++i)
-	{
-		Point p_temp = form->get_point_at_index(i);
-		p_temp.rotate(pos_x, pos_y, rotation);
-		p_temp.move_rel(pos_x, pos_y);
-		
-		float temp_x = p_temp.get_x();
-		float temp_y = p_temp.get_y();
+	if (mirrored_form)
+		PointSetAlgorithms::mirror_pointset_at_axis(p_temp, min_y, max_y);
 
-		if (temp_x < min_x)
-			min_x = temp_x;
-		else if (temp_x > max_x)
-			max_x = temp_x;
+	PointSetAlgorithms::rotate_pointset_at_point(p_temp, 0, 0, rotation_of_form, min_x, max_x, min_y, max_y);
 
-		if (temp_y < min_y)
-			min_y = temp_y;
-		else if (temp_y > max_y)
-			max_y = temp_y;
-	}
+	min_x += position_x_of_form;
+	max_x += position_x_of_form;
+	min_y += position_y_of_form;
+	max_y += position_y_of_form;
+}
+
+void AbstractFormConfiguration::mirror()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	mirrored_form = !mirrored_form;
 }
 
 void AbstractFormConfiguration::move(float dx, float dy)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	position_x_of_form += dx;
 	position_y_of_form += dy;
 
@@ -68,6 +91,10 @@ void AbstractFormConfiguration::move(float dx, float dy)
 
 void AbstractFormConfiguration::rotate(float angle)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	rotation_of_form += angle;
 
 	float s = sin(rotation_of_form * GlobalParams::pi()/180);
@@ -79,5 +106,5 @@ void AbstractFormConfiguration::rotate(float angle)
 	position_x_of_form = new_x;
 	position_y_of_form = new_y;
 
-	update_bounding_box(position_x_of_form, position_y_of_form, rotation_of_form, false);
+	compute_bounding_box();
 }

@@ -210,7 +210,7 @@ void Form::mirror()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	PointSetAlgorithms::mirror_pointset_at_axis(points, x_min, x_max);
+	PointSetAlgorithms::mirror_pointset_at_axis(points, y_min, y_max);
 }
 	
 void Form::_d_print_points_to_console()

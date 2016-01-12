@@ -52,41 +52,6 @@ void AbstractForm::compute_size_of_area()
     size_of_area = fabs(size_of_area);
 }
 
-/*
-float AbstractForm::compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2)
-{
-	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-		printf("\t\tPoint1 = %i\n\t\tPoint2 = %i\n", index_of_point_1, index_of_point_2);
-	#endif
-
-	float p1_orig_x = points[index_of_point_1].get_x();
-	float p1_orig_y = points[index_of_point_1].get_y();
-
-	float p2_orig_x = points[index_of_point_2].get_x();
-	float p2_orig_y = points[index_of_point_2].get_y();
-
-	float d1_squared = ((p1_orig_x - p2_orig_x) * (p1_orig_x - p2_orig_x)) + ((p1_orig_y - p2_orig_y) * (p1_orig_y - p2_orig_y));
-	float d1 = points[index_of_point_1].get_distance_to(&points[index_of_point_2]);
-
-	float p2_rotated_x = p1_orig_x + d1;
-	float p2_rotated_y = p1_orig_y;
-
-	float d2_squared = ((p2_orig_x - p2_rotated_x) * (p2_orig_x - p2_rotated_x)) + ((p2_orig_y- p2_rotated_y) * (p2_orig_y - p2_rotated_y));
-
-	// using law of cosines:
-	float cos_of_angle = ((2*d1_squared) - d2_squared)/(2*d1_squared);
-
-	#ifdef DEBUG
-		printf ("\t\tcosine of angle = %.2f\n",cos_of_angle);
-	#endif
-
-
-	return acos(cos_of_angle) * 180.0 / GlobalParams::pi();
-}
-*/
-
-
 float AbstractForm::find_rotation_with_minimum_bounding_box()
 {
 	#ifdef DEBUG
@@ -186,9 +151,9 @@ void AbstractForm::rotate_form_by_degrees(float degrees)
 		printf("rotate form by %.2f degrees\n", degrees);
 	#endif
 
-		PointSetAlgorithms::rotate_pointset_at_point(points, 0, 0, degrees, min_x, max_x, min_y, max_y);
-	dx = max_x-min_x;
-	dy = max_y-min_y;
+	PointSetAlgorithms::rotate_pointset_at_point(points, 0, 0, degrees, min_x, max_x, min_y, max_y);
+	dx = max_x - min_x;
+	dy = max_y - min_y;
 
 	#ifdef DEBUG
 		printf("\tRotated form into position x_min = %.2f, dx = %.2f - y_min = %.2f, dy = %.2f\n", min_x, dx, min_y, dy);
@@ -201,7 +166,7 @@ void AbstractForm::mirror()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	PointSetAlgorithms::mirror_pointset_at_axis(points, min_x, max_x);
+	PointSetAlgorithms::mirror_pointset_at_axis(points, min_y, max_y);
 }
 
 void AbstractForm::normalize_position(float plane_width, float plane_height)
@@ -227,6 +192,8 @@ void AbstractForm::normalize_position(float plane_width, float plane_height)
 		#endif
 	}
 
+	max_x -= min_x;
+	max_y -= min_y;
 	min_x = 0;
 	min_y = 0;
 
@@ -236,9 +203,13 @@ void AbstractForm::normalize_position(float plane_width, float plane_height)
 			printf("\tForm got flipped\n");
 		#endif
 
-		float tmp = dx;
-		dx = dy;
-		dy = tmp;
+		float tmp_max_x = max_x;
+		max_x = max_y;
+		max_y = tmp_max_x;
+
+		dx = max_x;
+		dy = max_y;
+
 	}
 }
 
@@ -247,134 +218,6 @@ void AbstractForm::compute_convex_hull()
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
-
-	/*
-	vector<int> ordered_indices = sort_points_dim_x();
-    if(points.size() == 0){
-        convex_hull.clear();
-    }
-    else if (points.size() == 3)
-	{
-		convex_hull = ordered_indices;
-		convex_hull.push_back(ordered_indices[0]);
-		return;
-	}
-	else
-	{
-		vector<int> convex_hull_lower = vector<int>();
-		convex_hull_lower.push_back(ordered_indices[0]);
-		convex_hull_lower.insert(convex_hull_lower.end(), ordered_indices.begin(), ordered_indices.end());
-
-		#ifdef DEBUG
-			printf("Init lower_hull finished\n");
-			for (int i=0; i<convex_hull_lower.size(); ++i)
-				printf("point at position %i: %i\n",i, convex_hull_lower[i]);
-		#endif
-
-		int i=0;
-		while (i < convex_hull_lower.size()-2)
-		{
-			#ifdef DEBUG
-				printf("current index at position %i. length of convex_hull atm: %i\n", i, convex_hull_lower.size());
-			#endif
-
-			int ind_p1 = convex_hull_lower[i];
-			int ind_p2 = convex_hull_lower[i+1];
-			int ind_p3 = convex_hull_lower[i+2];
-
-			if (points[ind_p2].is_left_of(&points[ind_p1], &points[ind_p3]) > 0)
-			{
-				// p2 is not part of convex hull
-				#ifdef DEBUG
-					printf("\terase point %i from hull\n", i+1);
-					printf("\tthis is: %i\n", *(convex_hull_lower.begin()+(i+1)));
-				#endif
-
-				convex_hull_lower.erase(convex_hull_lower.begin()+i+1);
-				--i;
-			}
-			else
-				++i;
-		}
-
-		convex_hull_lower.erase(convex_hull_lower.begin());
-
-		#ifdef DEBUG
-			printf("lower hull complete\n");
-			for (int k=0; k<convex_hull_lower.size(); ++k)
-				printf("\tpoint %i is %i\n", k, convex_hull_lower[k]);
-		#endif
-
-		vector<int> convex_hull_upper = ordered_indices;
-		convex_hull_upper.push_back(ordered_indices[ordered_indices.size()-1]);
-
-		#ifdef DEBUG
-			printf("Init upper_hull finished\n");
-			for (int i=0; i<convex_hull_upper.size(); ++i)
-				printf("point at position %i: %i\n",i, convex_hull_upper[i]);
-		#endif
-
-		i = convex_hull_upper.size()-1;
-		while (i >= 2)
-		{
-			#ifdef DEBUG
-				printf("current index at position %i. length of convex_hull atm: %i\n", i, convex_hull_upper.size());
-			#endif
-			int ind_p1 = convex_hull_upper[i];
-			int ind_p2 = convex_hull_upper[i-1];
-			int ind_p3 = convex_hull_upper[i-2];
-
-			#ifdef DEBUG
-				printf("now check if %i is left of %i->%i\n", ind_p2, ind_p1, ind_p3);
-			#endif
-
-			if (points[ind_p2].is_left_of(&points[ind_p1], &points[ind_p3]) > 0)
-			{
-				// p2 is not part of convex hull
-				#ifdef DEBUG
-					printf("\terase point %i from hull\n", i-1);
-					printf("\tthis is: %i\n", *(convex_hull_upper.begin()+i-1));
-				#endif
-
-				convex_hull_upper.erase(convex_hull_upper.begin()+i-1);
-				++i;
-			}
-			else
-				--i;
-		}
-
-		#ifdef DEBUG
-			printf("upper hull complete:\n");
-			for (int k=0; k<convex_hull_upper.size(); ++k)
-				printf("\tpoint %i is %i\n", k, convex_hull_upper[k]);
-		#endif
-
-		// concatenate lower and upper hull:
-		convex_hull = convex_hull_lower;
-
-		for (int k=convex_hull_upper.size()-3; k>=0; --k)
-			convex_hull.push_back(convex_hull_upper[k]);
-
-		// check if hull and points have equal orientation
-		// if not, reverse hull:
-		if (convex_hull[2] < convex_hull[1])
-		{
-			int size_of_hull = convex_hull.size();
-			for (int i=0; i < size_of_hull/2; ++i)
-			{
-				int tmp = convex_hull[i];
-				convex_hull[i] = convex_hull[size_of_hull-1-i];
-				convex_hull[size_of_hull-1-i] = tmp;
-			}
-		}
-	}
-
-	#ifdef DEBUG
-		printf("convex hull finished\n");
-		for (int i=0; i<convex_hull.size(); ++i)
-			printf("\t%i\n", convex_hull[i]);
-	#endif
-	*/
 
 	PointSetAlgorithms::compute_convex_hull(points, convex_hull);
 }
@@ -411,13 +254,14 @@ void AbstractForm::_d_print_abstract_form()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
 
+	#ifdef DEBUG
 		printf("Name of form: %s\n", name.c_str());
         printf("Number of points: %i\n", number_of_points);
 
 		for (int i=0; i<number_of_points; ++i)
 			printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
-
 	#endif
 }
 

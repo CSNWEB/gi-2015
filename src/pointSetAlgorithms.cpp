@@ -92,7 +92,7 @@ bool PointSetAlgorithms::rotate_pointset_at_point(
 	return true;
 }
 
-bool PointSetAlgorithms::mirror_pointset_at_axis(vector<Point> &points, float x_min, float x_max)
+bool PointSetAlgorithms::mirror_pointset_at_axis(vector<Point> &points, float y_min, float y_max)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -103,8 +103,8 @@ bool PointSetAlgorithms::mirror_pointset_at_axis(vector<Point> &points, float x_
 
 	for (int point_index = 0; point_index < points.size(); ++point_index)
 	{
-		float current_x = points[point_index].get_x();
-		points[point_index].set_x(x_max + x_min - current_x);
+		float current_y = points[point_index].get_y();
+		points[point_index].set_y(y_max + y_min - current_y);
 	}
 
 	return true;

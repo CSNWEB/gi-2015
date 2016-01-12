@@ -67,7 +67,7 @@ private:
 	/*!
 	 *  Compute the bounding box in absolute values for a moved and rotated configuration
 	 */
-	void update_bounding_box(float pos_x, float pos_y, float rotation, bool is_initialized);
+	void compute_bounding_box();
 
 public:
 	/*!
@@ -83,14 +83,21 @@ public:
 	 *  @param rotation 		the degree in angle this form has been rotated from its normalized position
 	 *  @param mirrored 		describes if the form is mirrored or not
 	 */
-	AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, bool mirrored, int number_of_forms_needed = -1);
+	AbstractFormConfiguration(
+		AbstractForm *form,
+		float position_x,
+		float position_y,
+		float rotation,
+		bool mirrored,
+		int number_of_forms_needed = -1
+		);
 
 	/*!
 	 *  Constructor initializing a single form. This constructor needs less informations than the one above. The bounding box has to be computed.
 	 *	
 	 *  form 		the AbstractForm described by this configuration
 	 */
-	AbstractFormConfiguration(AbstractForm *form, int number_of_forms_needed = -1) : AbstractFormConfiguration(form, 0,0,0,false, number_of_forms_needed){};
+	AbstractFormConfiguration(AbstractForm *form, int number_of_forms_needed = -1) : AbstractFormConfiguration(form, 0, 0, 0, false, number_of_forms_needed){};
 
 	/*!
 	 *  Move the position of this configuration
@@ -101,6 +108,11 @@ public:
 	 *  Rotates this configuration. Also rotates the movement that has been done so far
 	 */
 	void rotate(float angle);
+
+	/*!
+	 *  Resets the flag describing if this form is mirrored.
+	 */
+	void mirror();
 
 	/*!
 	 *  Getter for x-position of form

@@ -212,6 +212,16 @@ public:
     int get_id(){return id;}; 
 
     /*!
+     *  Get the minimum x-dimension of this form.
+     */
+    float get_x(){return min_x;};
+
+    /*!
+     *  Get the minimum y-dimension of this form.
+     */
+    float get_y(){return min_y;};
+
+    /*!
      *  Get the size of the bounding box of the form in x direction.
      *
      *  @return A float representing size of the bounding box of the form in x direction.
