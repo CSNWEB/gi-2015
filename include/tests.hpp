@@ -207,6 +207,11 @@ private:
     static bool test_mirror();
 
     /*!
+     *  Tests if the function compute_rotation_angle_for_points_parallel_to_axis computes correct angles
+     */
+    static bool test_compute_rotation_angle_correct();
+
+    /*!
      *  Given a set of points, test if PointSetAlgorithms sorts them correct first by x- and second by y-dimension
      *
      *  @return True if the test passes, false if not.
