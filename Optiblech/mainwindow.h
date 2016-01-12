@@ -74,6 +74,7 @@ private slots:
 
     void on_showCaseCheckBox_clicked(bool checked);       
 
+
 private:
     Ui::MainWindow *ui;
 
@@ -92,6 +93,8 @@ private:
     Setting setting;
 
     BinPacking bin_packing;
+
+    void invalidForm(bool invalid);
 
 
 };

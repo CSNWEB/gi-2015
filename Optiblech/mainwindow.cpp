@@ -135,6 +135,11 @@ void MainWindow::on_absFormList_currentRowChanged(int currentRow)
         ui->pointAmount->setValue(amount);
         ui->currentFormBox->setEnabled(true);
         m_formview->showForm(pm->getForm(currentRow));
+        if(ui->pointList->count() < 3){
+            invalidForm(true);
+        }else{
+            invalidForm(false);
+        }
     }else{
         ui->currentFormBox->setEnabled(false);
         ui->pointList->clear();
@@ -306,4 +311,15 @@ void MainWindow::on_showCaseCheckBox_clicked(bool checked)
     }else{
         ui->showCaseGroup->setEnabled(false);
     }
+}
+
+void MainWindow::invalidForm(bool invalid)
+{
+    QPalette pal;
+    if(invalid){
+        pal.setColor(QPalette::Background, Qt::red);
+    }else{
+        pal= ui->showCaseGroup->palette();
+    }
+    ui->currentFormBox->setPalette(pal);
 }
