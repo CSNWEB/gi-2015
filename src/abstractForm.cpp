@@ -256,13 +256,13 @@ void AbstractForm::_d_print_abstract_form()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	#ifdef DEBUG
+	//#ifdef DEBUG
 		printf("Name of form: %s\n", name.c_str());
         printf("Number of points: %i\n", number_of_points);
 
 		for (int i=0; i<number_of_points; ++i)
 			printf("Point %2i at %.1f/%.1f\n", i, points[i].get_x(), points[i].get_y());
-	#endif
+	//#endif
 }
 
 void AbstractForm::calc_bounding_box()

@@ -188,17 +188,14 @@ public:
 	bool check_for_overlap(Form *other);
 	
     /*!
-     *  Checks if the receiver overlaps with the passed Form.
-     *  Additionally saves the minimum distance for every two edges in a
-     *  float-matrix or zero if the edges cross.
+     *  Determines by how much the receiver overlaps with the passed form.
      *
-     *  @param other     The form that the overlapping is checked against.
-     *  @param crossings A two-dimensional float-matrix describing the minimum distance between two points of the form.
+     *  @param other The form that the overlapping is checked agains
      *
-     *  @return True if the receiver and the other Form overlap, false if not.
+     *  @return The size of the largest area among the ones where the forms overlap.
      */
-	bool check_for_overlap(Form *other, floatmat* crossings);
-
+    float overlap_distance_with_form(Form *other);
+    
     /*!
      *  Debug: print points to std_out
      */

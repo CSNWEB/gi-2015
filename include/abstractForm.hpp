@@ -121,6 +121,11 @@ public:
 	AbstractForm() : AbstractForm("", vector<Point>(0)){};
 
     /*!
+     *  Copy constructor
+     */
+    AbstractForm(AbstractForm const &original) : AbstractForm(original.name, vector<Point>(original.points)){};
+
+    /*!
      *  Constructor that initializes the form with a name and its points.
      *
      *  @param name     A string that represents the name of the form.

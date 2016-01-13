@@ -78,6 +78,15 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)
 
 bool Form::check_for_overlap(Form *other)
 {
+    #ifdef DEBUG
+        printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+    #endif
+    
+    return overlap_distance_with_form(other) > GlobalParams::get_tolerance();
+}
+
+float Form::overlap_distance_with_form(Form *other)
+{
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
@@ -88,11 +97,24 @@ bool Form::check_for_overlap(Form *other)
      *	else check overlapping of edges pairwise
      */
 	bool overlap_bounding = false;
+
+	// overlap with tolerance:
 	if ((x_max - other->x_min > GlobalParams::get_tolerance()) &&
 		(other->x_max - x_min > GlobalParams::get_tolerance()))
 		if ((y_max - other->y_min > GlobalParams::get_tolerance())&&
 			(other->y_max - y_min > GlobalParams::get_tolerance()))
 			overlap_bounding = true;
+
+/*
+	// overlap without tolerance:
+	if (x_max > other->x_min && x_min < other->x_max)
+    {
+		if (y_max > other->y_min && y_min < other->y_max)
+        {
+			overlap_bounding = true;
+        }
+    }
+  */
 
 	// The bounding boxes overlap, so the forms might as well.
 	if (overlap_bounding)
@@ -141,15 +163,39 @@ bool Form::check_for_overlap(Form *other)
 
 		if (result_polygon.num_contours > 0)
 		{
-			gpc_vertex_list *vertex_list = result_polygon.contour;
-
-			return (vertex_list->num_vertices > 0);
+            float max_clipped_size = 0.0;
+            
+            for (unsigned int index = 0; index < result_polygon.num_contours; index++)
+            {
+                gpc_vertex_list vertex_list = result_polygon.contour[index];
+                
+                std::vector<Point> clipped_form_points = std::vector<Point>(vertex_list.num_vertices);
+                
+                for (unsigned int vertex_index = 0;
+                     vertex_index < vertex_list.num_vertices;
+                     vertex_index++)
+                {
+                    clipped_form_points[vertex_index] = Point((float)vertex_list.vertex[vertex_index].x,
+                                                               (float)vertex_list.vertex[vertex_index].y);
+                }
+                
+                AbstractForm clipped_form = AbstractForm("clipped", clipped_form_points);
+                
+                if (clipped_form.get_size_of_area() > max_clipped_size)
+                {
+                    max_clipped_size = clipped_form.get_size_of_area();
+                }
+            }
+            
+            return max_clipped_size;
 		}
 
-		return false;
+		return 0.0;
 	}
 	else
-		return false;
+    {
+		return 0.0;
+    }
 }
 
 Point Form::get_centroid()

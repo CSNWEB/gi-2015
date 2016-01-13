@@ -1727,18 +1727,18 @@ bool Tests::test_mirror()
     }
 
     // case 3: big triangle
-    vector<Point> points_triangle{
+    vector<Point> points_triangle_1{
         Point(-2,-2),
         Point( 0, 3),
         Point( 2,-2)
     };
 
-    PointSetAlgorithms::mirror_pointset_at_axis(points_triangle, -2, 3);
+    PointSetAlgorithms::mirror_pointset_at_axis(points_triangle_1, -2, 3);
 
     if(!(
-        points_triangle[0].get_x() == -2 && points_triangle[0].get_y() == 3  &&
-        points_triangle[1].get_x() == 0  && points_triangle[1].get_y() == -2 &&
-        points_triangle[2].get_x() == 2  && points_triangle[2].get_y() == 3
+        points_triangle_1[0].get_x() == -2 && points_triangle_1[0].get_y() == 3  &&
+        points_triangle_1[1].get_x() == 0  && points_triangle_1[1].get_y() == -2 &&
+        points_triangle_1[2].get_x() == 2  && points_triangle_1[2].get_y() == 3
         ))
     {
         success_all_tests = false;
@@ -1746,7 +1746,32 @@ bool Tests::test_mirror()
 
         #ifdef DEBUG
             for (int i=0; i<3; ++i)
-                printf("(%.2f/%.2f) ", points_triangle[i].get_x(), points_triangle[i].get_y());
+                printf("(%.2f/%.2f) ", points_triangle_1[i].get_x(), points_triangle_1[i].get_y());
+            printf("\n");                
+        #endif   
+    }
+
+    // case 4: small triangle
+    vector<Point> points_triangle_2{
+        Point(0, 0),
+        Point(1, 0),
+        Point(0, 1)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_triangle_2, 0, 1);
+
+    if(!(
+        points_triangle_2[0].get_x() == 0 && points_triangle_2[0].get_y() == 1 &&
+        points_triangle_2[1].get_x() == 1 && points_triangle_2[1].get_y() == 1 &&
+        points_triangle_2[2].get_x() == 0 && points_triangle_2[2].get_y() == 0
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 4\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<3; ++i)
+                printf("(%.2f/%.2f) ", points_triangle_2[i].get_x(), points_triangle_2[i].get_y());
             printf("\n");                
         #endif   
     }
@@ -2254,7 +2279,6 @@ bool Tests::test_point_set_algo()
         return false;
     }
 
-    std::cout << "All point set algo tests: [SUCCEEDED]" << std::endl;
+    std::cout << "All PointSetAlgorithms tests: [SUCCEEDED]" << std::endl;
     return true;
-
 }
