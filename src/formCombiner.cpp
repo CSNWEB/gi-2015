@@ -133,13 +133,13 @@ void FormCombiner::compute_config_form_2(int index_of_point, bool is_mirrored)
 	{
 		f2 = Form(form_2);
 		f = &f2;
+		cur_rotation_form_2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(f->get_points(), index_of_point, (index_of_point+1)%form_2->get_number_of_points());
+		f->rotate(0,0,cur_rotation_form_2);
 	}
 	else
 	{
 		f2_m = Form(&form_2_mirrored);
 		f = &f2_m;
-		cur_rotation_form_2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(f->get_points(), index_of_point, (index_of_point+1)%form_2->get_number_of_points());
-		f->rotate(0,0,cur_rotation_form_2);
 	}
 
 	cur_mirror_form_2 = is_mirrored;
