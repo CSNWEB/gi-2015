@@ -680,12 +680,30 @@ bool Tests::test_form_rotation()
     };
     AbstractForm abst_square("Form1", points_square);
 
-    vector<Point> points_triangle{
+    // triangle 1
+    vector<Point> points_triangle_1{
         Point(0,0),
         Point(1,0),
         Point(0,1)
     };
-    AbstractForm abst_triangle("Form2", points_triangle);
+    AbstractForm abst_triangle("Form2", points_triangle_1);
+
+    //triangle 2
+    float sqrt2 = sqrt(2);
+    vector<Point> points_triangle_2{
+        Point(sqrt2,0),
+        Point(sqrt2/2,sqrt2/2),
+        Point(0,0)
+    };
+    AbstractForm abst_triangle2("Form3", points_triangle_2);
+
+    //triangle 3
+    vector<Point> points_triangle_3{
+        Point(sqrt2/2,-sqrt2/2),
+        Point(0,0),
+        Point(sqrt2,0)
+    };
+    AbstractForm abst_triangle3("Form4", points_triangle_3);
 
     // case 1: rotate by 90 degrees at (0/0)
     Form form_square_1(&abst_square);
@@ -763,17 +781,55 @@ bool Tests::test_form_rotation()
         success_all_tests = false;
 
     // case 6: rotate triangle by 180 degrees at (0/0)
-    Form form_triang_2(&abst_triangle);
-    form_triang_2.rotate(0,0,180);
+    Form form_triang_1_2(&abst_triangle);
+    form_triang_1_2.rotate(0,0,180);
     if (!(
-        abs(form_triang_2.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(1)->get_x() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(2)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance()
+        abs(form_triang_1_2.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(1)->get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(2)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance()
         ))
         success_all_tests = false;
+
+    // case 7: rotate triangle2 by 45 degree at (0/0)
+    Form form_triang_2(&abst_triangle2);
+    form_triang_2.rotate(0,0,45);
+    if (!(
+        abs(form_triang_2.get_point_at(0)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(0)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(2)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(2)->get_y() - 0) < GlobalParams::get_tolerance()
+        ))
+    {
+        success_all_tests = false;
+        #ifdef DEBUG
+            cout << "Failed at case 7\n";
+            form_triang_2._d_print_points_to_console();
+        #endif
+    }
+
+    // case 8: rotate triangle3 by 45 degree at (0/0)
+    Form form_triang_3(&abst_triangle3);
+    form_triang_3.rotate(0,0,45);
+    if (!(
+        abs(form_triang_3.get_point_at(0)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(2)->get_y() - 1) < GlobalParams::get_tolerance()
+        ))
+    {
+        success_all_tests = false;
+        #ifdef DEBUG
+            cout  << "Failed at case 8\n";
+            form_triang_3._d_print_points_to_console();
+        #endif
+    }
 
     return success_all_tests;
 }
@@ -1857,7 +1913,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    // init 1: triangle:
+    // init 1: triangle1:
     vector<Point> triang{
         Point(0,0),
         Point(1,0),
