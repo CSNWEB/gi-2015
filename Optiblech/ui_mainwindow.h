@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.4.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -54,6 +54,7 @@ public:
     QListWidget *pointList;
     QWidget *formViewerWidget;
     QHBoxLayout *formViewer;
+    QWidget *pointManageContainer;
     QHBoxLayout *horizontalLayout_5;
     QPushButton *addPointButton;
     QPushButton *editPointButton;
@@ -74,7 +75,7 @@ public:
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_10;
     QLabel *label_6;
-    QSpinBox *toleranceSpinBox;
+    QDoubleSpinBox *toleranceSpinBox;
     QCheckBox *showCaseCheckBox;
     QGroupBox *showCaseGroup;
     QHBoxLayout *horizontalLayout_3;
@@ -209,39 +210,42 @@ public:
 
         verticalLayout_6->addLayout(horizontalLayout_4);
 
-        horizontalLayout_5 = new QHBoxLayout();
+        pointManageContainer = new QWidget(currentFormBox);
+        pointManageContainer->setObjectName(QStringLiteral("pointManageContainer"));
+        horizontalLayout_5 = new QHBoxLayout(pointManageContainer);
         horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        horizontalLayout_5->setContentsMargins(-1, 0, -1, -1);
-        addPointButton = new QPushButton(currentFormBox);
+        horizontalLayout_5->setContentsMargins(-1, 1, -1, -1);
+        addPointButton = new QPushButton(pointManageContainer);
         addPointButton->setObjectName(QStringLiteral("addPointButton"));
 
         horizontalLayout_5->addWidget(addPointButton);
 
-        editPointButton = new QPushButton(currentFormBox);
+        editPointButton = new QPushButton(pointManageContainer);
         editPointButton->setObjectName(QStringLiteral("editPointButton"));
 
         horizontalLayout_5->addWidget(editPointButton);
 
-        pointUpButton = new QToolButton(currentFormBox);
+        pointUpButton = new QToolButton(pointManageContainer);
         pointUpButton->setObjectName(QStringLiteral("pointUpButton"));
         pointUpButton->setArrowType(Qt::UpArrow);
 
         horizontalLayout_5->addWidget(pointUpButton);
 
-        pointDownButton = new QToolButton(currentFormBox);
+        pointDownButton = new QToolButton(pointManageContainer);
         pointDownButton->setObjectName(QStringLiteral("pointDownButton"));
         pointDownButton->setArrowType(Qt::DownArrow);
 
         horizontalLayout_5->addWidget(pointDownButton);
 
-        delPointButton = new QPushButton(currentFormBox);
+        delPointButton = new QPushButton(pointManageContainer);
         delPointButton->setObjectName(QStringLiteral("delPointButton"));
 
         horizontalLayout_5->addWidget(delPointButton);
 
 
-        verticalLayout_6->addLayout(horizontalLayout_5);
+        verticalLayout_6->addWidget(pointManageContainer);
 
         horizontalLayout_7 = new QHBoxLayout();
         horizontalLayout_7->setSpacing(6);
@@ -260,6 +264,7 @@ public:
 
         verticalLayout_6->addLayout(horizontalLayout_7);
 
+        pointManageContainer->raise();
 
         gridLayout->addWidget(currentFormBox, 2, 2, 4, 1);
 
@@ -322,8 +327,13 @@ public:
 
         horizontalLayout_10->addWidget(label_6);
 
-        toleranceSpinBox = new QSpinBox(tab_2);
+        toleranceSpinBox = new QDoubleSpinBox(tab_2);
         toleranceSpinBox->setObjectName(QStringLiteral("toleranceSpinBox"));
+        toleranceSpinBox->setDecimals(4);
+        toleranceSpinBox->setMinimum(0.0001);
+        toleranceSpinBox->setMaximum(1);
+        toleranceSpinBox->setSingleStep(0.001);
+        toleranceSpinBox->setValue(0.0001);
 
         horizontalLayout_10->addWidget(toleranceSpinBox);
 
@@ -390,6 +400,7 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         svgContainer_2 = new QWidget(tab_3);
         svgContainer_2->setObjectName(QStringLiteral("svgContainer_2"));
+        svgContainer_2->setEnabled(false);
         QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy3.setHorizontalStretch(0);
         sizePolicy3.setVerticalStretch(0);
@@ -432,7 +443,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -444,7 +455,7 @@ public:
         label_3->setText(QApplication::translate("MainWindow", "Pane width: ", 0));
         label_5->setText(QApplication::translate("MainWindow", "Plane height", 0));
         selectInputButton->setText(QApplication::translate("MainWindow", "Open Problem", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "Configure parameters -->", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "Next", 0));
         pushButton_2->setText(QApplication::translate("MainWindow", "Save Problem", 0));
         currentFormBox->setTitle(QApplication::translate("MainWindow", "Current Form", 0));
         addPointButton->setText(QApplication::translate("MainWindow", "+", 0));
@@ -458,16 +469,16 @@ public:
         editFormButton->setText(QApplication::translate("MainWindow", "Rename Form", 0));
         delFormButton->setText(QApplication::translate("MainWindow", "-", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Enter Problem", 0));
-        label_6->setText(QApplication::translate("MainWindow", "Tolerance ", 0));
+        label_6->setText(QApplication::translate("MainWindow", "Tolerance", 0));
         showCaseCheckBox->setText(QApplication::translate("MainWindow", "Activate Step-by-Step Showcase mode", 0));
         showCaseGroup->setTitle(QApplication::translate("MainWindow", "Showcase params", 0));
         label->setText(QApplication::translate("MainWindow", "Steps", 0));
         label_2->setText(QApplication::translate("MainWindow", "Delay (seconds)", 0));
         solveButton->setText(QApplication::translate("MainWindow", "Solve", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Configure Parameters", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Run Solver", 0));
         saveSVG->setText(QApplication::translate("MainWindow", "Save as SVG", 0));
         saveTXT->setText(QApplication::translate("MainWindow", "Save as TXT", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "Result", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "View Result", 0));
     } // retranslateUi
 
 };

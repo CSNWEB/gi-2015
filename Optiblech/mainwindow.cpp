@@ -34,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_formview(new FormView),
     m_resultview(new FormView),
     pm(new ProblemManager()),
-    bin_packing(0)
+    setting(pm->getProblem()),
+    bin_packing(pm->getProblem())
 {
     ui->setupUi(this);
 
@@ -47,10 +48,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_formview->setContainer(ui->formViewerWidget);
 
 
-
-
     ui->toleranceSpinBox->setValue(GlobalParams::get_tolerance_digits());
-
+    enableEditPointButtons(false);
+    enableEditFormButton(false);
 }
 
 MainWindow::~MainWindow()
@@ -61,8 +61,10 @@ MainWindow::~MainWindow()
 void MainWindow::updateResultView(){
     if(bin_packing.next_step_of_algorithm()){
         setting = bin_packing.get_current_setting();
-        m_resultview->showSetting(&setting);
+        m_resultview->showSetting(setting);
         QTimer::singleShot(ceil(ui->delaySpinBox->value()*1000), this, SLOT(updateResultView()));
+    }else{
+        enableSaveButtons(true);
     }
 }
 
@@ -79,24 +81,24 @@ void MainWindow::on_solveButton_clicked()
 
     string output_filename_svg = tmp.toUtf8().data();
 
+    enableSaveButtons(false);
 
+    Problem* problem = pm->getProblem();
 
-    Problem problem = *pm->getProblem();
-
-    if (!problem.is_solveable())
+    if (!problem->is_solveable())
         QMessageBox::warning(this, tr("Warning"), tr("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!"));
     else
     {
         ui->tabWidget->setCurrentIndex(2);
-        bin_packing = BinPacking(&problem);
+        bin_packing = BinPacking(problem);
 
         if(ui->showCaseCheckBox->isChecked()){
              QTimer::singleShot(0, this, SLOT(updateResultView()));
         }else{
             setting = bin_packing.get_packed_setting();
-            m_resultview->showSetting(&setting);
-        }        
-        ui->saveContainer->setEnabled(true);
+            m_resultview->showSetting(setting);
+            enableSaveButtons(true);
+        }
     }
 }
 
@@ -143,8 +145,9 @@ void MainWindow::on_absFormList_currentRowChanged(int currentRow)
         }else{
             invalidForm(false);
         }
+        enableEditFormButton(true);
     }else{
-        ui->currentFormBox->setEnabled(false);
+        ui->currentFormBox->setEnabled(false);        
         ui->pointList->clear();
     }
 }
@@ -188,11 +191,7 @@ void MainWindow::on_delFormButton_clicked()
 {
     if(ui->absFormList->currentRow() >= 0){
         pm->delForm(ui->absFormList->currentRow());
-    }
-    /*for(int i = 0; i < editFormDialogs.size(); ++i){
-        editFormDialogs[i].close();
-    }
-    editFormDialogs.clear();*/
+    }   
 }
 
 void MainWindow::on_editFormButton_clicked()
@@ -201,7 +200,6 @@ void MainWindow::on_editFormButton_clicked()
     AddFormDialog dialog(this, pm, row);
     dialog.setName(QString::fromStdString(pm->getProblem()->get_name_of_form(row)));
     dialog.exec();
-    //editFormDialogs.push_back(dialog);
 }
 
 void MainWindow::on_pointUpButton_clicked()
@@ -318,11 +316,40 @@ void MainWindow::on_showCaseCheckBox_clicked(bool checked)
 
 void MainWindow::invalidForm(bool invalid)
 {
-
-
     if(invalid){
         ui->currentFormBox->setStyleSheet("QListWidget {background-color:red;}");
     }else{
         ui->currentFormBox->setStyleSheet("QListWidget {background-color:green;}");
     }    
+}
+
+
+void MainWindow::enableEditPointButtons(bool enabled)
+{
+    ui->editPointButton->setEnabled(enabled);
+    ui->delPointButton->setEnabled(enabled);
+    ui->pointUpButton->setEnabled(enabled);
+    ui->pointDownButton->setEnabled(enabled);
+}
+
+
+void MainWindow::enableEditFormButton(bool enabled)
+{
+    ui->editFormButton->setEnabled(enabled);
+    ui->delFormButton->setEnabled(enabled);
+}
+
+
+void MainWindow::enableSaveButtons(bool enabled)
+{
+    ui->saveContainer->setEnabled(enabled);
+}
+
+void MainWindow::on_pointList_currentRowChanged(int currentRow)
+{
+    if(currentRow < 0){
+        enableEditPointButtons(false);
+    }else{
+        enableEditPointButtons(true);
+    }
 }

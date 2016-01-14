@@ -5,14 +5,12 @@
 #endif
 
 
-BinPacking::BinPacking(Problem *p) : setting(Setting(p))// : problem(p), setting(Setting(p), is_initialized(false)
+BinPacking::BinPacking(Problem *p): setting(p), problem(p)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	problem = p;
-	//setting = Setting(problem);
 	is_initialized = false;
 }
 
@@ -206,7 +204,11 @@ void BinPacking::initialize_algorithm()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
+    #endif
+
+    if(problem->get_number_of_different_forms() == 0){
+        return;
+    }
 	
 	init_number_of_forms();
 
