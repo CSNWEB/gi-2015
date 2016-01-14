@@ -63,10 +63,12 @@ void FormView::showForm(AbstractForm * form)
         return;
     }
 
+    int factor = 100;
+
     QPolygonF polygon;
     for(int i=0; i<form->get_number_of_points(); ++i){
         Point point = form->get_point_at_index(i);
-        polygon.push_back(QPointF(point.get_x(), point.get_y()));
+        polygon.push_back(QPointF(point.get_x()*factor, point.get_y()*factor));
     }
 
 
@@ -76,6 +78,8 @@ void FormView::showForm(AbstractForm * form)
     QRectF bound = polygon.boundingRect();
 
     s->setSceneRect(bound);
+
+
 
     float realwidth = container->width() - 50;
     float width = bound.width();

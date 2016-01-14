@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_formview->setContainer(ui->formViewerWidget);
 
 
+
+
     ui->toleranceSpinBox->setValue(GlobalParams::get_tolerance_digits());
 
 }
@@ -79,14 +81,14 @@ void MainWindow::on_solveButton_clicked()
 
 
 
-    Problem* problem = pm->getProblem();
+    Problem problem = *pm->getProblem();
 
-    if (!problem->is_solveable())
+    if (!problem.is_solveable())
         QMessageBox::warning(this, tr("Warning"), tr("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!"));
     else
     {
         ui->tabWidget->setCurrentIndex(2);
-        bin_packing = BinPacking(problem);
+        bin_packing = BinPacking(&problem);
 
         if(ui->showCaseCheckBox->isChecked()){
              QTimer::singleShot(0, this, SLOT(updateResultView()));
@@ -134,6 +136,7 @@ void MainWindow::on_absFormList_currentRowChanged(int currentRow)
         int amount = pm->initPoints(currentRow);
         ui->pointAmount->setValue(amount);
         ui->currentFormBox->setEnabled(true);
+        qDebug("show Form");
         m_formview->showForm(pm->getForm(currentRow));
         if(ui->pointList->count() < 3){
             invalidForm(true);
@@ -315,11 +318,11 @@ void MainWindow::on_showCaseCheckBox_clicked(bool checked)
 
 void MainWindow::invalidForm(bool invalid)
 {
-    QPalette pal;
+
+
     if(invalid){
-        pal.setColor(QPalette::Background, Qt::red);
+        ui->currentFormBox->setStyleSheet("QListWidget {background-color:red;}");
     }else{
-        pal= ui->showCaseGroup->palette();
-    }
-    ui->currentFormBox->setPalette(pal);
+        ui->currentFormBox->setStyleSheet("QListWidget {background-color:green;}");
+    }    
 }
