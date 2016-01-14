@@ -1,5 +1,9 @@
 #include "binPacking.hpp"
 
+#ifdef DEBUG
+	#define DEBUG_BP
+#endif
+
 BinPacking::BinPacking(Problem *p)
 {
 	#ifdef DEBUG
@@ -21,8 +25,11 @@ void BinPacking::create_configuration_tuples()
 
 	for (int index_form_1 = 0; index_form_1 < problem->get_number_of_different_forms(); ++index_form_1)
 	{
-		//printf("Consider the next form:\n");
-		problem->get_abstract_form_at_position(index_form_1)->_d_print_abstract_form();
+		#ifdef DEBUG
+			printf("Consider the next form:\n");
+			problem->get_abstract_form_at_position(index_form_1)->_d_print_abstract_form();
+		#endif
+
 		form_config_1 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
 
 		AbstractFormConfigurationTuple simple_tuple(form_config_1);
@@ -66,20 +73,20 @@ void BinPacking::create_configuration_tuples()
 						{
 							all_efficient_form_tuples.push_back(new_tuple);
 		
-							#ifdef DEBUG
+							#ifdef DEBUG_BP
 								printf("Added new tuple to all_efficient_form_tuples\n");
 							#endif						
 						}
 						else
 						{
-							#ifdef DEBUG
+							#ifdef DEBUG_BP
 								printf("Tuple was not added to all_efficient_form_tuples\n");
 							#endif
 						}
 					}
 					else
 					{
-						#ifdef DEBUG
+						#ifdef DEBUG_BP
 							printf("No tuple was created because unmerged area utilization was sufficient good.\n");
 						#endif
 					}
@@ -116,16 +123,16 @@ void BinPacking::create_all_tuples_to_use()
 	// after sorting, append single-form-tuples at the end:
 	all_efficient_form_tuples.insert(all_efficient_form_tuples.end(), all_single_form_tuples.begin(), all_single_form_tuples.end());
 
-	// delete all_single_form_tuples:
+	// delete vector all_single_form_tuples:
 	all_single_form_tuples.clear();
 	all_single_form_tuples.shrink_to_fit();
 
-	#ifdef DEBUG
+	#ifdef DEBUG_BP
 		printf("all efficient tuples sorted:\n");
 		for (int i=0; i < all_efficient_form_tuples.size(); ++i)
 		{
 			printf("\t%i with efficiency %.2f\n", i, all_efficient_form_tuples[i].get_utilization());
-			printf("\t%s\n", all_efficient_form_tuples[i].to_string().c_str());
+			printf("\t%s", all_efficient_form_tuples[i].to_string().c_str());
 		}
 	#endif
 
@@ -143,20 +150,36 @@ void BinPacking::create_all_tuples_to_use()
 			(all_efficient_form_tuples[tuple_index].get_dy() - problem->get_plane_width() < GlobalParams::get_tolerance() &&
 			all_efficient_form_tuples[tuple_index].get_dx() - problem->get_plane_height()< GlobalParams::get_tolerance()))
 		{
+			vector<int> ids_of_forms_used_in_tuple(0);
+			int maximum_amount_of_forms_used = 1;
 			for (int form_index = 0; form_index < all_efficient_form_tuples[tuple_index].get_number_of_forms(); ++form_index)
 			{
 				int current_form_id = all_efficient_form_tuples[tuple_index].get_configuration_of_form(form_index)->get_id_of_form();
 				int current_form_amount = number_of_forms_needed[current_form_id];
+
+				bool id_not_found = true;
+				for (int i=0; i<ids_of_forms_used_in_tuple.size() && id_not_found; ++i)
+					if (ids_of_forms_used_in_tuple[i] == current_form_id)
+					{
+						id_not_found = false;
+						maximum_amount_of_forms_used++;
+					}
+				if (id_not_found)
+					ids_of_forms_used_in_tuple.push_back(current_form_id);
+
 				if (use_number == -1)
 					use_number = current_form_amount;
 				else if (current_form_amount < use_number)
 					use_number = current_form_amount;
 
-				#ifdef DEBUG
+				#ifdef DEBUG_BP
 					printf("Considering form %i of tuple %i:\n", form_index, tuple_index);
 					printf("\tHas id: %i and amount: %i\n", current_form_id, current_form_amount);
 				#endif
 			}
+
+			use_number /= maximum_amount_of_forms_used;
+
 			if (use_number > 0)
 			{
 				for (int form_index = 0; form_index < all_efficient_form_tuples[tuple_index].get_number_of_forms(); ++form_index)
@@ -243,7 +266,7 @@ void BinPacking::create_initial_sorting()
 	TupleComparatorDimension tcd(&all_form_tuples_to_use);
 	std::sort(all_tuples_to_use_sorted_by_size.begin(), all_tuples_to_use_sorted_by_size.end(), tcd);
 
-	#ifdef DEBUG
+	#ifdef DEBUG_BP
 		printf("All_tuples_to_use_sorted_by_size:\n");
 		for (int i=0; i < all_tuples_to_use_sorted_by_size.size(); ++i)
 			printf("\tTuple at position %i: %i\n", i, all_tuples_to_use_sorted_by_size[i]);
@@ -500,3 +523,7 @@ void BinPacking::add_form_config_tuple_to_setting(AbstractFormConfigurationTuple
 			);
 	}
 }
+
+#ifdef DEBUG_BP
+	#undef DEBUG_BP
+#endif

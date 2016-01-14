@@ -115,13 +115,13 @@ public:
 	void mirror();
 
 	/*!
-	 *  Getter for x-position of form
+	 *  Getter for x-position of the first point of the form in this configuration
 	 */
 	float get_x()
 	{return position_x_of_form;};
 
 	/*!
-	 *  Getter for y-position of form
+	 *  Getter for y-position of the first point of the form in this configuration
 	 */
 	float get_y()
 	{return position_y_of_form;};
@@ -137,6 +137,18 @@ public:
 	 */
 	bool is_mirrored()
 	{return mirrored_form;};
+
+	/*!
+	 *  Get the minimum position on x-dimension of any point of the form in this configuration
+	 */
+	float get_min_x()
+	{return min_x;};
+
+	/*!
+	 *  Get the minimum position on x-dimension of any point of the form in this configuration
+	 */
+	float get_min_y()
+	{return min_y;};
 
     /*!
      *  Get the size of the bounding box in x direction.

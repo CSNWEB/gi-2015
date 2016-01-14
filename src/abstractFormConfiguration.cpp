@@ -1,5 +1,9 @@
 #include "abstractFormConfiguration.hpp"
 
+#ifdef DEBUG
+	#define DEBUG_AFC
+#endif
+
 AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, bool mirrored, int number_of_forms_needed)
 {
 	#ifdef DEBUG
@@ -32,6 +36,8 @@ void AbstractFormConfiguration::compute_bounding_box()
 	for (int i=0; i<p_temp.size(); ++i)
 	{
 		p_temp[i] = form->get_point_at_index(i);
+		//p_temp[i].move_rel(position_x_of_form, position_y_of_form);
+
 		if (i==0)
 		{
 			min_x = p_temp[0].get_x();
@@ -57,12 +63,31 @@ void AbstractFormConfiguration::compute_bounding_box()
 	if (mirrored_form)
 		PointSetAlgorithms::mirror_pointset_at_axis(p_temp, min_y, max_y);
 
+	#ifdef DEBUG_AFC
+		printf("Points pre rotation:\n");
+		for (int i=0; i<p_temp.size(); ++i)
+		{
+			printf("(%.2f/%.2f) ", p_temp[i].get_x(), p_temp[i].get_y());
+		}
+		printf("\n");
+	#endif
+
 	PointSetAlgorithms::rotate_pointset_at_point(p_temp, 0, 0, rotation_of_form, min_x, max_x, min_y, max_y);
+
+	#ifdef DEBUG_AFC
+		printf("Points post rotation:\n");
+		for (int i=0; i<p_temp.size(); ++i)
+		{
+			printf("(%.2f/%.2f) ", p_temp[i].get_x(), p_temp[i].get_y());
+		}
+		printf("\n");
+	#endif
 
 	min_x += position_x_of_form;
 	max_x += position_x_of_form;
 	min_y += position_y_of_form;
 	max_y += position_y_of_form;
+
 }
 
 void AbstractFormConfiguration::mirror()
@@ -96,15 +121,23 @@ void AbstractFormConfiguration::rotate(float angle)
 	#endif
 
 	rotation_of_form += angle;
+	if (rotation_of_form >= 360)
+		rotation_of_form -= 360;
+	if (rotation_of_form < 0)
+		rotation_of_form += 360;
 
-	float s = sin(rotation_of_form * GlobalParams::pi()/180);
-    float c = cos(rotation_of_form * GlobalParams::pi()/180);
+	float s = sin(angle * GlobalParams::pi()/180);
+    float c = cos(angle * GlobalParams::pi()/180);
 
-	float new_x = (position_x_of_form * c) - (position_y_of_form * s);
-	float new_y = (position_x_of_form * s) + (position_y_of_form * s);
+	float new_pos_x = (position_x_of_form * c) - (position_y_of_form * s);
+	float new_pos_y = (position_x_of_form * s) + (position_y_of_form * c);
 
-	position_x_of_form = new_x;
-	position_y_of_form = new_y;
+	position_x_of_form = new_pos_x;
+	position_y_of_form = new_pos_y;
 
 	compute_bounding_box();
 }
+
+#ifdef DEBUG_AFC
+	#undef DEBUG_AFC
+#endif

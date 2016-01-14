@@ -53,7 +53,7 @@ private:
 	/*!
 	 *  Updates the float-values describing the bounding box and used_area after a form-configuration was added to this tuple.
 	 */
-	void update_bounding_box();
+	//void update_bounding_box();
 
 public:
 	/*!

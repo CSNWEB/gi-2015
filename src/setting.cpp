@@ -138,6 +138,8 @@ bool Setting::add_form_to_plane_at_position(
 		printf("FUNCITON: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	printf("Add Form %s to plane %i:\n\tat position %.2f/%.2f with rotation %.2f\n", form->get_name().c_str(), index_of_plane, position_x, position_y, rot);
+
 	if (index_of_plane < planes.size())
 	{
 		planes[index_of_plane].add_form_at_position_rotation(form, position_x, position_y, rot, mirror);
