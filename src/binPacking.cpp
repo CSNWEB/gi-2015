@@ -504,6 +504,12 @@ int BinPacking::get_number_of_missing_tuples()
 		return problem->get_total_number_of_all_forms();
 }
 
+
+Setting BinPacking::get_current_setting()
+{
+    return setting;
+}
+
 void BinPacking::add_form_config_tuple_to_setting(AbstractFormConfigurationTuple* tuple, int plane_index, float position_x, float position_y)
 {
 	for (int form_index = 0; form_index < tuple->get_number_of_forms(); ++form_index)

@@ -5,6 +5,7 @@
 #include <QString>
 #include <problem.hpp>
 #include <setting.hpp>
+#include <binPacking.hpp>
 
 class SvgView;
 class ProblemManager;
@@ -28,6 +29,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
+
+public slots:
+    void updateResultView();
 
 private slots:
     void on_solveButton_clicked();
@@ -64,7 +68,12 @@ private slots:
 
     void on_pointAmount_valueChanged(int arg1);
 
-    void on_pushButton_2_clicked();
+    void on_pushButton_2_clicked();    
+
+    void on_toleranceSpinBox_valueChanged(int arg1);
+
+    void on_showCaseCheckBox_clicked(bool checked);       
+
 
 private:
     Ui::MainWindow *ui;
@@ -73,6 +82,8 @@ private:
 
     FormView *m_formview;
 
+    FormView *m_resultview;
+
     QString m_currentPath;
 
     ProblemManager *pm;
@@ -80,6 +91,11 @@ private:
     vector<QDialog> editFormDialogs;
 
     Setting setting;
+
+    BinPacking bin_packing;
+
+    void invalidForm(bool invalid);
+
 
 };
 

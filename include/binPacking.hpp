@@ -183,7 +183,7 @@ public:
 	 *  then for every form is placed on the first shelf it fits on.
 	 *  If there is no approriate shelf, a new shelf is created on the first plane with enough space.
 	 */
-	Setting get_packed_setting();
+	Setting  get_packed_setting();
 
 	/*!
 	 *  Get a specific used AbstractFormConfigurationTuple, specified by index of vector all_form_tuples_to_use

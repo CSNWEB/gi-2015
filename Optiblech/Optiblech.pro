@@ -1,4 +1,4 @@
-    #-------------------------------------------------
+#-------------------------------------------------
 #
 # Project created by QtCreator 2015-12-23T10:13:27
 #
@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     problemmanager.cpp \
     manageformdialog.cpp \
     managepointsdialog.cpp \
-    formview.cpp
+    formview.cpp \ 
+    ../src/validator.cpp
 
 HEADERS  += mainwindow.h \
     svgview.h \
@@ -53,7 +54,12 @@ FORMS    += mainwindow.ui \
 
 INCLUDEPATH = ../include
 
+
 CONFIG += c++11
 CONFIG += -stdlib=libstdc++
 QMAKE_CXX = clang++
 QMAKE_CC = clang
+
+RESOURCES += \
+    resources.qrc
+

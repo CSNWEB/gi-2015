@@ -11,11 +11,15 @@
 #include <math.h>
 #include <stdio.h>
 
-#define PI 3.14159265
 
 class GlobalParams
 {
 private:
+
+
+static constexpr float PI = 3.14159265;
+
+
 
 public:
 	/*!
@@ -40,6 +44,11 @@ public:
 	 */
 	static float pi()
 	{return PI;};
+    
+    /*!
+     * Initializes the values
+     */
+    void init();
 
 	/*!
 	 *  Set option_pre_merge_form
@@ -58,6 +67,11 @@ public:
 	 *  Getter for global tolerance which is applied when checking if a form overlaps with another form or the plane borders. If tolerance has not been defined yet, it is initialized to 1E-4 (i.e. tolerance_digits is initialized to 4).
 	 */
 	static float get_tolerance();
+    
+    /*!
+     * Getter for global tolerance digits which is applied when checking if a form overlaps with another form or the plane borders. If tolerance has not been defined yet, it is initialized to 4).
+     */
+    static int get_tolerance_digits();
 
 	/*!
 	 *  Set the relevant digits of the tolerance 
@@ -69,6 +83,8 @@ public:
 	 */
 	static int get_siginificant_digits()
 	{return tolerance_digits;};
+    
+    static bool is_init;
 };
 
 #endif
