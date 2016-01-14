@@ -11,14 +11,13 @@
 #include <math.h>
 #include <stdio.h>
 
-#define PI 3.14159265
 
 class GlobalParams
 {
 private:
 
 
-static const float PI = 3.14159265;
+static constexpr float PI = 3.14159265;
 
 
 
