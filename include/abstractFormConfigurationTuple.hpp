@@ -53,7 +53,7 @@ private:
 	/*!
 	 *  Updates the float-values describing the bounding box and used_area after a form-configuration was added to this tuple.
 	 */
-	void update_bounding_box();
+	//void update_bounding_box();
 
 public:
 	/*!
@@ -140,6 +140,13 @@ public:
 	 */
 	float get_utilization()
 	{return utilization;};
+
+	/*!
+	 *  Get the absolute improvement of area utilization of this tuple, i.e. the difference between the area of the bounding box of this tuple and the sum of all bounding boxes of contained forms.
+	 *
+	 *  @return 	A float describing the area difference of this tuple's bounding box vs. the sum of all bounding boxes of contained forms.
+	 */
+	float get_absolute_area_improvement();
 
 	/*!
 	 *  Getter for the number of AbstractForms

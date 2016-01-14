@@ -1,5 +1,9 @@
 #include "abstractFormConfigurationTuple.hpp"
 
+#ifdef DEBUG
+	#define DEBUG_AFCT
+#endif
+
 AbstractFormConfigurationTuple::AbstractFormConfigurationTuple(AbstractFormConfiguration form_config)
 {
 	#ifdef DEBUG
@@ -27,18 +31,18 @@ AbstractFormConfigurationTuple::AbstractFormConfigurationTuple(vector<AbstractFo
 
 	if (abstract_form_configs.size() > 0)
 	{
-		float x_min = abstract_form_configs[0].get_x();
+		float x_min = abstract_form_configs[0].get_min_x();
 		float x_max = x_min + abstract_form_configs[0].get_dx();
-		float y_min = abstract_form_configs[0].get_y();
+		float y_min = abstract_form_configs[0].get_min_y();
 		float y_max = y_min + abstract_form_configs[0].get_dy();
 
 		used_area = abstract_form_configs[0].get_used_area();
 
 		for (int index_of_form=1; index_of_form < abstract_form_configs.size(); ++index_of_form)
 		{
-			float x_min_t = abstract_form_configs[index_of_form].get_x();
+			float x_min_t = abstract_form_configs[index_of_form].get_min_x();
 			float x_max_t = x_min_t + abstract_form_configs[index_of_form].get_dx();
-			float y_min_t = abstract_form_configs[index_of_form].get_y();
+			float y_min_t = abstract_form_configs[index_of_form].get_min_y();
 			float y_max_t = y_min_t + abstract_form_configs[index_of_form].get_dy();
 
 			if (x_min_t < x_min)
@@ -56,6 +60,10 @@ AbstractFormConfigurationTuple::AbstractFormConfigurationTuple(vector<AbstractFo
 		dy = y_max - y_min;
 
 		utilization = used_area / (dx*dy);
+
+		#ifdef DEBUG
+			printf("used area = %.2f - utilization = %.2f\n", used_area, utilization);
+		#endif
 	}
 	else
 	{
@@ -70,18 +78,26 @@ AbstractFormConfigurationTuple::AbstractFormConfigurationTuple(vector<AbstractFo
 
 void AbstractFormConfigurationTuple::rotate(float angle)
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
 	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
 		abstract_form_configs[config_index].rotate(angle);
 }
 
 void AbstractFormConfigurationTuple::normalize_position()
 {
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+	
 	float x_min;
 	float y_min;
 	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
 	{
-		float x_tmp = abstract_form_configs[config_index].get_x();
-		float y_tmp = abstract_form_configs[config_index].get_y();
+		float x_tmp = abstract_form_configs[config_index].get_min_x();
+		float y_tmp = abstract_form_configs[config_index].get_min_y();
 		if (config_index == 0)
 		{
 			x_min = x_tmp;
@@ -95,41 +111,13 @@ void AbstractFormConfigurationTuple::normalize_position()
 				y_min = y_tmp;
 		}
 	}
-	#ifdef DEBUG
-		printf("normalize_position:\n\tmin x = %.2f\n\tmin y = %.2f\n", x_min, y_min);
+	#ifdef DEBUG_AFCT
+		printf("normalize_position to:\n\tmin x = %.2f\n\tmin y = %.2f\n", x_min, y_min);
 	#endif
+	
 
 	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
-		abstract_form_configs[config_index].move((-1) * x_min, (-1) *y_min);
-
-}
-
-void AbstractFormConfigurationTuple::update_bounding_box()
-{
-	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
-		
-	if (abstract_form_configs.size() > 0)
-	{
-		float x_min = abstract_form_configs[0].get_x();
-		float x_max = x_min + abstract_form_configs[0].get_dx();
-		float y_min = abstract_form_configs[0].get_y();
-		float y_max = y_min + abstract_form_configs[0].get_dy();
-
-		for (int index_of_form=1; index_of_form < abstract_form_configs.size(); ++index_of_form)
-		{
-			float x_min_t = abstract_form_configs[index_of_form].get_x();
-			float x_max_t = x_min_t + abstract_form_configs[index_of_form].get_dx();
-			float y_min_t = abstract_form_configs[index_of_form].get_y();
-			float y_max_t = y_min_t + abstract_form_configs[index_of_form].get_dy();
-
-			if (x_min_t < x_min)
-				x_min = x_min_t;
-			if (x_max_t > x_max)
-				x_max = x_max_t;
-		}	
-	}
+		abstract_form_configs[config_index].move(-x_min, -y_min);
 }
 
 void AbstractFormConfigurationTuple::set_number_of_usages(int number)
@@ -154,6 +142,17 @@ bool AbstractFormConfigurationTuple::contains_form(int id_of_form)
 	}
 
 	return false;
+}
+
+float AbstractFormConfigurationTuple::get_absolute_area_improvement()
+{
+	float sum_of_areas_of_boxes_of_contained_forns = 0;
+	for (int i=0; i<abstract_form_configs.size(); ++i)
+	{
+		sum_of_areas_of_boxes_of_contained_forns += abstract_form_configs[i].get_dx() * abstract_form_configs[i].get_dy();
+	}
+
+	return sum_of_areas_of_boxes_of_contained_forns - get_dx() * get_dy();
 }
 
 AbstractFormConfiguration *AbstractFormConfigurationTuple::get_configuration_of_form(int index_of_form)
@@ -196,3 +195,35 @@ string AbstractFormConfigurationTuple::to_string()
 	}
 	return s.str();
 }
+
+/*
+void AbstractFormConfigurationTuple::update_bounding_box()
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+		
+	if (abstract_form_configs.size() > 0)
+	{
+		float x_min = abstract_form_configs[0].get_x();
+		float x_max = x_min + abstract_form_configs[0].get_dx();
+		float y_min = abstract_form_configs[0].get_y();
+		float y_max = y_min + abstract_form_configs[0].get_dy();
+
+		for (int index_of_form=1; index_of_form < abstract_form_configs.size(); ++index_of_form)
+		{
+			float x_min_t = abstract_form_configs[index_of_form].get_x();
+			float x_max_t = x_min_t + abstract_form_configs[index_of_form].get_dx();
+			float y_min_t = abstract_form_configs[index_of_form].get_y();
+			float y_max_t = y_min_t + abstract_form_configs[index_of_form].get_dy();
+
+			if (x_min_t < x_min)
+				x_min = x_min_t;
+			if (x_max_t > x_max)
+				x_max = x_max_t;
+		}
+	}
+}
+*/
+
+//#undef DEBUG_AFCT

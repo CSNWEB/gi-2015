@@ -12,7 +12,7 @@ using namespace std;
 /*!
  *  Struct TupleComparatorUtilization
  *
- *  Struct used in sorting tuples by their utilization
+ *  Struct used in sorting tuples by their utilization. The ordering implied by this struct is by ABSOLUTE IMPROVEMENT of area utilization. 
  */
 struct TupleComparatorUtilization
 {
@@ -35,7 +35,7 @@ struct TupleComparatorUtilization
 			//printf("Compare values %.2f and %.2f\n", tuple_1.get_utilization(), tuple_2.get_utilization());
 		#endif
 
-		bool result = tuple_1.get_utilization() - tuple_2.get_utilization() > GlobalParams::get_tolerance();
+		bool result = tuple_1.get_absolute_area_improvement() - tuple_2.get_absolute_area_improvement() > GlobalParams::get_tolerance();
 		
 		return result;
 	};

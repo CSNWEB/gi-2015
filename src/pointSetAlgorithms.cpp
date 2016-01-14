@@ -102,7 +102,9 @@ bool PointSetAlgorithms::mirror_pointset_at_axis(vector<Point> &points, float y_
 	if (points.size() < 1)
 		return false;
 
-	printf("Mirror Pointset with ymin = %.2f, ymax = %.2f\n", y_min, y_max);
+	#ifdef DEBUG
+		printf("Mirror Pointset with ymin = %.2f, ymax = %.2f\n", y_min, y_max);
+	#endif
 
 	for (int point_index = 0; point_index < points.size(); ++point_index)
 	{
