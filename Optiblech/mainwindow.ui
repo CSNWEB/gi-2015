@@ -19,6 +19,10 @@
   <property name="styleSheet">
    <string notr="true">#centralWidget{
 	background:white;
+}
+
+QWidget{
+	font-family: Roboto;
 }</string>
   </property>
   <property name="tabShape">
@@ -35,7 +39,7 @@
        <bool>true</bool>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>

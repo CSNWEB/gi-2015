@@ -1,4 +1,4 @@
-    #-------------------------------------------------
+#-------------------------------------------------
 #
 # Project created by QtCreator 2015-12-23T10:13:27
 #
@@ -52,3 +52,6 @@ FORMS    += mainwindow.ui \
     managepointsdialog.ui
 
 INCLUDEPATH = ../include
+
+RESOURCES += \
+    resources.qrc
