@@ -4,13 +4,12 @@
 	#define DEBUG_AFC
 #endif
 
-AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, bool mirrored, int number_of_forms_needed)
+AbstractFormConfiguration::AbstractFormConfiguration(AbstractForm *form, float position_x, float position_y, float rotation, bool mirrored, int number_of_forms_needed) : form (form)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	this->form = form;
 	position_x_of_form = position_x;
 	position_y_of_form = position_y;
 	rotation_of_form   = rotation;

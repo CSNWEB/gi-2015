@@ -1,14 +1,14 @@
 #include "setting.hpp"
 
-Setting::Setting(Problem *p)
+Setting::Setting(Problem *p) : problem(p)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: Setting::Setting(Problem *p)\n");
 	#endif
 
-	problem = p;
+	//problem = p;
 
-	planes = vector<Plane>();
+	planes = vector<Plane>(0);
 
 	missing_forms = vector<int>(problem->get_number_of_different_forms());
 	for (int i=0; i<missing_forms.size(); ++i)

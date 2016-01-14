@@ -19,8 +19,8 @@ private:
     /*!
      *  A pointer to the problem this setting is based on.
      *  To acess the size of the planes and the forms.
-     */
-	Problem *problem;
+     */ 
+	Problem * const problem;
 
     /*!
      *  A vector of all planes used in this setting
@@ -36,7 +36,7 @@ public:
     /*!
      *  Default Constructor.
      */
-    Setting(){};
+    //Setting(){};
 
     /*!
      *  Constructor that initializes the problem.

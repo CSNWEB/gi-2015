@@ -231,7 +231,7 @@ public:
 	/*!
 	 *  Empty Constructor
 	 */
-	FormCombiner(){};
+	//FormCombiner(){};
 
 	/*!
 	 *  Default Constructor

@@ -1608,23 +1608,8 @@ bool Tests::test_sort_tuple_dimension_correct()
         3,2,1,0
     };
 
-/*
-    #ifdef DEBUG
-        printf("Pre sorting case 1:\n");
-        for (int i=0; i<4; ++i)
-           printf("\tForm %i with id: %i\n\tDimension: %.2f/%.2f\n", i, afct_vector[case_1[i]].get_configuration_of_form(0)->get_id_of_form(), afct_vector[case_1[i]].get_dx(), afct_vector[case_1[i]].get_dy());
-    #endif
-*/
 
     std::sort(case_1.begin(), case_1.end(), tcd);
-
-/*
-    #ifdef DEBUG
-        printf("Post sorting case 1:\n");
-        for (int i=0; i<4; ++i)
-            printf("\tForm %i with id: %i\n\tDimension: %.2f/%.2f\n", i, afct_vector[case_1[i]].get_configuration_of_form(0)->get_id_of_form(), afct_vector[case_1[i]].get_dx(), afct_vector[case_1[i]].get_dy());
-    #endif
-*/
 
     if(!(
         afct_vector[case_1[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&

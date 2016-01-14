@@ -1,50 +1,12 @@
 #include "form.hpp"
 
-Form::Form(AbstractForm* mother)
-{
-	#ifdef DEBUG
-		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
-	#endif
-		
-	this->mother = mother;
-
-	x_min = 0;
-	x_max = mother->get_dx();
-	y_min = 0;
-	y_max = mother->get_dy();
-
-	number_of_edges = mother->get_number_of_points();
-
-	points = vector<Point>(number_of_edges);
-	edges  = vector<Edge>(number_of_edges);
-
-	points[0] = mother->get_point_at_index(0);
-
-	for (int i=1; i<number_of_edges; ++i)
-	{
-		points[i] = mother->get_point_at_index(i);
-		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
-
-		#ifdef DEBUG
-			printf("\tcheck new edge\n");
-			edges[i-1]._d_print_edge_to_console();
-		#endif
-	}
-
-	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
-}
-
-Form::Form(AbstractForm *mother, float pos_x, float pos_y)
+Form::Form(AbstractForm *mother, float pos_x, float pos_y)  : mother(mother), x_min(pos_x), y_min(pos_y)
 {	
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	this->mother = mother;
-
-	x_min = pos_x;
 	x_max = pos_x + mother->get_dx();
-	y_min = pos_y;
 	y_max = pos_y + mother->get_dy();
 
 	number_of_edges = mother->get_number_of_points();

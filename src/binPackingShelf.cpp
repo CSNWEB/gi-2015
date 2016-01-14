@@ -18,14 +18,14 @@ BinPackingShelf::BinPackingShelf(int plane, float width, float height, float off
 	this->offset_y 			= offset_y;
 }
 
-float BinPackingShelf::try_add_form_config_tuple(AbstractFormConfigurationTuple *tuple)
+float BinPackingShelf::try_add_form_config_tuple(AbstractFormConfigurationTuple &tuple)
 {
 #ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	float max_h = tuple->get_dy();
-	float max_w = tuple->get_dx();
+	float max_h = tuple.get_dy();
+	float max_w = tuple.get_dx();
 
 	if ((max_h < height + GlobalParams::get_tolerance()) && (max_w < remaining_width + GlobalParams::get_tolerance()))
 	{
@@ -36,7 +36,7 @@ float BinPackingShelf::try_add_form_config_tuple(AbstractFormConfigurationTuple 
 
 		remaining_width -= max_w;
 
-		number_of_forms += tuple->get_number_of_forms();
+		number_of_forms += tuple.get_number_of_forms();
 
 		return height-max_h;
 	}
@@ -51,13 +51,13 @@ float BinPackingShelf::try_add_form_config_tuple(AbstractFormConfigurationTuple 
 	}
 }
 
-bool BinPackingShelf::check_if_fit(AbstractForm *f)
+bool BinPackingShelf::check_if_fit(AbstractForm &f)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if ((f->get_dy() < height + GlobalParams::get_tolerance()) && (f->get_dx() < remaining_width + GlobalParams::get_tolerance()))
+	if ((f.get_dy() < height + GlobalParams::get_tolerance()) && (f.get_dx() < remaining_width + GlobalParams::get_tolerance()))
 		return true;
 	else
 		return false;

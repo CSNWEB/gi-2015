@@ -27,7 +27,7 @@ AbstractFormConfigurationTuple::AbstractFormConfigurationTuple(vector<AbstractFo
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	abstract_form_configs = form_config_vector;
+	abstract_form_configs = vector<AbstractFormConfiguration>(form_config_vector);
 
 	if (abstract_form_configs.size() > 0)
 	{

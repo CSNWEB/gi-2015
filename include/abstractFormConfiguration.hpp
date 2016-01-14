@@ -97,7 +97,10 @@ public:
 	 *	
 	 *  form 		the AbstractForm described by this configuration
 	 */
-	AbstractFormConfiguration(AbstractForm *form, int number_of_forms_needed = -1) : AbstractFormConfiguration(form, 0, 0, 0, false, number_of_forms_needed){};
+	AbstractFormConfiguration(
+		AbstractForm *form,
+		int number_of_forms_needed = -1
+		) : AbstractFormConfiguration(form, 0, 0, 0, false, number_of_forms_needed){};
 
 	/*!
 	 *  Move the position of this configuration
