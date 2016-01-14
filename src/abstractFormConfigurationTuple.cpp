@@ -144,6 +144,17 @@ bool AbstractFormConfigurationTuple::contains_form(int id_of_form)
 	return false;
 }
 
+float AbstractFormConfigurationTuple::get_absolute_area_improvement()
+{
+	float sum_of_areas_of_boxes_of_contained_forns = 0;
+	for (int i=0; i<abstract_form_configs.size(); ++i)
+	{
+		sum_of_areas_of_boxes_of_contained_forns += abstract_form_configs[i].get_dx() * abstract_form_configs[i].get_dy();
+	}
+
+	return sum_of_areas_of_boxes_of_contained_forns - get_dx() * get_dy();
+}
+
 AbstractFormConfiguration *AbstractFormConfigurationTuple::get_configuration_of_form(int index_of_form)
 {
 	#ifdef DEBUG
