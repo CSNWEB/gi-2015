@@ -17,6 +17,7 @@
 #include "form.hpp"
 #include "plane.hpp"
 #include "setting.hpp"
+#include "globalParams.hpp"
 
 class Validator
 {

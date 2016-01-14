@@ -72,13 +72,21 @@ public:
     /*!
      *  Adds a form to a plane at a specific position
      *
-     *  @param index_of_plane 		the index of the plane to which the new form should be added
-     *  @param index_of_form 		the index of the abstract form that should be added
-     *  @param dx 					the x-position of the new form
-     *  @param dy 					the y-position of the new form
-     *  @param rot					the rotation in degree of the new form
+     *  @param form                 A pointer to the AbstractForm that should be added.
+     *  @param index_of_plane       The index of the plane to which the new form should be added.
+     *  @param position_x           The x-position of the new form.
+     *  @param position_y           The y-position of the new form.
+     *  @param rot                  The rotation in degree of the new form.
+     *  @param mirror               A bool describing if the form is mirrored
      */
-    void add_form_to_plane_at_position(int index_of_plane, int index_of_form, float dx, float dy, float rot);
+    bool add_form_to_plane_at_position(
+        AbstractForm *form,
+        int index_of_plane,
+        float position_x,
+        float position_y,
+        float rot,
+        bool mirror
+        );
 
     /*!
      *  Compute the total efficiency (i.e. utilization) of the current setting

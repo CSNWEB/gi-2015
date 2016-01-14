@@ -14,6 +14,7 @@
 
 #include "point.hpp"
 #include "plane.hpp"
+#include "pointSetAlgorithms.hpp"
 #include "globalParams.hpp"
 
 using namespace std;
@@ -21,6 +22,10 @@ using namespace std;
 class AbstractForm
 {
 private:
+    /*!
+     *  The total number of AbstractForms, used as id
+     */
+    static int total_number_of_abstract_forms;
     
     /*!
      *  The number of points that the form is made of.
@@ -77,13 +82,6 @@ private:
      *  The size of the area of the form.
      */
 	float size_of_area;
-	
-    /*!
-     *  Sorts points in x-dimension.
-     *
-     *  Uses in-place insertion-sort for small amount of points
-     */
-    vector<int> sort_points_dim_x();
 
     /*!
      *  All points that belong to the convex hull, stored by their indices in vector<Point> points
@@ -120,7 +118,12 @@ public:
     /*!
      *  Default constructor
      */
-	AbstractForm(){id = -1;};
+	AbstractForm() : AbstractForm("", vector<Point>(0)){};
+
+    /*!
+     *  Copy constructor
+     */
+    AbstractForm(AbstractForm const &original) : AbstractForm(original.name, vector<Point>(original.points)){};
 
     /*!
      *  Constructor that initializes the form with a name and its points.
@@ -128,16 +131,7 @@ public:
      *  @param name     A string that represents the name of the form.
      *  @param points   A vector of type "Point" that form the form.
      */
-    AbstractForm(string name, vector<Point> points);
-
-    /*!
-     *  Constructor that initializes the form with a name and its points.
-     *
-     *  @param name     A string that represents the name of the form.
-     *  @param points   A vector of type "Point" that form the form.
-     *  @param id       A global (i.e. problem-wide) identifier for this AbstractForm.
-     */
-	AbstractForm(string name, vector<Point> points, int id);
+	AbstractForm(string name, vector<Point> points);
 
     /*!
      *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
@@ -148,7 +142,7 @@ public:
      *
      *  @return                     the angle defining the specified rotation in degrees
      */
-    float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
+    //float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
 
     /*!
      *  Check if this form fits on a plane with given dimensions.
@@ -187,7 +181,7 @@ public:
     /*!
      *  Move a form such all points have x- and y-coordinates >= 0
      *  and also ensure that width >= height, by flipping form at axis x=y (if necessary and possible by size of plane).
-     *  Needs curent minimal position and dimensions of plane!
+     *  Needs current minimal position and dimensions of plane!
      *
      *  @param x_min        current minimal position of any point on x-axis
      *  @param y_min        current minimal position of any point on y-axis
@@ -223,12 +217,21 @@ public:
     int get_id(){return id;}; 
 
     /*!
+     *  Get the minimum x-dimension of this form.
+     */
+    float get_x(){return min_x;};
+
+    /*!
+     *  Get the minimum y-dimension of this form.
+     */
+    float get_y(){return min_y;};
+
+    /*!
      *  Get the size of the bounding box of the form in x direction.
      *
      *  @return A float representing size of the bounding box of the form in x direction.
      */
 	float get_dx();
-
     
     /*!
      *  Get the size of the bounding box of the form in y direction.
@@ -236,7 +239,6 @@ public:
      *  @return A float representing the size of the bounding box of the form in y direction.
      */
 	float get_dy();
-    
     
     /*!
      *  The size of the area of the abstract form.
@@ -305,6 +307,13 @@ public:
      */
     void move_down_point_at_index(int index);
     
+    /*!
+     *  Determines whether the form overlaps itself, i.e. at least one edge
+     *  of the AbstractForm is crossing another one.
+     *
+     *  @return true if at least one edge of the form crosses another one, false if not.
+     */
+    bool overlaps_itself();
 };
 
 #endif

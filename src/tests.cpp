@@ -11,6 +11,11 @@ bool Tests::test_everything()
 {
     std::cout << "Testing everthing:" << std::endl;
 
+    if (!test_points())
+    {
+        return false;
+    }
+
     if (!test_edge_cross())
     {
         return false;
@@ -21,12 +26,103 @@ bool Tests::test_everything()
         return false;
     }
 
+    if (!test_form_movement())
+    {
+        return false;
+    }
+
     if (!test_validator())
+    {
+        return false;
+    }
+
+    if (!test_bin_packing())
+    {
+        return false;
+    }
+
+    if (!test_point_set_algo())
     {
         return false;
     }
     
     std::cout << "All tests: [SUCCEEDED]" << std::endl;
+    return true;
+}
+
+#pragma mark - Points
+
+bool Tests::test_is_left_of()
+{
+    bool success_all_tests = true;
+    Point point_line_1 = Point(0, 0);
+    Point point_line_2 = Point(2, 0);
+
+    Point point_left = Point(1,1);
+    Point point_right = Point(1,-1);
+
+    Point point_left_b = Point(0,1);
+    Point point_right_b = Point(0,-1);
+
+    Point point_left_c = Point(2,1);
+    Point point_right_c = Point(2,-1);
+
+    if (!(point_left.is_left_of(&point_line_1, &point_line_2) > 0))
+    {
+        std::cout << "[FAILED] on case 1";
+        success_all_tests =  false;
+    }
+
+    if (!(point_right.is_left_of(&point_line_1, &point_line_2) < 0))
+    {
+        std::cout << "[FAILED] on case 2";
+        success_all_tests =  false;
+    }
+
+    if (!(point_left_b.is_left_of(&point_line_1, &point_line_2) > 0))
+    {
+        std::cout << "[FAILED] on case 3";
+        success_all_tests =  false;
+    }
+
+    if (!(point_right_b.is_left_of(&point_line_1, &point_line_2) < 0))
+    {
+        std::cout << "[FAILED] on case 4";
+        success_all_tests =  false;
+    }
+
+    if (!(point_left_c.is_left_of(&point_line_1, &point_line_2) > 0))
+    {
+        std::cout << "[FAILED] on case 5";
+        success_all_tests =  false;
+    }
+
+    if (!(point_right_c.is_left_of(&point_line_1, &point_line_2) < 0))
+    {
+        std::cout << "[FAILED] on case 6";
+        success_all_tests =  false;
+    }
+
+    return success_all_tests;
+}
+
+bool Tests::test_points()
+{
+    std::cout << "Testing points: " << std::endl;
+
+    // Crossing edges
+
+    std::cout << "Testing is-left-of: ";
+    if (test_is_left_of())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
     return true;
 }
 
@@ -53,8 +149,8 @@ bool Tests::test_crossing_edges()
      *
      *  The test passes if both times the cross is recognized.
      */
-    if (top_left_to_bottom_right.check_if_crosses(&top_right_to_bottom_left) &&
-        top_right_to_bottom_left.check_if_crosses(&top_left_to_bottom_right))
+    if (top_left_to_bottom_right.crosses(&top_right_to_bottom_left) &&
+        top_right_to_bottom_left.crosses(&top_left_to_bottom_right))
     {
         return true;
     }
@@ -85,8 +181,8 @@ bool Tests::test_parallel_edges()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right.check_if_crosses(&bottom_left_to_bottom_right) &&
-        !bottom_left_to_bottom_right.check_if_crosses(&top_left_to_top_right))
+    if (!top_left_to_top_right.crosses(&bottom_left_to_bottom_right) &&
+        !bottom_left_to_bottom_right.crosses(&top_left_to_top_right))
     {
         return true;
     }
@@ -117,8 +213,8 @@ bool Tests::test_edges_same_points()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right_1.check_if_crosses(&top_left_to_top_right_2) &&
-        !top_left_to_top_right_2.check_if_crosses(&top_left_to_top_right_1))
+    if (!top_left_to_top_right_1.crosses(&top_left_to_top_right_2) &&
+        !top_left_to_top_right_2.crosses(&top_left_to_top_right_1))
     {
         return true;
     }
@@ -148,8 +244,8 @@ bool Tests::test_meeting_edges()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right.check_if_crosses(&bottom_left_to_top_left) &&
-        !bottom_left_to_top_left.check_if_crosses(&top_left_to_top_right))
+    if (!top_left_to_top_right.crosses(&bottom_left_to_top_left) &&
+        !bottom_left_to_top_left.crosses(&top_left_to_top_right))
     {
         return true;
     }
@@ -504,6 +600,236 @@ bool Tests::test_non_overlap_triangle()
 }
 
 /**
+ *  A simple square and trinagle that do not overlap theirselves. The test 
+ *  checks whether the function recognizes this.
+ *
+ *  @return true, if the test passes, false if not.
+ */
+bool Tests::test_abstract_form_overlaps_itself_not()
+{
+    // A square of length one. One corner is at the origin.
+    std::vector<Point> square_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm square = AbstractForm("square", square_points);
+    
+    // A triangle pointing to the right
+    std::vector<Point> triangle_right_points {
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(0.5, 0.5),
+    };
+    
+    AbstractForm triangle = AbstractForm("triangle", triangle_right_points);
+    
+    return !square.overlaps_itself() && ! triangle.overlaps_itself();
+}
+
+/**
+ *  An hourglass form and a malformed bucket where each is overlapping itself. 
+ *  The test checks whether the function recognizes this.
+ *
+ *  @return true, if the test passes, false if not.
+ */
+bool Tests::test_abstract_form_overlaps_itself()
+{
+    // An hourglass form. One corner is at the origin.
+    std::vector<Point> hourglass_points {
+        Point(0.0, 0.0),
+        Point(1.0, 1.0),
+        Point(0.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    
+    AbstractForm hourglass = AbstractForm("square", hourglass_points);
+    
+    // A malformed bucket
+    std::vector<Point> bucket_points {
+        Point(1.0, 0.0),
+        Point(1.0, 4.0),
+        Point(2.0, 4.0),
+        Point(0.0, 2.0),
+        Point(2.0, 0.0),
+    };
+    
+    AbstractForm bucket = AbstractForm("bucket", bucket_points);
+    
+    return hourglass.overlaps_itself() && bucket.overlaps_itself();
+}
+
+bool Tests::test_form_rotation()
+{
+    bool success_all_tests = true;
+
+    // init forms:
+    // simple square
+    vector<Point> points_square{
+        Point(0,0),
+        Point(1,0),
+        Point(1,1),
+        Point(0,1)
+    };
+    AbstractForm abst_square("Form1", points_square);
+
+    // triangle 1
+    vector<Point> points_triangle_1{
+        Point(0,0),
+        Point(1,0),
+        Point(0,1)
+    };
+    AbstractForm abst_triangle("Form2", points_triangle_1);
+
+    //triangle 2
+    float sqrt2 = sqrt(2);
+    vector<Point> points_triangle_2{
+        Point(sqrt2,0),
+        Point(sqrt2/2,sqrt2/2),
+        Point(0,0)
+    };
+    AbstractForm abst_triangle2("Form3", points_triangle_2);
+
+    //triangle 3
+    vector<Point> points_triangle_3{
+        Point(sqrt2/2,-sqrt2/2),
+        Point(0,0),
+        Point(sqrt2,0)
+    };
+    AbstractForm abst_triangle3("Form4", points_triangle_3);
+
+    // case 1: rotate by 90 degrees at (0/0)
+    Form form_square_1(&abst_square);
+    form_square_1.rotate(0,0,90);
+
+    //form_square_1._d_print_points_to_console();
+    if (!(
+        abs(form_square_1.get_point_at(0)->get_x() - 0)   < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(0)->get_y() - 0)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(1)->get_x() - 0)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(1)->get_y() - 1)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(2)->get_x() - (-1)) < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(2)->get_y() - 1)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(3)->get_x() - (-1)) < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(3)->get_y() - 0)    < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 2: rotate by 90 degrees at (1/1)
+    Form form_square_2(&abst_square);
+    form_square_2.rotate(1,1,90);
+    if (!(
+        abs(form_square_2.get_point_at(0)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(1)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(2)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(3)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(3)->get_y() - 0) < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 3: rotate by 90 degrees at (2/0)
+    Form form_square_3(&abst_square);
+    form_square_3.rotate(2,0,90);
+    if (!(
+        abs(form_square_3.get_point_at(0)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(0)->get_y() + 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(1)->get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(1)->get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(3)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(3)->get_y() + 2) < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 4: rotate by 180 degrees at (0/0)
+    Form form_square_4(&abst_square);
+    form_square_4.rotate(0,0,180);
+    if (!(
+        abs(form_square_4.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(1)->get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(2)->get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(3)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(3)->get_y() + 1) < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 5: rotate triangle by 90 degrees at (0/0)
+    Form form_triang_1(&abst_triangle);
+    form_triang_1.rotate(0,0,90);
+    if (!(
+        abs(form_triang_1.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(2)->get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(2)->get_y() - 0) < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 6: rotate triangle by 180 degrees at (0/0)
+    Form form_triang_1_2(&abst_triangle);
+    form_triang_1_2.rotate(0,0,180);
+    if (!(
+        abs(form_triang_1_2.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(1)->get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(2)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance()
+        ))
+        success_all_tests = false;
+
+    // case 7: rotate triangle2 by 45 degree at (0/0)
+    Form form_triang_2(&abst_triangle2);
+    form_triang_2.rotate(0,0,45);
+    if (!(
+        abs(form_triang_2.get_point_at(0)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(0)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(2)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(2)->get_y() - 0) < GlobalParams::get_tolerance()
+        ))
+    {
+        success_all_tests = false;
+        #ifdef DEBUG
+            cout << "Failed at case 7\n";
+            form_triang_2._d_print_points_to_console();
+        #endif
+    }
+
+    // case 8: rotate triangle3 by 45 degree at (0/0)
+    Form form_triang_3(&abst_triangle3);
+    form_triang_3.rotate(0,0,45);
+    if (!(
+        abs(form_triang_3.get_point_at(0)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(2)->get_y() - 1) < GlobalParams::get_tolerance()
+        ))
+    {
+        success_all_tests = false;
+        #ifdef DEBUG
+            cout  << "Failed at case 8\n";
+            form_triang_3._d_print_points_to_console();
+        #endif
+    }
+
+    return success_all_tests;
+}
+
+/**
  *  Tests whether methods dealing with edge crosses work as intended.
  *
  *  @return True, if all tests are successful, false if at least one test fails.
@@ -602,9 +928,57 @@ bool Tests::test_form_overlap()
         std::cout << "[FAILED]" << std::endl;
         return false;
     }
+    
+    // Square not overlapping itself
+    
+    std::cout << "Testing abstractforms not overlapping themselves: ";
+    if (test_abstract_form_overlaps_itself_not())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+    
+    // Hourglass overlapping itself
+    
+    std::cout << "Testing abstractforms overlapping themselves: ";
+    if (test_abstract_form_overlaps_itself())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
 
-    std::cout << "All edge tests: [SUCCEEDED]" << std::endl;
+    std::cout << "All overlap tests: [SUCCEEDED]" << std::endl;
     return true;
+}
+
+bool Tests::test_form_movement()
+{
+    std::cout << "Testing form movement: " << std::endl;
+
+    // Disjoint forms
+
+    std::cout << "Testing forms rotation: ";
+    if (test_form_rotation())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
+    std::cout << "All form movement tests: [SUCCEEDED]" << std::endl;
+    return true;
+
 }
 
 #pragma mark - Validator
@@ -1030,5 +1404,932 @@ bool Tests::test_validator()
     }
     
     std::cout << "All validator tests: [SUCCEEDED]" << std::endl;
+    return true;
+}
+
+#pragma mark - BinPacking
+
+/*!
+ *  Given a vector of AbstractFormConfigurationTuple with different area utilization, test if the relation operator defined in TupleComparatorUtilization orders them correct
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_sort_tuple_utilization_correct()
+{
+    /**
+     *  General Initialization
+     */
+    bool success_all_tests = true;
+
+    // create an AbstractFormConfiguration with good area utilization:
+    vector<Point> pts_form_1{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    AbstractForm form_1("form_1", pts_form_1);
+    int id_1 = form_1.get_id();
+
+    AbstractFormConfigurationTuple tuple_1(
+        AbstractFormConfiguration(
+            &form_1, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with medium area utilization:
+    vector<Point> pts_form_2{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 0.0)
+    };
+
+    AbstractForm form_2("form_2", pts_form_2);
+    int id_2 = form_2.get_id();
+
+    AbstractFormConfigurationTuple tuple_2(
+        AbstractFormConfiguration(
+            &form_2, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with bad area utilization:
+    vector<Point> pts_form_3{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(0.1, 0.1),
+        Point(1.0, 0.0)
+    };
+
+    AbstractForm form_3("form_3", pts_form_3);
+    int id_3 = form_3.get_id();
+
+    AbstractFormConfigurationTuple tuple_3(
+        AbstractFormConfiguration(
+            &form_3, 0, 0, 0, false));
+
+    /**
+     *  Initialization of test instances and testing:
+     */
+
+    // case: vector is sorted:
+    vector<AbstractFormConfigurationTuple> afct_vector_1{
+        tuple_1,
+        tuple_2,
+        tuple_3
+    };
+
+    TupleComparatorUtilization tcu(&afct_vector_1);
+
+    std::sort(afct_vector_1.begin(), afct_vector_1.end(), tcu);
+
+    if(!(
+        afct_vector_1[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector_1[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector_1[2].get_configuration_of_form(0)->get_id_of_form() == id_3
+         ) == true)
+        success_all_tests = false;
+
+    // case: vector is reverse sorted:
+    vector<AbstractFormConfigurationTuple> afct_vector_2{
+        tuple_3,
+        tuple_2,
+        tuple_1
+    };
+
+    tcu = TupleComparatorUtilization(&afct_vector_2);
+
+    std::sort(afct_vector_2.begin(), afct_vector_2.end(), tcu);
+
+    if(!(
+        afct_vector_2[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector_2[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector_2[2].get_configuration_of_form(0)->get_id_of_form() == id_3
+         ) == true)
+        success_all_tests = false;
+
+    // case: vector is unsorted:
+    vector<AbstractFormConfigurationTuple> afct_vector_3{
+        tuple_2,
+        tuple_1,
+        tuple_3
+    };
+
+    tcu = TupleComparatorUtilization(&afct_vector_3);
+
+    std::sort(afct_vector_3.begin(), afct_vector_3.end(), tcu);
+
+    if(!(
+        afct_vector_3[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector_3[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector_3[2].get_configuration_of_form(0)->get_id_of_form() == id_3
+        ) == true)
+        success_all_tests = false;
+
+    return success_all_tests;
+}
+
+/*!
+ *  Given a vector of AbstractFormConfigurationTuple with different dimension, test if the relation operator defined in TupleComparatorDimension orders them correct
+ *
+ *  @return True if the test passes, false if not.
+ */
+bool Tests::test_sort_tuple_dimension_correct()
+{
+    /**
+     *  General Initialization
+     */
+
+    bool success_all_tests = true;
+
+    // create an AbstractFormConfiguration with large x-dim and large y_dim:
+    vector<Point> pts_form_lxly{
+        Point(0.0, 0.0),
+        Point(0.0, 2.0),
+        Point(2.0, 2.0),
+        Point(2.0, 0.0)
+    };
+    AbstractForm form_1("form_1", pts_form_lxly);
+    int id_1 = form_1.get_id();
+    AbstractFormConfigurationTuple tuple_lxly(
+        AbstractFormConfiguration(
+            &form_1, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with large x-dim and small y_dim:
+    vector<Point> pts_form_lxsy{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(3.0, 1.0),
+        Point(3.0, 0.0)
+    };
+    AbstractForm form_2("form_2", pts_form_lxsy);
+    int id_2 = form_2.get_id();
+    AbstractFormConfigurationTuple tuple_lxsy(
+        AbstractFormConfiguration(
+            &form_2, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with small x-dim and large y_dim:
+    vector<Point> pts_form_sxly{
+        Point(0.0, 0.0),
+        Point(0.0, 2.0),
+        Point(1.0, 2.0),
+        Point(1.0, 0.0)
+    };
+    AbstractForm form_3("form_3", pts_form_sxly);
+    int id_3 = form_3.get_id();
+    AbstractFormConfigurationTuple tuple_sxly(
+        AbstractFormConfiguration(
+            &form_3, 0, 0, 0, false));
+
+    // create an AbstractFormConfiguration with small x-dim and small y_dim:
+    vector<Point> pts_form_sxsy{
+        Point(0.0, 0.0),
+        Point(0.0, 1.0),
+        Point(1.0, 1.0),
+        Point(1.0, 0.0)
+    };
+    AbstractForm form_4("form_4", pts_form_sxsy);
+    int id_4 = form_4.get_id();
+    AbstractFormConfigurationTuple tuple_sxsy(
+        AbstractFormConfiguration(
+            &form_4, 0, 0, 0, false));
+
+    /**
+     *  Initialization of test instances and testing:
+     */
+
+    // initialize an instance of TupleComparatorDimension:
+    vector<AbstractFormConfigurationTuple> afct_vector{
+        tuple_sxsy,
+        tuple_sxly,
+        tuple_lxsy,
+        tuple_lxly
+    };
+    TupleComparatorDimension tcd(&afct_vector);
+
+    // Case 1 - sorted:
+    vector<int> case_1{
+        3,2,1,0
+    };
+
+/*
+    #ifdef DEBUG
+        printf("Pre sorting case 1:\n");
+        for (int i=0; i<4; ++i)
+           printf("\tForm %i with id: %i\n\tDimension: %.2f/%.2f\n", i, afct_vector[case_1[i]].get_configuration_of_form(0)->get_id_of_form(), afct_vector[case_1[i]].get_dx(), afct_vector[case_1[i]].get_dy());
+    #endif
+*/
+
+    std::sort(case_1.begin(), case_1.end(), tcd);
+
+/*
+    #ifdef DEBUG
+        printf("Post sorting case 1:\n");
+        for (int i=0; i<4; ++i)
+            printf("\tForm %i with id: %i\n\tDimension: %.2f/%.2f\n", i, afct_vector[case_1[i]].get_configuration_of_form(0)->get_id_of_form(), afct_vector[case_1[i]].get_dx(), afct_vector[case_1[i]].get_dy());
+    #endif
+*/
+
+    if(!(
+        afct_vector[case_1[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_1[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_1[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_1[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    // Case 2 - reverse sorted:
+    vector<int> case_2{
+        0,1,2,3
+    };
+
+    std::sort(case_2.begin(), case_2.end(), tcd);
+
+    if(!(
+        afct_vector[case_2[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_2[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_2[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_2[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    // Case 3 - unsorted 1:
+    vector<int> case_3{
+        2,0,3,1
+    };
+
+    std::sort(case_3.begin(), case_3.end(), tcd);
+
+    if(!(
+        afct_vector[case_3[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_3[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_3[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_3[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    // Case 4 - unsorted 2:
+    vector<int> case_4{
+        3,0,1,2
+    };
+
+    std::sort(case_4.begin(), case_4.end(), tcd);
+
+    if(!(
+        afct_vector[case_4[0]].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
+        afct_vector[case_4[1]].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
+        afct_vector[case_4[2]].get_configuration_of_form(0)->get_id_of_form() == id_3 &&
+        afct_vector[case_4[3]].get_configuration_of_form(0)->get_id_of_form() == id_4
+        ) == true)
+        success_all_tests = false;
+
+    return success_all_tests;
+}
+
+/*!
+ *  Tests whether methods of the bin-packing-algorithm work as intended.
+ *
+ *  @return True, if all tests are successful, false if at least one test fails.
+ */
+bool Tests::test_bin_packing()
+{
+
+    bool success = true;
+    std::cout << "Testing TupleComparatorUtilization: ";
+    if (test_sort_tuple_utilization_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        success = false;
+        std::cout << "[FAILED]" << std::endl;
+    }
+
+    std::cout << "Testing TupleComparatorDimension: ";
+    if (test_sort_tuple_dimension_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        success = false;
+        std::cout << "[FAILED]" << std::endl;
+    }
+
+    std::cout << "All bin packing tests: [SUCCEEDED]" << std::endl;
+    return success;
+}
+
+#pragma mark - PointSetAlgorithms
+
+bool Tests::test_mirror()
+{
+    bool success_all_tests = true;
+
+    //case 1: square at (0/0)
+    vector<Point> points_square_1{
+        Point(0,0),
+        Point(0,1),
+        Point(1,1),
+        Point(1,0)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_square_1, 0,1);
+
+    if(!(
+        points_square_1[0].get_x() == 0 && points_square_1[0].get_y() == 1 &&
+        points_square_1[1].get_x() == 0 && points_square_1[1].get_y() == 0 &&
+        points_square_1[2].get_x() == 1 && points_square_1[2].get_y() == 0 &&
+        points_square_1[3].get_x() == 1 && points_square_1[3].get_y() == 1
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 1\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("(%.2f/%.2f) ", points_square_1[i].get_x(), points_square_1[i].get_y());
+            printf("\n");        
+        #endif   
+    }
+
+    //case 2: square at (1/1)
+    vector<Point> points_square_2{
+        Point(1,1),
+        Point(1,2),
+        Point(2,2),
+        Point(2,1)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_square_2, 1,2);
+
+    if(!(
+        points_square_2[0].get_x() == 1 && points_square_2[0].get_y() == 2 &&
+        points_square_2[1].get_x() == 1 && points_square_2[1].get_y() == 1 &&
+        points_square_2[2].get_x() == 2 && points_square_2[2].get_y() == 1 &&
+        points_square_2[3].get_x() == 2 && points_square_2[3].get_y() == 2
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 2\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("(%.2f/%.2f) ", points_square_2[i].get_x(), points_square_2[i].get_y());
+            printf("\n");        
+        #endif   
+    }
+
+    // case 3: big triangle
+    vector<Point> points_triangle_1{
+        Point(-2,-2),
+        Point( 0, 3),
+        Point( 2,-2)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_triangle_1, -2, 3);
+
+    if(!(
+        points_triangle_1[0].get_x() == -2 && points_triangle_1[0].get_y() == 3  &&
+        points_triangle_1[1].get_x() == 0  && points_triangle_1[1].get_y() == -2 &&
+        points_triangle_1[2].get_x() == 2  && points_triangle_1[2].get_y() == 3
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 3\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<3; ++i)
+                printf("(%.2f/%.2f) ", points_triangle_1[i].get_x(), points_triangle_1[i].get_y());
+            printf("\n");                
+        #endif   
+    }
+
+    // case 4: small triangle
+    vector<Point> points_triangle_2{
+        Point(0, 0),
+        Point(1, 0),
+        Point(0, 1)
+    };
+
+    PointSetAlgorithms::mirror_pointset_at_axis(points_triangle_2, 0, 1);
+
+    if(!(
+        points_triangle_2[0].get_x() == 0 && points_triangle_2[0].get_y() == 1 &&
+        points_triangle_2[1].get_x() == 1 && points_triangle_2[1].get_y() == 1 &&
+        points_triangle_2[2].get_x() == 0 && points_triangle_2[2].get_y() == 0
+        ))
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 4\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<3; ++i)
+                printf("(%.2f/%.2f) ", points_triangle_2[i].get_x(), points_triangle_2[i].get_y());
+            printf("\n");                
+        #endif   
+    }
+
+    return success_all_tests;
+}
+
+bool Tests::test_compute_rotation_angle_correct()
+{
+    bool success_all_tests = true;
+
+    // init 1: sqare:
+    vector<Point> square{
+        Point(0,0),
+        Point(1,0),
+        Point(1,1),
+        Point(0,1)
+    };
+
+    float res_s1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 0,1);
+
+    if (res_s1 > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 1\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s1, 0);
+        #endif
+    }
+
+    float res_s2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 1,2);
+    
+    if (fabs(res_s2 - 270) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 2\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s2, 270);
+        #endif
+    }
+
+    float res_s3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 2,3);
+    
+    if (fabs(res_s3 - 180) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 3\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s3, 180);
+        #endif
+    }
+
+    float res_s4 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 3,0);
+    
+    if (fabs(res_s4 - 90) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 4\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s4, 270);
+        #endif
+    }
+
+    float res_s5 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 0,3);
+    
+    if (fabs(res_s5 - 270) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 5\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s5, 270);
+        #endif
+    }
+
+    float res_s6 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 2,0);
+    
+    if (fabs(res_s6 - 135) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case square 6\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_s6, 135);
+        #endif
+    }
+
+    // init 1: triangle1:
+    vector<Point> triang{
+        Point(0,0),
+        Point(1,0),
+        Point(1,1)
+    };
+
+    float res_t1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,1);
+    
+    if (fabs(res_t1) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case triangle 1\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_t1, 0);
+        #endif
+    }
+
+    float res_t2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,2);
+    
+    if (fabs(res_t2 - 315) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case triangle 2\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_t2, 315);
+        #endif
+    }
+
+    float res_t3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 2, 0);
+    
+    if (fabs(res_t3 - 135) > 1)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case triangle 3\n");
+        #ifdef DEBUG
+        printf("\tgot: %.6f - exp: %i\n", res_t3, 135);
+        #endif
+    }
+
+    return success_all_tests;
+}
+
+bool Tests::test_sort_points_by_x_dimension_correct()
+{
+    bool success_all_tests = true;
+
+    // case 1: sorted
+    vector<Point> points_1{
+        Point(1,2),
+        Point(2,2),
+        Point(3,1),
+        Point(4,2)
+    };
+
+    vector<int> res_1 = PointSetAlgorithms::sort_points_by_dim_x(points_1);
+
+    if(!(
+        res_1[0] == 0 &&
+        res_1[1] == 1 &&
+        res_1[2] == 2 &&
+        res_1[3] == 3 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 1\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_1[i]);
+        #endif
+    }
+
+    // Case 2: reverse sorted
+    vector<Point> points_2{
+        Point(4,2),
+        Point(3,2),
+        Point(2,1),
+        Point(1,2)
+    };
+
+    vector<int> res_2 = PointSetAlgorithms::sort_points_by_dim_x(points_2);
+
+    if(!(
+        res_2[0] == 3 &&
+        res_2[1] == 2 &&
+        res_2[2] == 1 &&
+        res_2[3] == 0 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 2\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_2[i]);
+        #endif
+    }
+
+    // Case 3: sorted, but with all x equal:
+    vector<Point> points_3{
+        Point(1,1),
+        Point(1,2),
+        Point(1,3),
+        Point(1,4)
+    };
+
+    vector<int> res_3 = PointSetAlgorithms::sort_points_by_dim_x(points_3);
+
+    if(!(
+        res_3[0] == 0 &&
+        res_3[1] == 1 &&
+        res_3[2] == 2 &&
+        res_3[3] == 3 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 3\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_3[i]);
+        #endif
+    }
+
+    // Case 4: unsorted
+    vector<Point> points_4{
+        Point(1,5),  // 1
+        Point(5,4),  // 8
+        Point(3,1),  // 5
+        Point(1,1),  // 3
+        Point(5,2),  // 7
+        Point(2,2),  // 3
+        Point(2,1),  // 2
+        Point(2,3),  // 4
+        Point(4,1)   // 6
+    };
+
+    vector<int> res_4 = PointSetAlgorithms::sort_points_by_dim_x(points_4);
+
+    if(!(
+        res_4[0] == 3 &&
+        res_4[1] == 0 &&
+        res_4[2] == 6 &&
+        res_4[3] == 5 && 
+        res_4[4] == 7 &&
+        res_4[5] == 2 &&
+        res_4[6] == 8 &&
+        res_4[7] == 4 &&
+        res_4[8] == 1
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 4\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<9; ++i)
+                printf("\t%i\n", res_4[i]);
+        #endif
+    }
+
+    // case 5: identical points:
+    vector<Point> points_5{
+        Point(2,1),
+        Point(3,2),
+        Point(2,1),
+        Point(1,1)
+    };
+
+    vector<int> res_5 = PointSetAlgorithms::sort_points_by_dim_x(points_5);
+/*
+    vector<int> res_5{
+        0,1,2,3
+    };
+
+    PointComparator pc_5(&points_5);
+
+    std::sort(res_5.begin(), res_5.end(), pc_5);
+*/
+    if(!(
+        res_5[0] == 3 &&
+        (
+            (res_5[1] == 0 && res_5[2] == 2) ||
+            (res_5[1] == 2 && res_5[2] == 0)) &&
+        res_5[3] == 1
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 5\n");
+
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", res_5[i]);
+        #endif
+    }
+
+    return success_all_tests;
+}
+
+bool Tests::test_compute_convex_hull_correct()
+{
+    bool success_all_tests = true;
+    bool res = false;
+
+    // case 1: simple form 3 points
+    vector<Point> points_1{
+        Point(0,0),
+        Point(1,1),
+        Point(1,0)
+    };
+
+    vector<int> convex_hull;
+
+    res = PointSetAlgorithms::compute_convex_hull(points_1, convex_hull);
+
+    if(!(res &&
+        convex_hull[0] == 0 &&
+        convex_hull[1] == 1 &&
+        convex_hull[2] == 2 &&
+        convex_hull[3] == 0 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 1\n");
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", convex_hull[i]);
+        #endif
+    }
+
+    // case 2: simple form 3 points
+    vector<Point> points_2{
+        Point(0,0),
+        Point(1,-1),
+        Point(1,1)
+    };
+
+    
+    res = PointSetAlgorithms::compute_convex_hull(points_2, convex_hull);
+
+    if(!(res &&
+        convex_hull[0] == 0 &&
+        convex_hull[1] == 1 &&
+        convex_hull[2] == 2 &&
+        convex_hull[3] == 0 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 2\n");
+        #ifdef DEBUG
+            for (int i=0; i<4; ++i)
+                printf("\t%i\n", convex_hull[i]);
+        #endif
+    }
+
+    // case 3: simple form 4 points
+    vector<Point> points_3{
+        Point(0,0),
+        Point(1,0),
+        Point(1,1),
+        Point(0,1)
+    };
+
+    res = PointSetAlgorithms::compute_convex_hull(points_3, convex_hull);
+
+    if(!(res &&
+        convex_hull[0] == 0 &&
+        convex_hull[1] == 1 &&
+        convex_hull[2] == 2 &&
+        convex_hull[3] == 3 &&
+        convex_hull[4] == 0
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 3\n");
+        #ifdef DEBUG
+            for (int i=0; i<5; ++i)
+                printf("\t%i\n", convex_hull[i]);
+        #endif
+    }
+
+    // case 4: l-shaped form 6 points
+    vector<Point> points_4{
+        Point(0,0),
+        Point(3,0),
+        Point(3,1),
+        Point(1,1),
+        Point(1,3),
+        Point(0,3)
+    };
+
+    res = PointSetAlgorithms::compute_convex_hull(points_4, convex_hull);
+
+    if(!(res &&
+        convex_hull[0] == 0 &&
+        convex_hull[1] == 1 &&
+        convex_hull[2] == 2 &&
+        convex_hull[3] == 4 &&
+        convex_hull[4] == 5 &&
+        convex_hull[5] == 0
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 4\n");
+        #ifdef DEBUG
+            for (int i=0; i<6; ++i)
+                printf("\t%i\n", convex_hull[i]);
+        #endif
+    }
+    
+    // case 5: star-shaped form 8 points
+    vector<Point> points_5{
+        Point(1,1),
+        Point(3,0),
+        Point(1,-1),
+        Point(0,-3),
+        Point(-1,-1),
+        Point(-3,0),
+        Point(-1,1),
+        Point(0, 3)
+    };
+
+    res = PointSetAlgorithms::compute_convex_hull(points_5, convex_hull);
+
+    if(!(res &&
+        convex_hull[0] == 5 &&
+        convex_hull[1] == 7 &&
+        convex_hull[2] == 1 &&
+        convex_hull[3] == 3 &&
+        convex_hull[4] == 5
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 5\n");
+        #ifdef DEBUG
+            for (int i=0; i<5; ++i)
+                printf("\t%i\n", convex_hull[i]);
+        #endif
+    }
+
+    // case 6: eight-shaped form 8 points
+    vector<Point> points_6{
+        Point(0, 0),
+        Point(1, 0),
+        Point(1, 1),
+        Point(2, 1),
+        Point(2, 2),
+        Point(1, 2),
+        Point(1, 1),
+        Point(0, 1)
+    };
+
+    res = PointSetAlgorithms::compute_convex_hull(points_6, convex_hull);
+
+    if(!(res &&
+        convex_hull[0] == 0 &&
+        convex_hull[1] == 1 &&
+        convex_hull[2] == 3 &&
+        convex_hull[3] == 4 &&
+        convex_hull[4] == 5 &&
+        convex_hull[5] == 7 &&
+        convex_hull[6] == 0 
+        ) == true)
+    {
+        success_all_tests = false;
+        printf("[FAILED] in case 6\n");
+        #ifdef DEBUG
+            for (int i=0; i<7; ++i)
+                printf("\t%i\n", convex_hull[i]);
+        #endif
+    }
+    return success_all_tests;
+}
+
+bool Tests::test_point_set_algo()
+{
+    std::cout << "Testing PointSetAlgorithms: " << std::endl;
+ 
+     std::cout << "Testing mirror point set: ";
+    if (test_mirror())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
+    std::cout << "Testing compute rotation angle: ";
+    if (test_compute_rotation_angle_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
+    std::cout << "Testing sort points by x dimension: ";
+    if (test_sort_points_by_x_dimension_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
+    std::cout << "Testing compute convex hull: ";
+    if (test_compute_convex_hull_correct())
+    {
+        std::cout << "[SUCCEEDED]" << std::endl;
+    }
+    else
+    {
+        std::cout << "[FAILED]" << std::endl;
+        return false;
+    }
+
+    std::cout << "All PointSetAlgorithms tests: [SUCCEEDED]" << std::endl;
     return true;
 }

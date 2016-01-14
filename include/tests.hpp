@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "abstractForm.hpp"
+#include "binPacking.hpp"
 #include "edge.hpp"
 #include "form.hpp"
 #include "point.hpp"
@@ -20,6 +21,14 @@
 class Tests
 {
 private:
+
+#pragma mark - Points (Private)
+    /*!
+     *  Tests whether the function correctly decides is_left_of
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_is_left_of();
     
 #pragma mark - Edges (Private)
     
@@ -110,6 +119,27 @@ private:
      */
     static bool test_non_overlap_triangle();
     
+    /**
+     *  A simple square and trinagle that do not overlap theirselves. The test
+     *  checks whether the function recognizes this.
+     *
+     *  @return true, if the test passes, false if not.
+     */
+    static bool test_abstract_form_overlaps_itself_not();
+    
+    /**
+     *  An hourglass form and a malformed bucket where each is overlapping 
+     *  itself. The test checks whether the function recognizes this.
+     *
+     *  @return true, if the test passes, false if not.
+     */
+    static bool test_abstract_form_overlaps_itself();
+
+    /**
+     *  Test if form rotation works as intenden
+     */
+    static bool test_form_rotation();
+    
 #pragma mark - Validator (Private)
     
     /*!
@@ -152,6 +182,48 @@ private:
      *  @return True if the test passes, false if not.
      */
     static bool test_validator_correct();
+
+#pragma mark - Comparator
+
+    /*!
+     *  Given two instances of AbstractFormConfigurationTuple with different area utilization, test if the relation operator defined in TupleComparatorUtilization orders them correct
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_sort_tuple_utilization_correct();
+
+    /*!
+     *  Given two instances of AbstractFormConfigurationTuple with different dimension, test if the relation operator defined in TupleComparatorDimension orders them correct
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_sort_tuple_dimension_correct();
+
+#pragma mark - PointSetAlgorithms
+
+    /*!
+     *  Given a set of points and the bounds on the y-dimension of the set, tests if mirror_pointset_at_axis() works as intended.
+     */
+    static bool test_mirror();
+
+    /*!
+     *  Tests if the function compute_rotation_angle_for_points_parallel_to_axis computes correct angles
+     */
+    static bool test_compute_rotation_angle_correct();
+
+    /*!
+     *  Given a set of points, test if PointSetAlgorithms sorts them correct first by x- and second by y-dimension
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_sort_points_by_x_dimension_correct();
+
+    /*!
+     *  Given a set of points that define a form, test if PointSetAlgorithms computes the correct convex hull
+     *
+     *  @return True if the test passes, false if not.
+     */
+    static bool test_compute_convex_hull_correct();
     
 public:
     
@@ -164,6 +236,15 @@ public:
      */
     static bool test_everything();
     
+#pragma mark - Points
+
+    /*!
+     *  Tests whether methods dealing with point positions work as intended.
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_points();
+
 #pragma mark - Edges
     
     /*!
@@ -181,6 +262,13 @@ public:
      *  @return True, if all tests are successful, false if at least one test fails.
      */
     static bool test_form_overlap();
+
+    /*!
+     *  Tests whether methods dealing with form movement work as intenden.
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_form_movement();
     
 #pragma mark - Validator
     
@@ -190,6 +278,22 @@ public:
      *  @return True, if all tests are successful, false if at least one test fails.
      */
     static bool test_validator();
+
+#pragma mark - BinPacking
+
+    /*!
+     *  Tests whether methods of the bin-packing-algorithm work as intended.
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_bin_packing();
+
+    /*!
+     *  Test whether the methods of the PointSetAlgorithm work as intended
+     *
+     *  @return True, if all tests are successful, false if at least one test fails.
+     */
+    static bool test_point_set_algo();
     
 };
 

@@ -12,78 +12,20 @@
 #define BINPACKING_H
 
 #include <vector>
+#include <map>
 
 #include "abstractForm.hpp"
 #include "abstractFormConfiguration.hpp"
+#include "abstractFormConfigurationTuple.hpp"
 #include "binPackingPlane.hpp"
 #include "binPackingShelf.hpp"
 #include "formCombiner.hpp"
+#include "tupleComparator.hpp"
 #include "problem.hpp"
 #include "setting.hpp"
 #include "globalParams.hpp"
 
 using namespace std;
-
-/*!
- *  Struct FormComparator
- *
- *  Struct used in sorting forms by their x- and y- dimensions
- */
-struct FormComparator
-{
-	FormComparator(Problem *p) : problem(p)
-	{
-		#ifdef DEBUG
-			printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
-		#endif
-	}
-
-	Problem *problem;
-	AbstractForm* form_1;
-	AbstractForm* form_2;
-
-	bool operator()(int index_of_box_1, int index_of_box_2)
-	{
-		#ifdef DEBUG
-			printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-		#endif
-
-		float smaller_edge_box_1;
-		float smaller_edge_box_2;
-		float bigger_edge_box_1;
-		float bigger_edge_box_2;
-
-		form_1 = problem->get_abstract_form_at_position(index_of_box_1);
-		form_2 = problem->get_abstract_form_at_position(index_of_box_2);
-
-		if (form_1->get_dx() < form_1->get_dy())
-		{
-			smaller_edge_box_1 = form_1->get_dx();
-			bigger_edge_box_1  = form_1->get_dy();
-		}
-		else
-		{
-			smaller_edge_box_1 = form_1->get_dy();
-			bigger_edge_box_1  = form_1->get_dx();
-		}
-		if (form_2->get_dx() < form_2->get_dy())
-		{
-			smaller_edge_box_2 = form_2->get_dx();
-			bigger_edge_box_2  = form_2->get_dy();
-		}
-		else
-		{
-			smaller_edge_box_2 = form_2->get_dy();
-			bigger_edge_box_2  = form_2->get_dx();
-		}
-
-		if (smaller_edge_box_1 - smaller_edge_box_2 > GlobalParams::get_tolerance())
-			return true;
-		else if (smaller_edge_box_2 - smaller_edge_box_1 > GlobalParams::get_tolerance())
-			return false; 
-		else return (bigger_edge_box_1 - bigger_edge_box_2 > GlobalParams::get_tolerance());
-	};
-};
 
 class BinPacking
 {
@@ -104,56 +46,103 @@ private:
 	bool is_initialized;
 
 	/*!
-	 *  An index describing the form which has to be added to the setting in the next step. This index is an index for the internal vector all_forms_sorted_by_size.
+	 *  An index describing the tuple which has to be added to the setting in the next step. This index is an index for the internal vector all_tuples_to_use_sorted_by_size.
 	 */
-	int index_of_current_form;
+	int index_of_current_tuple;
 
 	/*!
 	 *  The minimum height of any form defined in the problem. Gives a lower bound on the size of a shelf.
 	 */
-	float minimum_height_of_any_form;
+	float minimum_height_of_any_tuple;
 
 	/*!
-	 *  The indices of the abstract forms, sorted by height (and width, if heights are equal) of the bounding box.
+	 *  All AbstractFormConfigurationTuples that contain only a single AbstractForm
 	 */
-	vector<int> all_forms_sorted_by_size;
+	vector<AbstractFormConfigurationTuple> all_single_form_tuples;
 
 	/*!
-	 *  vektor to organize the planes during the algorithm
+	 *  All computed area-efficient AbstractFormConfigurationTuples, i.e. tuples that are more efficient than using the single forms
+	 */
+	vector<AbstractFormConfigurationTuple> all_efficient_form_tuples;
+
+	/*!
+	 * vector only with configtuples to use
+	 */
+	vector<AbstractFormConfigurationTuple> all_form_tuples_to_use;
+
+	/*!
+	 *  The indices of the AbstractFormConfigurationTuples, sorted by height (and width, if heights are equal) of the bounding box.
+	 */
+	vector<int> all_tuples_to_use_sorted_by_size;
+
+	/*!
+	 *  Vector to organize the planes during the algorithm
 	 *  mainly for checking the remaining space 
 	 */
 	vector<BinPackingPlane> bp_planes;
 
 	/*!
-	 *  vektor to organize all shelves during the algorithm
+	 *  Vector to organize all shelves during the algorithm
 	 *  
 	 *  This should be a priority queue!
 	 */
 	vector<BinPackingShelf> bp_shelves;
 
 	/*!
-	 *  Sort all forms by the smaller edge and store the sorted indices in 
-	 *	all_forms_sorted_by_size
+	 *  Map to store the amount of forms needed. forms are specified by their id
+	 */
+	map<int, int> number_of_forms_needed;
+
+	/*!
+	 *  Initializes the map number_of_forms_needed
+	 */
+	void init_number_of_forms();
+
+	/*!
+	 *  Initially compute all efficient configuration_tuples
+	 */
+	void create_configuration_tuples();
+
+	/*!
+	 *  Initialize the vector all_form_tuples_to_use, such that the vector is filled with only the most efficient tuples that should be used. Every tuple in the vector has also its value for number_of_usages initialized.
+	 */
+	void create_all_tuples_to_use();
+
+	/*!
+	 *  Sort the vector all_form_tuples_to_use by the smaller edge and store the sorted indices in 
+	 *	all_tuples_to_use_sorted_by_size
 	 */
 	void create_initial_sorting();
 
 	/*!
-	 *  Tries to add form specified by form_index (index of form in all_forms_sorted_by_size) on an existing shelf, es described in 2DBP
+	 *  Tries to add a tuple on an existing shelf, as described in 2DBP
 	 *
-	 *  @param
+	 *  @param tuple 	a pointer to the AbstractFormConfigurationTuple to add.
 	 *
-	 *  @return 		true, if form was placed. False, if form could not be placed on any shelf
+	 *  @return 			true, if form was placed. False, if form could not be placed on any shelf
 	 */
-	bool try_add_form_on_existing_shelf(int form_index);
+	bool try_add_form_configuration_tuple_on_existing_shelf(AbstractFormConfigurationTuple *tuple);
 
 	/*!
-	 *  Creates a new shelf (and a new plane, if necessary) and adds the form to the shelf
+	 *  Creates a new shelf (and a new plane, if necessary) and adds the tuple to the shelf
 	 */
-	void add_form_on_new_shelf(int form_index);
+	void add_form_configuration_tuple_on_new_shelf(AbstractFormConfigurationTuple *tuple);
 
 	void create_shelf(int index_of_mothershelf, float size_x, float size_y, float offset_x, float offset_y);
 	
 	void create_subshelf(int index_of_mothershelf, AbstractForm* form_on_top, float remaining_height);
+
+	void create_subshelf(int index_of_mothershelf, AbstractFormConfigurationTuple *tuple_on_top, float remaining_height);
+
+	/*!
+	 *  Adds a AbstractFormConfigurationTuple to the setting.
+	 *
+	 *  @param tuple 		A pointer to the AbstractFormConfigurationTuple to be added to setting.
+	 *  @param plane_index 	The index of the plane of the setting on which the tuple should be added
+	 *  @param position_x 	The x-offset of the tuple on the plane
+	 *  @param  position_y 	The y-offset of the tuple on the plane
+	 */
+	void add_form_config_tuple_to_setting(AbstractFormConfigurationTuple* tuple, int plane_index, float position_x, float position_y);
 
 public:
 	/*!
@@ -174,9 +163,9 @@ public:
 	bool next_step_of_algorithm();
 
 	/*!
-	 *  Get the number of forms that have to be added
+	 *  Get the number of tuples that have to be added
 	 */
-	int get_number_of_missing_forms();
+	int get_number_of_missing_tuples();
 
 	/*!
 	 *  Initialize the algorithm for the given problem. If it was initialized, reset everything.
@@ -196,6 +185,11 @@ public:
 	 */
 	Setting  get_packed_setting();
 
+	/*!
+	 *  Get a specific used AbstractFormConfigurationTuple, specified by index of vector all_form_tuples_to_use
+	 */
+	AbstractFormConfigurationTuple *get_used_tuple_at_position(int tuple_index)
+	{return &all_form_tuples_to_use[tuple_index];};
 };
 
 #endif

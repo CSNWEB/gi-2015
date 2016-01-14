@@ -13,7 +13,8 @@ void GlobalParams::init()
 float GlobalParams::get_tolerance()
 {
 	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		//printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+		//printf("TOLERACE is %f\n", tolerance);
 	#endif
 
     //if(!is_init) GlobalParams::init();
@@ -42,4 +43,4 @@ void GlobalParams::set_significant_digits(int digits)
 float GlobalParams::tolerance = 1E-4;
 int GlobalParams::tolerance_digits = 4;
 bool GlobalParams::is_init = false;
-
+bool GlobalParams::option_pre_merge_form = true;

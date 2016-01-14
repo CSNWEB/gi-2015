@@ -11,11 +11,16 @@
 #include <math.h>
 #include <stdio.h>
 
+#define PI 3.14159265
+
 class GlobalParams
 {
 private:
 
-        static const float PI = 3.14159265;
+
+static const float PI = 3.14159265;
+
+
 
 public:
 	/*!
@@ -31,6 +36,11 @@ public:
 	static float tolerance;
 
 	/*!
+	 *  A bool describing whether or not complex abstractFormConfigurationTuples are precomputed before BinPacking Starts. Default true.
+	 */
+	static bool option_pre_merge_form;
+
+	/*!
 	 *  Getter for global constant pi
 	 */
 	static float pi()
@@ -40,6 +50,19 @@ public:
      * Initializes the values
      */
     void init();
+
+	/*!
+	 *  Set option_pre_merge_form
+	 */
+	static void set_option_pre_merge(bool option)
+	{
+		option_pre_merge_form = option;
+	};
+
+	static bool do_pre_merge_merge()
+	{
+		return option_pre_merge_form;
+	};
 
 	/*!
 	 *  Getter for global tolerance which is applied when checking if a form overlaps with another form or the plane borders. If tolerance has not been defined yet, it is initialized to 1E-4 (i.e. tolerance_digits is initialized to 4).

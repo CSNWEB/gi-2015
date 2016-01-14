@@ -39,6 +39,9 @@ public:
      */
 	Edge(Point *p1, Point *p2);
 
+    Point *get_point_1() {return point_1;};
+    Point *get_point_2() {return point_2;};
+    
     /*!
      *  Finds the point where the receiver and other intersect each other.
      *
@@ -57,7 +60,7 @@ public:
      *
      *  @return true if the receiver and other cross, false if not.
      */
-	bool check_if_crosses(Edge *other);
+	bool crosses(Edge *other);
 	
     /*!
      *  The length of the edge

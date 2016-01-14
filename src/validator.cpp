@@ -30,10 +30,10 @@ bool Validator::is_plane_valid(Plane *plane)
         Form *first_form = plane->get_form_at(index);
         
         // Check whether the form fits on the plane.
-        if (first_form->get_bounding_xmin() < 0.0 ||
-            first_form->get_bounding_ymin() < 0.0 ||
-            first_form->get_bounding_xmax() > plane_width ||
-            first_form->get_bounding_ymax() > plane_height)
+        if (first_form->get_bounding_xmin() < (-1) * GlobalParams::get_tolerance() ||
+            first_form->get_bounding_ymin() < (-1) * GlobalParams::get_tolerance() ||
+            first_form->get_bounding_xmax() - plane_width > GlobalParams::get_tolerance() ||
+            first_form->get_bounding_ymax() - plane_height > GlobalParams::get_tolerance())
         {
             printf("ERROR: The form at index (%d) is exceeding the bounds of the plane!\n", index);
             

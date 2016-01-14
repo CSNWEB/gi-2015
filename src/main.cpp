@@ -3,11 +3,15 @@
 #include "outputHandler.hpp"
 #include "inputHandler.hpp"
 #include "binPacking.hpp"
+#include "tests.hpp"
+#include "validator.hpp"
 
 #include <stdio.h>
 
 int main(int argc, char* argv[])
 {
+
+    GlobalParams::set_option_pre_merge(true);
 
     #ifdef DEBUG
         printf("Debugging is enabled!\n");
@@ -20,11 +24,16 @@ int main(int argc, char* argv[])
     {
         printf("Missing filename of input file!\n");
         printf("Usage:\n\tsolver inputfilename.txt [outputfilename]\n");
+       
+        printf("Test test_everything\n");
+        Tests::test_everything();
+        
         return 0;
     }
 
     if (argc < 3)
     {
+    
         printf("No output file name given.\n");
         printf("Using default output file names:\n\tout.txt, out.svg\n");
         output_filename_txt = "out.txt";
@@ -53,10 +62,20 @@ int main(int argc, char* argv[])
 
         Setting bin_packed = bin_packing.get_packed_setting();
 
+        bool is_valid = Validator::is_setting_valid(&bin_packed);
+
+        if (is_valid)
+        {
+            printf("A valid setting was created.\n");
+        }
+        else
+        {
+            printf("Error! The created setting is not valid!\n");
+        }
 
         OutputHandler oh(&problem, &bin_packed);
         oh.write_setting_to_txt(output_filename_txt);
-        oh.write_setting_to_svg(output_filename_svg);
+        oh.write_setting_to_svg(output_filename_svg, true);
 
         #ifdef DEBUG
             printf("check in %s\n", __PRETTY_FUNCTION__);

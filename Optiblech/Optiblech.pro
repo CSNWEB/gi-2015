@@ -17,19 +17,23 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     ../src/abstractForm.cpp \
+    ../src/abstractFormConfiguration.cpp \
+    ../src/abstractFormConfigurationTuple.cpp \
     ../src/binPacking.cpp \
     ../src/binPackingPlane.cpp \
     ../src/binPackingShelf.cpp \
     ../src/edge.cpp \
     ../src/form.cpp \
+    ../src/formCombiner.cpp \
+    ../src/globalParams.cpp \
     ../src/gpc.cpp \
     ../src/inputHandler.cpp \
     ../src/outputHandler.cpp \
     ../src/plane.cpp \
     ../src/point.cpp \
+    ../src/pointSetAlgorithms.cpp \
     ../src/problem.cpp \
     ../src/setting.cpp \
-    ../src/simpleSVG.cpp \
     svgview.cpp \
     problemmanager.cpp \
     manageformdialog.cpp \
@@ -52,3 +56,8 @@ FORMS    += mainwindow.ui \
     managepointsdialog.ui
 
 INCLUDEPATH = ../include
+
+CONFIG += c++11
+CONFIG += -stdlib=libstdc++
+QMAKE_CXX = clang++
+QMAKE_CC = clang

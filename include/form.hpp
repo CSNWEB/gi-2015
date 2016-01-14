@@ -11,6 +11,8 @@
 
 #include <vector>
 
+#include "globalParams.hpp"
+#include "pointSetAlgorithms.hpp"
 #include "edge.hpp"
 #include "abstractForm.hpp"
 #include "simpleSVG.hpp"
@@ -140,9 +142,9 @@ public:
      *
      *  @return A vector containing the points of the form.
      */
-    vector<Point> get_points()
+    vector<Point> *get_points()
     {
-        return points;
+        return &points;
     }
     
     /*!
@@ -170,6 +172,11 @@ public:
      *  @param degree   The amount that the Form is rotated by.
      */
 	void rotate(float center_x, float center_y, float angle);
+
+    /*!
+     *  Mirrors the form at an axis parallel to the x-axis and such that its bounding box is not affected.
+     */
+    void mirror();
 	
     /*!
      *  Checks if the receiver overlaps with the passed Form.
@@ -181,17 +188,14 @@ public:
 	bool check_for_overlap(Form *other);
 	
     /*!
-     *  Checks if the receiver overlaps with the passed Form.
-     *  Additionally saves the minimum distance for every two edges in a
-     *  float-matrix or zero if the edges cross.
+     *  Determines by how much the receiver overlaps with the passed form.
      *
-     *  @param other     The form that the overlapping is checked against.
-     *  @param crossings A two-dimensional float-matrix describing the minimum distance between two points of the form.
+     *  @param other The form that the overlapping is checked agains
      *
-     *  @return True if the receiver and the other Form overlap, false if not.
+     *  @return The size of the largest area among the ones where the forms overlap.
      */
-	bool check_for_overlap(Form *other, floatmat* crossings);
-
+    float overlap_distance_with_form(Form *other);
+    
     /*!
      *  Debug: print points to std_out
      */
