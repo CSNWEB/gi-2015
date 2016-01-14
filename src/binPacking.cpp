@@ -1,12 +1,12 @@
 #include "binPacking.hpp"
 
-BinPacking::BinPacking(Problem *p)
+BinPacking::BinPacking(Problem *p): setting(p)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	problem = p;
+	problem = p;    
 	is_initialized = false;
 }
 
@@ -180,7 +180,11 @@ void BinPacking::initialize_algorithm()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
+    #endif
+
+    if(problem->get_number_of_different_forms() == 0){
+        return;
+    }
 	
 	init_number_of_forms();
 

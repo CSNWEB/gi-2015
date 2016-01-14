@@ -36,7 +36,7 @@ public:
     /*!
      *  Default Constructor.
      */
-    Setting(){};
+    //Setting(){};
 
     /*!
      *  Constructor that initializes the problem.

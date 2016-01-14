@@ -75,6 +75,8 @@ private slots:
     void on_showCaseCheckBox_clicked(bool checked);       
 
 
+    void on_pointList_currentRowChanged(int currentRow);
+
 private:
     Ui::MainWindow *ui;
 
@@ -88,7 +90,7 @@ private:
 
     ProblemManager *pm;
 
-    vector<QDialog> editFormDialogs;
+    vector<QDialog *> editFormDialogs;
 
     Setting setting;
 
@@ -96,6 +98,9 @@ private:
 
     void invalidForm(bool invalid);
 
+    void enableEditFormButton(bool enabled);
+    void enableEditPointButtons(bool enabled);
+    void enableSaveButtons(bool enabled);
 
 };
 
