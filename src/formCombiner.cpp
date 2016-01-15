@@ -4,20 +4,15 @@
 	#define DEBUG_FC
 #endif
 
-FormCombiner::FormCombiner(Problem *p, AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2)
+FormCombiner::FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	this->problem       = p;
 	this->form_config_1 = form_config_1;
 	this->form_config_2 = form_config_2;
 
-	//form_2_mirrored = AbstractForm();
-	//f1 = Form();
-	//f2 = Form();
-	//f2_m = Form();
 
 	area_of_biggest_box_of_forms = -1;
 	sum_of_bounding_boxes = -1;

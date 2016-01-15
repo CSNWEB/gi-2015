@@ -1410,122 +1410,6 @@ bool Tests::test_validator()
 #pragma mark - BinPacking
 
 /*!
- *  Given a vector of AbstractFormConfigurationTuple with different area utilization, test if the relation operator defined in TupleComparatorUtilization orders them correct
- *
- *  @return True if the test passes, false if not.
- */
-bool Tests::test_sort_tuple_utilization_correct()
-{
-    /**
-     *  General Initialization
-     */
-    bool success_all_tests = true;
-
-    // create an AbstractFormConfiguration with good area utilization:
-    vector<Point> pts_form_1{
-        Point(0.0, 0.0),
-        Point(0.0, 1.0),
-        Point(1.0, 1.0),
-        Point(1.0, 0.0)
-    };
-    AbstractForm form_1("form_1", pts_form_1);
-    int id_1 = form_1.get_id();
-
-    AbstractFormConfigurationTuple tuple_1(
-        AbstractFormConfiguration(
-            &form_1, 0, 0, 0, false));
-
-    // create an AbstractFormConfiguration with medium area utilization:
-    vector<Point> pts_form_2{
-        Point(0.0, 0.0),
-        Point(0.0, 1.0),
-        Point(1.0, 0.0)
-    };
-
-    AbstractForm form_2("form_2", pts_form_2);
-    int id_2 = form_2.get_id();
-
-    AbstractFormConfigurationTuple tuple_2(
-        AbstractFormConfiguration(
-            &form_2, 0, 0, 0, false));
-
-    // create an AbstractFormConfiguration with bad area utilization:
-    vector<Point> pts_form_3{
-        Point(0.0, 0.0),
-        Point(0.0, 1.0),
-        Point(0.1, 0.1),
-        Point(1.0, 0.0)
-    };
-
-    AbstractForm form_3("form_3", pts_form_3);
-    int id_3 = form_3.get_id();
-
-    AbstractFormConfigurationTuple tuple_3(
-        AbstractFormConfiguration(
-            &form_3, 0, 0, 0, false));
-
-    /**
-     *  Initialization of test instances and testing:
-     */
-
-    // case: vector is sorted:
-    vector<AbstractFormConfigurationTuple> afct_vector_1{
-        tuple_1,
-        tuple_2,
-        tuple_3
-    };
-
-    TupleComparatorUtilization tcu(&afct_vector_1);
-
-    std::sort(afct_vector_1.begin(), afct_vector_1.end(), tcu);
-
-    if(!(
-        afct_vector_1[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
-        afct_vector_1[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
-        afct_vector_1[2].get_configuration_of_form(0)->get_id_of_form() == id_3
-         ) == true)
-        success_all_tests = false;
-
-    // case: vector is reverse sorted:
-    vector<AbstractFormConfigurationTuple> afct_vector_2{
-        tuple_3,
-        tuple_2,
-        tuple_1
-    };
-
-    tcu = TupleComparatorUtilization(&afct_vector_2);
-
-    std::sort(afct_vector_2.begin(), afct_vector_2.end(), tcu);
-
-    if(!(
-        afct_vector_2[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
-        afct_vector_2[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
-        afct_vector_2[2].get_configuration_of_form(0)->get_id_of_form() == id_3
-         ) == true)
-        success_all_tests = false;
-
-    // case: vector is unsorted:
-    vector<AbstractFormConfigurationTuple> afct_vector_3{
-        tuple_2,
-        tuple_1,
-        tuple_3
-    };
-
-    tcu = TupleComparatorUtilization(&afct_vector_3);
-
-    std::sort(afct_vector_3.begin(), afct_vector_3.end(), tcu);
-
-    if(!(
-        afct_vector_3[0].get_configuration_of_form(0)->get_id_of_form() == id_1 &&
-        afct_vector_3[1].get_configuration_of_form(0)->get_id_of_form() == id_2 &&
-        afct_vector_3[2].get_configuration_of_form(0)->get_id_of_form() == id_3
-        ) == true)
-        success_all_tests = false;
-
-    return success_all_tests;
-}
-
-/*!
  *  Given a vector of AbstractFormConfigurationTuple with different dimension, test if the relation operator defined in TupleComparatorDimension orders them correct
  *
  *  @return True if the test passes, false if not.
@@ -1676,6 +1560,7 @@ bool Tests::test_bin_packing()
 {
 
     bool success = true;
+    /*
     std::cout << "Testing TupleComparatorUtilization: ";
     if (test_sort_tuple_utilization_correct())
     {
@@ -1686,6 +1571,7 @@ bool Tests::test_bin_packing()
         success = false;
         std::cout << "[FAILED]" << std::endl;
     }
+    */
 
     std::cout << "Testing TupleComparatorDimension: ";
     if (test_sort_tuple_dimension_correct())
