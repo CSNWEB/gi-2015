@@ -43,6 +43,8 @@ public:
      */
 	Setting(Problem *p);
 
+
+
     /*!
      *  Returns number_of_planes
      */

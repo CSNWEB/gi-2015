@@ -61,7 +61,7 @@ MainWindow::~MainWindow()
 void MainWindow::updateResultView(){
     if(bin_packing.next_step_of_algorithm()){
         setting = bin_packing.get_current_setting();
-        m_resultview->showSetting(setting);
+        m_resultview->showSetting(&setting);
         QTimer::singleShot(ceil(ui->delaySpinBox->value()*1000), this, SLOT(updateResultView()));
     }else{
         enableSaveButtons(true);
@@ -96,7 +96,7 @@ void MainWindow::on_solveButton_clicked()
              QTimer::singleShot(0, this, SLOT(updateResultView()));
         }else{
             setting = bin_packing.get_packed_setting();
-            m_resultview->showSetting(setting);
+            m_resultview->showSetting(&setting);
             enableSaveButtons(true);
         }
     }
