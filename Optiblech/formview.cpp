@@ -1,7 +1,6 @@
 #include "formview.h"
 
 #include <QGraphicsRectItem>
-#include <QGraphicsSvgItem>
 #include <qmath.h>
 #include <QTextStream>
 #include <QWheelEvent>

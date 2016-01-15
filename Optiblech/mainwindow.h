@@ -80,7 +80,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    SvgView *m_view;
 
     FormView *m_formview;
 

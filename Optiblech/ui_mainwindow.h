@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.4.1
+** Created by: Qt User Interface Compiler version 5.5.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -128,7 +128,13 @@ public:
 "\n"
 "QGroupBox{\n"
 "	border:2px solid black;\n"
-"	padding-top:5px;\n"
+"	padding-top:15px;\n"
+"}\n"
+"\n"
+"QGroupBox::title{\n"
+"	subcontrol-origin: padding;\n"
+"	margin-top:4px;\n"
+"	margin-left:7px;\n"
 "}\n"
 "\n"
 "QPushButton{\n"
@@ -239,10 +245,10 @@ public:
         pointManageContainer = new QWidget(currentFormBox);
         pointManageContainer->setObjectName(QStringLiteral("pointManageContainer"));
         horizontalLayout_5 = new QHBoxLayout(pointManageContainer);
-        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setSpacing(5);
         horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        horizontalLayout_5->setContentsMargins(-1, 1, -1, -1);
+        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
         addPointButton = new QPushButton(pointManageContainer);
         addPointButton->setObjectName(QStringLiteral("addPointButton"));
 

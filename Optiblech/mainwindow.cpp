@@ -11,7 +11,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include <QTimer>
 
-#include <svgview.h>
+
 #include <formview.h>
 #include <problemmanager.h>
 
@@ -30,7 +30,6 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_view(new SvgView),
     m_formview(new FormView),
     m_resultview(new FormView),
     pm(new ProblemManager()),

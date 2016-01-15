@@ -4,7 +4,8 @@
 #
 #-------------------------------------------------
 
-QT       += core gui svg
+
+QT       += core gui
 
 qtHaveModule(opengl): QT += opengl
 
@@ -34,7 +35,6 @@ SOURCES += main.cpp\
     ../src/pointSetAlgorithms.cpp \
     ../src/problem.cpp \
     ../src/setting.cpp \
-    svgview.cpp \
     problemmanager.cpp \
     manageformdialog.cpp \
     managepointsdialog.cpp \
@@ -42,7 +42,6 @@ SOURCES += main.cpp\
     ../src/validator.cpp
 
 HEADERS  += mainwindow.h \
-    svgview.h \
     problemmanager.h \
     manageformdialog.h \
     managepointsdialog.h \
@@ -57,8 +56,6 @@ INCLUDEPATH = ../include
 
 CONFIG += c++11
 CONFIG += -stdlib=libstdc++
-QMAKE_CXX = clang++
-QMAKE_CC = clang
 
 RESOURCES += \
     resources.qrc
