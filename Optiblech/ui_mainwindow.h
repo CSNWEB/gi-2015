@@ -45,7 +45,6 @@ public:
     QDoubleSpinBox *planeWidth;
     QLabel *label_5;
     QDoubleSpinBox *planeHeight;
-    QPushButton *selectInputButton;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
     QGroupBox *currentFormBox;
@@ -71,6 +70,7 @@ public:
     QPushButton *addFormButton;
     QPushButton *editFormButton;
     QPushButton *delFormButton;
+    QPushButton *selectInputButton;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_10;
@@ -98,13 +98,44 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(780, 495);
-        MainWindow->setAutoFillBackground(true);
+        MainWindow->setAutoFillBackground(false);
         MainWindow->setStyleSheet(QLatin1String("#centralWidget{\n"
 "	background:white;\n"
 "}\n"
 "\n"
+"QTabBar::tab{\n"
+"	background:white;\n"
+"	padding:10px;\n"
+"	margin-bottom: -2px;\n"
+"}\n"
+"\n"
+"\n"
+"QTabBar::tab:selected{\n"
+"	border-top:1px solid black;\n"
+"	border-left:1px solid black;\n"
+"	border-right:1px solid black;\n"
+"\n"
+"}\n"
+"\n"
 "QWidget{\n"
 "	font-family: Roboto;\n"
+"	background-color: white;\n"
+"}\n"
+"\n"
+"QTabWidget{\n"
+"	border-top: 0px solid black;\n"
+"}\n"
+"\n"
+"QGroupBox{\n"
+"	border:2px solid black;\n"
+"	padding-top:5px;\n"
+"}\n"
+"\n"
+"QPushButton{\n"
+"	padding:7px;\n"
+"	background-color:#222222;\n"
+"	border:none;\n"
+"	color:white;\n"
 "}"));
         MainWindow->setTabShape(QTabWidget::Rounded);
         centralWidget = new QWidget(MainWindow);
@@ -117,6 +148,7 @@ public:
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setEnabled(true);
+        tabWidget->setStyleSheet(QStringLiteral(""));
         tabWidget->setDocumentMode(false);
         tabWidget->setTabsClosable(false);
         tab = new QWidget();
@@ -156,12 +188,6 @@ public:
 
 
         gridLayout->addLayout(horizontalLayout_9, 1, 1, 1, 2);
-
-        selectInputButton = new QPushButton(tab);
-        selectInputButton->setObjectName(QStringLiteral("selectInputButton"));
-        selectInputButton->setMaximumSize(QSize(200, 16777215));
-
-        gridLayout->addWidget(selectInputButton, 0, 1, 1, 1, Qt::AlignHCenter);
 
         pushButton = new QPushButton(tab);
         pushButton->setObjectName(QStringLiteral("pushButton"));
@@ -303,6 +329,12 @@ public:
 
         gridLayout->addWidget(groupBox, 2, 1, 1, 1);
 
+        selectInputButton = new QPushButton(tab);
+        selectInputButton->setObjectName(QStringLiteral("selectInputButton"));
+        selectInputButton->setMaximumSize(QSize(200, 16777215));
+
+        gridLayout->addWidget(selectInputButton, 0, 1, 1, 2);
+
 
         horizontalLayout_2->addLayout(gridLayout);
 
@@ -443,7 +475,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -454,7 +486,6 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Optiblech Solver", 0));
         label_3->setText(QApplication::translate("MainWindow", "Pane width: ", 0));
         label_5->setText(QApplication::translate("MainWindow", "Plane height", 0));
-        selectInputButton->setText(QApplication::translate("MainWindow", "Open Problem", 0));
         pushButton->setText(QApplication::translate("MainWindow", "Next", 0));
         pushButton_2->setText(QApplication::translate("MainWindow", "Save Problem", 0));
         currentFormBox->setTitle(QApplication::translate("MainWindow", "Current Form", 0));
@@ -468,6 +499,7 @@ public:
         addFormButton->setText(QApplication::translate("MainWindow", "+", 0));
         editFormButton->setText(QApplication::translate("MainWindow", "Rename Form", 0));
         delFormButton->setText(QApplication::translate("MainWindow", "-", 0));
+        selectInputButton->setText(QApplication::translate("MainWindow", "Open Problem", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Enter Problem", 0));
         label_6->setText(QApplication::translate("MainWindow", "Tolerance", 0));
         showCaseCheckBox->setText(QApplication::translate("MainWindow", "Activate Step-by-Step Showcase mode", 0));
