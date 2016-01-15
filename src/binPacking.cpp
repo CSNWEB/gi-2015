@@ -1,8 +1,8 @@
 #include "binPacking.hpp"
 
-//#ifdef DEBUG
+#ifdef DEBUG
 	#define DEBUG_BP
-//#endif
+#endif
 
 
 BinPacking::BinPacking(Problem *p): setting(p), problem(p)
@@ -50,17 +50,6 @@ void BinPacking::create_configuration_tuples()
 					printf("Next configuration: %i-%i\n", index_form_1, index_form_2);
 					printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
 				#endif
-
-				if (problem->get_abstract_form_at_position(index_form_1)->optimal_rotation_is_legal())
-					printf("Form 1 is legal\n");
-				else
-					printf("Form 1 is NOT legal\n");
-
-
-				if (problem->get_abstract_form_at_position(index_form_2)->optimal_rotation_is_legal())
-					printf("Form 2 is legal\n");
-				else
-					printf("Form 2 is NOT legal\n");
 
 				if ((index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1) &&
 					problem->get_abstract_form_at_position(index_form_1)->optimal_rotation_is_legal() &&

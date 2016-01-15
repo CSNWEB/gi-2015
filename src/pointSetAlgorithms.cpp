@@ -1,8 +1,8 @@
 #include "pointSetAlgorithms.hpp"
 
-//#ifdef DEBUG
+#ifdef DEBUG
 	#define DEBUG_PSA
-//#endif
+#endif
 
 
 bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector<int> &indices)
@@ -71,37 +71,27 @@ bool PointSetAlgorithms::rotate_pointset_at_point(
 	if (points.size() < 1)
 		return false;
 
-	for (int i=0; i<points.size(); ++i)
-		printf("[%.2f/%.2f] ", points[i].get_x(), points[i].get_y());
-	printf("bla\n");
+	points[0].rotate(center_x, center_y, angle);
+	x_min = points[0].get_x();
+	x_max = points[0].get_x();
+	y_min = points[0].get_y();
+	y_max = points[0].get_y();
 
-	//if (fabs(angle) > GlobalParams::get_tolerance())
-	//{
-		points[0].rotate(center_x, center_y, angle);
-		x_min = points[0].get_x();
-		x_max = points[0].get_x();
-		y_min = points[0].get_y();
-		y_max = points[0].get_y();
+	for (int i=1; i < points.size(); ++i)
+	{
 
-		for (int i=1; i < points.size(); ++i)
-		{
-			printf("x = %.2f, y = %.2f\n", points[i].get_x(), points[i].get_y());
+		points[i].rotate(center_x, center_y, angle);
 
-			points[i].rotate(center_x, center_y, angle);
+		if (points[i].get_x() < x_min)
+			x_min = points[i].get_x();
+		else if (points[i].get_x() > x_max)
+			x_max = points[i].get_x();
 
-			if (points[i].get_x() < x_min)
-				x_min = points[i].get_x();
-			else if (points[i].get_x() > x_max)
-				x_max = points[i].get_x();
-
-			if (points[i].get_y() < y_min)
-				y_min = points[i].get_y();
-			else if (points[i].get_y() > y_max)
-				y_max = points[i].get_y();
-		}
-	//}
-
-	printf("min_x = %.2f, max_x = %.2f, min_y = %.2f, max_y = %.2f\n", x_min, x_max, y_min, y_max);
+		if (points[i].get_y() < y_min)
+			y_min = points[i].get_y();
+		else if (points[i].get_y() > y_max)
+			y_max = points[i].get_y();
+	}
 			
 	return true;
 }

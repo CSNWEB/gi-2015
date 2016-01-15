@@ -1,8 +1,8 @@
 #include "abstractForm.hpp"
 
-//#ifdef DEBUG
+#ifdef DEBUG
 	#define DEBUG_AF
-//#endif
+#endif
 
 int AbstractForm::total_number_of_abstract_forms = 0;
 
@@ -82,8 +82,6 @@ bool AbstractForm::find_rotation_with_minimum_bounding_box_and_check_if_legal(fl
 	//vector<Point> points_tmp = vector<Point>(points.begin(), points.end());
 
 	PointSetAlgorithms::rotate_pointset_at_point(points, 0, 0, degree, x_min, x_max, y_min,y_max);
-
-	printf("min_x = %.2f, max_x = %.2f, min_y = %.2f, max_y = %.2f\n", x_min, x_max, y_min, y_max);
 
 	dx = x_max-x_min;
 	dy = y_max-y_min;
