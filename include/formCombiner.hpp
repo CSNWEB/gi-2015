@@ -26,12 +26,12 @@ private:
 	/*!
 	 *  Two AbstractFormConfigurations for which an optimized Tuple should be computed.
 	 */
-	AbstractFormConfiguration *form_config_1;
+	AbstractFormConfiguration form_config_1;
 
 	/*!
 	 *  Two AbstractFormConfigurations for which an optimized Tuple should be computed.
 	 */
-	AbstractFormConfiguration *form_config_2;
+	AbstractFormConfiguration form_config_2;
 
 	/*!
 	 *  The two AbstractForm according to the AbstractFormConfigurations.
@@ -236,7 +236,7 @@ public:
 	/*!
 	 *  Default Constructor
 	 */
-	FormCombiner(Problem *p, AbstractFormConfiguration *form_config_1, AbstractFormConfiguration *form_config_2);
+	FormCombiner(Problem *p, AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2);
 
 	/*!
 	 *  Compute optimal configuration for the two AbstractForms and creates an AbstractFormConfigurationTuple

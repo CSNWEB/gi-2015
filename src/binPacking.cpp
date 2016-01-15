@@ -66,7 +66,7 @@ void BinPacking::create_configuration_tuples()
 
 					if ((1.0 - utilization_of_unmerged_configuration) >GlobalParams::get_tolerance())
 					{
-						FormCombiner fc(problem, &form_config_1, &form_config_2);
+						FormCombiner fc(problem, form_config_1, form_config_2);
 
 						AbstractFormConfigurationTuple new_tuple = fc.get_optimal_configured_tuple();
 

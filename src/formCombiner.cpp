@@ -4,7 +4,7 @@
 	#define DEBUG_FC
 #endif
 
-FormCombiner::FormCombiner(Problem *p, AbstractFormConfiguration *form_config_1, AbstractFormConfiguration *form_config_2)
+FormCombiner::FormCombiner(Problem *p, AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
@@ -64,8 +64,8 @@ void FormCombiner::init()
 
 	optimum_found = false;
 
-	form_1 = form_config_1->get_form();
-	form_2 = form_config_2->get_form();
+	form_1 = form_config_1.get_form();
+	form_2 = form_config_2.get_form();
 
 	form_2_mirrored = AbstractForm(*form_2);
 	form_2_mirrored.mirror();
@@ -286,7 +286,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 			opt_position_form_1_y,
 			opt_rotation_form_1,
 			false,
-			form_config_1->get_number_of_forms_needed()
+			form_config_1.get_number_of_forms_needed()
 		);
 		
 		result_configs[1] = AbstractFormConfiguration(
@@ -295,7 +295,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 			opt_position_form_2_y,
 			opt_rotation_form_2,
 			opt_mirror_form_2,
-			form_config_2->get_number_of_forms_needed()
+			form_config_2.get_number_of_forms_needed()
 		);
 
 		#ifdef DEBUG_FC
@@ -333,7 +333,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 			printf("No optimal configuration found, create simple tuple.\n");
 		#endif
 
-		optimal_configured_tuple = AbstractFormConfigurationTuple(AbstractFormConfiguration(form_1, 0, 0, 0, false, form_config_1->get_number_of_forms_needed()));
+		optimal_configured_tuple = AbstractFormConfigurationTuple(AbstractFormConfiguration(form_1, 0, 0, 0, false, form_config_1.get_number_of_forms_needed()));
 	}
 
 	return optimal_configured_tuple;
