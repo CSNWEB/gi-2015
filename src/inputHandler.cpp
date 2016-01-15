@@ -1,8 +1,12 @@
 #include "inputHandler.hpp"
 
+#ifdef DEBUG
+	#define DEBUG_IH
+#endif
+
 void InputHandler::get_input(char* filename)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_IH
 		printf("FUNCTION: InputHandler::get_input()\n");
 	#endif
 
@@ -15,7 +19,7 @@ void InputHandler::get_input(char* filename)
 	scanf_result = fscanf(file, "%f", &size_of_sheet_y);
 	scanf_result = fscanf(file, "%i", &number_of_different_forms);
 
-	#ifdef DEBUG
+	#ifdef DEBUG_IH
 		printf("Size of sheet: %.1f x %.1f\n",size_of_sheet_x, size_of_sheet_y);
 		printf("Number of different forms: %i\n", number_of_different_forms);
 	#endif
@@ -31,7 +35,7 @@ void InputHandler::get_input(char* filename)
 
 	for (int i=0; i<number_of_different_forms; ++i)
 	{
-		#ifdef DEBUG
+		#ifdef DEBUG_IH
 			printf("Input of form %i:\n",i);
 		#endif
 
@@ -48,7 +52,7 @@ void InputHandler::get_input(char* filename)
 		scanf_result = fscanf(file, "%i", &number_of_pieces[i]);
 		scanf_result = fscanf(file, "%i", &tmp_number_of_points);
 
-		#ifdef DEBUG
+		#ifdef DEBUG_IH
 			printf("Name of form: %s\n", tmp_name_of_form.c_str());
 			printf("Required number of pieces: %i\n", number_of_pieces[i]);
 			printf("Input all points: number of points: %i\n", tmp_number_of_points);
@@ -62,27 +66,27 @@ void InputHandler::get_input(char* filename)
 			scanf_result = fscanf(file, "%f %f", &tmp_x, &tmp_y);
 			points[j] = Point(tmp_x, tmp_y);
 
-			#ifdef DEBUG
+			#ifdef DEBUG_IH
 				printf("Point %i at position %.1f/%.1f\n", j, tmp_x, tmp_y);
 			#endif
 		}
 		forms[i] = AbstractForm(tmp_name_of_form, points);
 
-		#ifdef DEBUG
+		#ifdef DEBUG_IH
 			printf("Input of form complete!\n\n");
 		#endif
 	}
 
 	fclose(file);
 
-	#ifdef DEBUG
+	#ifdef DEBUG_IH
 		printf("Input complete!\n");
 	#endif
 }
 
 void InputHandler::_d_print_input()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_IH
 		printf("FUNCTION: InputHandler::_d_print_input()\n");
 
 		printf("Size of sheet: %.1f x %.1f\n", size_of_sheet_x, size_of_sheet_y);
@@ -97,7 +101,7 @@ void InputHandler::_d_print_input()
 
 Problem InputHandler::create_problem()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_IH
 		printf("FUNCTION: InputHandler::create_problem()\n");
 		printf("sx: %.2f\n", size_of_sheet_x);
 		printf("sy: %.2f\n", size_of_sheet_y);

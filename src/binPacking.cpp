@@ -1,8 +1,8 @@
 #include "binPacking.hpp"
 
-#ifdef DEBUG
+//#ifdef DEBUG
 	#define DEBUG_BP
-#endif
+//#endif
 
 
 BinPacking::BinPacking(Problem *p): setting(p), problem(p)
@@ -35,8 +35,6 @@ void BinPacking::create_configuration_tuples()
 
 		AbstractFormConfigurationTuple simple_tuple(form_config_1);
 
-		//printf("Created tuple:\n%s\n", simple_tuple.to_string().c_str());
-
 		all_single_form_tuples.push_back(simple_tuple);
 
 		#ifdef DEBUG
@@ -44,8 +42,6 @@ void BinPacking::create_configuration_tuples()
 		#endif
 
 		// if the current form has bad area utilization iterate through all forms and optimal configuration of each tuple:
-
-		//if (simple_tuple.get_utilization() < (1.0 - GlobalParams::get_tolerance()))
 		if (GlobalParams::do_pre_merge_merge())
 		{	
 			for (int index_form_2 = index_form_1; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
@@ -55,7 +51,20 @@ void BinPacking::create_configuration_tuples()
 					printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
 				#endif
 
-				if ((index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1) && problem->get_abstract_form_at_position(index_form_2)->optimal_rotation_is_legal())
+				if (problem->get_abstract_form_at_position(index_form_1)->optimal_rotation_is_legal())
+					printf("Form 1 is legal\n");
+				else
+					printf("Form 1 is NOT legal\n");
+
+
+				if (problem->get_abstract_form_at_position(index_form_2)->optimal_rotation_is_legal())
+					printf("Form 2 is legal\n");
+				else
+					printf("Form 2 is NOT legal\n");
+
+				if ((index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1) &&
+					problem->get_abstract_form_at_position(index_form_1)->optimal_rotation_is_legal() &&
+					problem->get_abstract_form_at_position(index_form_2)->optimal_rotation_is_legal())
 				{
 					form_config_2 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
 
@@ -91,6 +100,12 @@ void BinPacking::create_configuration_tuples()
 							printf("No tuple was created because unmerged area utilization was sufficient good.\n");
 						#endif
 					}
+				}
+				else
+				{
+					#ifdef DEBUG_BP
+						printf("Current pair %i / %i is not considered\n", index_form_1, index_form_2);
+					#endif
 				}
 			}
 		}
@@ -223,8 +238,6 @@ void BinPacking::initialize_algorithm()
 	index_of_current_tuple = 0;
 
 	bp_planes = vector<BinPackingPlane>();
-
-	//setting = Setting(problem);
 
 	is_initialized = true;
 }
