@@ -77,6 +77,11 @@ private:
      */
     float max_y;
 
+    /*!
+     *  A bool that describes if this form can be rotated into position such that the bounding box has minimal area.
+     */
+    bool fits_with_optimal_rotation;
+
     
     /*!
      *  The size of the area of the form.
@@ -154,6 +159,18 @@ public:
      */
     float find_rotation_with_minimum_bounding_box();
 
+
+    /*!
+     *  Find a rotation of this form such that the area of the bounding box is minimal. Using algorithm by freeman and shapira. Needs O(n^2) time, where n is the number of points on the convex hull. Function also check if the rotated form can still be placed on a plane with specified dimensions. Sets this forms flag fits_in_optimal_rotation.
+     *
+     *  @param plane_width      the width of the plane for which the form should be checked
+     *  @param plane_height     the height of the plane for which the form should be checked
+     *  @param degree           The field where the computed rotation in degrees is stored.
+     *
+     *  @return                 True, if rotated form still fits on specified plane dimensions. False otherweise.
+     */
+    bool find_rotation_with_minimum_bounding_box_and_check_if_legal(float plane_width, float plane_height, float &degree);
+
     /*!
      *  Rotates the abstract form by a given angle in degrees
      *
@@ -228,6 +245,13 @@ public:
      *  @return A float representing the size of the bounding box of the form in y direction.
      */
 	float get_dy();
+
+    /*!
+     *  Getter for flag fits_with_optimal_rotation:
+     *
+     *  @return         the value of fits_with_optimal_rotation
+     */
+    bool optimal_rotation_is_legal(){return fits_with_optimal_rotation;};
     
     /*!
      *  The size of the area of the abstract form.

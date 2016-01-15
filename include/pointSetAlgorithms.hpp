@@ -128,7 +128,7 @@ public:
      *
      *  @return                     the angle defining the specified rotation in degrees
      */
-    static float compute_rotation_angle_for_points_parallel_to_axis(vector<Point> *points, int index_of_point_1, int index_of_point_2);
+    static float compute_rotation_angle_for_points_parallel_to_axis(vector<Point> &points, int index_of_point_1, int index_of_point_2);
 
 	/*!
      *  For a given set of points, find a rotation of the points such that the area of the bounding box of is minimal. Using algorithm by freeman and shapira. Needs O(n^2) time, where n is the number of points on the convex hull.
@@ -138,7 +138,7 @@ public:
      *
      *  @return     		the optimal rotation angle in degrees.
      */
-    static float find_rotation_with_minimum_bounding_box(vector<Point> *points, vector<int> *convex_hull);
+    static float find_rotation_with_minimum_bounding_box(vector<Point> &points, vector<int> &convex_hull);
 };
 
 #endif

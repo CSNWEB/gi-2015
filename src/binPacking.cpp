@@ -55,7 +55,7 @@ void BinPacking::create_configuration_tuples()
 					printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
 				#endif
 
-				if (index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1)
+				if ((index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1) && problem->get_abstract_form_at_position(index_form_2)->optimal_rotation_is_legal())
 				{
 					form_config_2 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
 

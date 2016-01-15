@@ -12,6 +12,8 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	this->points = vector<Point>(points);
 	this->id = total_number_of_abstract_forms++;
 
+	fits_with_optimal_rotation = false;
+
 	number_of_points = points.size();
 
     calc_bounding_box();
@@ -58,7 +60,36 @@ float AbstractForm::find_rotation_with_minimum_bounding_box()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	return PointSetAlgorithms::find_rotation_with_minimum_bounding_box(&points, &convex_hull);
+	float degree = PointSetAlgorithms::find_rotation_with_minimum_bounding_box(points, convex_hull);
+
+	return degree;
+}
+
+bool AbstractForm::find_rotation_with_minimum_bounding_box_and_check_if_legal(float plane_width, float plane_height, float &degree)
+{
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	degree = PointSetAlgorithms::find_rotation_with_minimum_bounding_box(points, convex_hull);
+
+	float x_min, x_max, y_min, y_max;
+
+	PointSetAlgorithms::rotate_pointset_at_point(points, 0,0,degree, x_min, x_max, y_min,y_max);
+
+	dx = x_max-x_min;
+	dy = y_max-y_min;
+
+	if (dx < plane_width && dy < plane_height || dx < plane_height && dy < plane_width)
+	{
+		fits_with_optimal_rotation = true;
+		return true;
+	}
+	else
+	{
+		fits_with_optimal_rotation = false;
+		return false;
+	}
 }
 
 int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plane_height)

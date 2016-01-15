@@ -299,7 +299,7 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 }
 
 
-float PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(vector<Point> *points, int index_of_point_1, int index_of_point_2)
+float PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(vector<Point> &points, int index_of_point_1, int index_of_point_2)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -308,18 +308,18 @@ float PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(vec
 
 	float result_angle;
 
-	float p1_orig_x = (*points)[index_of_point_1].get_x();
-	float p1_orig_y = (*points)[index_of_point_1].get_y();
+	float p1_orig_x = points[index_of_point_1].get_x();
+	float p1_orig_y = points[index_of_point_1].get_y();
 
-	float p2_orig_x = (*points)[index_of_point_2].get_x();
-	float p2_orig_y = (*points)[index_of_point_2].get_y();
+	float p2_orig_x = points[index_of_point_2].get_x();
+	float p2_orig_y = points[index_of_point_2].get_y();
 
 	if (p1_orig_y < p2_orig_y)
 		result_angle =  180 + compute_rotation_angle_for_points_parallel_to_axis(points, index_of_point_2, index_of_point_1);
 	else
 	{
 		float d1_squared = ((p1_orig_x - p2_orig_x) * (p1_orig_x - p2_orig_x)) + ((p1_orig_y - p2_orig_y) * (p1_orig_y - p2_orig_y));
-		float d1 = (*points)[index_of_point_1].get_distance_to(&(*points)[index_of_point_2]);
+		float d1 = points[index_of_point_1].get_distance_to(&(points[index_of_point_2]));
 
 		float p2_rotated_x = p1_orig_x + d1;
 		float p2_rotated_y = p1_orig_y;
@@ -339,13 +339,13 @@ float PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(vec
 	return result_angle;
 }
 
-float PointSetAlgorithms::find_rotation_with_minimum_bounding_box(vector<Point> *points, vector<int> *convex_hull)
+float PointSetAlgorithms::find_rotation_with_minimum_bounding_box(vector<Point> &points, vector<int> &convex_hull)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-    if(convex_hull->size() == 0){
+    if(convex_hull.size() == 0){
         return 0.0;
     }
 
@@ -354,13 +354,13 @@ float PointSetAlgorithms::find_rotation_with_minimum_bounding_box(vector<Point> 
 	float optimal_angle = 0;
 	float minimum_area_of_bounding_box = -1;
 
-	for (int configuration = 0; configuration < convex_hull->size()-1; ++configuration)
+	for (int configuration = 0; configuration < convex_hull.size()-1; ++configuration)
 	{
 		#ifdef DEBUG
 			printf("Consider configuration %i\n", configuration);
 		#endif
 
-		float current_angle = compute_rotation_angle_for_points_parallel_to_axis(points, (*convex_hull)[configuration], (*convex_hull)[(configuration+1) % (convex_hull->size()-1)]);
+		float current_angle = compute_rotation_angle_for_points_parallel_to_axis(points, convex_hull[configuration], convex_hull[(configuration+1) % (convex_hull.size()-1)]);
 
 		bool angle_already_computed = false;
 		for (int angle_index = 0; angle_index < considered_angles.size() && !angle_already_computed; ++angle_index)
@@ -381,10 +381,10 @@ float PointSetAlgorithms::find_rotation_with_minimum_bounding_box(vector<Point> 
 			float x_max = 0;
 			float y_min = 0;
 			float y_max = 0;
-			for (int index_of_hullpoint = 0; index_of_hullpoint < convex_hull->size(); ++index_of_hullpoint)
+			for (int index_of_hullpoint = 0; index_of_hullpoint < convex_hull.size(); ++index_of_hullpoint)
 			{
-				float this_x = (*points)[(*convex_hull)[index_of_hullpoint]].compute_pos_after_rotation_x(current_angle);
-				float this_y = (*points)[(*convex_hull)[index_of_hullpoint]].compute_pos_after_rotation_y(current_angle);
+				float this_x = points[convex_hull[index_of_hullpoint]].compute_pos_after_rotation_x(current_angle);
+				float this_y = points[convex_hull[index_of_hullpoint]].compute_pos_after_rotation_y(current_angle);
 
 				if (index_of_hullpoint == 0)
 				{

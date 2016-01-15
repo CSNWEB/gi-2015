@@ -41,14 +41,14 @@ void Problem::check_if_solveable()
 
         abstract_forms[index_of_form]._d_print_abstract_form();
 
-        float optimal_rotation_by_convex_hull = abstract_forms[index_of_form].find_rotation_with_minimum_bounding_box();
-        abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation_by_convex_hull);
+        float optimal_rotation_by_convex_hull;
+        bool optimal_rotation_is_legal = abstract_forms[index_of_form].find_rotation_with_minimum_bounding_box_and_check_if_legal(size_of_sheet_x, size_of_sheet_y, optimal_rotation_by_convex_hull);
+        //abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation_by_convex_hull);
 
         abstract_forms[index_of_form]._d_print_abstract_form();
 
-        if (abstract_forms[index_of_form].get_dx() > size_of_sheet_x || abstract_forms[index_of_form].get_dy() > size_of_sheet_y)
+        if (optimal_rotation_is_legal)
         {
-            abstract_forms[index_of_form].rotate_form_by_degrees(-optimal_rotation_by_convex_hull);
             int optimal_rotation = abstract_forms[index_of_form].check_for_optimal_legal_rotation(size_of_sheet_x, size_of_sheet_y);
 
             if (optimal_rotation < 0)

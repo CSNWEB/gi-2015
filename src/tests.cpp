@@ -1827,7 +1827,7 @@ bool Tests::test_compute_rotation_angle_correct()
         Point(0,1)
     };
 
-    float res_s1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 0,1);
+    float res_s1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(square, 0,1);
 
     if (res_s1 > 1)
     {
@@ -1838,7 +1838,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    float res_s2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 1,2);
+    float res_s2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(square, 1,2);
     
     if (fabs(res_s2 - 270) > 1)
     {
@@ -1849,7 +1849,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    float res_s3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 2,3);
+    float res_s3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(square, 2,3);
     
     if (fabs(res_s3 - 180) > 1)
     {
@@ -1860,7 +1860,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    float res_s4 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 3,0);
+    float res_s4 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(square, 3,0);
     
     if (fabs(res_s4 - 90) > 1)
     {
@@ -1871,7 +1871,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    float res_s5 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 0,3);
+    float res_s5 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(square, 0,3);
     
     if (fabs(res_s5 - 270) > 1)
     {
@@ -1882,7 +1882,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    float res_s6 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&square, 2,0);
+    float res_s6 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(square, 2,0);
     
     if (fabs(res_s6 - 135) > 1)
     {
@@ -1900,7 +1900,7 @@ bool Tests::test_compute_rotation_angle_correct()
         Point(1,1)
     };
 
-    float res_t1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,1);
+    float res_t1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(triang, 0,1);
     
     if (fabs(res_t1) > 1)
     {
@@ -1911,7 +1911,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    float res_t2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 0,2);
+    float res_t2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(triang, 0,2);
     
     if (fabs(res_t2 - 315) > 1)
     {
@@ -1922,7 +1922,7 @@ bool Tests::test_compute_rotation_angle_correct()
         #endif
     }
 
-    float res_t3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(&triang, 2, 0);
+    float res_t3 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(triang, 2, 0);
     
     if (fabs(res_t3 - 135) > 1)
     {
