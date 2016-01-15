@@ -12,6 +12,17 @@ BinPacking::BinPacking(Problem *p): setting(p), problem(p)
 	#endif
 
 	is_initialized = false;
+
+	int n = problem->get_number_of_different_forms();
+	if (n < 10)
+		n = 10;
+	all_single_form_tuples.reserve(n);
+	all_efficient_form_tuples.reserve((n/2 * (n+1)) + n);
+	all_form_tuples_to_use.reserve((n/2 * (n+1)) + n);
+
+	bp_planes.reserve(n/2);
+	bp_shelves.reserve(n/2);
+
 }
 
 
