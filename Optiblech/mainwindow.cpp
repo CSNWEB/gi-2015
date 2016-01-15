@@ -317,9 +317,9 @@ void MainWindow::on_showCaseCheckBox_clicked(bool checked)
 void MainWindow::invalidForm(bool invalid)
 {
     if(invalid){
-        ui->currentFormBox->setStyleSheet("QListWidget {background-color:red;}");
+        ui->currentFormBox->setStyleSheet("QListWidget {border:2px solid red;}");
     }else{
-        ui->currentFormBox->setStyleSheet("QListWidget {background-color:green;}");
+        ui->currentFormBox->setStyleSheet("QListWidget {border:2px solid green;}");
     }    
 }
 

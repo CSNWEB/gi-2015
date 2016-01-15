@@ -14,15 +14,46 @@
    <string>Optiblech Solver</string>
   </property>
   <property name="autoFillBackground">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <property name="styleSheet">
    <string notr="true">#centralWidget{
 	background:white;
 }
 
+QTabBar::tab{
+	background:white;
+	padding:10px;
+	margin-bottom: -2px;
+}
+
+
+QTabBar::tab:selected{
+	border-top:1px solid black;
+	border-left:1px solid black;
+	border-right:1px solid black;
+
+}
+
 QWidget{
 	font-family: Roboto;
+	background-color: white;
+}
+
+QTabWidget{
+	border-top: 0px solid black;
+}
+
+QGroupBox{
+	border:2px solid black;
+	padding-top:5px;
+}
+
+QPushButton{
+	padding:7px;
+	background-color:#222222;
+	border:none;
+	color:white;
 }</string>
   </property>
   <property name="tabShape">
@@ -38,8 +69,11 @@ QWidget{
       <property name="enabled">
        <bool>true</bool>
       </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -90,19 +124,6 @@ QWidget{
              </widget>
             </item>
            </layout>
-          </item>
-          <item row="0" column="1" alignment="Qt::AlignHCenter">
-           <widget class="QPushButton" name="selectInputButton">
-            <property name="maximumSize">
-             <size>
-              <width>200</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Open Problem</string>
-            </property>
-           </widget>
           </item>
           <item row="6" column="2">
            <widget class="QPushButton" name="pushButton">
@@ -283,6 +304,19 @@ QWidget{
               </layout>
              </item>
             </layout>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="2">
+           <widget class="QPushButton" name="selectInputButton">
+            <property name="maximumSize">
+             <size>
+              <width>200</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Open Problem</string>
+            </property>
            </widget>
           </item>
          </layout>
