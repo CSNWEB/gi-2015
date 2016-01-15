@@ -31,7 +31,7 @@ private:
     /*!
      *  The abstract form this form is derived of
      */
-    AbstractForm *mother;
+    AbstractForm * mother;
 	
 	/*!
 	 *  The number of outer edges this form has.
@@ -64,7 +64,7 @@ public:
 	 *  Constructor that creates a form specified by an AbstractForm, bit without
      *  a specific position
 	 */
-    Form(AbstractForm *mother);
+    Form(AbstractForm *mother) : Form(mother, 0, 0){};
 
 	/*!
 	 *  Constructor that creates a Form at given coordinates (top left corner of

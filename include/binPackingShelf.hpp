@@ -97,7 +97,7 @@ public:
 	 *						the float describes the height of the free space below the newly added form
 	 * 						returns -1 if the form could not be added
 	 */
-	float try_add_form_config_tuple(AbstractFormConfigurationTuple *tuple);
+	float try_add_form_config_tuple(AbstractFormConfigurationTuple &tuple);
 
 	/*!
 	 *  Checks if a form could be placed on this sheld
@@ -106,7 +106,7 @@ public:
 	 *  
 	 *  @return 		true if there is enough space for f on this shelf, false otherwise
 	 */
-	bool check_if_fit(AbstractForm *f);
+	bool check_if_fit(AbstractForm &f);
 
 	/*!
 	 *  Getter for x-offset of shelf on plane:

@@ -4,15 +4,16 @@
 	#define DEBUG_BP
 #endif
 
-BinPacking::BinPacking(Problem *p): setting(p)
+
+BinPacking::BinPacking(Problem *p): setting(p), problem(p)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	problem = p;    
 	is_initialized = false;
 }
+
 
 void BinPacking::create_configuration_tuples()
 {
@@ -223,7 +224,7 @@ void BinPacking::initialize_algorithm()
 
 	bp_planes = vector<BinPackingPlane>();
 
-	setting = Setting(problem);
+	//setting = Setting(problem);
 
 	is_initialized = true;
 }
@@ -342,8 +343,8 @@ bool BinPacking::next_step_of_algorithm()
 
 		//printf("%s\n",current_tuple->to_string().c_str());
 
-		if (!try_add_form_configuration_tuple_on_existing_shelf(current_tuple))
-			add_form_configuration_tuple_on_new_shelf(current_tuple);
+		if (!try_add_form_configuration_tuple_on_existing_shelf(*current_tuple))
+			add_form_configuration_tuple_on_new_shelf(*current_tuple);
 
 		index_of_current_tuple++;
 
@@ -354,7 +355,7 @@ bool BinPacking::next_step_of_algorithm()
 
 }
 
-bool BinPacking::try_add_form_configuration_tuple_on_existing_shelf(AbstractFormConfigurationTuple *tuple)
+bool BinPacking::try_add_form_configuration_tuple_on_existing_shelf(AbstractFormConfigurationTuple &tuple)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -377,7 +378,7 @@ bool BinPacking::try_add_form_configuration_tuple_on_existing_shelf(AbstractForm
 
 			int index_of_plane = bp_shelves[shelf_index].get_plane();
 
-			float x_offset_on_shelf = bp_shelves[shelf_index].get_width() - bp_shelves[shelf_index].get_remaining_width() - tuple->get_dx();
+			float x_offset_on_shelf = bp_shelves[shelf_index].get_width() - bp_shelves[shelf_index].get_remaining_width() - tuple.get_dx();
 
 			add_form_config_tuple_to_setting(
 				tuple,
@@ -396,14 +397,14 @@ bool BinPacking::try_add_form_configuration_tuple_on_existing_shelf(AbstractForm
 	return tuple_added_successfully;
 }
 
-void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigurationTuple *tuple)
+void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigurationTuple &tuple)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	bool form_added_successfully = false;
-	float height_of_tuple = tuple->get_dy();
+	float height_of_tuple = tuple.get_dy();
 
 	for (int plane_index = 0; plane_index < bp_planes.size() && !form_added_successfully; ++plane_index)
 	{
@@ -466,31 +467,31 @@ void BinPacking::create_shelf(int index_of_mothershelf, float size_x, float size
 	bp_shelves.push_back(BinPackingShelf(index_of_mothershelf, size_x, size_y, offset_x, offset_y));
 }
 
-void BinPacking::create_subshelf(int index_of_mothershelf, AbstractForm* form_on_top, float remaining_height)
+void BinPacking::create_subshelf(int index_of_mothershelf, AbstractForm &form_on_top, float remaining_height)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	int plane_index = bp_shelves[index_of_mothershelf].get_plane();
-	float offset_x  = bp_shelves[index_of_mothershelf].get_offset_x() + bp_shelves[index_of_mothershelf].get_width() - bp_shelves[index_of_mothershelf].get_remaining_width() - form_on_top->get_dx();
-	float offset_y  = bp_shelves[index_of_mothershelf].get_offset_y() + form_on_top->get_dy();
-	float size_x    = form_on_top->get_dx();
+	float offset_x  = bp_shelves[index_of_mothershelf].get_offset_x() + bp_shelves[index_of_mothershelf].get_width() - bp_shelves[index_of_mothershelf].get_remaining_width() - form_on_top.get_dx();
+	float offset_y  = bp_shelves[index_of_mothershelf].get_offset_y() + form_on_top.get_dy();
+	float size_x    = form_on_top.get_dx();
 	float size_y    = remaining_height;
 
 	create_shelf(plane_index, size_x, size_y, offset_x, offset_y);
 }
 
-void BinPacking::create_subshelf(int index_of_mothershelf, AbstractFormConfigurationTuple *tuple_on_top, float remaining_height)
+void BinPacking::create_subshelf(int index_of_mothershelf, AbstractFormConfigurationTuple &tuple_on_top, float remaining_height)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	int plane_index = bp_shelves[index_of_mothershelf].get_plane();
-	float offset_x  = bp_shelves[index_of_mothershelf].get_offset_x() + bp_shelves[index_of_mothershelf].get_width() - bp_shelves[index_of_mothershelf].get_remaining_width() - tuple_on_top->get_dx();
-	float offset_y  = bp_shelves[index_of_mothershelf].get_offset_y() + tuple_on_top->get_dy();
-	float size_x    = tuple_on_top->get_dx();
+	float offset_x  = bp_shelves[index_of_mothershelf].get_offset_x() + bp_shelves[index_of_mothershelf].get_width() - bp_shelves[index_of_mothershelf].get_remaining_width() - tuple_on_top.get_dx();
+	float offset_y  = bp_shelves[index_of_mothershelf].get_offset_y() + tuple_on_top.get_dy();
+	float size_x    = tuple_on_top.get_dx();
 	float size_y    = remaining_height;
 
 	create_shelf(plane_index, size_x, size_y, offset_x, offset_y);
@@ -514,17 +515,17 @@ Setting BinPacking::get_current_setting()
     return setting;
 }
 
-void BinPacking::add_form_config_tuple_to_setting(AbstractFormConfigurationTuple* tuple, int plane_index, float position_x, float position_y)
+void BinPacking::add_form_config_tuple_to_setting(AbstractFormConfigurationTuple &tuple, int plane_index, float position_x, float position_y)
 {
-	for (int form_index = 0; form_index < tuple->get_number_of_forms(); ++form_index)
+	for (int form_index = 0; form_index < tuple.get_number_of_forms(); ++form_index)
 	{
-		float x_offset_of_form = tuple->get_configuration_of_form(form_index)->get_x();
-		float y_offset_of_form = tuple->get_configuration_of_form(form_index)->get_y();
-		float rotation_of_form = tuple->get_configuration_of_form(form_index)->get_rotation();
-		bool is_mirrored = tuple->get_configuration_of_form(form_index)->is_mirrored();
+		float x_offset_of_form = tuple.get_configuration_of_form(form_index)->get_x();
+		float y_offset_of_form = tuple.get_configuration_of_form(form_index)->get_y();
+		float rotation_of_form = tuple.get_configuration_of_form(form_index)->get_rotation();
+		bool is_mirrored = tuple.get_configuration_of_form(form_index)->is_mirrored();
 
 		setting.add_form_to_plane_at_position(
-			tuple->get_configuration_of_form(form_index)->get_form(),
+			tuple.get_configuration_of_form(form_index)->get_form(),
 			plane_index,
 			position_x + x_offset_of_form,
 			position_y + y_offset_of_form,

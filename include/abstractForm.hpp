@@ -134,17 +134,6 @@ public:
 	AbstractForm(string name, vector<Point> points);
 
     /*!
-     *  Computes the rotation angle for a rotation that places two specified points parallel to the x-axis,
-     *  and the second point two a larger x-coordinate
-     *
-     *  @param index_of_point_1     the index of the first point in vector<Point> points
-     *  @param index_of_point_2     the index of the second point in vector<Point> points
-     *
-     *  @return                     the angle defining the specified rotation in degrees
-     */
-    //float compute_rotation_angle_for_points_parallel_to_axis(int index_of_point_1, int index_of_point_2);
-
-    /*!
      *  Check if this form fits on a plane with given dimensions.
      *  Check by brute-force if there is a rotation for which width and height of this plane are at least as large as the width and height of the plane.
      *  Checks all angles in degrees in {0,1,...,180}

@@ -121,18 +121,18 @@ private:
 	 *
 	 *  @return 			true, if form was placed. False, if form could not be placed on any shelf
 	 */
-	bool try_add_form_configuration_tuple_on_existing_shelf(AbstractFormConfigurationTuple *tuple);
+	bool try_add_form_configuration_tuple_on_existing_shelf(AbstractFormConfigurationTuple &tuple);
 
 	/*!
 	 *  Creates a new shelf (and a new plane, if necessary) and adds the tuple to the shelf
 	 */
-	void add_form_configuration_tuple_on_new_shelf(AbstractFormConfigurationTuple *tuple);
+	void add_form_configuration_tuple_on_new_shelf(AbstractFormConfigurationTuple &tuple);
 
 	void create_shelf(int index_of_mothershelf, float size_x, float size_y, float offset_x, float offset_y);
 	
-	void create_subshelf(int index_of_mothershelf, AbstractForm* form_on_top, float remaining_height);
+	void create_subshelf(int index_of_mothershelf, AbstractForm &form_on_top, float remaining_height);
 
-	void create_subshelf(int index_of_mothershelf, AbstractFormConfigurationTuple *tuple_on_top, float remaining_height);
+	void create_subshelf(int index_of_mothershelf, AbstractFormConfigurationTuple &tuple_on_top, float remaining_height);
 
 	/*!
 	 *  Adds a AbstractFormConfigurationTuple to the setting.
@@ -142,7 +142,7 @@ private:
 	 *  @param position_x 	The x-offset of the tuple on the plane
 	 *  @param  position_y 	The y-offset of the tuple on the plane
 	 */
-	void add_form_config_tuple_to_setting(AbstractFormConfigurationTuple* tuple, int plane_index, float position_x, float position_y);
+	void add_form_config_tuple_to_setting(AbstractFormConfigurationTuple &tuple, int plane_index, float position_x, float position_y);
 
 public:
 	/*!
