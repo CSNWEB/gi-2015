@@ -19,25 +19,38 @@
   <property name="styleSheet">
    <string notr="true">#centralWidget{
 	background:white;
+	padding:0px;
 }
 
 QTabBar::tab{
 	background:white;
 	padding:10px;
-	margin-bottom: -2px;
+
 }
 
+QLayout{
+	padding:0px;
+	margin:0px;
+}
+
+QTabWidget::pane{
+	border-top:1px solid black;
+	margin-top:-1px;
+}
 
 QTabBar::tab:selected{
 	border-top:1px solid black;
 	border-left:1px solid black;
 	border-right:1px solid black;
-
+}
+QTabBar::tab:!selected{
+	border-bottom:1px solid black;
 }
 
 QWidget{
 	font-family: Roboto;
 	background-color: white;
+	font-size:14px;
 }
 
 QTabWidget{
@@ -46,7 +59,17 @@ QTabWidget{
 
 QGroupBox{
 	border:2px solid black;
-	padding-top:5px;
+	padding-top:15px;
+}
+
+QGroupBox:!enabled{
+	border:2px solid grey;
+}
+
+QGroupBox::title{
+	subcontrol-origin: padding;
+	margin-top:4px;
+	margin-left:7px;
 }
 
 QPushButton{
@@ -54,7 +77,17 @@ QPushButton{
 	background-color:#222222;
 	border:none;
 	color:white;
-}</string>
+}
+
+QPushButton:hover{
+	background-color:#090909;
+}
+
+QPushButton:!enabled{
+	background-color:grey;
+}
+
+</string>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
@@ -64,6 +97,21 @@ QPushButton{
     <string notr="true"/>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>-1</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>2</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="enabled">
@@ -200,8 +248,20 @@ QPushButton{
              <item>
               <widget class="QWidget" name="pointManageContainer" native="true">
                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <property name="spacing">
+                 <number>5</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
                 <property name="topMargin">
-                 <number>1</number>
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
                 </property>
                 <item>
                  <widget class="QPushButton" name="addPointButton">
@@ -426,11 +486,17 @@ QPushButton{
           </layout>
          </widget>
         </item>
-        <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+        <item alignment="Qt::AlignVCenter">
          <widget class="QPushButton" name="solveButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="maximumSize">
            <size>
-            <width>300</width>
+            <width>1000</width>
             <height>16777215</height>
            </size>
           </property>
