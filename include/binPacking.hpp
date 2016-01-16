@@ -31,7 +31,7 @@ class BinPacking
 {
 private:
 	/*!
-	 *  A pointer to the problem to acess forms and the size of a plane
+	 *  The problem for which a packed setting has to be created. To acess forms and the size of a plane
 	 */
 	Problem *problem;
 
@@ -49,6 +49,11 @@ private:
 	 *  An index describing the tuple which has to be added to the setting in the next step. This index is an index for the internal vector all_tuples_to_use_sorted_by_size.
 	 */
 	int index_of_current_tuple;
+
+	/*!
+	 *  The number of different AbstractForms to pack.
+	 */
+	int number_of_different_forms;
 
 	/*!
 	 *  The minimum height of any form defined in the problem. Gives a lower bound on the size of a shelf.
@@ -161,6 +166,13 @@ public:
     }
 
 	/*!
+	 *  Update the problem, reinitialize the algorithm
+	 *
+	 *  @param 		a reference to a problem.
+	 */
+	//update_problem(Problem *new_problem);
+
+	/*!
 	 *  Add next form to the setting
 	 *
 	 *  @return 		true   if form was added
@@ -188,8 +200,10 @@ public:
 	 *  algorithm sorts bounding boxes by height (and width, if heights are equal)
 	 *  then for every form is placed on the first shelf it fits on.
 	 *  If there is no approriate shelf, a new shelf is created on the first plane with enough space.
+	 *
+	 *  @return 	true, if a packed setting was created. False, if problem is not solveable.
 	 */
-	Setting  get_packed_setting();
+	bool  get_packed_setting();
 
 	/*!
 	 *  Get a specific used AbstractFormConfigurationTuple, specified by index of vector all_form_tuples_to_use

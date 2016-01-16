@@ -3,23 +3,32 @@
 Setting::Setting(Problem *p) : problem(p)
 {
 	#ifdef DEBUG
-		printf("CONSTRUCTOR: Setting::Setting(Problem *p)\n");
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	//problem = p;
-
 	planes = vector<Plane>(0);
+	planes.reserve(problem->get_number_of_different_forms()/2);
 
 	missing_forms = vector<int>(problem->get_number_of_different_forms());
 	for (int i=0; i<missing_forms.size(); ++i)
 		missing_forms[i] = problem->get_number_of_form_needed(i);
 }
 
+Setting::Setting(const Setting &original) : problem(original.problem)
+{
+	#ifdef DEBUG
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	planes = vector<Plane>(original.planes);
+	missing_forms = vector<int>(original.missing_forms);
+}
+
 
 float Setting::get_total_utilization()
 {
 	#ifdef DEBUG
-		printf("FUNCTION: Setting::get_total_utilization\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	float utilization = 0;

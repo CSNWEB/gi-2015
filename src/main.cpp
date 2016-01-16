@@ -60,7 +60,9 @@ int main(int argc, char* argv[])
     {
         BinPacking bin_packing(&problem);
 
-        Setting bin_packed = bin_packing.get_packed_setting();
+        bin_packing.get_packed_setting();
+
+        Setting bin_packed = bin_packing.get_current_setting();
 
         bool is_valid = Validator::is_setting_valid(&bin_packed);
 
