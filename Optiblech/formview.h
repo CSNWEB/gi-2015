@@ -20,7 +20,7 @@ public:
     FormView(QWidget *parent = 0);
     void setContainer(QWidget * _container);
     void showForm(AbstractForm * form = 0);
-    void showSetting(Setting  setting = 0);
+    void showSetting(Setting setting = 0);
     ~FormView();
 
 protected:
@@ -28,7 +28,6 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    QGraphicsItem *m_svgItem;
 
     QImage m_image;
 

@@ -157,7 +157,13 @@ public:
 	 *
 	 *  @param p 	a reference to a problem for which the binpacking should be computed
 	 */
-	BinPacking(Problem &p);
+	BinPacking(Problem &p); 
+    
+    BinPacking &operator= (const BinPacking &other){                
+    	problem = other.problem;
+    	is_initialized = false;
+        return *this;
+    }
 
 	/*!
 	 *  Update the problem, reinitialize the algorithm

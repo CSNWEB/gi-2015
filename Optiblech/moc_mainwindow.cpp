@@ -52,10 +52,10 @@ QT_MOC_LITERAL(19, 406, 26), // "on_editPointButton_clicked"
 QT_MOC_LITERAL(20, 433, 18), // "on_saveTXT_clicked"
 QT_MOC_LITERAL(21, 452, 27), // "on_pointAmount_valueChanged"
 QT_MOC_LITERAL(22, 480, 23), // "on_pushButton_2_clicked"
-QT_MOC_LITERAL(23, 504, 32), // "on_toleranceSpinBox_valueChanged"
-QT_MOC_LITERAL(24, 537, 27), // "on_showCaseCheckBox_clicked"
-QT_MOC_LITERAL(25, 565, 7), // "checked"
-QT_MOC_LITERAL(26, 573, 30) // "on_pointList_currentRowChanged"
+QT_MOC_LITERAL(23, 504, 27), // "on_showCaseCheckBox_clicked"
+QT_MOC_LITERAL(24, 532, 7), // "checked"
+QT_MOC_LITERAL(25, 540, 30), // "on_pointList_currentRowChanged"
+QT_MOC_LITERAL(26, 571, 32) // "on_toleranceSpinBox_valueChanged"
 
     },
     "MainWindow\0updateResultView\0\0"
@@ -76,9 +76,9 @@ QT_MOC_LITERAL(26, 573, 30) // "on_pointList_currentRowChanged"
     "on_editPointButton_clicked\0"
     "on_saveTXT_clicked\0on_pointAmount_valueChanged\0"
     "on_pushButton_2_clicked\0"
-    "on_toleranceSpinBox_valueChanged\0"
     "on_showCaseCheckBox_clicked\0checked\0"
-    "on_pointList_currentRowChanged"
+    "on_pointList_currentRowChanged\0"
+    "on_toleranceSpinBox_valueChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -116,7 +116,7 @@ static const uint qt_meta_data_MainWindow[] = {
       21,    1,  147,    2, 0x08 /* Private */,
       22,    0,  150,    2, 0x08 /* Private */,
       23,    1,  151,    2, 0x08 /* Private */,
-      24,    1,  154,    2, 0x08 /* Private */,
+      25,    1,  154,    2, 0x08 /* Private */,
       26,    1,  157,    2, 0x08 /* Private */,
 
  // slots: parameters
@@ -139,9 +139,9 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   10,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int,   10,
-    QMetaType::Void, QMetaType::Bool,   25,
+    QMetaType::Void, QMetaType::Bool,   24,
     QMetaType::Void, QMetaType::Int,    7,
+    QMetaType::Void, QMetaType::Double,   10,
 
        0        // eod
 };
@@ -170,9 +170,9 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 16: _t->on_saveTXT_clicked(); break;
         case 17: _t->on_pointAmount_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 18: _t->on_pushButton_2_clicked(); break;
-        case 19: _t->on_toleranceSpinBox_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 20: _t->on_showCaseCheckBox_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 21: _t->on_pointList_currentRowChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 19: _t->on_showCaseCheckBox_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 20: _t->on_pointList_currentRowChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 21: _t->on_toleranceSpinBox_valueChanged((*reinterpret_cast< double(*)>(_a[1]))); break;
         default: ;
         }
     }

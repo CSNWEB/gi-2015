@@ -218,6 +218,7 @@ DIST          = ../../../Qt/5.4/clang_64/mkspecs/features/spec_pre.prf \
 		../../../Qt/5.4/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.4/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.4/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.4/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.4/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -420,6 +421,7 @@ Makefile: Optiblech.pro ../../../Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf .
 		../../../Qt/5.4/clang_64/mkspecs/features/qt_config.prf \
 		../../../Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf \
 		../../../Qt/5.4/clang_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Qt/5.4/clang_64/mkspecs/features/exclusive_builds.prf \
 		../../../Qt/5.4/clang_64/mkspecs/features/default_pre.prf \
 		../../../Qt/5.4/clang_64/mkspecs/features/mac/default_pre.prf \
@@ -556,6 +558,7 @@ Makefile: Optiblech.pro ../../../Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf .
 ../../../Qt/5.4/clang_64/mkspecs/features/qt_config.prf:
 ../../../Qt/5.4/clang_64/mkspecs/macx-clang/qmake.conf:
 ../../../Qt/5.4/clang_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Qt/5.4/clang_64/mkspecs/features/exclusive_builds.prf:
 ../../../Qt/5.4/clang_64/mkspecs/features/default_pre.prf:
 ../../../Qt/5.4/clang_64/mkspecs/features/mac/default_pre.prf:
@@ -1025,8 +1028,7 @@ abstractFormConfigurationTuple.o: ../src/abstractFormConfigurationTuple.cpp ../i
 		../include/simpleSVG.hpp \
 		../include/gpc.h \
 		../include/abstractFormConfiguration.hpp \
-		../include/formCombiner.hpp \
-		../include/problem.hpp
+		../include/formCombiner.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o abstractFormConfigurationTuple.o ../src/abstractFormConfigurationTuple.cpp
 
 binPacking.o: ../src/binPacking.cpp ../include/binPacking.hpp \
@@ -1042,10 +1044,10 @@ binPacking.o: ../src/binPacking.cpp ../include/binPacking.hpp \
 		../include/abstractFormConfiguration.hpp \
 		../include/abstractFormConfigurationTuple.hpp \
 		../include/formCombiner.hpp \
-		../include/problem.hpp \
 		../include/binPackingPlane.hpp \
 		../include/binPackingShelf.hpp \
 		../include/tupleComparator.hpp \
+		../include/problem.hpp \
 		../include/setting.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o binPacking.o ../src/binPacking.cpp
 
@@ -1062,8 +1064,7 @@ binPackingPlane.o: ../src/binPackingPlane.cpp ../include/binPackingPlane.hpp \
 		../include/gpc.h \
 		../include/abstractFormConfiguration.hpp \
 		../include/abstractFormConfigurationTuple.hpp \
-		../include/formCombiner.hpp \
-		../include/problem.hpp
+		../include/formCombiner.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o binPackingPlane.o ../src/binPackingPlane.cpp
 
 binPackingShelf.o: ../src/binPackingShelf.cpp ../include/binPackingShelf.hpp \
@@ -1078,8 +1079,7 @@ binPackingShelf.o: ../src/binPackingShelf.cpp ../include/binPackingShelf.hpp \
 		../include/gpc.h \
 		../include/abstractFormConfiguration.hpp \
 		../include/abstractFormConfigurationTuple.hpp \
-		../include/formCombiner.hpp \
-		../include/problem.hpp
+		../include/formCombiner.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o binPackingShelf.o ../src/binPackingShelf.cpp
 
 edge.o: ../src/edge.cpp ../include/edge.hpp \
@@ -1109,8 +1109,7 @@ formCombiner.o: ../src/formCombiner.cpp ../include/formCombiner.hpp \
 		../include/simpleSVG.hpp \
 		../include/gpc.h \
 		../include/abstractFormConfiguration.hpp \
-		../include/abstractFormConfigurationTuple.hpp \
-		../include/problem.hpp
+		../include/abstractFormConfigurationTuple.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o formCombiner.o ../src/formCombiner.cpp
 
 globalParams.o: ../src/globalParams.cpp ../include/globalParams.hpp

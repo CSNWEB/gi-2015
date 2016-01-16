@@ -41,7 +41,8 @@ public:
     /*!
      *  Constructor that initializes the problem.
      */
-	Setting(Problem *p);
+	Setting(Problem *p);    
+
 
     /*!
      *  Copy-consructor
