@@ -1,8 +1,12 @@
 #include "problem.hpp"
 
+#ifdef DEBUG
+    #define DEBUG_P
+#endif
+
 Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms, vector<string> name_forms)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_P
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 		
@@ -16,7 +20,7 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 
 Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms)
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
     #endif
         
@@ -29,31 +33,40 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
 
 void Problem::check_if_solveable()
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
     #endif
 
     for (int index_of_form = 0; index_of_form < abstract_forms.size(); ++index_of_form)
     {
-        #ifdef DEBUG
+        #ifdef DEBUG_P
             printf("Check if form %i fits on plane.\n", index_of_form);
         #endif
 
         abstract_forms[index_of_form]._d_print_abstract_form();
 
-        float optimal_rotation_by_convex_hull = abstract_forms[index_of_form].find_rotation_with_minimum_bounding_box();
-        abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation_by_convex_hull);
+        float optimal_rotation_by_convex_hull;
+        bool optimal_rotation_is_legal = abstract_forms[index_of_form].find_rotation_with_minimum_bounding_box_and_check_if_legal(size_of_sheet_x, size_of_sheet_y, optimal_rotation_by_convex_hull);
 
         abstract_forms[index_of_form]._d_print_abstract_form();
 
-        if (abstract_forms[index_of_form].get_dx() > size_of_sheet_x || abstract_forms[index_of_form].get_dy() > size_of_sheet_y)
+        if (optimal_rotation_is_legal)
+        {   
+            abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation_by_convex_hull);
+        
+            abstract_forms[index_of_form].normalize_position(size_of_sheet_x, size_of_sheet_y);
+
+            #ifdef DEBUG_P
+                printf("After rotating by %.2f degrees, form %i fits optimized on given plane dimensions.\n", optimal_rotation_by_convex_hull, index_of_form);
+            #endif
+        }
+        else
         {
-            abstract_forms[index_of_form].rotate_form_by_degrees(-optimal_rotation_by_convex_hull);
             int optimal_rotation = abstract_forms[index_of_form].check_for_optimal_legal_rotation(size_of_sheet_x, size_of_sheet_y);
 
             if (optimal_rotation < 0)
             {
-                #ifdef DEBUG
+                #ifdef DEBUG_P
                     printf("Form %i does not fit on given plane dimensions.\n", index_of_form);
                 #endif
 
@@ -63,27 +76,19 @@ void Problem::check_if_solveable()
             {
                 abstract_forms[index_of_form].rotate_form_by_degrees(optimal_rotation);
                 abstract_forms[index_of_form].normalize_position(size_of_sheet_x, size_of_sheet_y);
+
+                #ifdef DEBUG_P
+                    printf("After rotating by %i degrees, form %i fits optimized on given plane dimensions.\n", optimal_rotation, index_of_form);
+                #endif
             }
 
-            #ifdef DEBUG
-                printf("After rotating by %i degrees, form %i fits optimized on given plane dimensions.\n", optimal_rotation, index_of_form);
-            #endif
-        }
-        else
-        {
-            
-            #ifdef DEBUG
-                printf("After rotating by %.2f degrees, form %i fits optimized on given plane dimensions.\n", optimal_rotation_by_convex_hull, index_of_form);
-            #endif
-        
-            abstract_forms[index_of_form].normalize_position(size_of_sheet_x, size_of_sheet_y);
         }
     }
 }
 
 int Problem::get_total_number_of_all_forms()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_P
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -96,7 +101,7 @@ int Problem::get_total_number_of_all_forms()
 
 int Problem::get_number_of_different_forms()
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("GETTER: %s\n", __PRETTY_FUNCTION__);
     #endif
 
@@ -105,7 +110,7 @@ int Problem::get_number_of_different_forms()
 
 int Problem::get_number_of_form_needed(int i)
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("GETTER: %s\n", __PRETTY_FUNCTION__);
     #endif
 
@@ -116,7 +121,7 @@ int Problem::get_number_of_form_needed(int i)
 
 string Problem::get_name_of_form(int i)
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("GETTER: %s\n", __PRETTY_FUNCTION__);
     #endif
 
@@ -127,7 +132,7 @@ string Problem::get_name_of_form(int i)
 
 float Problem::get_plane_width()
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("GETTER: %s\n", __PRETTY_FUNCTION__);
     #endif
 
@@ -136,7 +141,7 @@ float Problem::get_plane_width()
 
 float Problem::get_plane_height()
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("GETTER: %s\n", __PRETTY_FUNCTION__);
     #endif
 
@@ -152,7 +157,7 @@ bool Problem::is_solveable()
 
 AbstractForm* Problem::get_abstract_form_at_position(int i)
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_P
         printf("GETTER: %s\n", __PRETTY_FUNCTION__);
     #endif
 

@@ -10,7 +10,6 @@
 #include "abstractForm.hpp"
 #include "abstractFormConfiguration.hpp"
 #include "abstractFormConfigurationTuple.hpp"
-#include "problem.hpp"
 #include "pointSetAlgorithms.hpp"
 
 #include <iterator>
@@ -26,12 +25,12 @@ private:
 	/*!
 	 *  Two AbstractFormConfigurations for which an optimized Tuple should be computed.
 	 */
-	AbstractFormConfiguration *form_config_1;
+	AbstractFormConfiguration form_config_1;
 
 	/*!
 	 *  Two AbstractFormConfigurations for which an optimized Tuple should be computed.
 	 */
-	AbstractFormConfiguration *form_config_2;
+	AbstractFormConfiguration form_config_2;
 
 	/*!
 	 *  The two AbstractForm according to the AbstractFormConfigurations.
@@ -62,11 +61,6 @@ private:
 	 *  The two actual Forms, needed to compute area of bounding box and to compute rotations, positions and to check if both forms overlap. The mirrored variant of the second form.
 	 */
 	Form f2_m;
-
-	/*!
-	 *  A pointer to the problem. Needed to decide if a combined form still fits on plane.
-	 */
-	Problem* problem;
 
 	/*!
 	 *  A float describing the area of the bigger bounding box of the two forms. This is an lower bound to the bounding box of any merged configuration of both forms, and used to check if the algorithm can stop.
@@ -228,15 +222,11 @@ private:
 	AbstractFormConfigurationTuple create_config_tuple();
 
 public:
-	/*!
-	 *  Empty Constructor
-	 */
-	//FormCombiner(){};
 
 	/*!
 	 *  Default Constructor
 	 */
-	FormCombiner(Problem *p, AbstractFormConfiguration *form_config_1, AbstractFormConfiguration *form_config_2);
+	FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2);
 
 	/*!
 	 *  Compute optimal configuration for the two AbstractForms and creates an AbstractFormConfigurationTuple

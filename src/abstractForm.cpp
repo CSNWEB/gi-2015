@@ -1,10 +1,14 @@
 #include "abstractForm.hpp"
 
+#ifdef DEBUG
+	#define DEBUG_AF
+#endif
+
 int AbstractForm::total_number_of_abstract_forms = 0;
 
 AbstractForm::AbstractForm(string name, vector<Point> points)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 		
@@ -12,11 +16,13 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 	this->points = vector<Point>(points);
 	this->id = total_number_of_abstract_forms++;
 
+	fits_with_optimal_rotation = false;
+
 	number_of_points = points.size();
 
     calc_bounding_box();
 
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("Created abstractForm with bounding box %.2f/%.2f - %.2f/%.2f\n", min_x, min_y, min_x + dx, min_y + dy);
 	#endif
 
@@ -29,7 +35,7 @@ void AbstractForm::compute_size_of_area()
 {
     // Calculate the size of the area (according to http://www.mathopenref.com/coordpolygonarea.html )
 
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCITON: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -54,16 +60,62 @@ void AbstractForm::compute_size_of_area()
 
 float AbstractForm::find_rotation_with_minimum_bounding_box()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	return PointSetAlgorithms::find_rotation_with_minimum_bounding_box(&points, &convex_hull);
+	float degree = PointSetAlgorithms::find_rotation_with_minimum_bounding_box(points, convex_hull);
+
+	return degree;
+}
+
+bool AbstractForm::find_rotation_with_minimum_bounding_box_and_check_if_legal(float plane_width, float plane_height, float &degree)
+{
+	#ifdef DEBUG_AF
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	degree = PointSetAlgorithms::find_rotation_with_minimum_bounding_box(points, convex_hull);
+
+	float x_min, x_max, y_min, y_max;
+
+	//vector<Point> points_tmp = vector<Point>(points.begin(), points.end());
+
+	PointSetAlgorithms::rotate_pointset_at_point(points, 0, 0, degree, x_min, x_max, y_min,y_max);
+
+	dx = x_max-x_min;
+	dy = y_max-y_min;
+
+	#ifdef DEBUG_AF
+		printf("dim of plane: %.2f/%.2f\ndim of form: %.2f/%.2f\n", plane_width, plane_height, dx, dy);
+	#endif
+
+	if ((plane_width  - dx > GlobalParams::get_tolerance() && 
+		 plane_height - dy > GlobalParams::get_tolerance()))/* || 
+		(plane_height - dx > GlobalParams::get_tolerance() && 
+		 plane_width  - dy > GlobalParams::get_tolerance()))*/
+	{
+		#ifdef DEBUG_AF
+			printf("Optimal rotation is legal\n");
+		#endif
+
+		fits_with_optimal_rotation = true;
+		return true;
+	}
+	else
+	{
+		#ifdef DEBUG_AF
+			printf("Optimal rotation is NOT legal\n");
+		#endif
+
+		fits_with_optimal_rotation = false;
+		return false;
+	}
 }
 
 int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plane_height)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -71,7 +123,7 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 	float optimal_area_of_bounding_box = -1;
 	for (int angle = 0; angle < 90; ++angle)
 	{
-		#ifdef DEBUG
+		#ifdef DEBUG_AF
 			printf("\tCheck angle %i degrees\n", angle);
 		#endif
 
@@ -110,13 +162,13 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 
 		if (current_dx < (plane_width+GlobalParams::get_tolerance()) && current_dy < (plane_height+GlobalParams::get_tolerance()))
 		{
-			#ifdef DEBUG
+			#ifdef DEBUG_AF
 				printf("\tRotating by %i degrees is a legal rotation\n", angle);
 			#endif
 
 			if (optimal_angle < 0 || area_of_bounding_box < optimal_area_of_bounding_box)
 			{
-				#ifdef DEBUG
+				#ifdef DEBUG_AF
 					printf("\t\tFound new optimal legal configuration with area %.2f\n", area_of_bounding_box);
 				#endif
 
@@ -126,13 +178,13 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 		}
 		if (current_dy < (plane_width+GlobalParams::get_tolerance()) && current_dx < (plane_height+GlobalParams::get_tolerance()))
 		{
-			#ifdef DEBUG
+			#ifdef DEBUG_AF
 				printf("\tRotating by %i degrees is a legal rotation\n", angle+90);
 			#endif
 
 			if (optimal_angle < 0 || area_of_bounding_box < optimal_area_of_bounding_box)
 			{
-				#ifdef DEBUG
+				#ifdef DEBUG_AF
 					printf("\t\tFound new optimal legal configuration with area %.2f\n", area_of_bounding_box);
 				#endif
 
@@ -146,7 +198,7 @@ int AbstractForm::check_for_optimal_legal_rotation(float plane_width, float plan
 
 void AbstractForm::rotate_form_by_degrees(float degrees)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 		printf("rotate form by %.2f degrees\n", degrees);
 	#endif
@@ -155,14 +207,14 @@ void AbstractForm::rotate_form_by_degrees(float degrees)
 	dx = max_x - min_x;
 	dy = max_y - min_y;
 
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("\tRotated form into position x_min = %.2f, dx = %.2f - y_min = %.2f, dy = %.2f\n", min_x, dx, min_y, dy);
 	#endif
 }
 
 void AbstractForm::mirror()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -171,7 +223,7 @@ void AbstractForm::mirror()
 
 void AbstractForm::normalize_position(float plane_width, float plane_height)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -187,7 +239,7 @@ void AbstractForm::normalize_position(float plane_width, float plane_height)
 		if (flip)
 			points[i].flip();
 		
-		#ifdef DEBUG
+		#ifdef DEBUG_AF
 			printf("\tPoint %i moved to normalized position %.2f/%.2f\n", i, points[i].get_x(), points[i].get_y());
 		#endif
 	}
@@ -199,7 +251,7 @@ void AbstractForm::normalize_position(float plane_width, float plane_height)
 
 	if (flip)
 	{
-		#ifdef DEBUG
+		#ifdef DEBUG_AF
 			printf("\tForm got flipped\n");
 		#endif
 
@@ -215,7 +267,7 @@ void AbstractForm::normalize_position(float plane_width, float plane_height)
 
 void AbstractForm::compute_convex_hull()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -224,7 +276,7 @@ void AbstractForm::compute_convex_hull()
 
 int AbstractForm::get_number_of_points()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
 		printf("Number of points: %i\n", points.size());
 	#endif
@@ -234,7 +286,7 @@ int AbstractForm::get_number_of_points()
 
 float AbstractForm::get_dx()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -243,7 +295,7 @@ float AbstractForm::get_dx()
 
 float AbstractForm::get_dy()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("GETTER: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -252,11 +304,11 @@ float AbstractForm::get_dy()
 
 void AbstractForm::_d_print_abstract_form()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	#ifdef DEBUG
+	#ifdef DEBUG_AF
 		printf("Name of form: %s\n", name.c_str());
         printf("Number of points: %i\n", number_of_points);
 

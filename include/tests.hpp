@@ -187,10 +187,10 @@ private:
 
     /*!
      *  Given two instances of AbstractFormConfigurationTuple with different area utilization, test if the relation operator defined in TupleComparatorUtilization orders them correct
-     *
+     *  
      *  @return True if the test passes, false if not.
      */
-    static bool test_sort_tuple_utilization_correct();
+    //static bool test_sort_tuple_utilization_correct();
 
     /*!
      *  Given two instances of AbstractFormConfigurationTuple with different dimension, test if the relation operator defined in TupleComparatorDimension orders them correct

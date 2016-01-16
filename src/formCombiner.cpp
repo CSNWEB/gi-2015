@@ -4,20 +4,15 @@
 	#define DEBUG_FC
 #endif
 
-FormCombiner::FormCombiner(Problem *p, AbstractFormConfiguration *form_config_1, AbstractFormConfiguration *form_config_2)
+FormCombiner::FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	this->problem       = p;
 	this->form_config_1 = form_config_1;
 	this->form_config_2 = form_config_2;
 
-	//form_2_mirrored = AbstractForm();
-	//f1 = Form();
-	//f2 = Form();
-	//f2_m = Form();
 
 	area_of_biggest_box_of_forms = -1;
 	sum_of_bounding_boxes = -1;
@@ -64,8 +59,8 @@ void FormCombiner::init()
 
 	optimum_found = false;
 
-	form_1 = form_config_1->get_form();
-	form_2 = form_config_2->get_form();
+	form_1 = form_config_1.get_form();
+	form_2 = form_config_2.get_form();
 
 	form_2_mirrored = AbstractForm(*form_2);
 	form_2_mirrored.mirror();
@@ -110,7 +105,7 @@ void FormCombiner::compute_config_form_1(int index_of_point)
 
 	f1 = Form(form_1);
 
-	cur_rotation_form_1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(f1.get_points(), index_of_point, (index_of_point+1)%form_1->get_number_of_points());
+	cur_rotation_form_1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(*(f1.get_points()), index_of_point, (index_of_point+1)%form_1->get_number_of_points());
 	f1.rotate(0,0,cur_rotation_form_1);
 
 	cur_position_form_1_x = -(f1.get_point_at(index_of_point))->get_x();
@@ -142,7 +137,7 @@ void FormCombiner::compute_config_form_2(int index_of_point, bool is_mirrored)
 		f = &f2_m;
 	}
 
-	cur_rotation_form_2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(f->get_points(), index_of_point, (index_of_point+1)%form_2->get_number_of_points());
+	cur_rotation_form_2 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(*(f->get_points()), index_of_point, (index_of_point+1)%form_2->get_number_of_points());
 	f->rotate(0,0,cur_rotation_form_2);
 
 	cur_mirror_form_2 = is_mirrored;
@@ -207,7 +202,7 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 
 	PointSetAlgorithms::compute_convex_hull(allpoints, hull_of_tuple);
 
-	cur_total_rotation = PointSetAlgorithms::find_rotation_with_minimum_bounding_box(&allpoints, &hull_of_tuple);
+	cur_total_rotation = PointSetAlgorithms::find_rotation_with_minimum_bounding_box(allpoints, hull_of_tuple);
 
 	f1.rotate(0,0, cur_total_rotation);
 	f2_temp->rotate(0,0, cur_total_rotation);
@@ -286,7 +281,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 			opt_position_form_1_y,
 			opt_rotation_form_1,
 			false,
-			form_config_1->get_number_of_forms_needed()
+			form_config_1.get_number_of_forms_needed()
 		);
 		
 		result_configs[1] = AbstractFormConfiguration(
@@ -295,7 +290,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 			opt_position_form_2_y,
 			opt_rotation_form_2,
 			opt_mirror_form_2,
-			form_config_2->get_number_of_forms_needed()
+			form_config_2.get_number_of_forms_needed()
 		);
 
 		#ifdef DEBUG_FC
@@ -333,7 +328,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 			printf("No optimal configuration found, create simple tuple.\n");
 		#endif
 
-		optimal_configured_tuple = AbstractFormConfigurationTuple(AbstractFormConfiguration(form_1, 0, 0, 0, false, form_config_1->get_number_of_forms_needed()));
+		optimal_configured_tuple = AbstractFormConfigurationTuple(AbstractFormConfiguration(form_1, 0, 0, 0, false, form_config_1.get_number_of_forms_needed()));
 	}
 
 	return optimal_configured_tuple;
