@@ -49,14 +49,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toleranceSpinBox->setValue(GlobalParams::get_tolerance());
     enableEditPointButtons(false);
     enableEditFormButton(false);
+
+    /*ui->tabWidget->tabBar()->setTabEnabled(1,false);
+    ui->tabWidget->tabBar()->setTabEnabled(2,false);*/
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete pm;
-    delete m_view;
+    delete pm;    
     delete m_formview;
+    delete m_resultview;
 }
 
 void MainWindow::updateResultView(){
@@ -353,4 +356,14 @@ void MainWindow::on_pointList_currentRowChanged(int currentRow)
 void MainWindow::on_toleranceSpinBox_valueChanged(double arg1)
 {
     GlobalParams::set_tolerance(arg1);
+}
+
+void MainWindow::on_helpButton_clicked()
+{
+    QMessageBox msgBox;
+    msgBox.setText("Informaticup 2016 Optiblech Solver Jena");
+    QString text = "This program packs abitrary polygons on planes with a given size.";
+    text +="\n\n Verion 1.0";
+    msgBox.setDetailedText(text);
+    int ret = msgBox.exec();
 }

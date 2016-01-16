@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -72,22 +75,61 @@ QGroupBox::title{
 	margin-left:7px;
 }
 
-QPushButton{
-	padding:7px;
-	background-color:#222222;
-	border:none;
-	color:white;
-}
-
-QPushButton:hover{
-	background-color:#090909;
-}
-
 QPushButton:!enabled{
 	background-color:grey;
 }
 
-</string>
+#pushButton:!enabled{
+	background-color:red;
+}
+
+#pushButton:enabled{
+	background-color:green;
+}
+
+
+QPushButton {
+  padding: 7px;
+  border: none;
+  color: white;
+  background-color: #404040;
+  border-color: #404040;
+}
+QPushButton:hover {
+  background-color: #262626;
+  border-color: #1a1a1a;
+}
+QPushButton:pressed {
+  background-color: #1a1a1a;
+  border-color: #0d0d0d;
+}
+#helpButton {
+  background-color: #9954bb;
+  border-color: #9954bb;
+}
+#helpButton:hover {
+  background-color: #7e3f9d;
+  border-color: #6f378b;
+}
+#helpButton:pressed {
+  background-color: #6f378b;
+  border-color: #613079;
+}
+#selectInputButton,
+#solveButton {
+  background-color: #2780e3;
+  border-color: #2780e3;
+}
+#selectInputButton:hover,
+#solveButton:hover {
+  background-color: #1967be;
+  border-color: #165ba8;
+}
+#selectInputButton:pressed,
+#solveButton:pressed {
+  background-color: #165ba8;
+  border-color: #134f91;
+}</string>
   </property>
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
@@ -139,42 +181,21 @@ QPushButton:!enabled{
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="1" column="1" colspan="2">
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <property name="topMargin">
-             <number>10</number>
+          <item row="7" column="1">
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="enabled">
+             <bool>true</bool>
             </property>
-            <property name="rightMargin">
-             <number>0</number>
+            <property name="text">
+             <string>Save Problem</string>
             </property>
-            <item>
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>Pane width: </string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDoubleSpinBox" name="planeWidth"/>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_5">
-              <property name="text">
-               <string>Plane height</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDoubleSpinBox" name="planeHeight">
-              <property name="maximum">
-               <double>98.989999999999995</double>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           </widget>
           </item>
-          <item row="6" column="2">
+          <item row="7" column="2">
            <widget class="QPushButton" name="pushButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="maximumSize">
              <size>
               <width>5000</width>
@@ -182,18 +203,67 @@ QPushButton:!enabled{
              </size>
             </property>
             <property name="text">
-             <string>Next</string>
+             <string>You can't proceed - problem empty</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
-           <widget class="QPushButton" name="pushButton_2">
+          <item row="0" column="1">
+           <widget class="QPushButton" name="selectInputButton">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>4000</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
-             <string>Save Problem</string>
+             <string>Open Problem</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="2" rowspan="4">
+          <item row="3" column="1">
+           <widget class="QGroupBox" name="groupBox">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="title">
+             <string>Forms</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <widget class="QListWidget" name="absFormList"/>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QPushButton" name="addFormButton">
+                 <property name="text">
+                  <string>+</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="editFormButton">
+                 <property name="text">
+                  <string>Rename Form</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="delFormButton">
+                 <property name="text">
+                  <string>-</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="3" column="2" rowspan="4">
            <widget class="QGroupBox" name="currentFormBox">
             <property name="enabled">
              <bool>false</bool>
@@ -329,53 +399,44 @@ QPushButton:!enabled{
             <zorder>pointManageContainer</zorder>
            </widget>
           </item>
-          <item row="2" column="1">
-           <widget class="QGroupBox" name="groupBox">
-            <property name="title">
-             <string>Forms</string>
+          <item row="2" column="1" colspan="2">
+           <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <property name="topMargin">
+             <number>10</number>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_7">
-             <item>
-              <widget class="QListWidget" name="absFormList"/>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_6">
-               <item>
-                <widget class="QPushButton" name="addFormButton">
-                 <property name="text">
-                  <string>+</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="editFormButton">
-                 <property name="text">
-                  <string>Rename Form</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="delFormButton">
-                 <property name="text">
-                  <string>-</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </widget>
+            <property name="rightMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Pane width: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="planeWidth"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Plane height</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QDoubleSpinBox" name="planeHeight">
+              <property name="maximum">
+               <double>98.989999999999995</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
-          <item row="0" column="1" colspan="2">
-           <widget class="QPushButton" name="selectInputButton">
-            <property name="maximumSize">
-             <size>
-              <width>200</width>
-              <height>16777215</height>
-             </size>
-            </property>
+          <item row="0" column="2" alignment="Qt::AlignRight">
+           <widget class="QPushButton" name="helpButton">
             <property name="text">
-             <string>Open Problem</string>
+             <string>Info and Help</string>
             </property>
            </widget>
           </item>

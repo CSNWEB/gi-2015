@@ -76,6 +76,8 @@ private slots:
 
     void on_toleranceSpinBox_valueChanged(double arg1);
 
+    void on_helpButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 

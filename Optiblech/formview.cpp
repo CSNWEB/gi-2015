@@ -134,7 +134,7 @@ void FormView::showSetting(Setting setting)
                 polygon.push_back(QPointF(point.get_x()*scale_fac, point.get_y()*scale_fac));
             }
 
-            QGraphicsPolygonItem * polyitem = s->addPolygon(polygon, QPen(), QBrush(Qt::SolidPattern));
+            QGraphicsPolygonItem * polyitem = s->addPolygon(polygon, QPen(QColor(Qt::red)), QBrush(Qt::SolidPattern));
             polyitem->setPos(x_offset, y_offset);
             bound = polygon.boundingRect();
         }
