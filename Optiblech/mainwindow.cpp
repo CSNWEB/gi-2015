@@ -96,7 +96,8 @@ void MainWindow::on_solveButton_clicked()
         if(ui->showCaseCheckBox->isChecked()){
              QTimer::singleShot(0, this, SLOT(updateResultView()));
         }else{
-            m_resultview->showSetting(bin_packing.get_packed_setting());
+            bin_packing.get_packed_setting();
+            m_resultview->showSetting(bin_packing.get_current_setting());
             enableSaveButtons(true);
         }
     }

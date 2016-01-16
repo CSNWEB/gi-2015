@@ -475,7 +475,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -501,7 +501,7 @@ public:
         delFormButton->setText(QApplication::translate("MainWindow", "-", 0));
         selectInputButton->setText(QApplication::translate("MainWindow", "Open Problem", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Enter Problem", 0));
-        label_6->setText(QApplication::translate("MainWindow", "Tolerance", 0));
+        label_6->setText(QApplication::translate("MainWindow", "Tolerance (max. 1, min. 0.001)", 0));
         showCaseCheckBox->setText(QApplication::translate("MainWindow", "Activate Step-by-Step Showcase mode", 0));
         showCaseGroup->setTitle(QApplication::translate("MainWindow", "Showcase params", 0));
         label->setText(QApplication::translate("MainWindow", "Steps", 0));
