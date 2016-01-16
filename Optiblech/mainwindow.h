@@ -70,12 +70,11 @@ private slots:
 
     void on_pushButton_2_clicked();    
 
-    void on_toleranceSpinBox_valueChanged(int arg1);
-
-    void on_showCaseCheckBox_clicked(bool checked);       
-
+    void on_showCaseCheckBox_clicked(bool checked);
 
     void on_pointList_currentRowChanged(int currentRow);
+
+    void on_toleranceSpinBox_valueChanged(double arg1);
 
 private:
     Ui::MainWindow *ui;

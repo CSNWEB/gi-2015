@@ -342,7 +342,7 @@ QPushButton{
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Tolerance</string>
+             <string>Tolerance (max. 1, min. 0.001)</string>
             </property>
            </widget>
           </item>

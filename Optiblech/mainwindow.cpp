@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_formview->setContainer(ui->formViewerWidget);
 
 
-    ui->toleranceSpinBox->setValue(GlobalParams::get_tolerance_digits());
+    ui->toleranceSpinBox->setValue(GlobalParams::get_tolerance());
     enableEditPointButtons(false);
     enableEditFormButton(false);
 }
@@ -300,10 +300,6 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 
-void MainWindow::on_toleranceSpinBox_valueChanged(int arg1)
-{
-    GlobalParams::set_significant_digits(arg1);
-}
 
 void MainWindow::on_showCaseCheckBox_clicked(bool checked)
 {
@@ -352,4 +348,9 @@ void MainWindow::on_pointList_currentRowChanged(int currentRow)
     }else{
         enableEditPointButtons(true);
     }
+}
+
+void MainWindow::on_toleranceSpinBox_valueChanged(double arg1)
+{
+    GlobalParams::set_tolerance(arg1);
 }
