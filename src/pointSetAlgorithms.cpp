@@ -35,6 +35,8 @@ bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector
 			unique_points.push_back(indices[i]);
 	}
 	indices = vector<int>(unique_points.begin(), unique_points.end());
+
+	return points_deleted;
 }
 
 bool PointSetAlgorithms::rotate_pointset_at_point(vector<Point> &points, float center_x, float center_y, float angle)

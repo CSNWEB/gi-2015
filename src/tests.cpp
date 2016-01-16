@@ -1023,7 +1023,7 @@ bool Tests::test_validator_empty()
                               number_of_forms);
     
     // The empty setting that does not really solve the problem.
-    Setting setting = Setting(&problem);
+    Setting setting(&problem);
     
     bool empty_setting_is_valid = Validator::is_setting_valid(&setting);
     
@@ -1078,7 +1078,7 @@ bool Tests::test_validator_exceeding_bounds()
      *  The setting where the form will exceed the plane in the minimum
      *  x-direction.
      */
-    Setting setting_minx = Setting(&problem);
+    Setting setting_minx(&problem);
     
     // Add a plane
     setting_minx.add_plane();
@@ -1098,7 +1098,7 @@ bool Tests::test_validator_exceeding_bounds()
      *  The setting where the form will exceed the plane in the minimum
      *  y-direction.
      */
-    Setting setting_miny = Setting(&problem);
+    Setting setting_miny(&problem);
     
     // Add a plane
     setting_miny.add_plane();
@@ -1118,7 +1118,7 @@ bool Tests::test_validator_exceeding_bounds()
      *  The setting where the form will exceed the plane in the maximum
      *  x-direction.
      */
-    Setting setting_maxx = Setting(&problem);
+    Setting setting_maxx(&problem);
     
     // Add a plane
     setting_maxx.add_plane();
@@ -1138,7 +1138,7 @@ bool Tests::test_validator_exceeding_bounds()
      *  The setting where the form will exceed the plane in the maximum
      *  y-direction.
      */
-    Setting setting_maxy = Setting(&problem);
+    Setting setting_maxy(&problem);
     
     // Add a plane
     setting_maxy.add_plane();
@@ -1199,7 +1199,7 @@ bool Tests::test_validator_unknown_form()
                               number_of_forms);
     
     // The empty setting that does not really solve the problem.
-    Setting setting = Setting(&problem);
+    Setting setting(&problem);
     
     // Add a form to the setting that is not specified in the problem.
     AbstractForm triangle = AbstractForm("triangle", square_points);
@@ -1251,7 +1251,7 @@ bool Tests::test_validator_wrong_count()
                               number_of_forms);
     
     // The empty setting that does not really solve the problem.
-    Setting setting = Setting(&problem);
+    Setting setting(&problem);
     
     // Add only one form to the plane although 2 are needed.
     setting.add_plane();
@@ -1314,7 +1314,7 @@ bool Tests::test_validator_correct()
                               number_of_forms);
     
     // The empty setting that does not really solve the problem.
-    Setting setting = Setting(&problem);
+    Setting setting(&problem);
     
     /**
      *  Add as many forms to a plane as necessary and don't exceed the bounds

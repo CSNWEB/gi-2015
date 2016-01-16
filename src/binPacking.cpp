@@ -5,26 +5,21 @@
 #endif
 
 
-BinPacking::BinPacking(Problem *p): setting(p), problem(p)
+BinPacking::BinPacking(Problem *p): problem(p), setting(p)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	is_initialized = false;
-
-	int n = problem->get_number_of_different_forms();
-	if (n < 10)
-		n = 10;
-	all_single_form_tuples.reserve(n);
-	all_efficient_form_tuples.reserve((n/2 * (n+1)) + n);
-	all_form_tuples_to_use.reserve((n/2 * (n+1)) + n);
-
-	bp_planes.reserve(n/2);
-	bp_shelves.reserve(n/2);
-
 }
 
+/*
+BinPacking::BinPacking(const BinPacking &original) : problem(original.problem)
+{
+
+}
+*/
 
 void BinPacking::create_configuration_tuples()
 {
@@ -35,7 +30,7 @@ void BinPacking::create_configuration_tuples()
 	AbstractFormConfiguration form_config_1;
 	AbstractFormConfiguration form_config_2;
 
-	for (int index_form_1 = 0; index_form_1 < problem->get_number_of_different_forms(); ++index_form_1)
+	for (int index_form_1 = 0; index_form_1 < number_of_different_forms; ++index_form_1)
 	{
 		#ifdef DEBUG
 			printf("Consider the next form:\n");
@@ -55,7 +50,7 @@ void BinPacking::create_configuration_tuples()
 		// if the current form has bad area utilization iterate through all forms and optimal configuration of each tuple:
 		if (GlobalParams::do_pre_merge_merge())
 		{	
-			for (int index_form_2 = index_form_1; index_form_2 < problem->get_number_of_different_forms(); ++index_form_2)
+			for (int index_form_2 = index_form_1; index_form_2 < number_of_different_forms; ++index_form_2)
 			{
 				#ifdef DEBUG
 					printf("Next configuration: %i-%i\n", index_form_1, index_form_2);
@@ -221,9 +216,21 @@ void BinPacking::initialize_algorithm()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
     #endif
 
-    if(problem->get_number_of_different_forms() == 0){
+	number_of_different_forms = problem->get_number_of_different_forms();
+
+    if(number_of_different_forms == 0){
         return;
     }
+
+	int n =  number_of_different_forms;
+	if (n < 10)
+		n = 10;
+	all_single_form_tuples.reserve(n);
+	all_efficient_form_tuples.reserve((n/2 * (n+1)) + n);
+	all_form_tuples_to_use.reserve((n/2 * (n+1)) + n);
+
+	bp_planes.reserve(n/2);
+	bp_shelves.reserve(n/2);
 	
 	init_number_of_forms();
 
@@ -248,7 +255,7 @@ void BinPacking::init_number_of_forms()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	for (int i=0; i<problem->get_number_of_different_forms(); ++i)
+	for (int i=0; i<number_of_different_forms; ++i)
 		{
 			number_of_forms_needed[problem->get_abstract_form_at_position(i)->get_id()] = problem->get_number_of_form_needed(i);
 
@@ -291,7 +298,7 @@ void BinPacking::create_initial_sorting()
 	#endif
 }
 
-Setting BinPacking::get_packed_setting()
+bool BinPacking::get_packed_setting()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -306,7 +313,7 @@ Setting BinPacking::get_packed_setting()
 			printf("ERROR: No Setting created because problem is not solveable.\n");
 		#endif
 
-		return NULL;
+		return false;
 	}
 
 	while(next_step_of_algorithm())
@@ -330,7 +337,7 @@ Setting BinPacking::get_packed_setting()
 		printf("\n--- Function %s finished ---\n\n", __PRETTY_FUNCTION__);
 	#endif
 
-	return setting;
+	return true;
 }
 
 bool BinPacking::next_step_of_algorithm()

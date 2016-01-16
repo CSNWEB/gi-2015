@@ -44,6 +44,11 @@ public:
 	Setting(Problem *p);
 
     /*!
+     *  Copy-consructor
+     */
+    Setting(const Setting &original);
+
+    /*!
      *  Returns number_of_planes
      */
     int get_number_of_planes();
