@@ -58,9 +58,9 @@ int main(int argc, char* argv[])
         printf("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!\n");
     else
     {
-        BinPacking bin_packing(&problem);
+        BinPacking bin_packing(problem);
 
-        bin_packing.get_packed_setting();
+        bin_packing.create_packed_setting();
 
         Setting bin_packed = bin_packing.get_current_setting();
 

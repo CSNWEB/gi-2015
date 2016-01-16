@@ -4,8 +4,7 @@
 	#define DEBUG_BP
 #endif
 
-
-BinPacking::BinPacking(Problem *p): problem(p), setting(p)
+BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
@@ -14,12 +13,11 @@ BinPacking::BinPacking(Problem *p): problem(p), setting(p)
 	is_initialized = false;
 }
 
-/*
-BinPacking::BinPacking(const BinPacking &original) : problem(original.problem)
+void BinPacking::update_problem(Problem &new_problem)
 {
-
+	problem = new_problem;
+	is_initialized = false;
 }
-*/
 
 void BinPacking::create_configuration_tuples()
 {
@@ -34,10 +32,10 @@ void BinPacking::create_configuration_tuples()
 	{
 		#ifdef DEBUG
 			printf("Consider the next form:\n");
-			problem->get_abstract_form_at_position(index_form_1)->_d_print_abstract_form();
+			problem.get_abstract_form_at_position(index_form_1)->_d_print_abstract_form();
 		#endif
 
-		form_config_1 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_1), problem->get_number_of_form_needed(index_form_1));
+		form_config_1 = AbstractFormConfiguration(problem.get_abstract_form_at_position(index_form_1), problem.get_number_of_form_needed(index_form_1));
 
 		AbstractFormConfigurationTuple simple_tuple(form_config_1);
 
@@ -57,11 +55,11 @@ void BinPacking::create_configuration_tuples()
 					printf("number_of_forms_needed: %i\n", number_of_forms_needed[index_form_1]);
 				#endif
 
-				if ((index_form_2 != index_form_1 || problem->get_number_of_form_needed(index_form_1) > 1) &&
-					problem->get_abstract_form_at_position(index_form_1)->optimal_rotation_is_legal() &&
-					problem->get_abstract_form_at_position(index_form_2)->optimal_rotation_is_legal())
+				if ((index_form_2 != index_form_1 || problem.get_number_of_form_needed(index_form_1) > 1) &&
+					problem.get_abstract_form_at_position(index_form_1)->optimal_rotation_is_legal() &&
+					problem.get_abstract_form_at_position(index_form_2)->optimal_rotation_is_legal())
 				{
-					form_config_2 = AbstractFormConfiguration(problem->get_abstract_form_at_position(index_form_2), problem->get_number_of_form_needed(index_form_2));
+					form_config_2 = AbstractFormConfiguration(problem.get_abstract_form_at_position(index_form_2), problem.get_number_of_form_needed(index_form_2));
 
 					// compute area utilization. if good enough, skip merging:
 					float utilization_of_unmerged_configuration = 
@@ -156,10 +154,10 @@ void BinPacking::create_all_tuples_to_use()
 
 		// check if tuple has only single form or is small enough to fit on a plane:
 		if ((all_efficient_form_tuples[tuple_index].get_number_of_forms() < 2) ||
-			(all_efficient_form_tuples[tuple_index].get_dx() - problem->get_plane_width()< GlobalParams::get_tolerance() &&
-			all_efficient_form_tuples[tuple_index].get_dy() - problem->get_plane_height()< GlobalParams::get_tolerance()) ||
-			(all_efficient_form_tuples[tuple_index].get_dy() - problem->get_plane_width() < GlobalParams::get_tolerance() &&
-			all_efficient_form_tuples[tuple_index].get_dx() - problem->get_plane_height()< GlobalParams::get_tolerance()))
+			(all_efficient_form_tuples[tuple_index].get_dx() - problem.get_plane_width()< GlobalParams::get_tolerance() &&
+			all_efficient_form_tuples[tuple_index].get_dy() - problem.get_plane_height()< GlobalParams::get_tolerance()) ||
+			(all_efficient_form_tuples[tuple_index].get_dy() - problem.get_plane_width() < GlobalParams::get_tolerance() &&
+			all_efficient_form_tuples[tuple_index].get_dx() - problem.get_plane_height()< GlobalParams::get_tolerance()))
 		{
 			vector<int> ids_of_forms_used_in_tuple(0);
 			int maximum_amount_of_forms_used = 1;
@@ -216,7 +214,7 @@ void BinPacking::initialize_algorithm()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
     #endif
 
-	number_of_different_forms = problem->get_number_of_different_forms();
+	number_of_different_forms = problem.get_number_of_different_forms();
 
     if(number_of_different_forms == 0){
         return;
@@ -257,10 +255,10 @@ void BinPacking::init_number_of_forms()
 
 	for (int i=0; i<number_of_different_forms; ++i)
 		{
-			number_of_forms_needed[problem->get_abstract_form_at_position(i)->get_id()] = problem->get_number_of_form_needed(i);
+			number_of_forms_needed[problem.get_abstract_form_at_position(i)->get_id()] = problem.get_number_of_form_needed(i);
 
 			#ifdef DEBUG
-				printf("\tInitialized number_of_forms_needed[%i] = %i\n", problem->get_abstract_form_at_position(i)->get_id(), number_of_forms_needed[problem->get_abstract_form_at_position(i)->get_id()]);
+				printf("\tInitialized number_of_forms_needed[%i] = %i\n", problem.get_abstract_form_at_position(i)->get_id(), number_of_forms_needed[problem.get_abstract_form_at_position(i)->get_id()]);
 			#endif
 		}
 }
@@ -298,7 +296,7 @@ void BinPacking::create_initial_sorting()
 	#endif
 }
 
-bool BinPacking::get_packed_setting()
+bool BinPacking::create_packed_setting()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -307,7 +305,7 @@ bool BinPacking::get_packed_setting()
 
 	int iteration = 0;
 
-	if (!problem->is_solveable())
+	if (!problem.is_solveable())
 	{
 		#ifdef DEBUG
 			printf("ERROR: No Setting created because problem is not solveable.\n");
@@ -431,8 +429,8 @@ void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigura
 		if (bp_planes[plane_index].get_remaining_height() + GlobalParams::get_tolerance() > height_of_tuple)
 		{
 			float offset_x = 0;
-			float offset_y = problem->get_plane_height()-bp_planes[plane_index].get_remaining_height();
-			float size_x   = problem->get_plane_width();
+			float offset_y = problem.get_plane_height()-bp_planes[plane_index].get_remaining_height();
+			float size_x   = problem.get_plane_width();
 			float size_y   = height_of_tuple;
 
 			#ifdef DEBUG
@@ -457,14 +455,14 @@ void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigura
 			printf("No new shelf on any existing plane could be created to hold the tuple.\nAdd new Plane\n");
 		#endif
 
-		bp_planes.push_back(BinPackingPlane(problem->get_plane_width(), problem->get_plane_height()));
+		bp_planes.push_back(BinPackingPlane(problem.get_plane_width(), problem.get_plane_height()));
 		int plane_index = bp_planes.size()-1;
 
 		#ifdef DEBUG
 			printf("\tNew plane created with index %i\n", plane_index);
 		#endif
 
-		create_shelf(plane_index, problem->get_plane_width(), height_of_tuple, 0, 0);
+		create_shelf(plane_index, problem.get_plane_width(), height_of_tuple, 0, 0);
 			
 		bp_planes[plane_index].add_shelf(height_of_tuple);
 
@@ -526,7 +524,7 @@ int BinPacking::get_number_of_missing_tuples()
 	if (is_initialized)
 		return all_tuples_to_use_sorted_by_size.size()-index_of_current_tuple;
 	else
-		return problem->get_total_number_of_all_forms();
+		return problem.get_total_number_of_all_forms();
 }
 
 
