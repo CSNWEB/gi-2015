@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.5.1
+** Created by: Qt User Interface Compiler version 5.4.1
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -101,25 +101,38 @@ public:
         MainWindow->setAutoFillBackground(false);
         MainWindow->setStyleSheet(QLatin1String("#centralWidget{\n"
 "	background:white;\n"
+"	padding:0px;\n"
 "}\n"
 "\n"
 "QTabBar::tab{\n"
 "	background:white;\n"
 "	padding:10px;\n"
-"	margin-bottom: -2px;\n"
+"\n"
 "}\n"
 "\n"
+"QLayout{\n"
+"	padding:0px;\n"
+"	margin:0px;\n"
+"}\n"
+"\n"
+"QTabWidget::pane{\n"
+"	border-top:1px solid black;\n"
+"	margin-top:-1px;\n"
+"}\n"
 "\n"
 "QTabBar::tab:selected{\n"
 "	border-top:1px solid black;\n"
 "	border-left:1px solid black;\n"
 "	border-right:1px solid black;\n"
-"\n"
+"}\n"
+"QTabBar::tab:!selected{\n"
+"	border-bottom:1px solid black;\n"
 "}\n"
 "\n"
 "QWidget{\n"
 "	font-family: Roboto;\n"
 "	background-color: white;\n"
+"	font-size:14px;\n"
 "}\n"
 "\n"
 "QTabWidget{\n"
@@ -129,6 +142,10 @@ public:
 "QGroupBox{\n"
 "	border:2px solid black;\n"
 "	padding-top:15px;\n"
+"}\n"
+"\n"
+"QGroupBox:!enabled{\n"
+"	border:2px solid grey;\n"
 "}\n"
 "\n"
 "QGroupBox::title{\n"
@@ -142,15 +159,27 @@ public:
 "	background-color:#222222;\n"
 "	border:none;\n"
 "	color:white;\n"
-"}"));
+"}\n"
+""
+                        "\n"
+"QPushButton:hover{\n"
+"	background-color:#090909;\n"
+"}\n"
+"\n"
+"QPushButton:!enabled{\n"
+"	background-color:grey;\n"
+"}\n"
+"\n"
+""));
         MainWindow->setTabShape(QTabWidget::Rounded);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral(""));
         horizontalLayout = new QHBoxLayout(centralWidget);
-        horizontalLayout->setSpacing(6);
+        horizontalLayout->setSpacing(-1);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 2, 0, 0);
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setEnabled(true);
@@ -424,9 +453,14 @@ public:
 
         solveButton = new QPushButton(tab_2);
         solveButton->setObjectName(QStringLiteral("solveButton"));
-        solveButton->setMaximumSize(QSize(300, 16777215));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(solveButton->sizePolicy().hasHeightForWidth());
+        solveButton->setSizePolicy(sizePolicy3);
+        solveButton->setMaximumSize(QSize(1000, 16777215));
 
-        verticalLayout_2->addWidget(solveButton, 0, Qt::AlignHCenter|Qt::AlignVCenter);
+        verticalLayout_2->addWidget(solveButton, 0, Qt::AlignVCenter);
 
         tabWidget->addTab(tab_2, QString());
         tab_3 = new QWidget();
@@ -439,11 +473,11 @@ public:
         svgContainer_2 = new QWidget(tab_3);
         svgContainer_2->setObjectName(QStringLiteral("svgContainer_2"));
         svgContainer_2->setEnabled(false);
-        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(svgContainer_2->sizePolicy().hasHeightForWidth());
-        svgContainer_2->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(svgContainer_2->sizePolicy().hasHeightForWidth());
+        svgContainer_2->setSizePolicy(sizePolicy4);
         svgContainer_2->setMinimumSize(QSize(50, 50));
         svgContainer = new QVBoxLayout(svgContainer_2);
         svgContainer->setSpacing(6);
