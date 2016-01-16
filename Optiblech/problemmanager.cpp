@@ -6,8 +6,9 @@ ProblemManager::ProblemManager() : problem(0, 0, vector<AbstractForm>(), vector<
 }
 
 ProblemManager::~ProblemManager()
-{
-
+{    
+    delete absFormList;
+    delete pointList;
 }
 
 void ProblemManager::setLists(QListWidget* absFormList, QListWidget* pointList){

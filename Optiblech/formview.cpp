@@ -37,7 +37,7 @@ FormView::FormView(QWidget *parent)
 
 FormView::~FormView()
 {
-
+    delete container;
 }
 
 void FormView::setContainer(QWidget *_container)

@@ -92,8 +92,6 @@ private:
 
     vector<QDialog *> editFormDialogs;
 
-    Setting setting;
-
     BinPacking bin_packing;
 
     void invalidForm(bool invalid);

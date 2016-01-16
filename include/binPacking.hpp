@@ -153,6 +153,12 @@ public:
 	 *  @param p 	a pointer to a problem for which the binpacking should be computed
 	 */
 	BinPacking(Problem *p);
+    
+    
+    BinPacking& operator= (const BinPacking &other){                
+        BinPacking bp = BinPacking(other.problem);
+        return bp;
+    }
 
 	/*!
 	 *  Add next form to the setting
