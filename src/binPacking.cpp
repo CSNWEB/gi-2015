@@ -444,6 +444,7 @@ void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigura
 			create_shelf(plane_index, size_x, size_y, offset_x, offset_y);
 			bool success = bp_planes[plane_index].add_shelf(height_of_tuple);
 
+			// size() > 0 because a new shelf was added in the line above
 			bp_shelves[bp_shelves.size()-1].try_add_form_config_tuple(tuple);
 
 			// add form to setting:
@@ -460,6 +461,8 @@ void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigura
 		#endif
 
 		bp_planes.push_back(BinPackingPlane(problem.get_plane_width(), problem.get_plane_height()));
+
+		// size() > 0 because a new plane was added
 		int plane_index = bp_planes.size()-1;
 
 		#ifdef DEBUG_BP

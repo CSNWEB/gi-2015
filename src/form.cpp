@@ -95,7 +95,7 @@ float Form::overlap_distance_with_form(Form &other)
 			printf("\n");
 		#endif
 
-		gpc_vertex_list this_vertex_list = {this_number_of_points, this_vertices};
+		gpc_vertex_list this_vertex_list = {static_cast<int>(this_number_of_points), this_vertices};
 		//this_vertex_list.num_vertices = this_number_of_points;
 		//this_vertex_list.vertex = this_vertices;
 
@@ -130,7 +130,7 @@ float Form::overlap_distance_with_form(Form &other)
 			printf("\n");
 		#endif
 
-		gpc_vertex_list other_vertex_list = {other_number_of_vertices, other_vertices};
+		gpc_vertex_list other_vertex_list = {static_cast<int>(other_number_of_vertices), other_vertices};
 		//other_vertex_list.num_vertices = other_number_of_vertices;
 		//other_vertex_list.vertex = other_vertices;
 
