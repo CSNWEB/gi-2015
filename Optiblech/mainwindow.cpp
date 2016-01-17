@@ -32,8 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     m_formview(new FormView),
     m_resultview(new FormView),
-    pm(new ProblemManager(m_formview)),
-    bin_packing(pm->getBinPacking())
+    pm(new ProblemManager(m_formview))
 {
     ui->setupUi(this);
 
@@ -64,8 +63,8 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::updateResultView(){
-    if(bin_packing.next_step_of_algorithm()){
-        m_resultview->showSetting(bin_packing.get_current_setting());
+    if(bin_packing->next_step_of_algorithm()){
+        m_resultview->showSetting(bin_packing->get_current_setting());
         QTimer::singleShot(ceil(ui->delaySpinBox->value()*1000), this, SLOT(updateResultView()));
     }else{
         enableSaveButtons(true);
@@ -94,15 +93,16 @@ void MainWindow::on_solveButton_clicked()
     else
     {
         ui->tabWidget->setCurrentIndex(2);
-        bin_packing = BinPacking(problem);
+        delete bin_packing;
+        bin_packing = new BinPacking(problem);
 
         ui->tabWidget->tabBar()->setTabEnabled(2,true);
 
         if(ui->showCaseCheckBox->isChecked()){
              QTimer::singleShot(0, this, SLOT(updateResultView()));
         }else{
-            bin_packing.create_packed_setting();
-            m_resultview->showSetting(bin_packing.get_current_setting());
+            bin_packing->create_packed_setting();
+            m_resultview->showSetting(bin_packing->get_current_setting());
             enableSaveButtons(true);
         }
     }
@@ -174,7 +174,7 @@ void MainWindow::on_saveSVG_clicked()
              if(!file.endsWith(".svg")){
                  file += ".svg";
              }
-             Setting setting = bin_packing.get_current_setting();
+             Setting setting = bin_packing->get_current_setting();
              Problem problem = pm->getProblem();
              OutputHandler oh(&problem, &setting);
              oh.write_setting_to_svg(file.toUtf8().data(), false);
@@ -260,7 +260,7 @@ void MainWindow::on_saveTXT_clicked()
         if(!file.endsWith(".txt")){
             file += ".txt";
         }
-        Setting setting = bin_packing.get_current_setting();
+        Setting setting = bin_packing->get_current_setting();
         Problem problem = pm->getProblem();
         OutputHandler oh(&problem, &setting);
         oh.write_setting_to_txt(file.toUtf8().data());

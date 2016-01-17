@@ -157,9 +157,9 @@ public:
 	 */
 	BinPacking(Problem &p); 
     
-    BinPacking &operator= (const BinPacking &other){                
-    	problem = other.problem;
-    	is_initialized = false;
+    BinPacking &operator= (const BinPacking &other){
+        Problem problem = other.problem;
+        printf("Don't use this functions it will crate errors!!!");
         return *this;
     }
 
