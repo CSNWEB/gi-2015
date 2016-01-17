@@ -89,9 +89,11 @@ int main(int argc, char* argv[])
                 for (int j=0; j<p->get_number_of_forms(); ++j)
                 {
                     printf("Current form: %i\n", j);
-                    p->get_form_at(j)->_d_print_points_to_console();
-                    p->get_form_at(j)->_d_print_edges_to_console();
-                    p->get_form_at(j)->_d_print_convex_hull_to_console();
+                    Form f_tmp;
+                    p->get_form_at(j, f_tmp);
+                    f_tmp._d_print_points_to_console();
+                    f_tmp._d_print_edges_to_console();
+                    f_tmp._d_print_convex_hull_to_console();
                 }
             }
         #endif

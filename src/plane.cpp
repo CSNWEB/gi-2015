@@ -13,12 +13,15 @@ int Plane::get_number_of_forms()
 	return forms.size();
 }
 
-Form *Plane::get_form_at(int i)
+bool Plane::get_form_at(int i, Form &form)
 {
 	if (i<forms.size())
-		return &forms[i];
+	{
+		form = forms[i];
+		return true;
+	}
 	else
-		return NULL;
+		return false;
 }
 
 void Plane::add_form_at_position(AbstractForm *form, float pos_x, float pos_y)

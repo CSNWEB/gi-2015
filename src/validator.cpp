@@ -27,13 +27,14 @@ bool Validator::is_plane_valid(Plane *plane)
          index < number_of_forms_on_plane;
          index++)
     {
-        Form *first_form = plane->get_form_at(index);
+        Form first_form;
+        plane->get_form_at(index, first_form);
         
         // Check whether the form fits on the plane.
-        if (first_form->get_bounding_xmin() < (-1) * GlobalParams::get_tolerance() ||
-            first_form->get_bounding_ymin() < (-1) * GlobalParams::get_tolerance() ||
-            first_form->get_bounding_xmax() - plane_width > GlobalParams::get_tolerance() ||
-            first_form->get_bounding_ymax() - plane_height > GlobalParams::get_tolerance())
+        if (first_form.get_bounding_xmin() < (-1) * GlobalParams::get_tolerance() ||
+            first_form.get_bounding_ymin() < (-1) * GlobalParams::get_tolerance() ||
+            first_form.get_bounding_xmax() - plane_width > GlobalParams::get_tolerance() ||
+            first_form.get_bounding_ymax() - plane_height > GlobalParams::get_tolerance())
         {
             printf("ERROR: The form at index (%d) is exceeding the bounds of the plane!\n", index);
             
@@ -45,9 +46,10 @@ bool Validator::is_plane_valid(Plane *plane)
              index_2 < number_of_forms_on_plane;
              index_2++)
         {
-            Form* second_form = plane->get_form_at(index_2);
+            Form second_form;
+            plane->get_form_at(index_2, second_form);
             
-            bool forms_are_overlapping = first_form->check_for_overlap(*second_form);
+            bool forms_are_overlapping = first_form.check_for_overlap(second_form);
             
             if (forms_are_overlapping)
             {
@@ -122,8 +124,9 @@ bool Validator::is_setting_valid(Setting *setting)
              form_index < number_of_forms_on_plane;
              form_index++)
         {
-            Form *form = plane->get_form_at(form_index);
-            AbstractForm *mother = form->get_mother();
+            Form form;
+            plane->get_form_at(form_index, form);
+            AbstractForm *mother = form.get_mother();
             
             if (found_forms.count(mother->get_name()) == 0)
             {
