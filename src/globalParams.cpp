@@ -18,3 +18,4 @@ void GlobalParams::set_tolerance(double new_tolerance){
 
 float GlobalParams::tolerance = 1E-4;
 bool GlobalParams::option_pre_merge_form = true;
+bool GlobalParams::option_mirror_forms_allowed = true;
