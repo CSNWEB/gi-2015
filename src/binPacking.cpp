@@ -140,6 +140,7 @@ void BinPacking::create_all_tuples_to_use()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	// sort all efficient tuples, if at least twi have been constructed
 	if (all_efficient_form_tuples.size() > 1)
 	{
 		TupleComparatorUtilization tcu(&all_efficient_form_tuples);
@@ -243,7 +244,10 @@ void BinPacking::initialize_algorithm()
 	
 	create_initial_sorting();
 
-	minimum_height_of_any_tuple = all_form_tuples_to_use[all_tuples_to_use_sorted_by_size[all_form_tuples_to_use.size()-1]].get_dy();
+	if (all_form_tuples_to_use.size() == 0)
+		minimum_height_of_any_tuple = 0;
+	else
+		minimum_height_of_any_tuple = all_form_tuples_to_use[all_tuples_to_use_sorted_by_size[all_form_tuples_to_use.size()-1]].get_dy();
 
 	index_of_current_tuple = 0;
 
@@ -445,6 +449,7 @@ void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigura
 			create_shelf(plane_index, size_x, size_y, offset_x, offset_y);
 			bool success = bp_planes[plane_index].add_shelf(height_of_tuple);
 
+			// size() > 0 because a new shelf was added in the line above
 			bp_shelves[bp_shelves.size()-1].try_add_form_config_tuple(tuple);
 
 			// add form to setting:
@@ -461,6 +466,8 @@ void BinPacking::add_form_configuration_tuple_on_new_shelf(AbstractFormConfigura
 		#endif
 
 		bp_planes.push_back(BinPackingPlane(problem.get_plane_width(), problem.get_plane_height()));
+
+		// size() > 0 because a new plane was added
 		int plane_index = bp_planes.size()-1;
 
 		#ifdef DEBUG_BP
@@ -527,7 +534,12 @@ int BinPacking::get_number_of_missing_tuples()
 	#endif
 
 	if (is_initialized)
-		return all_tuples_to_use_sorted_by_size.size()-index_of_current_tuple;
+	{
+		if (all_tuples_to_use_sorted_by_size.size() > index_of_current_tuple)
+			return all_tuples_to_use_sorted_by_size.size()-index_of_current_tuple;
+		else
+			return -1;
+	}
 	else
 		return problem.get_total_number_of_all_forms();
 }
