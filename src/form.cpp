@@ -67,17 +67,6 @@ float Form::overlap_distance_with_form(Form *other)
 			(other->y_max - y_min > GlobalParams::get_tolerance()))
 			overlap_bounding = true;
 
-/*
-	// overlap without tolerance:
-	if (x_max > other->x_min && x_min < other->x_max)
-    {
-		if (y_max > other->y_min && y_min < other->y_max)
-        {
-			overlap_bounding = true;
-        }
-    }
-  */
-
 	// The bounding boxes overlap, so the forms might as well.
 	if (overlap_bounding)
 	{

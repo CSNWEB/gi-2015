@@ -10,6 +10,19 @@ BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	number_of_different_forms = problem.get_number_of_different_forms();
+
+	int n =  number_of_different_forms;
+	if (n < 10)
+		n = 10;
+	all_single_form_tuples.reserve(n);
+	all_efficient_form_tuples.reserve((n/2 * (n+1)) + n);
+	all_form_tuples_to_use.reserve((n/2 * (n+1)) + n);
+	all_tuples_to_use_sorted_by_size.reserve((n/2 * (n+1)) + n);
+
+	bp_planes.reserve(n/2);
+	bp_shelves.reserve(n/2);
+
 	is_initialized = false;
 }
 
@@ -214,21 +227,9 @@ void BinPacking::initialize_algorithm()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
     #endif
 
-	number_of_different_forms = problem.get_number_of_different_forms();
-
     if(number_of_different_forms == 0){
         return;
     }
-
-	int n =  number_of_different_forms;
-	if (n < 10)
-		n = 10;
-	all_single_form_tuples.reserve(n);
-	all_efficient_form_tuples.reserve((n/2 * (n+1)) + n);
-	all_form_tuples_to_use.reserve((n/2 * (n+1)) + n);
-
-	bp_planes.reserve(n/2);
-	bp_shelves.reserve(n/2);
 	
 	init_number_of_forms();
 
