@@ -50,8 +50,11 @@ MainWindow::MainWindow(QWidget *parent) :
     enableEditFormButton(false);
 
     QObject::connect(pm, SIGNAL(problemEmpty()), this, SLOT(problemEmpty()));
-    //ui->tabWidget->tabBar()->setTabEnabled(1,false);
+    ui->tabWidget->tabBar()->setTabEnabled(1,false);
     ui->tabWidget->tabBar()->setTabEnabled(2,false);
+
+    GlobalParams::set_option_pre_merge(true);
+
 }
 
 MainWindow::~MainWindow()
