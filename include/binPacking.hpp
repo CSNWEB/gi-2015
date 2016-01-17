@@ -87,9 +87,7 @@ private:
 	vector<BinPackingPlane> bp_planes;
 
 	/*!
-	 *  Vector to organize all shelves during the algorithm
-	 *  
-	 *  This should be a priority queue!
+	 *  Vector to organize all shelves during the algorithm.
 	 */
 	vector<BinPackingShelf> bp_shelves;
 
