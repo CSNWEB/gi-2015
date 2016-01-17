@@ -38,11 +38,6 @@ private:
 	 *  Note that this is equal to the number of points that define this form
 	 */
     int number_of_edges;
-
-    /*!
-     *  A vector of edges that make up this Form.
-     */
-    //vector<Edge> edges;
     
     /*!
      *  A vector of points that make up this Form.

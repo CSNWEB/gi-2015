@@ -15,8 +15,6 @@
 class Form;
 class AbstractForm;
 
-#define boolmat vector<vector<bool> >
-
 using namespace std;
 
 class Plane
@@ -33,19 +31,9 @@ private:
 	float dy;
 	
 	/**
-	 *  The number of forms on this plane.
-	 */
-	int number_of_forms;
-	
-	/**
 	 *  All forms on this plane
 	 */
 	vector<Form> forms;
-	
-	/**
-	 *  A 2-dimensional bool matrix describing which forms overlap
-	 */
-	boolmat overlappings;
 public:
     /*!
      * default constructor
@@ -121,15 +109,6 @@ public:
      *  @return 	the utilitation as percentage within [0,1]
      */
     float compute_utilization();
-    
-    /*!
-     *  Checks if the positioning of forms on this plane is legal,
-     *  i.e. no overlappings and all forms are within the plane
-     *
-     *  @return 	A boolean: true if plane is legal
-     */
-    bool check_if_legal();
-    
 };
 
 #endif

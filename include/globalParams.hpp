@@ -35,6 +35,11 @@ public:
 	static bool option_pre_merge_form;
 
 	/*!
+	 *	A bool describing wheter or not the FormCombiner is allowed to flip forms. Default true.
+	 */
+	static bool option_mirror_forms_allowed;
+
+	/*!
 	 *  Getter for global constant pi
 	 */
 	static float pi()
@@ -56,6 +61,19 @@ public:
 	static bool do_pre_merge_merge()
 	{
 		return option_pre_merge_form;
+	};
+
+	/*!
+	 *  Set option_mirror_forms_allowed
+	 */
+	static void set_option_allow_mirror(bool option)
+	{
+		option_mirror_forms_allowed = option;
+	};
+
+	static bool mirror_allowed()
+	{
+		return option_mirror_forms_allowed;
 	};
 
 	/*!

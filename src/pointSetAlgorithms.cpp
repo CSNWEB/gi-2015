@@ -14,9 +14,19 @@ bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector
 	if (indices.size() < 2)
 		return false;
 
+	#ifdef DEBUG_PSA
+		printf("ordered_indices at begin of unify:\n");
+		for (int i=0; i<indices.size(); ++i)
+			printf("\t%i\n", indices[i]);
+	#endif
+
 	bool points_deleted = false;
 
 	list<int> unique_points(1, indices[0]);
+
+    #ifdef DEBUG_PSA
+    	printf("Kept index %i\n", indices[0]);
+    #endif
 
 	for (int i=1; i<indices.size(); ++i)
 	{
@@ -27,14 +37,43 @@ bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector
 			float y1 = points[indices[i-1]].get_y();
 			float y2 = points[indices[i]].get_y();
             if (fabs(y1 - y2) < GlobalParams::get_tolerance())
-				points_deleted = true;
+            {
+            	#ifdef DEBUG_PSA
+            		printf("Deleted index %i\n", indices[i]);
+            	#endif
+
+				points_deleted = true;	
+			}
 			else
+			{
+            	#ifdef DEBUG_PSA
+            		printf("Kept index %i\n", indices[i]);
+            	#endif
+
 				unique_points.push_back(indices[i]);
+			}
 		}
 		else
+		{
+           	#ifdef DEBUG_PSA
+           		printf("Kept index %i\n", indices[i]);
+           	#endif
+
 			unique_points.push_back(indices[i]);
+		}
 	}
+
+	#ifdef DEBUG_PSA
+		printf("Create new indices from list:\n");
+	#endif
+
 	indices = vector<int>(unique_points.begin(), unique_points.end());
+
+	#ifdef DEBUG_PSA
+		printf("ordered_indices at end of unify:\n");
+		for (int i=0; i<indices.size(); ++i)
+			printf("\t%i\n", indices[i]);
+	#endif
 
 	return points_deleted;
 }
@@ -170,10 +209,16 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 
 	ordered_indices = PointSetAlgorithms::sort_points_by_dim_x(points);
 
+	#ifdef DEBUG_PSA
+		printf("ordered_indices before unify:\n");
+		for (int i=0; i<ordered_indices.size(); ++i)
+			printf("\t%i\n", ordered_indices[i]);
+	#endif
+
 	PointSetAlgorithms::unique_indicies_of_points(points, ordered_indices);
 
 	#ifdef DEBUG_PSA
-		printf("Back in compute_convex_hull.\nOrdered indices:\n");
+		printf("ordered_indices before unify:\n");
 		for (int i=0; i<ordered_indices.size(); ++i)
 			printf("\t%i\n", ordered_indices[i]);
 	#endif

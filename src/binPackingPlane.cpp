@@ -10,8 +10,6 @@ BinPackingPlane::BinPackingPlane(float dx, float dy)
 	this->dy = dy;
 
 	remaining_height = dy;
-
-	//shelfs = vector<BinPackingShelf>();
 }
 
 bool BinPackingPlane::add_shelf(float height_of_shelf)
@@ -22,7 +20,6 @@ bool BinPackingPlane::add_shelf(float height_of_shelf)
 
 	if (remaining_height + GlobalParams::get_tolerance() > height_of_shelf)
 	{
-		//shelfs.push_back(BinPackingShelf(dx, height_of_shelf));
 		remaining_height -= height_of_shelf;
 		return true;
 	}

@@ -4,10 +4,24 @@
 	#define DEBUG_IH
 #endif
 
+InputHandler::InputHandler()
+{
+	#ifdef DEBUG_IH
+		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	size_of_sheet_x = 0;
+	size_of_sheet_y = 0;
+	number_of_different_forms = 0;
+
+	has_data = false;
+
+}
+
 void InputHandler::get_input(char* filename)
 {
 	#ifdef DEBUG_IH
-		printf("FUNCTION: InputHandler::get_input()\n");
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	int scanf_result;
@@ -79,6 +93,8 @@ void InputHandler::get_input(char* filename)
 
 	fclose(file);
 
+	has_data = true;
+
 	#ifdef DEBUG_IH
 		printf("Input complete!\n");
 	#endif
@@ -86,26 +102,42 @@ void InputHandler::get_input(char* filename)
 
 void InputHandler::_d_print_input()
 {
-	#ifdef DEBUG_IH
-		printf("FUNCTION: InputHandler::_d_print_input()\n");
+	#ifdef DEBUG
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 
-		printf("Size of sheet: %.1f x %.1f\n", size_of_sheet_x, size_of_sheet_y);
-		printf("Number of different forms: %i\n", number_of_different_forms);
+		if(has_data)
+		{	
+			printf("Size of sheet: %.1f x %.1f\n", size_of_sheet_x, size_of_sheet_y);
+			printf("Number of different forms: %i\n", number_of_different_forms);
 
-		for (int i=0; i<number_of_different_forms; ++i)
-		{
-			forms[i]._d_print_abstract_form();
+			for (int i=0; i<number_of_different_forms; ++i)
+			{
+				forms[i]._d_print_abstract_form();
+			}
 		}
+		else
+			printf("No data available!\n");
 	#endif
 }
 
 Problem InputHandler::create_problem()
 {
 	#ifdef DEBUG_IH
-		printf("FUNCTION: InputHandler::create_problem()\n");
-		printf("sx: %.2f\n", size_of_sheet_x);
-		printf("sy: %.2f\n", size_of_sheet_y);
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-    return Problem(size_of_sheet_x, size_of_sheet_y, forms, number_of_pieces, name_of_forms);
+	if (has_data)
+	{
+		#ifdef DEBUG_IH
+			printf("Return problem\n");
+		#endif
+
+	    return Problem(size_of_sheet_x, size_of_sheet_y, forms, number_of_pieces, name_of_forms);
+	}
+	else
+	{
+		printf("ERROR! No data available to create problem! Return empty problem.\n");
+
+		return Problem(0,0,vector<AbstractForm>(0), vector<int>(0), vector<string>(0));
+	}
 }

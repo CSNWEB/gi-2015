@@ -6,7 +6,7 @@
 
 FormCombiner::FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -50,11 +50,13 @@ FormCombiner::FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFor
 	hull_of_tuple.reserve(2*number_of_points);
 
 	optimum_found = false;
+	configuration_is_computed = false;
+	is_finished = false;
 }
 
 void FormCombiner::init()
 {	
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -68,7 +70,7 @@ void FormCombiner::init()
 	form_2_mirrored = AbstractForm(*form_2);
 	form_2_mirrored.mirror();
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("Init:\n");
 		form_1->_d_print_abstract_form();
 		form_2->_d_print_abstract_form();
@@ -95,14 +97,14 @@ void FormCombiner::init()
 	opt_position_form_2_y = 0;
 	opt_rotation_form_2 = 0;
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("Init:\n\tArea of biggest box of forms: %.2f\n\tSum of bounding box areas: %.2f\n", area_of_biggest_box_of_forms, sum_of_bounding_boxes);
 	#endif
 }
 
 void FormCombiner::compute_config_form_1(int index_of_point)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -115,7 +117,7 @@ void FormCombiner::compute_config_form_1(int index_of_point)
 	cur_position_form_1_y = -(f1.get_point_at(index_of_point))->get_y();
 	f1.move_rel(cur_position_form_1_x, cur_position_form_1_y);
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("computed configuration of form 1:\n");
 		printf("\trotation: %.2f\n\tmovement: %.2f/%.2f\n", cur_rotation_form_1, cur_position_form_1_x, cur_position_form_1_y);
 		f1._d_print_points_to_console();
@@ -124,7 +126,7 @@ void FormCombiner::compute_config_form_1(int index_of_point)
 
 void FormCombiner::compute_config_form_2(int index_of_point, bool is_mirrored)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -149,7 +151,7 @@ void FormCombiner::compute_config_form_2(int index_of_point, bool is_mirrored)
 	cur_position_form_2_y = -(f->get_point_at(index_of_point))->get_y();
 	f->move_rel(cur_position_form_2_x, cur_position_form_2_y);
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("computed configuration of form 2:\n");
 		printf("\trotation: %.2f\n\tmovement: %.2f/%.2f\n", cur_rotation_form_2, cur_position_form_2_x, cur_position_form_2_y);
 		f->_d_print_points_to_console();
@@ -158,7 +160,7 @@ void FormCombiner::compute_config_form_2(int index_of_point, bool is_mirrored)
 
 void FormCombiner::reset_form_1()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -169,7 +171,7 @@ void FormCombiner::reset_form_1()
 
 void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_of_point_1, int index_of_point_2)
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -180,7 +182,7 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	else
 		f2_temp = &f2_m;
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("f2_temp initialized\n");
 	#endif
 
@@ -196,7 +198,7 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	vector<Point>::iterator insert_point_2 = allpoints.begin() + index_of_point_1 + index_of_point_2;
 	allpoints.insert(insert_point_2, begin_of_f2_points, begin_of_f2_hull);
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("allpoints initialized\n");
 
 		for (int i=0; i<allpoints.size(); ++i)
@@ -210,7 +212,7 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	f1.rotate(0,0, cur_total_rotation);
 	f2_temp->rotate(0,0, cur_total_rotation);
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("Form rotated in optimized box configuration:\n");
 		f1._d_print_points_to_console();
 		f2_temp->_d_print_points_to_console();
@@ -222,14 +224,14 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	float current_ymax = max(f1.get_bounding_ymax(), f2_temp->get_bounding_ymax());
 
 	cur_configuration_area = (current_xmax - current_xmin)*(current_ymax - current_ymin);
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("Computed minimum area: %.2f x %.2f\nArea is %.2f\n", current_xmax - current_xmin, current_ymax - current_ymin, cur_configuration_area);
 	#endif
 }
 
 bool FormCombiner::update_if_better()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -252,7 +254,7 @@ bool FormCombiner::update_if_better()
 
 		if (opt_crit < GlobalParams::get_tolerance())
 		{
-			#ifdef DEBUG
+			#ifdef DEBUG_FC
 				printf("Found configuration with minimum possible area: %.2f\n", opt_configuration_area);
 			#endif
 
@@ -267,7 +269,7 @@ bool FormCombiner::update_if_better()
 
 AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -330,7 +332,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 	}
 	else
 	{
-		#ifdef DEBUG
+		#ifdef DEBUG_FC
 			printf("No optimal configuration found, create simple tuple.\n");
 		#endif
 
@@ -342,20 +344,20 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 
 void FormCombiner::compute_optimal_configuration()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
 	init();
 
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("Consider form %i and form %i\n", form_1->get_id(), form_2->get_id());
 		printf("\tAdded area of both bounding boxes is %.2f\n", sum_of_bounding_boxes);
 	#endif
 
 	for (int point_1=0; point_1 < form_1->get_number_of_points() && !optimum_found; ++point_1)
 	{
-		#ifdef DEBUG
+		#ifdef DEBUG_FC
 			printf("iteration on form 1: %i\n", point_1);
 		#endif
 
@@ -376,7 +378,7 @@ void FormCombiner::compute_optimal_configuration()
 			// if no, get new bounding box, check if minimal
 			if (!f1.check_for_overlap(f2))
 			{
-				#ifdef DEBUG
+				#ifdef DEBUG_FC
 					printf("Forms do not overlap:\n\tConfiguration okay\n");
 				#endif
 
@@ -431,7 +433,7 @@ void FormCombiner::compute_optimal_configuration()
 			}
 		}
 	}
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("Optimal configuration found.\n\tf1: %.2f/%.2f, r: %.2f\n\tf2: %.2f/%.2f, r: %.2f\n", opt_position_form_1_x, opt_position_form_1_y, opt_rotation_form_1, opt_position_form_2_x, opt_position_form_2_y, opt_rotation_form_2
 			);
 		printf("\tArea: %.2f\n",opt_configuration_area);
@@ -442,7 +444,7 @@ void FormCombiner::compute_optimal_configuration()
 
 AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
 {
-	#ifdef DEBUG
+	#ifdef DEBUG_FC
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
@@ -450,8 +452,3 @@ AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
 		compute_optimal_configuration();
 	return create_config_tuple();
 }
-
-
-#ifdef DEBUG_FC
-	#undef DEBUG_FC
-#endif

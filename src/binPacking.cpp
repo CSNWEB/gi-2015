@@ -10,6 +10,11 @@ BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	is_initialized = false;
+	index_of_current_tuple = -1;
+
+	minimum_height_of_any_tuple = -1;
+
 	number_of_different_forms = problem.get_number_of_different_forms();
 
 	int n =  number_of_different_forms;
@@ -22,8 +27,6 @@ BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 
 	bp_planes.reserve(n/2);
 	bp_shelves.reserve(n/2);
-
-	is_initialized = false;
 }
 
 void BinPacking::update_problem(Problem &new_problem)
@@ -31,6 +34,33 @@ void BinPacking::update_problem(Problem &new_problem)
 	problem = new_problem;
     printf("Don't use this functions it will crate errors!!!");
 	is_initialized = false;
+	index_of_current_tuple = -1;
+
+	minimum_height_of_any_tuple = -1;
+
+	number_of_different_forms = problem.get_number_of_different_forms();
+
+	int n =  number_of_different_forms;
+	if (n < 10)
+		n = 10;
+
+	all_single_form_tuples.clear();
+	all_single_form_tuples.reserve(n);
+
+	all_efficient_form_tuples.clear();
+	all_efficient_form_tuples.reserve((n/2 * (n+1)) + n);
+
+	all_form_tuples_to_use.clear();
+	all_form_tuples_to_use.reserve((n/2 * (n+1)) + n);
+
+	all_tuples_to_use_sorted_by_size.clear();
+	all_tuples_to_use_sorted_by_size.reserve((n/2 * (n+1)) + n);
+
+	bp_planes.clear();
+	bp_planes.reserve(n/2);
+
+	bp_shelves.clear();
+	bp_shelves.reserve(n/2);
 }
 
 void BinPacking::create_configuration_tuples()
