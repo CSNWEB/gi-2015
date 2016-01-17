@@ -42,7 +42,7 @@ private:
     /*!
      *  A vector of edges that make up this Form.
      */
-    vector<Edge> edges;
+    //vector<Edge> edges;
     
     /*!
      *  A vector of points that make up this Form.
@@ -64,13 +64,18 @@ public:
 	 *  Constructor that creates a form specified by an AbstractForm, bit without
      *  a specific position
 	 */
-    Form(AbstractForm *mother) : Form(mother, 0, 0){};
+    Form(AbstractForm * const mother) : Form(mother, 0, 0){};
 
 	/*!
 	 *  Constructor that creates a Form at given coordinates (top left corner of
      *  bounding box)
 	 */
-    Form(AbstractForm *mother, float pos_x, float pos_y); // TODO: Use Point?
+    Form(AbstractForm * const mother, float pos_x, float pos_y);
+
+    /*!
+     *  Destructor
+     */
+    ~Form(){};
 	
     /*!
      *  The abstract form that this Form represents.
@@ -185,7 +190,7 @@ public:
      *
      *  @return true, if the receiver and the Form other overlap, false if not.
      */
-	bool check_for_overlap(Form *other);
+	bool check_for_overlap(Form &other);
 	
     /*!
      *  Determines by how much the receiver overlaps with the passed form.
@@ -194,7 +199,7 @@ public:
      *
      *  @return The size of the largest area among the ones where the forms overlap.
      */
-    float overlap_distance_with_form(Form *other);
+    float overlap_distance_with_form(Form &other);
     
     /*!
      *  Debug: print points to std_out

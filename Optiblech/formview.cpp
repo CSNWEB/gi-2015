@@ -135,7 +135,9 @@ void FormView::showSetting(Setting setting)
         for (int j=0; j<setting.get_plane_at(i)->get_number_of_forms(); ++j)
         {
             QPolygonF polygon;
-            vector<Point> points_of_current_form = *(setting.get_plane_at(i))->get_form_at(j)->get_points();
+            Form form;
+            setting.get_plane_at(i)->get_form_at(j, form);
+            vector<Point>  points_of_current_form = *(form.get_points());
             for (int k=0; k<points_of_current_form.size(); ++k){
                 Point point = points_of_current_form[k];
                 polygon.push_back(QPointF(point.get_x()*scale_fac, point.get_y()*scale_fac));

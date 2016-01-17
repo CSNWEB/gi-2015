@@ -33,7 +33,7 @@ private:
 	/*!
 	 *  The problem for which a packed setting has to be created. To acess forms and the size of a plane
 	 */
-	Problem *problem;
+	Problem problem;
 
 	/*!
 	 *  The setting that is created during the algorithm
@@ -87,9 +87,7 @@ private:
 	vector<BinPackingPlane> bp_planes;
 
 	/*!
-	 *  Vector to organize all shelves during the algorithm
-	 *  
-	 *  This should be a priority queue!
+	 *  Vector to organize all shelves during the algorithm.
 	 */
 	vector<BinPackingShelf> bp_shelves;
 
@@ -153,16 +151,16 @@ public:
 	/*!
 	 *  Constructor
 	 *
-	 *  Needs a pointer to an instance of class Problem, otherwise no bin packing can be computed
+	 *  Needs a reference to an instance of class Problem, otherwise no bin packing can be computed
 	 *
-	 *  @param p 	a pointer to a problem for which the binpacking should be computed
+	 *  @param p 	a reference to a problem for which the binpacking should be computed
 	 */
-	BinPacking(Problem *p);
+	BinPacking(Problem &p); 
     
-    
-    BinPacking& operator= (const BinPacking &other){                
-        BinPacking bp = BinPacking(other.problem);
-        return bp;
+    BinPacking &operator= (const BinPacking &other){                
+    	problem = other.problem;
+    	is_initialized = false;
+        return *this;
     }
 
 	/*!
@@ -170,7 +168,7 @@ public:
 	 *
 	 *  @param 		a reference to a problem.
 	 */
-	//update_problem(Problem *new_problem);
+	void update_problem(Problem &new_problem);
 
 	/*!
 	 *  Add next form to the setting
@@ -203,7 +201,7 @@ public:
 	 *
 	 *  @return 	true, if a packed setting was created. False, if problem is not solveable.
 	 */
-	bool  get_packed_setting();
+	bool  create_packed_setting();
 
 	/*!
 	 *  Get a specific used AbstractFormConfigurationTuple, specified by index of vector all_form_tuples_to_use

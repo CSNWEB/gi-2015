@@ -26,9 +26,9 @@ FormCombiner::FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFor
 	cur_position_form_2_x = -1;
 	cur_position_form_2_y = -1;
 	cur_rotation_form_2   = -1;
-	cur_mirror_form_2 = false;
+	cur_mirror_form_2     = false;
 
-	cur_total_rotation = 0;
+	cur_total_rotation    = 0;
 
 	opt_position_form_1_x = -1;
 	opt_position_form_1_y = -1;
@@ -37,17 +37,18 @@ FormCombiner::FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFor
 	opt_position_form_2_x = -1;
 	opt_position_form_2_y = -1;
 	opt_rotation_form_2   = -1;
-	opt_mirror_form_2 = false;
+	opt_mirror_form_2     = false;
 
 	opt_configuration_area = -1;
 
 	opt_total_rotation = 0;
 
+	int number_of_points = form_config_1.get_form()->get_number_of_points() + form_config_2.get_form()->get_number_of_points();
 
-	allpoints = vector<Point>(0);
-	hull_of_tuple = vector<int>(0);
 
-	is_finished = false;
+	allpoints.reserve(2*number_of_points);
+	hull_of_tuple.reserve(2*number_of_points);
+
 	optimum_found = false;
 }
 
@@ -58,6 +59,8 @@ void FormCombiner::init()
 	#endif
 
 	optimum_found = false;
+	configuration_is_computed = false;
+	is_finished = false;
 
 	form_1 = form_config_1.get_form();
 	form_2 = form_config_2.get_form();
@@ -268,6 +271,9 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	if (!configuration_is_computed)
+		compute_optimal_configuration();
+
 	AbstractFormConfigurationTuple optimal_configured_tuple;
 
 	if (sum_of_bounding_boxes - opt_configuration_area > GlobalParams::get_tolerance())
@@ -368,7 +374,7 @@ void FormCombiner::compute_optimal_configuration()
 
 			// check if f1 and f2 overlap:
 			// if no, get new bounding box, check if minimal
-			if (!f1.check_for_overlap(&f2))
+			if (!f1.check_for_overlap(f2))
 			{
 				#ifdef DEBUG
 					printf("Forms do not overlap:\n\tConfiguration okay\n");
@@ -400,7 +406,7 @@ void FormCombiner::compute_optimal_configuration()
 				#endif
 
 				// get new bounding box, check if minimal:
-				if (!f1.check_for_overlap(&f2_m))
+				if (!f1.check_for_overlap(f2_m))
 				{
 					#ifdef DEBUG_FC
 						printf("Forms do not overlap:\n\tConfiguration okay\n");
@@ -431,7 +437,7 @@ void FormCombiner::compute_optimal_configuration()
 		printf("\tArea: %.2f\n",opt_configuration_area);
 	#endif
 
-	is_finished = true;
+	configuration_is_computed = true;
 }
 
 AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
@@ -440,9 +446,9 @@ AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (!is_finished)
+	if (!configuration_is_computed)
 		compute_optimal_configuration();
-	return 	create_config_tuple();;
+	return create_config_tuple();
 }
 
 

@@ -77,8 +77,8 @@ int ProblemManager::initPoints(int selectedForm)
    return problem.get_number_of_form_needed(selectedForm);
 }
 
-Problem* ProblemManager::getProblem(){
-    return &problem;
+Problem ProblemManager::getProblem(){
+    return problem;
 }
 
 void ProblemManager::setPlaneWidth(float width){

@@ -79,11 +79,12 @@ public:
     /*!
      *  Get a specific form from this plane
      *
-     *  @param i 	The number of the form to be returned
+     *  @param i    	The number of the form to be returned
+     *  @param form     The field to hold the Form at position i
      *
-     *  @return 	the Form at forms[i]
+     *  @return         True, if the index i is a legal index and form was set. False otherwise.
      */
-    Form *get_form_at(int i);
+    bool get_form_at(int i, Form &form);
     
     /*!
      * Adds a form at a specific position. Does not check if the result is a legal setting

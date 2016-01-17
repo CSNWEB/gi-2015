@@ -68,11 +68,6 @@ void Setting::create_initial_setting()
 			planes[k].add_form_at_position(problem->get_abstract_form_at_position(i), 0,0);
 
 			k++;
-
-			#ifdef DEBUG
-				printf("check edges in %s\n", __PRETTY_FUNCTION__);
-				planes[k-1].get_form_at(0)->_d_print_edges_to_console();
-			#endif
 		}
 	}
 }
@@ -106,7 +101,9 @@ int Setting::get_number_of_missing_pieces_of_form(int form_index)
 	{
 		for (int current_form = 0; current_form < planes[current_plane].get_number_of_forms(); ++current_form)
 		{
-			if (planes[current_plane].get_form_at(current_form)->get_mother()->get_id() == form_index)
+			Form f_tmp;
+			planes[current_plane].get_form_at(current_form, f_tmp);
+			if (f_tmp.get_mother()->get_id() == form_index)
 				current_number_of_forms++;
 		}
 	}

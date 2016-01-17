@@ -29,6 +29,7 @@ Problem::Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int
     abstract_forms              = abst_forms;
     number_of_different_forms   = abstract_forms.size();
     number_of_forms_needed      = num_of_forms;
+    name_of_forms               = vector<string>(abstract_forms.size(), "Form");
 }
 
 void Problem::check_if_solveable()

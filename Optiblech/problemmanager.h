@@ -10,6 +10,7 @@
 #include <QSizeF>
 #include <QSet>
 #include "point.hpp"
+#include "binPacking.hpp"
 
 #include "formview.h"
 
@@ -28,7 +29,7 @@ public:
     void initAbsFormList();
     int initPoints(int selectedForm);
     QSizeF loadFromFile(QString fileName);
-    Problem * getProblem();
+    Problem  getProblem();
     Problem * getShowedProblem();
 
 
@@ -45,6 +46,8 @@ public:
     void delPointOfForm(int selectedForm, int selectedPoint);
     void movePointUp(int selectedForm, int selectedPoint);
     void movePointDown(int selectedForm, int selectedPoint);
+
+    BinPacking getBinPacking(){return BinPacking(problem);}
 
     /*!
      * Checks if the form is valid and fits on the current plane size

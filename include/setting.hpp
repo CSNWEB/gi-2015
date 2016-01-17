@@ -34,20 +34,21 @@ private:
 
 public:
     /*!
-     *  Default Constructor.
-     */
-    //Setting(){};
 
     /*!
      *  Constructor that initializes the problem.
      */
 	Setting(Problem *p);    
 
-
     /*!
      *  Copy-consructor
      */
     Setting(const Setting &original);
+
+    /*!
+     *  Destructor. Does not delete Problem
+     */
+    ~Setting(){};
 
     /*!
      *  Returns number_of_planes

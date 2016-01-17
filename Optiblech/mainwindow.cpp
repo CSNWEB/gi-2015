@@ -33,12 +33,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_formview(new FormView),
     m_resultview(new FormView),
     pm(new ProblemManager(m_formview)),
-    bin_packing(pm->getProblem())
+    bin_packing(pm->getBinPacking())
 {
     ui->setupUi(this);
 
     pm->setUiElements(ui->absFormList,ui->pointList, ui->pushButton);
-
 
     ui->svgContainer->addWidget(m_resultview);
     m_resultview->setContainer(ui->svgContainer_2);
@@ -88,9 +87,9 @@ void MainWindow::on_solveButton_clicked()
 
     enableSaveButtons(false);
 
-    Problem * problem = pm->getProblem();
+    Problem  problem = pm->getProblem();
 
-    if (!problem->is_solveable())
+    if (!problem.is_solveable())
         QMessageBox::warning(this, tr("Warning"), tr("Error! At least one form is too big to be placed on a form.\nPROBLEM NOT SOLVEABLE!"));
     else
     {
@@ -102,7 +101,7 @@ void MainWindow::on_solveButton_clicked()
         if(ui->showCaseCheckBox->isChecked()){
              QTimer::singleShot(0, this, SLOT(updateResultView()));
         }else{
-            bin_packing.get_packed_setting();
+            bin_packing.create_packed_setting();
             m_resultview->showSetting(bin_packing.get_current_setting());
             enableSaveButtons(true);
         }
@@ -150,7 +149,6 @@ void MainWindow::on_absFormList_currentRowChanged(int currentRow)
         int amount = pm->initPoints(currentRow);
         ui->pointAmount->setValue(amount);
         ui->currentFormBox->setEnabled(true);
-        qDebug("show Form");
         m_formview->showForm(pm->getForm(currentRow));
         if(ui->pointList->count() < 3){
             invalidForm(true);
@@ -177,7 +175,8 @@ void MainWindow::on_saveSVG_clicked()
                  file += ".svg";
              }
              Setting setting = bin_packing.get_current_setting();
-             OutputHandler oh(pm->getProblem(), &setting);
+             Problem problem = pm->getProblem();
+             OutputHandler oh(&problem, &setting);
              oh.write_setting_to_svg(file.toUtf8().data(), false);
          }
 }
@@ -203,7 +202,7 @@ void MainWindow::on_editFormButton_clicked()
 {
     int row = ui->absFormList->currentRow();
     AddFormDialog dialog(this, pm, row);
-    dialog.setName(QString::fromStdString(pm->getProblem()->get_name_of_form(row)));
+    dialog.setName(QString::fromStdString(pm->getShowedProblem()->get_name_of_form(row)));
     dialog.exec();
 }
 
@@ -262,7 +261,8 @@ void MainWindow::on_saveTXT_clicked()
             file += ".txt";
         }
         Setting setting = bin_packing.get_current_setting();
-        OutputHandler oh(pm->getProblem(), &setting);
+        Problem problem = pm->getProblem();
+        OutputHandler oh(&problem, &setting);
         oh.write_setting_to_txt(file.toUtf8().data());
     }
 }
@@ -286,10 +286,10 @@ void MainWindow::on_pushButton_2_clicked()
         QFile file(filename);
         if (file.open(QIODevice::ReadWrite)) {
                 QTextStream stream(&file);
-                stream << pm->getProblem()->get_plane_width() << endl
-                        << pm->getProblem()->get_plane_height() << endl
-                        << pm->getProblem()->get_number_of_different_forms() << endl;
-                for(int i = 0; i<pm->getProblem()->get_number_of_different_forms(); ++i){
+                stream << pm->getShowedProblem()->get_plane_width() << endl
+                        << pm->getShowedProblem()->get_plane_height() << endl
+                        << pm->getShowedProblem()->get_number_of_different_forms() << endl;
+                for(int i = 0; i<pm->getShowedProblem()->get_number_of_different_forms(); ++i){
                     AbstractForm * form = pm->getShowedProblem()->get_abstract_form_at_position(i);
                     stream << QString::fromStdString(pm->getShowedProblem()->get_name_of_form(i)) << endl
                            << pm->getShowedProblem()->get_number_of_form_needed(i) << endl

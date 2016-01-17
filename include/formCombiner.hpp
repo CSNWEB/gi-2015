@@ -171,7 +171,12 @@ private:
 	bool optimum_found;
 
 	/*!
-	 *  A flag describing if the algorithm has computed an AbstractFormConfigurationTuple.
+	 *  A flag describing if the algorithm has computed the values of an optimized configuration
+	 */
+	bool configuration_is_computed;
+
+	/*!
+	 *  A flag describing if the algorithm has created an AbstractFormConfigurationTuple.
 	 */
 	bool is_finished;
 
@@ -217,7 +222,9 @@ private:
 	bool update_if_better();
 
 	/*!
-	 *  Based on the current optimal values, create an AbstractFormConfigurationTuple.
+	 *  Based on the current optimal values, create an AbstractFormConfigurationTuple. Creates a Tuple that is stored in optimal_configured_tuple.
+	 *
+	 *  @return 	
 	 */
 	AbstractFormConfigurationTuple create_config_tuple();
 
@@ -227,6 +234,13 @@ public:
 	 *  Default Constructor
 	 */
 	FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFormConfiguration &form_config_2);
+
+	/*!
+	 *  Destructor
+	 *
+	 *  Does not delete the objects pointed to by form_1 and form_2
+	 */
+	~FormCombiner(){};
 
 	/*!
 	 *  Compute optimal configuration for the two AbstractForms and creates an AbstractFormConfigurationTuple
