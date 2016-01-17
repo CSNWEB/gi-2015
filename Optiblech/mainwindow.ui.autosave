@@ -163,7 +163,7 @@ QPushButton:pressed {
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -469,7 +469,7 @@ QPushButton:pressed {
              </size>
             </property>
             <property name="text">
-             <string>Tolerance (max. 1, min. 0.001)</string>
+             <string>Tolerance (max. 1, min. 0.0001)</string>
             </property>
            </widget>
           </item>
