@@ -189,7 +189,7 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 	#endif
 
 	int i=0;
-	while (i < convex_hull_lower.size()-2)
+	while (convex_hull_lower.size() >= 2 && i < convex_hull_lower.size()-2)
 	{
 		#ifdef DEBUG_PSA
 			printf("current index at position %i. length of convex_hull atm: %i\n", i, convex_hull_lower.size());
@@ -230,6 +230,7 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 	#endif
 
 	convex_hull_upper = ordered_indices;
+	// ordered indices has at least 3 entries, because there are at least 3 points, as checked before.
 	convex_hull_upper.push_back(ordered_indices[ordered_indices.size()-1]);
 
 	#ifdef DEBUG_PSA
@@ -239,7 +240,7 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 	#endif
 
 	i = convex_hull_upper.size()-1;
-	while (i >= 2)
+	while (i >= 2 && convex_hull_upper.size() >= 2)
 	{
 		#ifdef DEBUG_PSA
 			printf("current index at position %i. length of convex_hull atm: %i\n", i, convex_hull_upper.size());
