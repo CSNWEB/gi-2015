@@ -21,12 +21,12 @@ private:
     /*!
      *  The first point of the edge.
      */
-	Point *point_1;
+	Point point_1;
 	
     /*!
      *  The second point of the edge.
      */
-    Point *point_2;
+    Point point_2;
 public:
     
     /*!
@@ -37,15 +37,10 @@ public:
     /*!
      *  Constructor to initialize an edge with its two points.
      */
-	Edge(Point *p1, Point *p2);
+	Edge(Point &p1, Point &p2);
 
-    /*!
-     *  Destructor. Does not delete the objects pointed at by point_1 and point_2
-     */
-    ~Edge(){};
-
-    Point *get_point_1() {return point_1;};
-    Point *get_point_2() {return point_2;};
+    Point get_point_1() {return point_1;};
+    Point get_point_2() {return point_2;};
     
     /*!
      *  Finds the point where the receiver and other intersect each other.
@@ -56,7 +51,7 @@ public:
      *
      *  @return The Point where the receiver and other intersect. NULL if they don't.
      */
-    Point* intersection_with_edge(Edge *other);
+    bool intersection_with_edge(Edge &other, Point &intersection_point);
     
     /*!
      *  Check whether the receiver crosses the passed edge.
@@ -65,28 +60,28 @@ public:
      *
      *  @return true if the receiver and other cross, false if not.
      */
-	bool crosses(Edge *other);
+	bool crosses(Edge &other);
 	
     /*!
      *  The length of the edge
      *
      *  @return A float resembling the length of the edge.
      */
-	float length(){return point_1->get_distance_to(point_2);};
+	float length(){return point_1.get_distance_to(&point_2);};
     
     /*!
      *  The distance the edge covers on the x- and y-axis respectively.
      *
      *  @return A float representing the distance the edge covers on the x- and y-axis respectively.
      */
-	float get_edge_x(){return point_2->get_x()-point_1->get_x();};
+	float get_edge_x(){return point_2.get_x()-point_1.get_x();};
 
     /**
      *  The distance the edge covers on the x- and y-axis respectively.
      *
      *  @return A float representing the distance the edge covers on the x- and y-axis respectively.
      */
-	float get_edge_y(){return point_2->get_y()-point_1->get_y();};
+	float get_edge_y(){return point_2.get_y()-point_1.get_y();};
 
     /*!
      *  Debug output function:

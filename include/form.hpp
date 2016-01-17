@@ -42,7 +42,7 @@ private:
     /*!
      *  A vector of edges that make up this Form.
      */
-    vector<Edge> edges;
+    //vector<Edge> edges;
     
     /*!
      *  A vector of points that make up this Form.
@@ -190,7 +190,7 @@ public:
      *
      *  @return true, if the receiver and the Form other overlap, false if not.
      */
-	bool check_for_overlap(Form *other);
+	bool check_for_overlap(Form &other);
 	
     /*!
      *  Determines by how much the receiver overlaps with the passed form.
@@ -199,7 +199,7 @@ public:
      *
      *  @return The size of the largest area among the ones where the forms overlap.
      */
-    float overlap_distance_with_form(Form *other);
+    float overlap_distance_with_form(Form &other);
     
     /*!
      *  Debug: print points to std_out

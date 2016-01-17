@@ -45,9 +45,9 @@ bool Validator::is_plane_valid(Plane *plane)
              index_2 < number_of_forms_on_plane;
              index_2++)
         {
-            Form *second_form = plane->get_form_at(index_2);
+            Form* second_form = plane->get_form_at(index_2);
             
-            bool forms_are_overlapping = first_form->check_for_overlap(second_form);
+            bool forms_are_overlapping = first_form->check_for_overlap(*second_form);
             
             if (forms_are_overlapping)
             {

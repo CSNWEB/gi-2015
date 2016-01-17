@@ -12,7 +12,7 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)  : mother(mother), x_
 	number_of_edges = mother->get_number_of_points();
 
 	points = vector<Point>(number_of_edges);
-	edges  = vector<Edge>(number_of_edges);
+	//edges  = vector<Edge>(number_of_edges);
 
 	points[0] = Point(mother->get_point_at_index(0));
 	points[0].move_rel(pos_x, pos_y);
@@ -25,20 +25,20 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)  : mother(mother), x_
 
 		points[i] = Point(mother->get_point_at_index(i));
 		points[i].move_rel(pos_x, pos_y);
-		edges[i-1] = Edge(&(points[i-1]), &(points[i]));
+		//edges[i-1] = Edge((points[i-1]), (points[i]));
 
-		#ifdef DEBUG
-			printf("\tcheck new edge\n");
-			edges[i-1]._d_print_edge_to_console();
-		#endif
+		//#ifdef DEBUG
+		//	printf("\tcheck new edge\n");
+		//	edges[i-1]._d_print_edge_to_console();
+		//#endif
 	}
 
-	edges[number_of_edges-1] = Edge(&(points[number_of_edges-1]), &(points[0]));
+	//edges[number_of_edges-1] = Edge((points[number_of_edges-1]), (points[0]));
 
 	_d_print_edges_to_console();
 }
 
-bool Form::check_for_overlap(Form *other)
+bool Form::check_for_overlap(Form &other)
 {
     #ifdef DEBUG
         printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -47,7 +47,7 @@ bool Form::check_for_overlap(Form *other)
     return overlap_distance_with_form(other) > GlobalParams::get_tolerance();
 }
 
-float Form::overlap_distance_with_form(Form *other)
+float Form::overlap_distance_with_form(Form &other)
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
@@ -61,10 +61,10 @@ float Form::overlap_distance_with_form(Form *other)
 	bool overlap_bounding = false;
 
 	// overlap with tolerance:
-	if ((x_max - other->x_min > GlobalParams::get_tolerance()) &&
-		(other->x_max - x_min > GlobalParams::get_tolerance()))
-		if ((y_max - other->y_min > GlobalParams::get_tolerance())&&
-			(other->y_max - y_min > GlobalParams::get_tolerance()))
+	if ((x_max - other.x_min > GlobalParams::get_tolerance()) &&
+		(other.x_max - x_min > GlobalParams::get_tolerance()))
+		if ((y_max - other.y_min > GlobalParams::get_tolerance())&&
+			(other.y_max - y_min > GlobalParams::get_tolerance()))
 			overlap_bounding = true;
 
 	// The bounding boxes overlap, so the forms might as well.
@@ -92,13 +92,13 @@ float Form::overlap_distance_with_form(Form *other)
 		this_form_gpc.contour = &this_vertex_list;
 
 		// Create gpc polygon from OTHER
-		unsigned int other_number_of_vertices = other->points.size();
+		unsigned int other_number_of_vertices = other.points.size();
 		gpc_vertex other_vertices[other_number_of_vertices];
 		for (unsigned int index = 0; index < other_number_of_vertices; index++)
 		{
 			gpc_vertex vertex;
-			vertex.x = other->points[index].get_x();
-			vertex.y = other->points[index].get_y();
+			vertex.x = other.points[index].get_x();
+			vertex.y = other.points[index].get_y();
 
 			other_vertices[index] = vertex;
 		}
@@ -227,9 +227,14 @@ void Form::_d_print_edges_to_console()
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 
-		printf("Number of edges: %i\n", edges.size());
-		for (int i=0; i<edges.size(); ++i)
-			edges[i]._d_print_edge_to_console();
+		printf("Number of edges: %i\n", points.size());
+		for (int i=1; i<points.size(); ++i)
+		{
+			Edge e(points[i-1], points[i]);
+			e._d_print_edge_to_console();
+		}
+		Edge e(points[points.size()], points[0]);
+		e._d_print_edge_to_console();
 	#endif
 }
 

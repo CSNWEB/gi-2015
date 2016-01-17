@@ -1,12 +1,10 @@
 #include "edge.hpp"
 
-Edge::Edge(Point *p1, Point *p2)
+Edge::Edge(Point &p1, Point &p2) : point_1(p1), point_2(p2)
 {
 	#ifdef DEBUG
 		printf("CONSTRUCTOR: %s\n", __PRETTY_FUNCTION__);
 	#endif
-	point_1 = p1;
-	point_2 = p2;
 }
 
 /**
@@ -18,62 +16,33 @@ Edge::Edge(Point *p1, Point *p2)
  *
  *  @return The Point where the receiver and other intersect. NULL if they don't.
  */
-Point* Edge::intersection_with_edge(Edge *other)
+bool Edge::intersection_with_edge(Edge &other, Point& intersection_point)
 {
     #ifdef DEBUG
         printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
     #endif
     
-    Point *p3 = other->point_1;
-    Point *p4 = other->point_2;
+    Point p3 = other.point_1;
+    Point p4 = other.point_2;
     
     
     // Store the values for fast access and easy
     // equations-to-code conversion
     
-    #ifdef DEBUG
-    
-    if (point_1 == nullptr)
-    {
-        printf ("ERROR: p1 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
-    }
-    
-    if (point_2 == nullptr)
-    {
-        printf ("ERROR: p2 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
-    }
-    
-    if (other == nullptr)
-    {
-        printf ("ERROR: other is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
-    }
-    
-    if (p3 == nullptr)
-    {
-        printf ("ERROR: p3 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
-    }
-    
-    if (p4 == nullptr)
-    {
-        printf ("ERROR: p4 is null in %s --- Crash incoming!\n", __PRETTY_FUNCTION__);
-    }
-    
-    #endif
-    
-    float x1 = point_1->get_x();
-    float x2 = point_2->get_x();
-    float x3 = p3->get_x();
-    float x4 = p4->get_x();
-    float y1 = point_1->get_y();
-    float y2 = point_2->get_y();
-    float y3 = p3->get_y();
-    float y4 = p4->get_y();
+    float x1 = point_1.get_x();
+    float x2 = point_2.get_x();
+    float x3 = p3.get_x();
+    float x4 = p4.get_x();
+    float y1 = point_1.get_y();
+    float y2 = point_2.get_y();
+    float y3 = p3.get_y();
+    float y4 = p4.get_y();
     
     float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     // If d is zero, there is no intersection
     if (d == 0)
     {
-        return NULL;
+        return false;
     }
     
     // Get the x and y
@@ -85,24 +54,26 @@ Point* Edge::intersection_with_edge(Edge *other)
     if ( x < std::min(x1, x2) || x > std::max(x1, x2) ||
         x < std::min(x3, x4) || x > std::max(x3, x4) )
     {
-        return NULL;
+        return false;
     }
     
     if ( y < std::min(y1, y2) || y > std::max(y1, y2) ||
         y < std::min(y3, y4) || y > std::max(y3, y4) )
     {
-        return NULL;
+        return false;
     }
     
     // Return the point of intersection
-    return new Point(x, y);
+    intersection_point = Point(x,y);
+    return true;
 }
 
-bool Edge::crosses(Edge *other)
+bool Edge::crosses(Edge &other)
 {
-    Point *intersection = intersection_with_edge(other);
+    Point intersection;
+    bool does_intersect = intersection_with_edge(other, intersection);
     
-    if (intersection == NULL)
+    if (!does_intersect)
     {
         return false;
     }
@@ -111,13 +82,17 @@ bool Edge::crosses(Edge *other)
         /**
          *  Check if none of the points of the edges is equal to the interection.
          */
-        float x = intersection->get_x();
-        float y = intersection->get_y();
+        float x = intersection.get_x();
+        float y = intersection.get_y();
         
-        if ((point_1->get_x() == x && point_1->get_y() == y) ||
-            (point_2->get_x() == x && point_2->get_y() == y) ||
-            (other->point_1->get_x() == x && other->point_1->get_y() == y) ||
-            (other->point_2->get_x() == x && other->point_2->get_y() == y))
+        if ((fabs(point_1.get_x() - x) < GlobalParams::get_tolerance() && 
+                fabs(point_1.get_y() - y) < GlobalParams::get_tolerance()) ||
+            (fabs(point_2.get_x() - x) < GlobalParams::get_tolerance() &&
+                fabs(point_2.get_y() - y) < GlobalParams::get_tolerance()) ||
+            (fabs(other.point_1.get_x() - x) < GlobalParams::get_tolerance() &&
+                fabs(other.point_1.get_y() - y) < GlobalParams::get_tolerance()) ||
+            (fabs(other.point_2.get_x() - x) < GlobalParams::get_tolerance() && 
+                fabs(other.point_2.get_y() - y) < GlobalParams::get_tolerance()))
         {
             return false;
         }
@@ -131,6 +106,6 @@ bool Edge::crosses(Edge *other)
 void Edge::_d_print_edge_to_console()
 {
 	#ifdef DEBUG
-		printf("Edge from point %.2f/%.2f to point %.2f/%.2f with length %.2f\n", point_1->get_x(), point_1->get_y(), point_2->get_x(), point_2->get_y(), length());
+		printf("Edge from point %.2f/%.2f to point %.2f/%.2f with length %.2f\n", point_1.get_x(), point_1.get_y(), point_2.get_x(), point_2.get_y(), length());
 	#endif
 }

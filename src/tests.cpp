@@ -140,8 +140,8 @@ bool Tests::test_crossing_edges()
     Point bottom_left = Point(0.0, 0.0);
     Point bottom_right = Point(1.0, 0.0);
 
-    Edge top_left_to_bottom_right = Edge(&top_left, &bottom_right);
-    Edge top_right_to_bottom_left = Edge(&top_right, &bottom_left);
+    Edge top_left_to_bottom_right = Edge(top_left, bottom_right);
+    Edge top_right_to_bottom_left = Edge(top_right, bottom_left);
 
     /**
      *  Both edges cross each other. We check whether the method recognizes
@@ -149,8 +149,8 @@ bool Tests::test_crossing_edges()
      *
      *  The test passes if both times the cross is recognized.
      */
-    if (top_left_to_bottom_right.crosses(&top_right_to_bottom_left) &&
-        top_right_to_bottom_left.crosses(&top_left_to_bottom_right))
+    if (top_left_to_bottom_right.crosses(top_right_to_bottom_left) &&
+        top_right_to_bottom_left.crosses(top_left_to_bottom_right))
     {
         return true;
     }
@@ -172,8 +172,8 @@ bool Tests::test_parallel_edges()
     Point bottom_left = Point(0.0, 0.0);
     Point bottom_right = Point(1.0, 0.0);
 
-    Edge top_left_to_top_right = Edge(&top_left, &top_right);
-    Edge bottom_left_to_bottom_right = Edge(&bottom_left, &bottom_right);
+    Edge top_left_to_top_right = Edge(top_left, top_right);
+    Edge bottom_left_to_bottom_right = Edge(bottom_left, bottom_right);
 
     /**
      *  Both edges are parallel to each other. We check whether the method
@@ -181,8 +181,8 @@ bool Tests::test_parallel_edges()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right.crosses(&bottom_left_to_bottom_right) &&
-        !bottom_left_to_bottom_right.crosses(&top_left_to_top_right))
+    if (!top_left_to_top_right.crosses(bottom_left_to_bottom_right) &&
+        !bottom_left_to_bottom_right.crosses(top_left_to_top_right))
     {
         return true;
     }
@@ -203,8 +203,8 @@ bool Tests::test_edges_same_points()
     Point top_left = Point(1.0, 0.0);
     Point top_right = Point(1.0, 1.0);
 
-    Edge top_left_to_top_right_1 = Edge(&top_left, &top_right);
-    Edge top_left_to_top_right_2 = Edge(&top_left, &top_right);
+    Edge top_left_to_top_right_1 = Edge(top_left, top_right);
+    Edge top_left_to_top_right_2 = Edge(top_left, top_right);
 
     /**
      *  Both edges have the same start and endpoint. We check whether the method
@@ -213,8 +213,8 @@ bool Tests::test_edges_same_points()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right_1.crosses(&top_left_to_top_right_2) &&
-        !top_left_to_top_right_2.crosses(&top_left_to_top_right_1))
+    if (!top_left_to_top_right_1.crosses(top_left_to_top_right_2) &&
+        !top_left_to_top_right_2.crosses(top_left_to_top_right_1))
     {
         return true;
     }
@@ -235,8 +235,8 @@ bool Tests::test_meeting_edges()
     Point top_right = Point(1.0, 1.0);
     Point bottom_left = Point(0.0, 0.0);
 
-    Edge top_left_to_top_right = Edge(&top_left, &top_right);
-    Edge bottom_left_to_top_left = Edge(&bottom_left, &top_left);
+    Edge top_left_to_top_right = Edge(top_left, top_right);
+    Edge bottom_left_to_top_left = Edge(bottom_left, top_left);
 
     /**
      *  Both edges share one point. We check whether the method recognizes
@@ -244,8 +244,8 @@ bool Tests::test_meeting_edges()
      *
      *  The test passes if both times it is detected that they don't cross.
      */
-    if (!top_left_to_top_right.crosses(&bottom_left_to_top_left) &&
-        !bottom_left_to_top_left.crosses(&top_left_to_top_right))
+    if (!top_left_to_top_right.crosses(bottom_left_to_top_left) &&
+        !bottom_left_to_top_left.crosses(top_left_to_top_right))
     {
         return true;
     }
@@ -341,8 +341,8 @@ bool Tests::test_overlap_disjoint()
     second_square.move_rel(2.0, 0.0);
 
     // The squares should not be overlapping now.
-    if (!first_square.check_for_overlap(&second_square) &&
-        !second_square.check_for_overlap(&first_square))
+    if (!first_square.check_for_overlap(second_square) &&
+        !second_square.check_for_overlap(first_square))
     {
         return true;
     }
@@ -377,8 +377,8 @@ bool Tests::test_overlap_disjoint_parallel()
     second_square.move_rel(0.5, 0.0);
 
     // The squares should be overlapping now.
-    if (first_square.check_for_overlap(&second_square) &&
-        second_square.check_for_overlap(&first_square))
+    if (first_square.check_for_overlap(second_square) &&
+        second_square.check_for_overlap(first_square))
     {
         return true;
     }
@@ -413,8 +413,8 @@ bool Tests::test_overlap_disjoint_non_parallel()
     second_square.move_rel(0.5, 0.5);
 
     // The squares should be overlapping now.
-    if (first_square.check_for_overlap(&second_square) &&
-        second_square.check_for_overlap(&first_square))
+    if (first_square.check_for_overlap(second_square) &&
+        second_square.check_for_overlap(first_square))
     {
         return true;
     }
@@ -449,8 +449,8 @@ bool Tests::test_overlap_sharing_point()
     second_square.move_rel(1.0, 1.0);
 
     // The squares should be overlapping now.
-    if (!first_square.check_for_overlap(&second_square) &&
-        !second_square.check_for_overlap(&first_square))
+    if (!first_square.check_for_overlap(second_square) &&
+        !second_square.check_for_overlap(first_square))
     {
         return true;
     }
@@ -501,8 +501,8 @@ bool Tests::test_overlap_concave()
     bucket_form.move_rel(2.0, 2.0);
 
     // The square should now be within the bucket, but not overlapping.
-    if (!square_form.check_for_overlap(&bucket_form) &&
-        !bucket_form.check_for_overlap(&square_form))
+    if (!square_form.check_for_overlap(bucket_form) &&
+        !bucket_form.check_for_overlap(square_form))
     {
         return true;
     }
@@ -543,8 +543,8 @@ bool Tests::test_overlap_triangle()
     Form triangle_left_form = Form(&triangle_left);
     
     // The triangles are overlapping now.
-    if (triangle_right_form.check_for_overlap(&triangle_left_form) &&
-        triangle_left_form.check_for_overlap(&triangle_right_form))
+    if (triangle_right_form.check_for_overlap(triangle_left_form) &&
+        triangle_left_form.check_for_overlap(triangle_right_form))
     {
         return true;
     }
@@ -588,8 +588,8 @@ bool Tests::test_non_overlap_triangle()
     triangle_left_form.move_rel(0.5, 0.0);
     
     // The triangles should not be not overlapping.
-    if (!triangle_right_form.check_for_overlap(&triangle_left_form) &&
-        !triangle_left_form.check_for_overlap(&triangle_right_form))
+    if (!triangle_right_form.check_for_overlap(triangle_left_form) &&
+        !triangle_left_form.check_for_overlap(triangle_right_form))
     {
         return true;
     }

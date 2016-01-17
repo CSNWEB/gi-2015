@@ -114,7 +114,7 @@ bool RandomizedFormFitter::calculcate_best_offset_from_first_to_second_form(unsi
          *  Overlappings are punsihed by doubling the score. Since the score is
          *  better the lower it is.
          */
-        if (first_form.check_for_overlap(&second_form)) // TODO: Maybe make punishment depending on the crossings?
+        if (first_form.check_for_overlap(second_form)) // TODO: Maybe make punishment depending on the crossings?
         {
             fitness *= 100;
         }

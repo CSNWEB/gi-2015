@@ -372,7 +372,7 @@ void FormCombiner::compute_optimal_configuration()
 
 			// check if f1 and f2 overlap:
 			// if no, get new bounding box, check if minimal
-			if (!f1.check_for_overlap(&f2))
+			if (!f1.check_for_overlap(f2))
 			{
 				#ifdef DEBUG
 					printf("Forms do not overlap:\n\tConfiguration okay\n");
@@ -404,7 +404,7 @@ void FormCombiner::compute_optimal_configuration()
 				#endif
 
 				// get new bounding box, check if minimal:
-				if (!f1.check_for_overlap(&f2_m))
+				if (!f1.check_for_overlap(f2_m))
 				{
 					#ifdef DEBUG_FC
 						printf("Forms do not overlap:\n\tConfiguration okay\n");
