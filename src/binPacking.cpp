@@ -32,6 +32,7 @@ BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 void BinPacking::update_problem(Problem &new_problem)
 {
 	problem = new_problem;
+    printf("Don't use this functions it will crate errors!!!");
 	is_initialized = false;
 	index_of_current_tuple = -1;
 

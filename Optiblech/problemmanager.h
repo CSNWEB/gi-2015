@@ -47,7 +47,6 @@ public:
     void movePointUp(int selectedForm, int selectedPoint);
     void movePointDown(int selectedForm, int selectedPoint);
 
-    BinPacking getBinPacking(){return BinPacking(problem);}
 
     /*!
      * Checks if the form is valid and fits on the current plane size
