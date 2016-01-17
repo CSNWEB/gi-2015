@@ -195,35 +195,3 @@ string AbstractFormConfigurationTuple::to_string()
 	}
 	return s.str();
 }
-
-/*
-void AbstractFormConfigurationTuple::update_bounding_box()
-{
-	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
-		
-	if (abstract_form_configs.size() > 0)
-	{
-		float x_min = abstract_form_configs[0].get_x();
-		float x_max = x_min + abstract_form_configs[0].get_dx();
-		float y_min = abstract_form_configs[0].get_y();
-		float y_max = y_min + abstract_form_configs[0].get_dy();
-
-		for (int index_of_form=1; index_of_form < abstract_form_configs.size(); ++index_of_form)
-		{
-			float x_min_t = abstract_form_configs[index_of_form].get_x();
-			float x_max_t = x_min_t + abstract_form_configs[index_of_form].get_dx();
-			float y_min_t = abstract_form_configs[index_of_form].get_y();
-			float y_max_t = y_min_t + abstract_form_configs[index_of_form].get_dy();
-
-			if (x_min_t < x_min)
-				x_min = x_min_t;
-			if (x_max_t > x_max)
-				x_max = x_max_t;
-		}
-	}
-}
-*/
-
-//#undef DEBUG_AFCT

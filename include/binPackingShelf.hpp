@@ -89,6 +89,11 @@ public:
 	BinPackingShelf(int plane, float width, float height, float offset_x, float offset_y);
 
 	/*!
+	 *  Destructor. Does not delete the object pointed at by packing
+	 */
+	~BinPackingShelf(){};
+
+	/*!
 	 *  Adds a form-tuple on this shelf. Also checks if there is enough space on this shelf
 	 *  
 	 *  @param tuple 			Pointer to the tuple that should be added to this shelf

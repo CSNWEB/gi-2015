@@ -64,13 +64,18 @@ public:
 	 *  Constructor that creates a form specified by an AbstractForm, bit without
      *  a specific position
 	 */
-    Form(AbstractForm *mother) : Form(mother, 0, 0){};
+    Form(AbstractForm * const mother) : Form(mother, 0, 0){};
 
 	/*!
 	 *  Constructor that creates a Form at given coordinates (top left corner of
      *  bounding box)
 	 */
-    Form(AbstractForm *mother, float pos_x, float pos_y); // TODO: Use Point?
+    Form(AbstractForm * const mother, float pos_x, float pos_y);
+
+    /*!
+     *  Destructor
+     */
+    ~Form(){};
 	
     /*!
      *  The abstract form that this Form represents.

@@ -39,6 +39,11 @@ public:
      */
 	Edge(Point *p1, Point *p2);
 
+    /*!
+     *  Destructor. Does not delete the objects pointed at by point_1 and point_2
+     */
+    ~Edge(){};
+
     Point *get_point_1() {return point_1;};
     Point *get_point_2() {return point_2;};
     

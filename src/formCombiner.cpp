@@ -47,7 +47,6 @@ FormCombiner::FormCombiner(AbstractFormConfiguration &form_config_1, AbstractFor
 	allpoints = vector<Point>(0);
 	hull_of_tuple = vector<int>(0);
 
-	is_finished = false;
 	optimum_found = false;
 }
 
@@ -58,6 +57,8 @@ void FormCombiner::init()
 	#endif
 
 	optimum_found = false;
+	configuration_is_computed = false;
+	is_finished = false;
 
 	form_1 = form_config_1.get_form();
 	form_2 = form_config_2.get_form();
@@ -268,6 +269,9 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	if (!configuration_is_computed)
+		compute_optimal_configuration();
+
 	AbstractFormConfigurationTuple optimal_configured_tuple;
 
 	if (sum_of_bounding_boxes - opt_configuration_area > GlobalParams::get_tolerance())
@@ -431,7 +435,7 @@ void FormCombiner::compute_optimal_configuration()
 		printf("\tArea: %.2f\n",opt_configuration_area);
 	#endif
 
-	is_finished = true;
+	configuration_is_computed = true;
 }
 
 AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
@@ -440,9 +444,9 @@ AbstractFormConfigurationTuple FormCombiner::get_optimal_configured_tuple()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (!is_finished)
+	if (!configuration_is_computed)
 		compute_optimal_configuration();
-	return 	create_config_tuple();;
+	return create_config_tuple();
 }
 
 

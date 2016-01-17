@@ -42,6 +42,11 @@ public:
 	OutputHandler(Problem *p, Setting *s);
 
 	/*!
+	 *  Destructor
+	 */
+	~OutputHandler(){};
+
+	/*!
 	 *  writes the current setting of problem in defined format into a txt file
      *
      *  @param filename         the path and name of the output file

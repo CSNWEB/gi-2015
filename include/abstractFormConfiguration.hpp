@@ -103,6 +103,27 @@ public:
 		) : AbstractFormConfiguration(form, 0, 0, 0, false, number_of_forms_needed){};
 
 	/*!
+	 *  Destructor
+	 *
+	 *  Does not delete the element pointed at by form
+	 */
+	~AbstractFormConfiguration(){};
+
+	AbstractFormConfiguration &operator=(const AbstractFormConfiguration &other)
+	{
+		form 				= other.form;
+		position_x_of_form 	= other.position_x_of_form;
+		position_y_of_form	= other.position_y_of_form;
+		rotation_of_form 	= other.rotation_of_form;
+		mirrored_form 		= other.mirrored_form;
+		min_x = other.min_x;
+		max_x = other.max_x;
+		min_y = other.min_y;
+		max_y = other.max_y;
+		number_of_forms_needed = other.number_of_forms_needed;
+	};
+
+	/*!
 	 *  Move the position of this configuration
 	 */
 	void move(float dx, float dy);

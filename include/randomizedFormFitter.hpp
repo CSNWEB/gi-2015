@@ -66,6 +66,11 @@ public:
      */
     RandomizedFormFitter(AbstractForm *first_form, AbstractForm *second_form);
 
+    /*!
+     *  Destructor
+     */
+    ~RandomizedFormFitter(){};
+
 #pragma mark - Randomization
     
     /*!

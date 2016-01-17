@@ -70,7 +70,7 @@ void BinPacking::create_configuration_tuples()
 					{
 						FormCombiner fc(form_config_1, form_config_2);
 
-						AbstractFormConfigurationTuple new_tuple = fc.get_optimal_configured_tuple();
+						AbstractFormConfigurationTuple new_tuple = 	fc.get_optimal_configured_tuple();
 
 						if (new_tuple.get_number_of_forms() > 1)
 						{
