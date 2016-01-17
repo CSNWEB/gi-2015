@@ -72,7 +72,9 @@ float Form::overlap_distance_with_form(Form &other)
 	{
 		float overlap_size = 0.0;
 
-		gpc_polygon this_form_gpc, other_form_gpc, result_polygon;
+		gpc_polygon this_form_gpc = {0, NULL, NULL};
+		gpc_polygon other_form_gpc = {0, NULL, NULL};
+		gpc_polygon result_polygon;
 
 		// Create gpc polygon from THIS
 		unsigned int this_number_of_points = points.size();
@@ -87,22 +89,27 @@ float Form::overlap_distance_with_form(Form &other)
 		}
 
 		#ifdef DEBUG_FORM
-			printf("Initialized this_vertices.\n");
+			printf("Initialized this_vertices:\n");
+			for (int i=0; i<this_number_of_points; ++i)
+				printf("(%.2f/%.2f) ", this_vertices[i].x, this_vertices[i].y);
+			printf("\n");
 		#endif
 
-		gpc_vertex_list this_vertex_list;
-		this_vertex_list.num_vertices = this_number_of_points;
-		this_vertex_list.vertex = this_vertices;
+		gpc_vertex_list this_vertex_list = {this_number_of_points, this_vertices};
+		//this_vertex_list.num_vertices = this_number_of_points;
+		//this_vertex_list.vertex = this_vertices;
 
 		#ifdef DEBUG_FORM
 			printf("Initialized this_vertex_list:\n");
 			printf("length: %i\n", this_vertex_list.num_vertices);
 			for (int i=0; i<this_vertex_list.num_vertices; ++i)
-				printf("(%.2f/%.2f) ", this_vertex_list.vertex[i].x, this_vertex_list.vertex[i].y);
+				printf("(%.2f/%.2f) ", this_vertices[i].x, this_vertices[i].y);
+			printf("\n");
 		#endif
 
-		this_form_gpc.num_contours = 1;
-		this_form_gpc.contour = &this_vertex_list;
+		//this_form_gpc.num_contours = 1;
+		//this_form_gpc.contour = &this_vertex_list;
+		gpc_add_contour(&this_form_gpc, &this_vertex_list, 0);
 
 		// Create gpc polygon from OTHER
 		unsigned int other_number_of_vertices = other.points.size();
@@ -117,36 +124,40 @@ float Form::overlap_distance_with_form(Form &other)
 		}
 
 		#ifdef DEBUG_FORM
-			printf("Initialized other_vertices.\n");
+			printf("Initialized other_vertices:\n");
+			for (int i=0; i<other_number_of_vertices; ++i)
+				printf("(%.2f/%.2f) ", other_vertices[i].x, other_vertices[i].y);
+			printf("\n");
 		#endif
 
-		gpc_vertex_list other_vertex_list;
-		other_vertex_list.num_vertices = other_number_of_vertices;
-		other_vertex_list.vertex = other_vertices;
+		gpc_vertex_list other_vertex_list = {other_number_of_vertices, other_vertices};
+		//other_vertex_list.num_vertices = other_number_of_vertices;
+		//other_vertex_list.vertex = other_vertices;
 
 		#ifdef DEBUG_FORM
 			printf("Initialized other_vertex_list:\n");
 			printf("length: %i\n", other_vertex_list.num_vertices);
 			for (int i=0; i<other_vertex_list.num_vertices; ++i)
-				printf("(%.2f/%.2f) ", other_vertex_list.vertex[i].x, other_vertex_list.vertex[i].y);
+				printf("(%.2f/%.2f) ", other_vertices[i].x, other_vertices[i].y);
 			printf("\n");
 		#endif
 
-		other_form_gpc.num_contours = 1;
-		other_form_gpc.contour = &other_vertex_list;
+		//other_form_gpc.num_contours = 1;
+		//other_form_gpc.contour = &other_vertex_list;
+		gpc_add_contour(&other_form_gpc, &other_vertex_list, 0);
 
 		#ifdef DEBUG_FORM
 			printf("Finished Initializing\n");
 			printf("this_vertex_list:\n");
 			printf("length: %i\n", this_vertex_list.num_vertices);
 			for (int i=0; i<this_vertex_list.num_vertices; ++i)
-				printf("(%.2f/%.2f) ", this_vertex_list.vertex[i].x, this_vertex_list.vertex[i].y);
+				printf("(%.2f/%.2f) ", this_vertices[i].x, this_vertices[i].y);
 			printf("\n");
 
 			printf("other_vertex_list:\n");
 			printf("length: %i\n", other_vertex_list.num_vertices);
 			for (int i=0; i<other_vertex_list.num_vertices; ++i)
-				printf("(%.2f/%.2f) ", other_vertex_list.vertex[i].x, other_vertex_list.vertex[i].y);
+				printf("(%.2f/%.2f) ", other_vertices[i].x, other_vertices[i].y);
 			printf("\n");
 		#endif
 
@@ -190,11 +201,9 @@ float Form::overlap_distance_with_form(Form &other)
             overlap_size = max_clipped_size;
 		}
 
-		/*
 		gpc_free_polygon(&this_form_gpc);
 		gpc_free_polygon(&other_form_gpc);
 		gpc_free_polygon(&result_polygon);
-		*/
 		
 		return overlap_size;
 	}
