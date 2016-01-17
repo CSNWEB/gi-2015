@@ -17,6 +17,7 @@
 
 #include "abstractForm.hpp"
 #include "plane.hpp"
+#include <algorithm>
 
 using namespace std;
 
@@ -58,13 +59,7 @@ private:
      */
     vector<string> name_of_forms;
 
-    /*!
-     *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
-     *
-     *  @return     -1 if problem is solveable,
-     *              otherwise the index of the last abstract form in vector<AbstractForm> abstract_forms that does not fit on the plane
-     */
-    void check_if_solveable();
+ 
 
 public:
 
@@ -94,6 +89,16 @@ public:
      */
     Problem(float sx, float sy, vector<AbstractForm> abst_forms, vector<int> num_of_forms);
 
+    
+    /*!
+     *  Check if problem has a solution, i.e. if all forms are small enough to be placed on a plane
+     *
+     *  @return     -1 if problem is solveable,
+     *              otherwise the index of the last abstract form in vector<AbstractForm> abstract_forms that does not fit on the plane
+     */
+    void check_if_solveable();
+    
+    
     /*!
      * Get the plane width
      * @return int      Width of one Plant
@@ -192,11 +197,28 @@ public:
      */
     void erase_abstract_form(int i);
     
+    
 
     /*!
      *  Get is_solveable
      */
     bool is_solveable();
+    
+    /*!
+     *  Get how much forms are to large
+     */
+    int get_to_large_count(){ return too_large_forms.size();}
+    
+    /*!
+     *  Returns if the given form is to large
+     */
+    bool is_to_large(int i){
+        if(std::find(too_large_forms.begin(), too_large_forms.end(), i) != too_large_forms.end()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 };
 

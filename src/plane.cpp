@@ -17,7 +17,7 @@ bool Plane::get_form_at(int i, Form &form)
 {
 	if (i<forms.size())
 	{
-		form = forms[i];
+        form = forms[i];
 		return true;
 	}
 	else

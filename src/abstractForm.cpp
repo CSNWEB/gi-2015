@@ -428,6 +428,10 @@ bool AbstractForm::overlaps_itself()
 {
     std::cout << "Points size = " << points.size() << std::endl;
     
+    if(points.empty()){
+        return false;
+    }
+
     // Looping over all edges
     if (points.size() > 1)
     {

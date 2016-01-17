@@ -40,13 +40,15 @@ public:
     QWidget *tab;
     QHBoxLayout *horizontalLayout_2;
     QGridLayout *gridLayout;
-    QHBoxLayout *horizontalLayout_9;
-    QLabel *label_3;
-    QDoubleSpinBox *planeWidth;
-    QLabel *label_5;
-    QDoubleSpinBox *planeHeight;
-    QPushButton *pushButton;
     QPushButton *pushButton_2;
+    QPushButton *selectInputButton;
+    QGroupBox *groupBox;
+    QVBoxLayout *verticalLayout_7;
+    QListWidget *absFormList;
+    QHBoxLayout *horizontalLayout_6;
+    QPushButton *addFormButton;
+    QPushButton *editFormButton;
+    QPushButton *delFormButton;
     QGroupBox *currentFormBox;
     QVBoxLayout *verticalLayout_6;
     QHBoxLayout *horizontalLayout_4;
@@ -63,14 +65,13 @@ public:
     QHBoxLayout *horizontalLayout_7;
     QLabel *label_4;
     QSpinBox *pointAmount;
-    QGroupBox *groupBox;
-    QVBoxLayout *verticalLayout_7;
-    QListWidget *absFormList;
-    QHBoxLayout *horizontalLayout_6;
-    QPushButton *addFormButton;
-    QPushButton *editFormButton;
-    QPushButton *delFormButton;
-    QPushButton *selectInputButton;
+    QHBoxLayout *horizontalLayout_9;
+    QLabel *label_3;
+    QDoubleSpinBox *planeWidth;
+    QLabel *label_5;
+    QDoubleSpinBox *planeHeight;
+    QPushButton *helpButton;
+    QPushButton *pushButton;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_10;
@@ -97,29 +98,43 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
+        MainWindow->setEnabled(true);
         MainWindow->resize(780, 495);
         MainWindow->setAutoFillBackground(false);
         MainWindow->setStyleSheet(QLatin1String("#centralWidget{\n"
 "	background:white;\n"
+"	padding:0px;\n"
 "}\n"
 "\n"
 "QTabBar::tab{\n"
 "	background:white;\n"
 "	padding:10px;\n"
-"	margin-bottom: -2px;\n"
+"\n"
 "}\n"
 "\n"
+"QLayout{\n"
+"	padding:0px;\n"
+"	margin:0px;\n"
+"}\n"
+"\n"
+"QTabWidget::pane{\n"
+"	border-top:1px solid black;\n"
+"	margin-top:-1px;\n"
+"}\n"
 "\n"
 "QTabBar::tab:selected{\n"
 "	border-top:1px solid black;\n"
 "	border-left:1px solid black;\n"
 "	border-right:1px solid black;\n"
-"\n"
+"}\n"
+"QTabBar::tab:!selected{\n"
+"	border-bottom:1px solid black;\n"
 "}\n"
 "\n"
 "QWidget{\n"
 "	font-family: Roboto;\n"
 "	background-color: white;\n"
+"	font-size:14px;\n"
 "}\n"
 "\n"
 "QTabWidget{\n"
@@ -128,23 +143,85 @@ public:
 "\n"
 "QGroupBox{\n"
 "	border:2px solid black;\n"
-"	padding-top:5px;\n"
+"	padding-top:15px;\n"
 "}\n"
 "\n"
-"QPushButton{\n"
-"	padding:7px;\n"
-"	background-color:#222222;\n"
-"	border:none;\n"
-"	color:white;\n"
+"QGroupBox:!enabled{\n"
+"	border:2px solid grey;\n"
+"}\n"
+"\n"
+"QGroupBox::title{\n"
+"	subcontrol-origin: padding;\n"
+"	margin-top:4px;\n"
+"	margin-left:7px;\n"
+"}\n"
+"\n"
+"QPushButton:!enabled{\n"
+"	background-color:grey;\n"
+"}\n"
+"\n"
+"#pushButton:!enabled{\n"
+"	background-color"
+                        ":red;\n"
+"}\n"
+"\n"
+"#pushButton:enabled{\n"
+"	background-color:green;\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton {\n"
+"  padding: 7px;\n"
+"  border: none;\n"
+"  color: white;\n"
+"  background-color: #404040;\n"
+"  border-color: #404040;\n"
+"}\n"
+"QPushButton:hover {\n"
+"  background-color: #262626;\n"
+"  border-color: #1a1a1a;\n"
+"}\n"
+"QPushButton:pressed {\n"
+"  background-color: #1a1a1a;\n"
+"  border-color: #0d0d0d;\n"
+"}\n"
+"#helpButton {\n"
+"  background-color: #9954bb;\n"
+"  border-color: #9954bb;\n"
+"}\n"
+"#helpButton:hover {\n"
+"  background-color: #7e3f9d;\n"
+"  border-color: #6f378b;\n"
+"}\n"
+"#helpButton:pressed {\n"
+"  background-color: #6f378b;\n"
+"  border-color: #613079;\n"
+"}\n"
+"#selectInputButton,\n"
+"#solveButton {\n"
+"  background-color: #2780e3;\n"
+"  border-color: #2780e3;\n"
+"}\n"
+"#selectInputButton:hover,\n"
+"#solveButton:hover {\n"
+"  background-color: #1967be;\n"
+"  border-color: #165ba8;\n"
+"}\n"
+"#selectInputButton:pressed,\n"
+"#solveButton:pressed {\n"
+"  background-color: #165ba8;\n"
+"  bo"
+                        "rder-color: #134f91;\n"
 "}"));
         MainWindow->setTabShape(QTabWidget::Rounded);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral(""));
         horizontalLayout = new QHBoxLayout(centralWidget);
-        horizontalLayout->setSpacing(6);
+        horizontalLayout->setSpacing(-1);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setContentsMargins(0, 2, 0, 0);
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setEnabled(true);
@@ -161,44 +238,54 @@ public:
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        horizontalLayout_9 = new QHBoxLayout();
-        horizontalLayout_9->setSpacing(6);
-        horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
-        horizontalLayout_9->setContentsMargins(-1, 10, 0, -1);
-        label_3 = new QLabel(tab);
-        label_3->setObjectName(QStringLiteral("label_3"));
-
-        horizontalLayout_9->addWidget(label_3);
-
-        planeWidth = new QDoubleSpinBox(tab);
-        planeWidth->setObjectName(QStringLiteral("planeWidth"));
-
-        horizontalLayout_9->addWidget(planeWidth);
-
-        label_5 = new QLabel(tab);
-        label_5->setObjectName(QStringLiteral("label_5"));
-
-        horizontalLayout_9->addWidget(label_5);
-
-        planeHeight = new QDoubleSpinBox(tab);
-        planeHeight->setObjectName(QStringLiteral("planeHeight"));
-        planeHeight->setMaximum(98.99);
-
-        horizontalLayout_9->addWidget(planeHeight);
-
-
-        gridLayout->addLayout(horizontalLayout_9, 1, 1, 1, 2);
-
-        pushButton = new QPushButton(tab);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setMaximumSize(QSize(5000, 16777215));
-
-        gridLayout->addWidget(pushButton, 6, 2, 1, 1);
-
         pushButton_2 = new QPushButton(tab);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setEnabled(true);
 
-        gridLayout->addWidget(pushButton_2, 6, 1, 1, 1);
+        gridLayout->addWidget(pushButton_2, 7, 1, 1, 1);
+
+        selectInputButton = new QPushButton(tab);
+        selectInputButton->setObjectName(QStringLiteral("selectInputButton"));
+        selectInputButton->setEnabled(true);
+        selectInputButton->setMaximumSize(QSize(4000, 16777215));
+
+        gridLayout->addWidget(selectInputButton, 0, 1, 1, 1);
+
+        groupBox = new QGroupBox(tab);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        groupBox->setEnabled(true);
+        verticalLayout_7 = new QVBoxLayout(groupBox);
+        verticalLayout_7->setSpacing(6);
+        verticalLayout_7->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
+        absFormList = new QListWidget(groupBox);
+        absFormList->setObjectName(QStringLiteral("absFormList"));
+
+        verticalLayout_7->addWidget(absFormList);
+
+        horizontalLayout_6 = new QHBoxLayout();
+        horizontalLayout_6->setSpacing(6);
+        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
+        addFormButton = new QPushButton(groupBox);
+        addFormButton->setObjectName(QStringLiteral("addFormButton"));
+
+        horizontalLayout_6->addWidget(addFormButton);
+
+        editFormButton = new QPushButton(groupBox);
+        editFormButton->setObjectName(QStringLiteral("editFormButton"));
+
+        horizontalLayout_6->addWidget(editFormButton);
+
+        delFormButton = new QPushButton(groupBox);
+        delFormButton->setObjectName(QStringLiteral("delFormButton"));
+
+        horizontalLayout_6->addWidget(delFormButton);
+
+
+        verticalLayout_7->addLayout(horizontalLayout_6);
+
+
+        gridLayout->addWidget(groupBox, 3, 1, 1, 1);
 
         currentFormBox = new QGroupBox(tab);
         currentFormBox->setObjectName(QStringLiteral("currentFormBox"));
@@ -239,10 +326,10 @@ public:
         pointManageContainer = new QWidget(currentFormBox);
         pointManageContainer->setObjectName(QStringLiteral("pointManageContainer"));
         horizontalLayout_5 = new QHBoxLayout(pointManageContainer);
-        horizontalLayout_5->setSpacing(6);
+        horizontalLayout_5->setSpacing(5);
         horizontalLayout_5->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
-        horizontalLayout_5->setContentsMargins(-1, 1, -1, -1);
+        horizontalLayout_5->setContentsMargins(0, 0, 0, 0);
         addPointButton = new QPushButton(pointManageContainer);
         addPointButton->setObjectName(QStringLiteral("addPointButton"));
 
@@ -292,48 +379,47 @@ public:
 
         pointManageContainer->raise();
 
-        gridLayout->addWidget(currentFormBox, 2, 2, 4, 1);
+        gridLayout->addWidget(currentFormBox, 3, 2, 4, 1);
 
-        groupBox = new QGroupBox(tab);
-        groupBox->setObjectName(QStringLiteral("groupBox"));
-        verticalLayout_7 = new QVBoxLayout(groupBox);
-        verticalLayout_7->setSpacing(6);
-        verticalLayout_7->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_7->setObjectName(QStringLiteral("verticalLayout_7"));
-        absFormList = new QListWidget(groupBox);
-        absFormList->setObjectName(QStringLiteral("absFormList"));
+        horizontalLayout_9 = new QHBoxLayout();
+        horizontalLayout_9->setSpacing(6);
+        horizontalLayout_9->setObjectName(QStringLiteral("horizontalLayout_9"));
+        horizontalLayout_9->setContentsMargins(-1, 10, 0, -1);
+        label_3 = new QLabel(tab);
+        label_3->setObjectName(QStringLiteral("label_3"));
 
-        verticalLayout_7->addWidget(absFormList);
+        horizontalLayout_9->addWidget(label_3);
 
-        horizontalLayout_6 = new QHBoxLayout();
-        horizontalLayout_6->setSpacing(6);
-        horizontalLayout_6->setObjectName(QStringLiteral("horizontalLayout_6"));
-        addFormButton = new QPushButton(groupBox);
-        addFormButton->setObjectName(QStringLiteral("addFormButton"));
+        planeWidth = new QDoubleSpinBox(tab);
+        planeWidth->setObjectName(QStringLiteral("planeWidth"));
 
-        horizontalLayout_6->addWidget(addFormButton);
+        horizontalLayout_9->addWidget(planeWidth);
 
-        editFormButton = new QPushButton(groupBox);
-        editFormButton->setObjectName(QStringLiteral("editFormButton"));
+        label_5 = new QLabel(tab);
+        label_5->setObjectName(QStringLiteral("label_5"));
 
-        horizontalLayout_6->addWidget(editFormButton);
+        horizontalLayout_9->addWidget(label_5);
 
-        delFormButton = new QPushButton(groupBox);
-        delFormButton->setObjectName(QStringLiteral("delFormButton"));
+        planeHeight = new QDoubleSpinBox(tab);
+        planeHeight->setObjectName(QStringLiteral("planeHeight"));
+        planeHeight->setMaximum(98.99);
 
-        horizontalLayout_6->addWidget(delFormButton);
+        horizontalLayout_9->addWidget(planeHeight);
 
 
-        verticalLayout_7->addLayout(horizontalLayout_6);
+        gridLayout->addLayout(horizontalLayout_9, 2, 1, 1, 2);
 
+        helpButton = new QPushButton(tab);
+        helpButton->setObjectName(QStringLiteral("helpButton"));
 
-        gridLayout->addWidget(groupBox, 2, 1, 1, 1);
+        gridLayout->addWidget(helpButton, 0, 2, 1, 1, Qt::AlignRight);
 
-        selectInputButton = new QPushButton(tab);
-        selectInputButton->setObjectName(QStringLiteral("selectInputButton"));
-        selectInputButton->setMaximumSize(QSize(200, 16777215));
+        pushButton = new QPushButton(tab);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setEnabled(false);
+        pushButton->setMaximumSize(QSize(5000, 16777215));
 
-        gridLayout->addWidget(selectInputButton, 0, 1, 1, 2);
+        gridLayout->addWidget(pushButton, 7, 2, 1, 1);
 
 
         horizontalLayout_2->addLayout(gridLayout);
@@ -418,9 +504,14 @@ public:
 
         solveButton = new QPushButton(tab_2);
         solveButton->setObjectName(QStringLiteral("solveButton"));
-        solveButton->setMaximumSize(QSize(300, 16777215));
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(solveButton->sizePolicy().hasHeightForWidth());
+        solveButton->setSizePolicy(sizePolicy3);
+        solveButton->setMaximumSize(QSize(16777215, 16777215));
 
-        verticalLayout_2->addWidget(solveButton, 0, Qt::AlignHCenter|Qt::AlignVCenter);
+        verticalLayout_2->addWidget(solveButton, 0, Qt::AlignVCenter);
 
         tabWidget->addTab(tab_2, QString());
         tab_3 = new QWidget();
@@ -433,11 +524,11 @@ public:
         svgContainer_2 = new QWidget(tab_3);
         svgContainer_2->setObjectName(QStringLiteral("svgContainer_2"));
         svgContainer_2->setEnabled(false);
-        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(svgContainer_2->sizePolicy().hasHeightForWidth());
-        svgContainer_2->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(svgContainer_2->sizePolicy().hasHeightForWidth());
+        svgContainer_2->setSizePolicy(sizePolicy4);
         svgContainer_2->setMinimumSize(QSize(50, 50));
         svgContainer = new QVBoxLayout(svgContainer_2);
         svgContainer->setSpacing(6);
@@ -475,7 +566,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -484,10 +575,12 @@ public:
     void retranslateUi(QMainWindow *MainWindow)
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Optiblech Solver", 0));
-        label_3->setText(QApplication::translate("MainWindow", "Pane width: ", 0));
-        label_5->setText(QApplication::translate("MainWindow", "Plane height", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "Next", 0));
         pushButton_2->setText(QApplication::translate("MainWindow", "Save Problem", 0));
+        selectInputButton->setText(QApplication::translate("MainWindow", "Open Problem", 0));
+        groupBox->setTitle(QApplication::translate("MainWindow", "Forms", 0));
+        addFormButton->setText(QApplication::translate("MainWindow", "+", 0));
+        editFormButton->setText(QApplication::translate("MainWindow", "Rename Form", 0));
+        delFormButton->setText(QApplication::translate("MainWindow", "-", 0));
         currentFormBox->setTitle(QApplication::translate("MainWindow", "Current Form", 0));
         addPointButton->setText(QApplication::translate("MainWindow", "+", 0));
         editPointButton->setText(QApplication::translate("MainWindow", "Edit Point", 0));
@@ -495,22 +588,21 @@ public:
         pointDownButton->setText(QApplication::translate("MainWindow", "...", 0));
         delPointButton->setText(QApplication::translate("MainWindow", "-", 0));
         label_4->setText(QApplication::translate("MainWindow", "Amount:", 0));
-        groupBox->setTitle(QApplication::translate("MainWindow", "Forms", 0));
-        addFormButton->setText(QApplication::translate("MainWindow", "+", 0));
-        editFormButton->setText(QApplication::translate("MainWindow", "Rename Form", 0));
-        delFormButton->setText(QApplication::translate("MainWindow", "-", 0));
-        selectInputButton->setText(QApplication::translate("MainWindow", "Open Problem", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Enter Problem", 0));
-        label_6->setText(QApplication::translate("MainWindow", "Tolerance", 0));
+        label_3->setText(QApplication::translate("MainWindow", "Plane width: ", 0));
+        label_5->setText(QApplication::translate("MainWindow", "Plane height", 0));
+        helpButton->setText(QApplication::translate("MainWindow", "Info and Help", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "You can't proceed - problem empty", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "1. Enter Problem", 0));
+        label_6->setText(QApplication::translate("MainWindow", "Tolerance (max. 1, min. 0.001)", 0));
         showCaseCheckBox->setText(QApplication::translate("MainWindow", "Activate Step-by-Step Showcase mode", 0));
         showCaseGroup->setTitle(QApplication::translate("MainWindow", "Showcase params", 0));
         label->setText(QApplication::translate("MainWindow", "Steps", 0));
         label_2->setText(QApplication::translate("MainWindow", "Delay (seconds)", 0));
         solveButton->setText(QApplication::translate("MainWindow", "Solve", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Run Solver", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "2. Run Solver", 0));
         saveSVG->setText(QApplication::translate("MainWindow", "Save as SVG", 0));
         saveTXT->setText(QApplication::translate("MainWindow", "Save as TXT", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "View Result", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "3. View Result", 0));
     } // retranslateUi
 
 };

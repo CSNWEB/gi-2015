@@ -77,7 +77,7 @@ float Form::overlap_distance_with_form(Form &other)
 		gpc_polygon result_polygon;
 
 		// Create gpc polygon from THIS
-		unsigned int this_number_of_points = points.size();
+        int this_number_of_points = points.size();
 		gpc_vertex this_vertices[this_number_of_points];
 		for (unsigned int index = 0; index < this_number_of_points; index++)
 		{
@@ -95,7 +95,7 @@ float Form::overlap_distance_with_form(Form &other)
 			printf("\n");
 		#endif
 
-		gpc_vertex_list this_vertex_list = {static_cast<int>(this_number_of_points), this_vertices};
+        gpc_vertex_list this_vertex_list = {static_cast<int>(this_number_of_points), this_vertices};
 		//this_vertex_list.num_vertices = this_number_of_points;
 		//this_vertex_list.vertex = this_vertices;
 
@@ -112,7 +112,7 @@ float Form::overlap_distance_with_form(Form &other)
 		gpc_add_contour(&this_form_gpc, &this_vertex_list, 0);
 
 		// Create gpc polygon from OTHER
-		unsigned int other_number_of_vertices = other.points.size();
+        int other_number_of_vertices = other.points.size();
 		gpc_vertex other_vertices[other_number_of_vertices];
 		for (unsigned int index = 0; index < other_number_of_vertices; index++)
 		{
