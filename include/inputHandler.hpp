@@ -50,12 +50,17 @@ private:
      * A vector that stores the name of forms for each individual form in vector<AbstractForm> forms
      */
     vector<string> name_of_forms;
+
+    /*!
+     *  Flag to check if any input has been read
+     */
+    bool has_data;
     
 public:
 	/**
 	*  Default constructor.
 	*/
-	InputHandler(){};
+	InputHandler();
 
 	/**
 	 *  Scans and parses an input file, creates data-structure

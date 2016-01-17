@@ -5,7 +5,8 @@ Plane::Plane(float dx, float dy)
 	this->dx = dx;
 	this->dy = dy;
 
-	forms = vector<Form>();
+	forms = vector<Form>(0);
+
 }
 
 int Plane::get_number_of_forms()
@@ -50,7 +51,6 @@ void Plane::add_form_at_position_rotation(AbstractForm *form,
 
     if (rotation > GlobalParams::get_tolerance())
     {
-    	//Point centroid = form_object.get_centroid();
     	form_object.rotate(0,
         	               0,
             	           rotation);
@@ -65,7 +65,6 @@ void Plane::add_form_at_position_rotation(AbstractForm *form,
     form_object.move_rel(pos_x, pos_y);
     
     forms.push_back(form_object);
-	number_of_forms++;
 
 	#ifdef DEBUG
 		printf("Finished %s\n", __PRETTY_FUNCTION__);
@@ -82,29 +81,4 @@ float Plane::compute_utilization()
 	for (int i=0; i<forms.size(); ++i)
 		utilization += (forms[i].get_mother())->get_size_of_area();
 	return (utilization/(dx*dy));
-}
-
-bool Plane::check_if_legal()
-{
-	#ifdef DEBUG
-		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
-	#endif
-
-	bool ret = true;
-	for (int i=0; i<forms.size(); ++i)
-		for (int j=i; j<forms.size(); ++j)
-			if (overlappings[i][j] == true)
-				ret = false;
-	for (int i=0; i<forms.size(); ++i)
-	{
-		if (
-				forms[i].get_bounding_xmin() < 0 ||
-				forms[i].get_bounding_xmax() > dx ||
-				forms[i].get_bounding_ymin() < 0 ||
-				forms[i].get_bounding_xmax() > dy
-			)
-			ret = false;
-	}
-
-	return ret;
 }

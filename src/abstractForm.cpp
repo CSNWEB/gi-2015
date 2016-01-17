@@ -14,11 +14,21 @@ AbstractForm::AbstractForm(string name, vector<Point> points)
 		
 	this->name = name;
 	this->points = vector<Point>(points);
+	number_of_points = points.size();
+
 	this->id = total_number_of_abstract_forms++;
 
+	dx = 0;
+	dy = 0;
+	min_x = 0;
+	max_x = 0;
+	min_y = 0;
+	max_y = 0;
 	fits_with_optimal_rotation = false;
+	size_of_area = 0;
 
-	number_of_points = points.size();
+	convex_hull.reserve(number_of_points);
+
 
     calc_bounding_box();
 
@@ -79,21 +89,21 @@ bool AbstractForm::find_rotation_with_minimum_bounding_box_and_check_if_legal(fl
 
 	float x_min, x_max, y_min, y_max;
 
-	//vector<Point> points_tmp = vector<Point>(points.begin(), points.end());
+	vector<Point> points_tmp = vector<Point>(points.begin(), points.end());
 
-	PointSetAlgorithms::rotate_pointset_at_point(points, 0, 0, degree, x_min, x_max, y_min,y_max);
+	PointSetAlgorithms::rotate_pointset_at_point(points_tmp, 0, 0, degree, x_min, x_max, y_min,y_max);
 
 	dx = x_max-x_min;
 	dy = y_max-y_min;
 
 	#ifdef DEBUG_AF
-		printf("dim of plane: %.2f/%.2f\ndim of form: %.2f/%.2f\n", plane_width, plane_height, dx, dy);
+		printf("dim of plane: %.6f/%.6f\ndim of form: %.6f/%.6f\n", plane_width, plane_height, dx, dy);
 	#endif
 
-	if ((plane_width  - dx > GlobalParams::get_tolerance() && 
-		 plane_height - dy > GlobalParams::get_tolerance()))/* || 
-		(plane_height - dx > GlobalParams::get_tolerance() && 
-		 plane_width  - dy > GlobalParams::get_tolerance()))*/
+	if ((plane_width  - dx > - GlobalParams::get_tolerance() && 
+		 plane_height - dy > - GlobalParams::get_tolerance()) || 
+		(plane_height - dx > - GlobalParams::get_tolerance() && 
+		 plane_width  - dy > - GlobalParams::get_tolerance()))
 	{
 		#ifdef DEBUG_AF
 			printf("Optimal rotation is legal\n");

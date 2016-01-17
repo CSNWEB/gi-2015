@@ -11,7 +11,7 @@
 int main(int argc, char* argv[])
 {
 
-    GlobalParams::set_option_pre_merge(true);
+    //GlobalParams::set_option_pre_merge(false);
 
     #ifdef DEBUG
         printf("Debugging is enabled!\n");

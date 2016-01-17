@@ -30,7 +30,9 @@ Form::Form(AbstractForm *mother, float pos_x, float pos_y)  : mother(mother), x_
 		points[i].move_rel(pos_x, pos_y);
 	}
 
-	_d_print_edges_to_console();
+	#ifdef DEBUG_FORM
+		_d_print_edges_to_console();
+	#endif
 }
 
 bool Form::check_for_overlap(Form &other)

@@ -20,10 +20,6 @@ class BinPacking;
 class BinPackingShelf
 {
 private:
-	/*!
- 	 *  Pointer to the packing this shelf is a part of
-	 */
- 	BinPacking *packing;
 
 	/*!
 	 *  The index of the plane this shelf is placed on:
@@ -36,19 +32,14 @@ private:
 	int number_of_forms;
 
 	/*!
-	 *  The position in y-dim of this shelf on its plane
-	 */
-	float offset_y;
-
-	/*!
-	 *  If this plane is a sub-shelf: the x-position of beginning of plane
+	 *  If this plane is a sub-shelf: the x-position of beginning of plane. Otherwise 0.
 	 */
 	float offset_x;
 
 	/*!
-	 *  If this shelf is a sub-shelf: is it rotated (by 90 degrees)
+	 *  The position in y-dim of this shelf on its plane
 	 */
-	bool is_rotated_subshelf;
+	float offset_y;
 
 	/*!
 	 *  The height of the shelf,
