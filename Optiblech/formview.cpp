@@ -106,6 +106,13 @@ void FormView::showForm(AbstractForm * form)
 
 }
 
+
+void FormView::clear()
+{
+    QGraphicsScene *s = scene();
+    s->clear();
+}
+
 void FormView::showSetting(Setting setting)
 {
     QGraphicsScene *s = scene();

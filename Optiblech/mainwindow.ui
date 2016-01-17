@@ -176,7 +176,7 @@ QPushButton:pressed {
         <bool>true</bool>
        </property>
        <attribute name="title">
-        <string>Enter Problem</string>
+        <string>1. Enter Problem</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
@@ -188,22 +188,6 @@ QPushButton:pressed {
             </property>
             <property name="text">
              <string>Save Problem</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QPushButton" name="pushButton">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>5000</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>You can't proceed - problem empty</string>
             </property>
            </widget>
           </item>
@@ -410,7 +394,7 @@ QPushButton:pressed {
             <item>
              <widget class="QLabel" name="label_3">
               <property name="text">
-               <string>Pane width: </string>
+               <string>Plane width: </string>
               </property>
              </widget>
             </item>
@@ -440,6 +424,22 @@ QPushButton:pressed {
             </property>
            </widget>
           </item>
+          <item row="7" column="2">
+           <widget class="QPushButton" name="pushButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>5000</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>You can't proceed - problem empty</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
@@ -449,7 +449,7 @@ QPushButton:pressed {
         <bool>true</bool>
        </property>
        <attribute name="title">
-        <string>Run Solver</string>
+        <string>2. Run Solver</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_2">
         <item>
@@ -557,7 +557,7 @@ QPushButton:pressed {
           </property>
           <property name="maximumSize">
            <size>
-            <width>1000</width>
+            <width>16777215</width>
             <height>16777215</height>
            </size>
           </property>
@@ -573,7 +573,7 @@ QPushButton:pressed {
         <bool>true</bool>
        </property>
        <attribute name="title">
-        <string>View Result</string>
+        <string>3. View Result</string>
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>

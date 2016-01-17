@@ -430,15 +430,15 @@ bool AbstractForm::overlaps_itself()
     
     // Looping over all edges
     for (unsigned int first_index = 0;
-         first_index < points.size() - 1;
+         first_index < points.size();
          first_index++)
     {
         for (unsigned int second_index = first_index + 1;
-             second_index < points.size() - 1;
+             second_index < points.size();
              second_index++)
         {
-            Edge first_edge = Edge(&points[first_index], &points[first_index + 1]);
-            Edge second_edge = Edge(&points[second_index], &points[second_index + 1]);
+            Edge first_edge = Edge(&points[first_index], &points[(first_index + 1)%points.size()]);
+            Edge second_edge = Edge(&points[second_index], &points[(second_index + 1)%points.size()]);
          
             // Checking whether the edges cross
             if (first_edge.crosses(&second_edge))

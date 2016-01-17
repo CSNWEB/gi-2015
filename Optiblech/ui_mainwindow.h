@@ -41,7 +41,6 @@ public:
     QHBoxLayout *horizontalLayout_2;
     QGridLayout *gridLayout;
     QPushButton *pushButton_2;
-    QPushButton *pushButton;
     QPushButton *selectInputButton;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_7;
@@ -72,6 +71,7 @@ public:
     QLabel *label_5;
     QDoubleSpinBox *planeHeight;
     QPushButton *helpButton;
+    QPushButton *pushButton;
     QWidget *tab_2;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_10;
@@ -244,13 +244,6 @@ public:
 
         gridLayout->addWidget(pushButton_2, 7, 1, 1, 1);
 
-        pushButton = new QPushButton(tab);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setEnabled(false);
-        pushButton->setMaximumSize(QSize(5000, 16777215));
-
-        gridLayout->addWidget(pushButton, 7, 2, 1, 1);
-
         selectInputButton = new QPushButton(tab);
         selectInputButton->setObjectName(QStringLiteral("selectInputButton"));
         selectInputButton->setEnabled(true);
@@ -421,6 +414,13 @@ public:
 
         gridLayout->addWidget(helpButton, 0, 2, 1, 1, Qt::AlignRight);
 
+        pushButton = new QPushButton(tab);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setEnabled(false);
+        pushButton->setMaximumSize(QSize(5000, 16777215));
+
+        gridLayout->addWidget(pushButton, 7, 2, 1, 1);
+
 
         horizontalLayout_2->addLayout(gridLayout);
 
@@ -509,7 +509,7 @@ public:
         sizePolicy3.setVerticalStretch(0);
         sizePolicy3.setHeightForWidth(solveButton->sizePolicy().hasHeightForWidth());
         solveButton->setSizePolicy(sizePolicy3);
-        solveButton->setMaximumSize(QSize(1000, 16777215));
+        solveButton->setMaximumSize(QSize(16777215, 16777215));
 
         verticalLayout_2->addWidget(solveButton, 0, Qt::AlignVCenter);
 
@@ -576,7 +576,6 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "Optiblech Solver", 0));
         pushButton_2->setText(QApplication::translate("MainWindow", "Save Problem", 0));
-        pushButton->setText(QApplication::translate("MainWindow", "You can't proceed - problem empty", 0));
         selectInputButton->setText(QApplication::translate("MainWindow", "Open Problem", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "Forms", 0));
         addFormButton->setText(QApplication::translate("MainWindow", "+", 0));
@@ -589,20 +588,21 @@ public:
         pointDownButton->setText(QApplication::translate("MainWindow", "...", 0));
         delPointButton->setText(QApplication::translate("MainWindow", "-", 0));
         label_4->setText(QApplication::translate("MainWindow", "Amount:", 0));
-        label_3->setText(QApplication::translate("MainWindow", "Pane width: ", 0));
+        label_3->setText(QApplication::translate("MainWindow", "Plane width: ", 0));
         label_5->setText(QApplication::translate("MainWindow", "Plane height", 0));
         helpButton->setText(QApplication::translate("MainWindow", "Info and Help", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Enter Problem", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "You can't proceed - problem empty", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "1. Enter Problem", 0));
         label_6->setText(QApplication::translate("MainWindow", "Tolerance (max. 1, min. 0.001)", 0));
         showCaseCheckBox->setText(QApplication::translate("MainWindow", "Activate Step-by-Step Showcase mode", 0));
         showCaseGroup->setTitle(QApplication::translate("MainWindow", "Showcase params", 0));
         label->setText(QApplication::translate("MainWindow", "Steps", 0));
         label_2->setText(QApplication::translate("MainWindow", "Delay (seconds)", 0));
         solveButton->setText(QApplication::translate("MainWindow", "Solve", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Run Solver", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "2. Run Solver", 0));
         saveSVG->setText(QApplication::translate("MainWindow", "Save as SVG", 0));
         saveTXT->setText(QApplication::translate("MainWindow", "Save as TXT", 0));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "View Result", 0));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "3. View Result", 0));
     } // retranslateUi
 
 };

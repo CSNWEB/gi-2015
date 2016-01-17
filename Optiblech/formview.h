@@ -21,6 +21,7 @@ public:
     void setContainer(QWidget * _container);
     void showForm(AbstractForm * form = 0);
     void showSetting(Setting setting = 0);
+    void clear();
     ~FormView();
 
 protected:

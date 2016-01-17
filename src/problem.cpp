@@ -37,6 +37,8 @@ void Problem::check_if_solveable()
         printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
     #endif
 
+    too_large_forms.clear();
+
     for (int index_of_form = 0; index_of_form < abstract_forms.size(); ++index_of_form)
     {
         #ifdef DEBUG_P

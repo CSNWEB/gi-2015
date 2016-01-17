@@ -33,6 +33,8 @@ public:
 public slots:
     void updateResultView();
 
+    void problemEmpty();
+
 private slots:
     void on_solveButton_clicked();
 
@@ -43,10 +45,6 @@ private slots:
     void on_absFormList_currentRowChanged(int currentRow);
 
     void on_saveSVG_clicked();
-
-    void on_planeWidth_valueChanged(double arg1);
-
-    void on_planeHeight_valueChanged(double arg1);
 
     void on_addFormButton_clicked();
 
@@ -77,6 +75,10 @@ private slots:
     void on_toleranceSpinBox_valueChanged(double arg1);
 
     void on_helpButton_clicked();
+
+    void on_planeWidth_editingFinished();
+
+    void on_planeHeight_editingFinished();
 
 private:
     Ui::MainWindow *ui;

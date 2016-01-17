@@ -74,6 +74,7 @@ SOURCES       = main.cpp \
 		formview.cpp \
 		../src/validator.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
+		moc_problemmanager.cpp \
 		moc_manageformdialog.cpp \
 		moc_managepointsdialog.cpp \
 		moc_formview.cpp
@@ -104,6 +105,7 @@ OBJECTS       = main.o \
 		validator.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
+		moc_problemmanager.o \
 		moc_manageformdialog.o \
 		moc_managepointsdialog.o \
 		moc_formview.o
@@ -649,9 +651,9 @@ qrc_resources.cpp: resources.qrc \
 		fonts/Roboto-Thin.ttf
 	/Users/Christoph/Qt/5.4/clang_64/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
 
-compiler_moc_header_make_all: moc_mainwindow.cpp moc_manageformdialog.cpp moc_managepointsdialog.cpp moc_formview.cpp
+compiler_moc_header_make_all: moc_mainwindow.cpp moc_problemmanager.cpp moc_manageformdialog.cpp moc_managepointsdialog.cpp moc_formview.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_mainwindow.cpp moc_manageformdialog.cpp moc_managepointsdialog.cpp moc_formview.cpp
+	-$(DEL_FILE) moc_mainwindow.cpp moc_problemmanager.cpp moc_manageformdialog.cpp moc_managepointsdialog.cpp moc_formview.cpp
 moc_mainwindow.cpp: ../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QMainWindow \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qmainwindow.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QString \
@@ -677,6 +679,34 @@ moc_mainwindow.cpp: ../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/
 		mainwindow.h
 	/Users/Christoph/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/Christoph/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/Christoph/Code/gi-2015/Optiblech -I/Users/Christoph/Code/gi-2015/include -I/Users/Christoph/Qt/5.4/clang_64/lib/QtOpenGL.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtCore.framework/Headers -F/Users/Christoph/Qt/5.4/clang_64/lib mainwindow.h -o moc_mainwindow.cpp
 
+moc_problemmanager.cpp: ../include/problem.hpp \
+		../include/abstractForm.hpp \
+		../include/point.hpp \
+		../include/globalParams.hpp \
+		../include/plane.hpp \
+		../include/form.hpp \
+		../include/pointSetAlgorithms.hpp \
+		../include/edge.hpp \
+		../include/simpleSVG.hpp \
+		../include/gpc.h \
+		../include/inputHandler.hpp \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QString \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qstring.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QListWidget \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlistwidget.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSizeF \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		formview.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../include/setting.hpp \
+		problemmanager.h
+	/Users/Christoph/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/Christoph/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/Christoph/Code/gi-2015/Optiblech -I/Users/Christoph/Code/gi-2015/include -I/Users/Christoph/Qt/5.4/clang_64/lib/QtOpenGL.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtCore.framework/Headers -F/Users/Christoph/Qt/5.4/clang_64/lib problemmanager.h -o moc_problemmanager.cpp
+
 moc_manageformdialog.cpp: ../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QDialog \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qdialog.h \
 		problemmanager.h \
@@ -695,8 +725,16 @@ moc_manageformdialog.cpp: ../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versi
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qstring.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QListWidget \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlistwidget.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSizeF \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		formview.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../include/setting.hpp \
 		manageformdialog.h
 	/Users/Christoph/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/Christoph/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/Christoph/Code/gi-2015/Optiblech -I/Users/Christoph/Code/gi-2015/include -I/Users/Christoph/Qt/5.4/clang_64/lib/QtOpenGL.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtCore.framework/Headers -F/Users/Christoph/Qt/5.4/clang_64/lib manageformdialog.h -o moc_manageformdialog.cpp
 
@@ -718,8 +756,16 @@ moc_managepointsdialog.cpp: ../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Ver
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qstring.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QListWidget \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlistwidget.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSizeF \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		formview.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../include/setting.hpp \
 		managepointsdialog.h
 	/Users/Christoph/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/Christoph/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/Christoph/Code/gi-2015/Optiblech -I/Users/Christoph/Code/gi-2015/include -I/Users/Christoph/Qt/5.4/clang_64/lib/QtOpenGL.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtCore.framework/Headers -F/Users/Christoph/Qt/5.4/clang_64/lib managepointsdialog.h -o moc_managepointsdialog.cpp
 
@@ -972,8 +1018,11 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		problemmanager.h \
 		../include/inputHandler.hpp \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QListWidget \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSizeF \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
 		../include/outputHandler.hpp \
 		manageformdialog.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QDialog \
@@ -1192,8 +1241,16 @@ problemmanager.o: problemmanager.cpp problemmanager.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qstring.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QListWidget \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlistwidget.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSizeF \
-		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		formview.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../include/setting.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o problemmanager.o problemmanager.cpp
 
 manageformdialog.o: manageformdialog.cpp manageformdialog.h \
@@ -1215,8 +1272,16 @@ manageformdialog.o: manageformdialog.cpp manageformdialog.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qstring.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QListWidget \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlistwidget.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSizeF \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		formview.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../include/setting.hpp \
 		ui_manageformdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o manageformdialog.o manageformdialog.cpp
 
@@ -1239,8 +1304,16 @@ managepointsdialog.o: managepointsdialog.cpp managepointsdialog.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qstring.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QListWidget \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qlistwidget.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QPushButton \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qpushbutton.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSizeF \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
+		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		formview.h \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
+		../include/setting.hpp \
 		ui_managepointsdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o managepointsdialog.o managepointsdialog.cpp
 
@@ -1290,6 +1363,9 @@ qrc_resources.o: qrc_resources.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp
+
+moc_problemmanager.o: moc_problemmanager.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_problemmanager.o moc_problemmanager.cpp
 
 moc_manageformdialog.o: moc_manageformdialog.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_manageformdialog.o moc_manageformdialog.cpp
