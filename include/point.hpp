@@ -38,6 +38,11 @@ public:
      */
 	Point(float x, float y){this->x = x; this->y = y;};
 
+    /*!
+     *  Copy constructor
+     */
+    Point(const Point &orig){x = orig.x; y = orig.y;};
+
     /**
      *  Getter for the x coordinate of the point.
      *

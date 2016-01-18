@@ -127,7 +127,7 @@ public:
      *  @return     a float representing the width (or height) of the bounding box
      */
     float get_bounding_dy(){return y_max - y_min;};
-	
+
     /*!
      *  Getter for a specific point
      *
@@ -135,7 +135,7 @@ public:
      *
      *  @return                 the pointer to the point at position point_index
      */
-    Point* get_point_at(int point_index){return &points[point_index];};
+    Point get_point_at(int point_index){return points[point_index];};
 
     /*!
      *  A vector containing the points that belong to the form.

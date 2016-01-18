@@ -706,14 +706,14 @@ bool Tests::test_form_rotation()
 
     //form_square_1._d_print_points_to_console();
     if (!(
-        abs(form_square_1.get_point_at(0)->get_x() - 0)   < GlobalParams::get_tolerance() &&
-        abs(form_square_1.get_point_at(0)->get_y() - 0)    < GlobalParams::get_tolerance() &&
-        abs(form_square_1.get_point_at(1)->get_x() - 0)    < GlobalParams::get_tolerance() &&
-        abs(form_square_1.get_point_at(1)->get_y() - 1)    < GlobalParams::get_tolerance() &&
-        abs(form_square_1.get_point_at(2)->get_x() - (-1)) < GlobalParams::get_tolerance() &&
-        abs(form_square_1.get_point_at(2)->get_y() - 1)    < GlobalParams::get_tolerance() &&
-        abs(form_square_1.get_point_at(3)->get_x() - (-1)) < GlobalParams::get_tolerance() &&
-        abs(form_square_1.get_point_at(3)->get_y() - 0)    < GlobalParams::get_tolerance()
+        abs(form_square_1.get_point_at(0).get_x() - 0)   < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(0).get_y() - 0)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(1).get_x() - 0)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(1).get_y() - 1)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(2).get_x() - (-1)) < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(2).get_y() - 1)    < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(3).get_x() - (-1)) < GlobalParams::get_tolerance() &&
+        abs(form_square_1.get_point_at(3).get_y() - 0)    < GlobalParams::get_tolerance()
         ))
         success_all_tests = false;
 
@@ -721,14 +721,14 @@ bool Tests::test_form_rotation()
     Form form_square_2(&abst_square);
     form_square_2.rotate(1,1,90);
     if (!(
-        abs(form_square_2.get_point_at(0)->get_x() - 2) < GlobalParams::get_tolerance() &&
-        abs(form_square_2.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_square_2.get_point_at(1)->get_x() - 2) < GlobalParams::get_tolerance() &&
-        abs(form_square_2.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_2.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_2.get_point_at(2)->get_y() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_2.get_point_at(3)->get_x() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_2.get_point_at(3)->get_y() - 0) < GlobalParams::get_tolerance()
+        abs(form_square_2.get_point_at(0).get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(0).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(1).get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(1).get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(2).get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(2).get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(3).get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_2.get_point_at(3).get_y() - 0) < GlobalParams::get_tolerance()
         ))
         success_all_tests = false;
 
@@ -736,14 +736,14 @@ bool Tests::test_form_rotation()
     Form form_square_3(&abst_square);
     form_square_3.rotate(2,0,90);
     if (!(
-        abs(form_square_3.get_point_at(0)->get_x() - 2) < GlobalParams::get_tolerance() &&
-        abs(form_square_3.get_point_at(0)->get_y() + 2) < GlobalParams::get_tolerance() &&
-        abs(form_square_3.get_point_at(1)->get_x() - 2) < GlobalParams::get_tolerance() &&
-        abs(form_square_3.get_point_at(1)->get_y() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_3.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_3.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_3.get_point_at(3)->get_x() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_3.get_point_at(3)->get_y() + 2) < GlobalParams::get_tolerance()
+        abs(form_square_3.get_point_at(0).get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(0).get_y() + 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(1).get_x() - 2) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(1).get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(2).get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(2).get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(3).get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_3.get_point_at(3).get_y() + 2) < GlobalParams::get_tolerance()
         ))
         success_all_tests = false;
 
@@ -751,14 +751,14 @@ bool Tests::test_form_rotation()
     Form form_square_4(&abst_square);
     form_square_4.rotate(0,0,180);
     if (!(
-        abs(form_square_4.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_square_4.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_square_4.get_point_at(1)->get_x() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_4.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_square_4.get_point_at(2)->get_x() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_4.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_square_4.get_point_at(3)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_square_4.get_point_at(3)->get_y() + 1) < GlobalParams::get_tolerance()
+        abs(form_square_4.get_point_at(0).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(0).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(1).get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(1).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(2).get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(2).get_y() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(3).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_square_4.get_point_at(3).get_y() + 1) < GlobalParams::get_tolerance()
         ))
         success_all_tests = false;
 
@@ -766,12 +766,12 @@ bool Tests::test_form_rotation()
     Form form_triang_1(&abst_triangle);
     form_triang_1.rotate(0,0,90);
     if (!(
-        abs(form_triang_1.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1.get_point_at(2)->get_x() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1.get_point_at(2)->get_y() - 0) < GlobalParams::get_tolerance()
+        abs(form_triang_1.get_point_at(0).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(0).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(1).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(1).get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(2).get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1.get_point_at(2).get_y() - 0) < GlobalParams::get_tolerance()
         ))
         success_all_tests = false;
 
@@ -779,12 +779,12 @@ bool Tests::test_form_rotation()
     Form form_triang_1_2(&abst_triangle);
     form_triang_1_2.rotate(0,0,180);
     if (!(
-        abs(form_triang_1_2.get_point_at(0)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1_2.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1_2.get_point_at(1)->get_x() + 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1_2.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1_2.get_point_at(2)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_1_2.get_point_at(2)->get_y() + 1) < GlobalParams::get_tolerance()
+        abs(form_triang_1_2.get_point_at(0).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(0).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(1).get_x() + 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(1).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(2).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_1_2.get_point_at(2).get_y() + 1) < GlobalParams::get_tolerance()
         ))
         success_all_tests = false;
 
@@ -792,12 +792,12 @@ bool Tests::test_form_rotation()
     Form form_triang_2(&abst_triangle2);
     form_triang_2.rotate(0,0,45);
     if (!(
-        abs(form_triang_2.get_point_at(0)->get_x() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(0)->get_y() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(1)->get_y() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(2)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_2.get_point_at(2)->get_y() - 0) < GlobalParams::get_tolerance()
+        abs(form_triang_2.get_point_at(0).get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(0).get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(1).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(1).get_y() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(2).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_2.get_point_at(2).get_y() - 0) < GlobalParams::get_tolerance()
         ))
     {
         success_all_tests = false;
@@ -811,12 +811,12 @@ bool Tests::test_form_rotation()
     Form form_triang_3(&abst_triangle3);
     form_triang_3.rotate(0,0,45);
     if (!(
-        abs(form_triang_3.get_point_at(0)->get_x() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_3.get_point_at(0)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_3.get_point_at(1)->get_x() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_3.get_point_at(1)->get_y() - 0) < GlobalParams::get_tolerance() &&
-        abs(form_triang_3.get_point_at(2)->get_x() - 1) < GlobalParams::get_tolerance() &&
-        abs(form_triang_3.get_point_at(2)->get_y() - 1) < GlobalParams::get_tolerance()
+        abs(form_triang_3.get_point_at(0).get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(0).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(1).get_x() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(1).get_y() - 0) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(2).get_x() - 1) < GlobalParams::get_tolerance() &&
+        abs(form_triang_3.get_point_at(2).get_y() - 1) < GlobalParams::get_tolerance()
         ))
     {
         success_all_tests = false;
