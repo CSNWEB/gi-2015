@@ -1,8 +1,8 @@
 #include "binPacking.hpp"
 
-#ifdef DEBUG
+//#ifdef DEBUG
 	#define DEBUG_BP
-#endif
+//#endif
 
 BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 {
@@ -121,16 +121,69 @@ void BinPacking::create_configuration_tuples()
 
 						if (new_tuple.get_number_of_forms() > 1)
 						{
-							all_efficient_form_tuples.push_back(new_tuple);
-		
+							// check if tuple is legal, and rotate if needed:
+							float cur_dx = new_tuple.get_dx();
+							float cur_dy = new_tuple.get_dy();
+							bool rotation_needed = false;
+							if (cur_dy > cur_dx)
+							{
+								// current rotation: height > width
+								rotation_needed = true;
+
+								#ifdef DEBUG_BP
+									printf("Tuple is higher than wide. Try to rotate.\n");
+									printf("\ttuple_dx = %.2f\n\ttuple_dy = %.2f\n", cur_dx, cur_dy);
+									printf("\tplane_dx = %.2f\n\tplane_dy = %.2f\n", problem.get_plane_width(), problem.get_plane_height());
+								#endif
+							}
+							if ((problem.get_plane_height() - cur_dy < - GlobalParams::get_tolerance()) ||
+								(problem.get_plane_width() - cur_dx) < - GlobalParams::get_tolerance())
+							{
+								// current rotation does not fit on plane:
+								rotation_needed = true;
+
+							}
+
+							if (rotation_needed &&
+								(problem.get_plane_height() - cur_dx > - GlobalParams::get_tolerance()) &&
+								(problem.get_plane_width() - cur_dy) > - GlobalParams::get_tolerance())
+							{
+								#ifdef DEBUG_BP
+									printf("Rotation would be okay. Rotate.\n");
+								#endif
+
+								// rotated would be legal: rotate & normalize
+								new_tuple.rotate(90);
+								new_tuple.normalize_position();
+							}
+
+							// check if tuple fits on plane, if so, add to list:
 							#ifdef DEBUG_BP
-								printf("Added new tuple to all_efficient_form_tuples\n");
-							#endif						
+								printf("Final check of dimensions:\n");
+								printf("\ttuple_dx = %.2f\n\ttuple_dy = %.2f\n", cur_dx, cur_dy);
+								printf("\tplane_dx = %.2f\n\tplane_dy = %.2f\n", problem.get_plane_width(), problem.get_plane_height());
+							#endif
+
+							if ((problem.get_plane_width() - new_tuple.get_dx() + GlobalParams::get_tolerance() > 0) && (problem.get_plane_height() - new_tuple.get_dy() + GlobalParams::get_tolerance() > 0))
+							{
+								#ifdef DEBUG_BP
+									printf("Added new tuple to all_efficient_form_tuples\n");
+								#endif			
+
+								all_efficient_form_tuples.push_back(new_tuple);
+							}
+							else
+							{
+								#ifdef DEBUG_BP
+									printf("New Tuple does not fit on a plane. Did not add.\n");
+								#endif			
+							}
+					
 						}
 						else
 						{
 							#ifdef DEBUG_BP
-								printf("Tuple was not added to all_efficient_form_tuples\n");
+								printf("Tuple was not added to all_efficient_form_tuples.\n");
 							#endif
 						}
 					}
