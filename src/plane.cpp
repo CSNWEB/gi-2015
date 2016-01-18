@@ -71,14 +71,25 @@ void Plane::add_form_at_position_rotation(AbstractForm *form,
 	#endif
 }
 
+float Plane::get_used_area()
+{
+    float area = 0;
+    for (int i=0; i<forms.size(); ++i)
+        area += (forms[i].get_mother())->get_size_of_area();
+    return area;
+}
+
+float Plane::get_unused_area()
+{
+    return (dx*dy)-get_used_area();
+}
+
 float Plane::compute_utilization()
 {
 	#ifdef DEBUG
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	float utilization = 0;
-	for (int i=0; i<forms.size(); ++i)
-		utilization += (forms[i].get_mother())->get_size_of_area();
+    float utilization = get_used_area();
 	return (utilization/(dx*dy));
 }

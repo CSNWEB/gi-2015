@@ -70,6 +70,7 @@ void MainWindow::updateResultView(){
         m_resultview->showSetting(bin_packing->get_current_setting());
         QTimer::singleShot(ceil(ui->delaySpinBox->value()*1000), this, SLOT(updateResultView()));
     }else{
+        showQuality();
         enableSaveButtons(true);
     }
 }
@@ -106,6 +107,7 @@ void MainWindow::on_solveButton_clicked()
         }else{
             bin_packing->create_packed_setting();
             m_resultview->showSetting(bin_packing->get_current_setting());
+            showQuality();
             enableSaveButtons(true);
         }
     }
@@ -375,4 +377,11 @@ void MainWindow::on_planeHeight_editingFinished()
 void MainWindow::on_checkBox_clicked(bool checked)
 {
     GlobalParams::set_option_pre_merge(checked);
+}
+
+void MainWindow::showQuality()
+{
+    Setting setting = bin_packing->get_current_setting();
+    ui->utilizationLabel->setText(QString::number(setting.get_total_utilization()*100) + "% of the planes are used");
+    ui->optimumLabel->setText(QString::number(setting.get_unused_planes()) + " more planes than the optimal (100% utilization) solution");
 }

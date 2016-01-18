@@ -100,6 +100,8 @@ private:
     void enableEditPointButtons(bool enabled);
     void enableSaveButtons(bool enabled);
 
+    void showQuality();
+
 };
 
 #endif // MAINWINDOW_H

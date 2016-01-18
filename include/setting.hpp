@@ -116,6 +116,12 @@ public:
      *  places every form on its own sheet
      */
     void create_initial_setting();
+    
+    /*!
+     * Sums up all unused areas und calculates how much planes that would be
+     */
+    int get_unused_planes();
+     
 };
 
 #endif

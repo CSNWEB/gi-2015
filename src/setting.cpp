@@ -31,6 +31,10 @@ float Setting::get_total_utilization()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+    if(planes.size() == 0){
+        return 1;
+    }
+
 	float utilization = 0;
 
 	for (int i=0; i<planes.size(); ++i)
@@ -43,6 +47,22 @@ float Setting::get_total_utilization()
 	#endif
 	
 	return utilization;
+}
+
+int Setting::get_unused_planes()
+{
+
+    if(planes.size() == 0){
+        return 0;
+    }
+
+    float unused_area = 0;
+
+    for (int i=0; i<planes.size(); ++i)
+        unused_area += planes[i].get_unused_area();
+
+    return ceil(unused_area/(problem->get_plane_height()*problem->get_plane_width()*planes.size()));
+
 }
 
 void Setting::create_initial_setting()
