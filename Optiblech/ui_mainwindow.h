@@ -602,7 +602,7 @@ public:
         helpButton->setText(QApplication::translate("MainWindow", "Info and Help", 0));
         pushButton->setText(QApplication::translate("MainWindow", "You can't proceed - problem empty", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "1. Enter Problem", 0));
-        label_6->setText(QApplication::translate("MainWindow", "Tolerance (max. 1, min. 0.001)", 0));
+        label_6->setText(QApplication::translate("MainWindow", "Tolerance (max. 1, min. 0.0001)", 0));
         checkBox->setText(QApplication::translate("MainWindow", "Combine forms for better utilization", 0));
         showCaseCheckBox->setText(QApplication::translate("MainWindow", "Activate Step-by-Step Showcase mode", 0));
         showCaseGroup->setTitle(QApplication::translate("MainWindow", "Showcase params", 0));

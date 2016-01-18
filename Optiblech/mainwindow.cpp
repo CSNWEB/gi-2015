@@ -209,19 +209,6 @@ void MainWindow::on_editFormButton_clicked()
     dialog.exec();
 }
 
-void MainWindow::on_pointUpButton_clicked()
-{
-    if(ui->absFormList->currentRow() >= 0 && ui->pointList->currentRow() >= 0){
-        pm->movePointUp(ui->absFormList->currentRow(), ui->pointList->currentRow());
-    }
-}
-
-void MainWindow::on_pointDownButton_clicked()
-{
-    if(ui->absFormList->currentRow() >= 0 && ui->pointList->currentRow() >= 0){
-        pm->movePointDown(ui->absFormList->currentRow(), ui->pointList->currentRow());
-    }
-}
 
 void MainWindow::on_delPointButton_clicked()
 {

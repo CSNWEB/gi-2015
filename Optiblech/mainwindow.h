@@ -52,10 +52,6 @@ private slots:
 
     void on_editFormButton_clicked();
 
-    void on_pointUpButton_clicked();
-
-    void on_pointDownButton_clicked();
-
     void on_delPointButton_clicked();
 
     void on_addPointButton_clicked();

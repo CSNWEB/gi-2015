@@ -449,7 +449,7 @@ QPushButton:pressed {
              </size>
             </property>
             <property name="text">
-             <string>Tolerance (max. 1, min. 0.001)</string>
+             <string>Tolerance (max. 1, min. 0.0001)</string>
             </property>
            </widget>
           </item>
