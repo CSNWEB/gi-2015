@@ -4,7 +4,6 @@
 	#define DEBUG_PSA
 #endif
 
-
 bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector<int> &indices)
 {
 	#ifdef DEBUG_PSA
@@ -71,6 +70,81 @@ bool PointSetAlgorithms::unique_indicies_of_points(vector<Point> &points, vector
 
 	#ifdef DEBUG_PSA
 		printf("ordered_indices at end of unify:\n");
+		for (int i=0; i<indices.size(); ++i)
+			printf("\t%i\n", indices[i]);
+	#endif
+
+	return points_deleted;
+}
+
+bool PointSetAlgorithms::trim_indices_of_points_in_y(vector<Point> &points, vector<int> &indices)
+{
+	#ifdef DEBUG_PSA
+		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
+	#endif
+
+	if (indices.size() < 2)
+		return false;
+
+	#ifdef DEBUG_PSA
+		printf("ordered_indices at begin of trimming:\n");
+		for (int i=0; i<indices.size(); ++i)
+			printf("\t%i\n", indices[i]);
+	#endif
+
+	bool points_deleted = false;
+
+	list<int> trimmed_points(1, indices[0]);
+
+    #ifdef DEBUG_PSA
+    	printf("Kept index %i\n", indices[0]);
+    #endif
+
+    float current_x = points[indices[0]].get_x();
+
+    for (int i=1; i < indices.size(); ++i)
+    {
+    	float tmp_x = points[indices[i]].get_x();
+    	if (fabs(current_x-tmp_x) < GlobalParams::get_tolerance())
+    	{
+    		if (i = indices.size()-1)
+    		{
+    			#ifdef DEBUG_PSA
+           			printf("Kept index %i\n", indices[i]);
+           		#endif
+
+           		trimmed_points.push_back(indices[i]);
+    		}
+    		else
+    		{
+	            #ifdef DEBUG_PSA
+	            	printf("Deleted index %i\n", indices[i]);
+	            #endif
+
+	            points_deleted = true;
+    		}
+    	}
+    	else
+    	{
+           	#ifdef DEBUG_PSA
+           		printf("Kept index %i\n", indices[i]);
+           	#endif
+
+    		current_x = tmp_x;
+    		trimmed_points.push_back(indices[i-1]);
+    		trimmed_points.push_back(indices[i]);
+    		current_x = points[indices[i]].get_x();
+    	}
+    }
+
+	#ifdef DEBUG_PSA
+		printf("Create new indices from list:\n");
+	#endif
+
+	indices = vector<int>(trimmed_points.begin(), trimmed_points.end());
+
+	#ifdef DEBUG_PSA
+		printf("ordered_indices at end of trimming:\n");
 		for (int i=0; i<indices.size(); ++i)
 			printf("\t%i\n", indices[i]);
 	#endif
@@ -203,25 +277,21 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 		return false;
 	}
 
-	vector<int> convex_hull_lower	= vector<int>(0);
+	vector<Point> points_tmp = points;
+
 	vector<int> ordered_indices		= vector<int>(0);
+	vector<int> convex_hull_lower	= vector<int>(0);
 	vector<int> convex_hull_upper	= vector<int>(0);
 
-	ordered_indices = PointSetAlgorithms::sort_points_by_dim_x(points);
+	int n = points.size();
+	convex_hull.reserve(n);
+	ordered_indices.reserve(n);
+	convex_hull_lower.reserve(n);
+	convex_hull_upper.reserve(n);
 
-	#ifdef DEBUG_PSA
-		printf("ordered_indices before unify:\n");
-		for (int i=0; i<ordered_indices.size(); ++i)
-			printf("\t%i\n", ordered_indices[i]);
-	#endif
+	ordered_indices = PointSetAlgorithms::sort_points_by_dim_x(points_tmp);
 
-	PointSetAlgorithms::unique_indicies_of_points(points, ordered_indices);
-
-	#ifdef DEBUG_PSA
-		printf("ordered_indices before unify:\n");
-		for (int i=0; i<ordered_indices.size(); ++i)
-			printf("\t%i\n", ordered_indices[i]);
-	#endif
+	PointSetAlgorithms::unique_indicies_of_points(points_tmp, ordered_indices);
 
 	//int first_element = *ordered_indices.begin();
 	convex_hull_lower = vector<int>(1, ordered_indices[0]);
@@ -338,14 +408,23 @@ bool PointSetAlgorithms::compute_convex_hull(vector<Point> &points, vector<int> 
 		}
 	}
 
-
 	#ifdef DEBUG_PSA
 		printf("convex hull finished\n");
 		for (int i=0; i<convex_hull.size(); ++i)
 			printf("\t%i\n", convex_hull[i]);
 	#endif
 
-		hull = convex_hull;
+	/*
+	PointSetAlgorithms::trim_indices_of_points_in_y(points_tmp, convex_hull);
+
+	#ifdef DEBUG_PSA
+		printf("convex hull after trimming\n");
+		for (int i=0; i<convex_hull.size(); ++i)
+			printf("\t%i\n", convex_hull[i]);
+	#endif
+	*/
+		
+	hull = convex_hull;
 	return true;
 }
 

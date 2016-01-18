@@ -14,6 +14,7 @@
 
 #include <iterator>
 #include <vector>
+#include <list>
 
 class AbstractFormConfigurationTuple;
 

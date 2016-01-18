@@ -113,8 +113,8 @@ void FormCombiner::compute_config_form_1(int index_of_point)
 	cur_rotation_form_1 = PointSetAlgorithms::compute_rotation_angle_for_points_parallel_to_axis(*(f1.get_points()), index_of_point, (index_of_point+1)%form_1->get_number_of_points());
 	f1.rotate(0,0,cur_rotation_form_1);
 
-	cur_position_form_1_x = -(f1.get_point_at(index_of_point))->get_x();
-	cur_position_form_1_y = -(f1.get_point_at(index_of_point))->get_y();
+	cur_position_form_1_x = - (f1.get_point_at(index_of_point).get_x());
+	cur_position_form_1_y = - (f1.get_point_at(index_of_point).get_y());
 	f1.move_rel(cur_position_form_1_x, cur_position_form_1_y);
 
 	#ifdef DEBUG_FC
@@ -147,8 +147,8 @@ void FormCombiner::compute_config_form_2(int index_of_point, bool is_mirrored)
 
 	cur_mirror_form_2 = is_mirrored;
 
-	cur_position_form_2_x = -(f->get_point_at(index_of_point))->get_x();
-	cur_position_form_2_y = -(f->get_point_at(index_of_point))->get_y();
+	cur_position_form_2_x = - (f->get_point_at(index_of_point).get_x());
+	cur_position_form_2_y = - (f->get_point_at(index_of_point).get_y());
 	f->move_rel(cur_position_form_2_x, cur_position_form_2_y);
 
 	#ifdef DEBUG_FC
@@ -187,6 +187,7 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	#endif
 
 	// compute combined pointset of both Forms:
+	/*
 	allpoints = vector<Point>(f1.get_points()->begin(), f1.get_points()->end());
 
 	vector<Point>::iterator insert_point = allpoints.begin() + index_of_point_1;
@@ -197,6 +198,22 @@ void FormCombiner::compute_optimal_rotation_and_area_for_tuple_config(int index_
 	allpoints.insert(insert_point, begin_of_f2_hull, end_of_f2_points);
 	vector<Point>::iterator insert_point_2 = allpoints.begin() + index_of_point_1 + index_of_point_2;
 	allpoints.insert(insert_point_2, begin_of_f2_points, begin_of_f2_hull);
+	*/
+
+	int n1 = form_1->get_number_of_points();
+	int n2 = form_2->get_number_of_points();
+
+	//list<Point> allpoint_list;
+	allpoints = vector<Point>(n1+n2,Point());
+	int k=0;
+	for (int i_form1 = 0; i_form1 < index_of_point_1; ++i_form1)
+		allpoints[k++] = f1.get_point_at(i_form1);
+	for (int i_form2 = index_of_point_2; i_form2 < n2; ++i_form2)
+		allpoints[k++] = f2_temp->get_point_at(i_form2);
+	for (int i_form2 = 0; i_form2 < index_of_point_2; ++i_form2)
+		allpoints[k++] = f2_temp->get_point_at(i_form2);
+	for (int i_form1 = index_of_point_1; i_form1 < n1; ++i_form1)
+		allpoints[k++] = f1.get_point_at(i_form1);
 
 	#ifdef DEBUG_FC
 		printf("allpoints initialized\n");
@@ -397,37 +414,40 @@ void FormCombiner::compute_optimal_configuration()
 					printf("Forms do overlap:\n\tConfiguration illegal!\n");
 				#endif
 				
-				// compute mirrored configuration:
-				reset_form_1();
-				compute_config_form_2(point_2, true);
-
-				#ifdef DEBUG_FC
-					printf("Consider mirrored configuration:\n\tForm 1: point %i\n\tForm 2: point %i\n", point_1, point_2);
-					f1._d_print_points_to_console();
-					f2_m._d_print_points_to_console();
-				#endif
-
-				// get new bounding box, check if minimal:
-				if (!f1.check_for_overlap(f2_m))
+				if (GlobalParams::mirror_allowed())
 				{
-					#ifdef DEBUG_FC
-						printf("Forms do not overlap:\n\tConfiguration okay\n");
-					#endif
-
-					compute_optimal_rotation_and_area_for_tuple_config(point_1, point_2);
+					// compute mirrored configuration:
+					reset_form_1();
+					compute_config_form_2(point_2, true);
 
 					#ifdef DEBUG_FC
-						printf("Combined bounding box has area %.2f\n\tcurrent minimum has area %.2f\n", cur_configuration_area, opt_configuration_area);
-						printf("Forms do not overlap:\n\tConfiguration okay\n");
+						printf("Consider mirrored configuration:\n\tForm 1: point %i\n\tForm 2: point %i\n", point_1, point_2);
+						f1._d_print_points_to_console();
+						f2_m._d_print_points_to_console();
 					#endif
 
-					update_if_better();
-				}
-				else
-				{		
-					#ifdef DEBUG_FC
-						printf("Forms do overlap:\n\tConfiguration illegal!\n");
-					#endif
+					// get new bounding box, check if minimal:
+					if (!f1.check_for_overlap(f2_m))
+					{
+						#ifdef DEBUG_FC
+							printf("Forms do not overlap:\n\tConfiguration okay\n");
+						#endif
+
+						compute_optimal_rotation_and_area_for_tuple_config(point_1, point_2);
+
+						#ifdef DEBUG_FC
+							printf("Combined bounding box has area %.2f\n\tcurrent minimum has area %.2f\n", cur_configuration_area, opt_configuration_area);
+							printf("Forms do not overlap:\n\tConfiguration okay\n");
+						#endif
+
+						update_if_better();
+					}
+					else
+					{		
+						#ifdef DEBUG_FC
+							printf("Forms do overlap:\n\tConfiguration illegal!\n");
+						#endif
+					}
 				}
 
 			}
