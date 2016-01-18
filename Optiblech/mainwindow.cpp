@@ -89,6 +89,8 @@ void MainWindow::on_solveButton_clicked()
     string output_filename_svg = tmp.toUtf8().data();
 
     enableSaveButtons(false);
+    ui->utilizationLabel->setText("");
+    ui->optimumLabel->setText("");
 
     Problem  problem = pm->getProblem();
 
@@ -354,7 +356,7 @@ void MainWindow::on_helpButton_clicked()
     text += "You can save the result as txt or svg file in the third step.\n";
     text += "If you want to provide your forms with a txt file it should have the same format as the following example (without the text after the #) \n\n";
 
-    text += "3.5\t#plane width\n4\t#plane height\n2\t#number of forms\nRect_long\t#form name\n1\tform amount\n4\t#number of points\n0 0\t#x y of first point\n0 4\n1 4\n1 0\nRect_diag\n1\n4\n0 0\n0 4.5\n0.5 4.5\n0.5 0\n";
+    text += "3.5\t#plane width\n4\t#plane height\n2\t#number of forms\nRect_long\t#form name\n1\t#form amount\n4\t#number of points\n0 0\t#x y of first point\n0 4\n1 4\n1 0\nRect_diag\n1\n4\n0 0\n0 4.5\n0.5 4.5\n0.5 0\n";
 
     text +="\n Version 1.0";
     msgBox.setInformativeText(text);

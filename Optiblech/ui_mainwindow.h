@@ -535,7 +535,7 @@ public:
         horizontalLayout_11 = new QHBoxLayout();
         horizontalLayout_11->setSpacing(6);
         horizontalLayout_11->setObjectName(QStringLiteral("horizontalLayout_11"));
-        horizontalLayout_11->setContentsMargins(-1, 5, -1, 5);
+        horizontalLayout_11->setContentsMargins(12, 5, -1, 5);
         utilizationLabel = new QLabel(tab_3);
         utilizationLabel->setObjectName(QStringLiteral("utilizationLabel"));
 

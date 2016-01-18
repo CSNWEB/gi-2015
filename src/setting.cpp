@@ -61,7 +61,7 @@ int Setting::get_unused_planes()
     for (int i=0; i<planes.size(); ++i)
         unused_area += planes[i].get_unused_area();
 
-    return ceil(unused_area/(problem->get_plane_height()*problem->get_plane_width()*planes.size()));
+    return floor(unused_area/(problem->get_plane_height()*problem->get_plane_width()));
 
 }
 

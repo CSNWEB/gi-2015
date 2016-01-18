@@ -615,6 +615,9 @@ QPushButton:pressed {
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <property name="leftMargin">
+           <number>12</number>
+          </property>
           <property name="topMargin">
            <number>5</number>
           </property>

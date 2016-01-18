@@ -81,7 +81,8 @@ float Plane::get_used_area()
 
 float Plane::get_unused_area()
 {
-    return (dx*dy)-get_used_area();
+    float unused_area = (dx*dy)-get_used_area();
+    return unused_area;
 }
 
 float Plane::compute_utilization()
