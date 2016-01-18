@@ -65,7 +65,7 @@ MainWindow::~MainWindow()
     delete m_resultview;
 }
 
-void MainWindow::updateResultView(){
+void MainWindow::updateResultView(){    
     if(bin_packing->next_step_of_algorithm()){
         m_resultview->showSetting(bin_packing->get_current_setting());
         QTimer::singleShot(ceil(ui->delaySpinBox->value()*1000), this, SLOT(updateResultView()));
@@ -105,7 +105,8 @@ void MainWindow::on_solveButton_clicked()
         ui->tabWidget->tabBar()->setTabEnabled(2,true);
 
         if(ui->showCaseCheckBox->isChecked()){
-             QTimer::singleShot(0, this, SLOT(updateResultView()));
+                bin_packing->initialize_algorithm();
+                QTimer::singleShot(0, this, SLOT(updateResultView()));
         }else{
             bin_packing->create_packed_setting();
             m_resultview->showSetting(bin_packing->get_current_setting());

@@ -32,7 +32,7 @@ BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 void BinPacking::update_problem(Problem &new_problem)
 {
 	problem = new_problem;
-    printf("Don't use this functions it will crate errors!!!");
+    printf("Don't use this functions it might create errors!!!");
 	is_initialized = false;
 	index_of_current_tuple = -1;
 
@@ -318,6 +318,15 @@ void BinPacking::initialize_algorithm()
     if(number_of_different_forms == 0){
         return;
     }
+
+    if (!problem.is_solveable())
+    {
+        #ifdef DEBUG_BP
+            printf("ERROR: No Setting created because problem is not solveable.\n");
+        #endif
+
+        return;
+    }
 	
 	init_number_of_forms();
 
@@ -390,37 +399,28 @@ void BinPacking::create_initial_sorting()
 
 bool BinPacking::create_packed_setting()
 {
-	#ifdef DEBUG_BP
+    /*#ifdef DEBUG_BP
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 		bool stop_each_step = true;
-	#endif
+    #endif*/
 
 	int iteration = 0;
 
-	if (!problem.is_solveable())
+    /*
+     * moved to init
+     * if (!problem.is_solveable())
 	{
 		#ifdef DEBUG_BP
 			printf("ERROR: No Setting created because problem is not solveable.\n");
 		#endif
 
 		return false;
-	}
+    }*/
 
 	while(next_step_of_algorithm())
 	{
 		++iteration;
 
-		#ifdef DEBUG_BP
-			//char t;
-			printf("\n--- Iteration %i of %s finished ---\n\n", iteration, __PRETTY_FUNCTION__);
-			if (stop_each_step)
-			{
-				//printf("- press [enter] to proceed or [q] + [enter] to finish computation -\n\n");
-				//scanf("%c", &t);
-				//if (t == 'q')
-					stop_each_step = false;
-			}
-		#endif
 	}
 
 	#ifdef DEBUG_BP
@@ -436,8 +436,8 @@ bool BinPacking::next_step_of_algorithm()
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
-	if (!is_initialized)
-		initialize_algorithm();
+    if (!is_initialized)
+        initialize_algorithm();
 
 	if(all_tuples_to_use_sorted_by_size.size() == 0){
         #ifdef DEBUG_BP
