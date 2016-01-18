@@ -17,8 +17,8 @@ void OutputHandler::write_setting_to_txt(string filename)
 	#endif
 
 	FILE *file;
-    file = fopen(filename.c_str(), "w");
-	fprintf(file, "%i\n", (int)(setting->get_total_utilization()*100));
+    file = fopen(filename.c_str(), "w+");
+    fprintf(file, "%i\n", (int)(setting->get_total_utilization()*100));
 	fprintf(file, "%i\n", setting->get_number_of_planes());
 	for (int i=0; i<setting->get_number_of_planes(); ++i)
 	{
@@ -33,7 +33,7 @@ void OutputHandler::write_setting_to_txt(string filename)
 				fprintf(file, "%.2f %.2f\n", (*points_of_current_form)[k].get_x(), (*points_of_current_form)[k].get_y());
 		}
 	}
-	//close(file);
+    fclose(file);
 }
 
 void OutputHandler::write_setting_to_svg(string filename, bool with_covex_hull)
@@ -43,7 +43,7 @@ void OutputHandler::write_setting_to_svg(string filename, bool with_covex_hull)
 	#endif
 
 	unsigned int planes = setting->get_number_of_planes();
-    int factor = 100;
+    int factor = 1;
     int spacing = 20;
     int planeWidth =  floor(problem->get_plane_width() * factor);
     int planeHeight = floor(problem->get_plane_height() * factor);

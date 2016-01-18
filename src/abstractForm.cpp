@@ -435,9 +435,8 @@ void AbstractForm::move_down_point_at_index(int index)
 }
 
 bool AbstractForm::overlaps_itself()
-{
-    std::cout << "Points size = " << points.size() << std::endl;
-    
+{   
+
     if(points.empty()){
         return false;
     }

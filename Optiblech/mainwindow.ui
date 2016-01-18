@@ -332,26 +332,6 @@ QPushButton:pressed {
                  </widget>
                 </item>
                 <item>
-                 <widget class="QToolButton" name="pointUpButton">
-                  <property name="text">
-                   <string>...</string>
-                  </property>
-                  <property name="arrowType">
-                   <enum>Qt::UpArrow</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QToolButton" name="pointDownButton">
-                  <property name="text">
-                   <string>...</string>
-                  </property>
-                  <property name="arrowType">
-                   <enum>Qt::DownArrow</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QPushButton" name="delPointButton">
                   <property name="text">
                    <string>-</string>
@@ -469,7 +449,7 @@ QPushButton:pressed {
              </size>
             </property>
             <property name="text">
-             <string>Tolerance (max. 1, min. 0.001)</string>
+             <string>Tolerance (max. 1, min. 0.0001)</string>
             </property>
            </widget>
           </item>
@@ -569,6 +549,9 @@ QPushButton:pressed {
             <widget class="QDoubleSpinBox" name="delaySpinBox">
              <property name="minimum">
               <double>0.010000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>0.100000000000000</double>
              </property>
              <property name="value">
               <double>0.500000000000000</double>
