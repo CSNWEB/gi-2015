@@ -163,6 +163,9 @@ void ProblemManager::delPointOfForm(int selectedForm, int selectedPoint)
 }
 
 void ProblemManager::movePointUp(int selectedForm, int selectedPoint){
+    if(selectedPoint <= 0){
+        return;
+    }
     problem.get_abstract_form_at_position(selectedForm)->move_up_point_at_index(selectedPoint);
     m_showedProblem.get_abstract_form_at_position(selectedForm)->move_up_point_at_index(selectedPoint);
     initPoints(selectedForm);
@@ -175,6 +178,9 @@ void ProblemManager::movePointUp(int selectedForm, int selectedPoint){
 }
 
 void ProblemManager::movePointDown(int selectedForm, int selectedPoint){
+    if(selectedPoint >= m_pointList->count()){
+        return;
+    }
     problem.get_abstract_form_at_position(selectedForm)->move_down_point_at_index(selectedPoint);
     m_showedProblem.get_abstract_form_at_position(selectedForm)->move_down_point_at_index(selectedPoint);
     initPoints(selectedForm);
@@ -199,8 +205,7 @@ AbstractForm* ProblemManager::getForm(int selectedForm){
 
 void ProblemManager::updateForm(int selectedForm, bool show){
 
-    AbstractForm * form = problem.get_abstract_form_at_position(selectedForm);
-    problem.check_if_solveable();
+    AbstractForm * form = problem.get_abstract_form_at_position(selectedForm);    
     QString error = "";
     if(form->get_number_of_points() < 3){
         error += " !to few points!";
@@ -209,9 +214,18 @@ void ProblemManager::updateForm(int selectedForm, bool show){
     else if(form->overlaps_itself()){
         error += " !overlaps itself!";
 
+    }else{
+       problem.check_if_solveable();
+       if(problem.is_to_large(selectedForm)){
+           error += " !to large!";
+       }
     }
-    else if(problem.is_to_large(selectedForm)){
-        error += " !to large!";
+
+    if(!error.isEmpty()){
+        m_formview->clear();
+        m_pointList->setStyleSheet("QListWidget {border:2px solid red;}");
+        m_invalidForms.insert(selectedForm);
+        setSolvableState(false);
     }else{
         if(show){
             m_formview->showForm(form);
@@ -221,12 +235,6 @@ void ProblemManager::updateForm(int selectedForm, bool show){
         if(m_invalidForms.isEmpty()){
             setSolvableState(true);
         }
-    }
-    if(!error.isEmpty()){
-        m_formview->clear();
-        m_pointList->setStyleSheet("QListWidget {border:2px solid red;}");
-        m_invalidForms.insert(selectedForm);
-        setSolvableState(false);
     }
     m_absFormList->item(selectedForm)->setText(getAbsFormListItem(selectedForm) + error);
 

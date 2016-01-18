@@ -26,7 +26,6 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTabWidget>
-#include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
@@ -60,8 +59,6 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QPushButton *addPointButton;
     QPushButton *editPointButton;
-    QToolButton *pointUpButton;
-    QToolButton *pointDownButton;
     QPushButton *delPointButton;
     QHBoxLayout *horizontalLayout_7;
     QLabel *label_4;
@@ -345,18 +342,6 @@ public:
 
         horizontalLayout_5->addWidget(editPointButton);
 
-        pointUpButton = new QToolButton(pointManageContainer);
-        pointUpButton->setObjectName(QStringLiteral("pointUpButton"));
-        pointUpButton->setArrowType(Qt::UpArrow);
-
-        horizontalLayout_5->addWidget(pointUpButton);
-
-        pointDownButton = new QToolButton(pointManageContainer);
-        pointDownButton->setObjectName(QStringLiteral("pointDownButton"));
-        pointDownButton->setArrowType(Qt::DownArrow);
-
-        horizontalLayout_5->addWidget(pointDownButton);
-
         delPointButton = new QPushButton(pointManageContainer);
         delPointButton->setObjectName(QStringLiteral("delPointButton"));
 
@@ -503,6 +488,7 @@ public:
         delaySpinBox = new QDoubleSpinBox(showCaseGroup);
         delaySpinBox->setObjectName(QStringLiteral("delaySpinBox"));
         delaySpinBox->setMinimum(0.01);
+        delaySpinBox->setSingleStep(0.1);
         delaySpinBox->setValue(0.5);
 
         horizontalLayout_3->addWidget(delaySpinBox);
@@ -609,8 +595,6 @@ public:
         currentFormBox->setTitle(QApplication::translate("MainWindow", "Current Form", 0));
         addPointButton->setText(QApplication::translate("MainWindow", "+", 0));
         editPointButton->setText(QApplication::translate("MainWindow", "Edit Point", 0));
-        pointUpButton->setText(QApplication::translate("MainWindow", "...", 0));
-        pointDownButton->setText(QApplication::translate("MainWindow", "...", 0));
         delPointButton->setText(QApplication::translate("MainWindow", "-", 0));
         label_4->setText(QApplication::translate("MainWindow", "Amount:", 0));
         label_3->setText(QApplication::translate("MainWindow", "Plane width: ", 0));
