@@ -50,8 +50,11 @@ MainWindow::MainWindow(QWidget *parent) :
     enableEditFormButton(false);
 
     QObject::connect(pm, SIGNAL(problemEmpty()), this, SLOT(problemEmpty()));
-    //ui->tabWidget->tabBar()->setTabEnabled(1,false);
+    ui->tabWidget->tabBar()->setTabEnabled(1,false);
     ui->tabWidget->tabBar()->setTabEnabled(2,false);
+
+    GlobalParams::set_option_pre_merge(true);
+
 }
 
 MainWindow::~MainWindow()
@@ -264,7 +267,7 @@ void MainWindow::on_saveTXT_clicked()
         Problem problem = pm->getProblem();
         OutputHandler oh(&problem, &setting);
         oh.write_setting_to_txt(file.toUtf8().data());
-    }
+    }       
 }
 
 void MainWindow::on_pointAmount_valueChanged(int arg1)

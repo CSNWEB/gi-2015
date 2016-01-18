@@ -23,6 +23,7 @@
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolButton>
@@ -77,11 +78,12 @@ public:
     QHBoxLayout *horizontalLayout_10;
     QLabel *label_6;
     QDoubleSpinBox *toleranceSpinBox;
+    QSpacerItem *verticalSpacer_2;
+    QCheckBox *checkBox;
+    QSpacerItem *verticalSpacer;
     QCheckBox *showCaseCheckBox;
     QGroupBox *showCaseGroup;
     QHBoxLayout *horizontalLayout_3;
-    QLabel *label;
-    QSpinBox *stepsSpinBox;
     QLabel *label_2;
     QDoubleSpinBox *delaySpinBox;
     QPushButton *solveButton;
@@ -89,6 +91,9 @@ public:
     QVBoxLayout *verticalLayout;
     QWidget *svgContainer_2;
     QVBoxLayout *svgContainer;
+    QHBoxLayout *horizontalLayout_11;
+    QLabel *label;
+    QLabel *label_7;
     QWidget *saveContainer;
     QHBoxLayout *horizontalLayout_8;
     QPushButton *saveSVG;
@@ -442,6 +447,7 @@ public:
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(label_6->sizePolicy().hasHeightForWidth());
         label_6->setSizePolicy(sizePolicy1);
+        label_6->setMinimumSize(QSize(40, 0));
 
         horizontalLayout_10->addWidget(label_6);
 
@@ -457,6 +463,19 @@ public:
 
 
         verticalLayout_2->addLayout(horizontalLayout_10);
+
+        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Fixed);
+
+        verticalLayout_2->addItem(verticalSpacer_2);
+
+        checkBox = new QCheckBox(tab_2);
+        checkBox->setObjectName(QStringLiteral("checkBox"));
+
+        verticalLayout_2->addWidget(checkBox);
+
+        verticalSpacer = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        verticalLayout_2->addItem(verticalSpacer);
 
         showCaseCheckBox = new QCheckBox(tab_2);
         showCaseCheckBox->setObjectName(QStringLiteral("showCaseCheckBox"));
@@ -476,17 +495,6 @@ public:
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        label = new QLabel(showCaseGroup);
-        label->setObjectName(QStringLiteral("label"));
-
-        horizontalLayout_3->addWidget(label);
-
-        stepsSpinBox = new QSpinBox(showCaseGroup);
-        stepsSpinBox->setObjectName(QStringLiteral("stepsSpinBox"));
-        stepsSpinBox->setMinimum(1);
-
-        horizontalLayout_3->addWidget(stepsSpinBox);
-
         label_2 = new QLabel(showCaseGroup);
         label_2->setObjectName(QStringLiteral("label_2"));
 
@@ -537,6 +545,23 @@ public:
 
         verticalLayout->addWidget(svgContainer_2);
 
+        horizontalLayout_11 = new QHBoxLayout();
+        horizontalLayout_11->setSpacing(6);
+        horizontalLayout_11->setObjectName(QStringLiteral("horizontalLayout_11"));
+        horizontalLayout_11->setContentsMargins(-1, 5, -1, 5);
+        label = new QLabel(tab_3);
+        label->setObjectName(QStringLiteral("label"));
+
+        horizontalLayout_11->addWidget(label);
+
+        label_7 = new QLabel(tab_3);
+        label_7->setObjectName(QStringLiteral("label_7"));
+
+        horizontalLayout_11->addWidget(label_7);
+
+
+        verticalLayout->addLayout(horizontalLayout_11);
+
         saveContainer = new QWidget(tab_3);
         saveContainer->setObjectName(QStringLiteral("saveContainer"));
         saveContainer->setEnabled(false);
@@ -566,7 +591,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -594,12 +619,14 @@ public:
         pushButton->setText(QApplication::translate("MainWindow", "You can't proceed - problem empty", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "1. Enter Problem", 0));
         label_6->setText(QApplication::translate("MainWindow", "Tolerance (max. 1, min. 0.001)", 0));
+        checkBox->setText(QApplication::translate("MainWindow", "Combine forms for better utilization", 0));
         showCaseCheckBox->setText(QApplication::translate("MainWindow", "Activate Step-by-Step Showcase mode", 0));
         showCaseGroup->setTitle(QApplication::translate("MainWindow", "Showcase params", 0));
-        label->setText(QApplication::translate("MainWindow", "Steps", 0));
         label_2->setText(QApplication::translate("MainWindow", "Delay (seconds)", 0));
         solveButton->setText(QApplication::translate("MainWindow", "Solve", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "2. Run Solver", 0));
+        label->setText(QApplication::translate("MainWindow", "Utilization: ", 0));
+        label_7->setText(QApplication::translate("MainWindow", "Comparison with optimum", 0));
         saveSVG->setText(QApplication::translate("MainWindow", "Save as SVG", 0));
         saveTXT->setText(QApplication::translate("MainWindow", "Save as TXT", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "3. View Result", 0));
