@@ -267,7 +267,7 @@ void MainWindow::on_saveTXT_clicked()
         Problem problem = pm->getProblem();
         OutputHandler oh(&problem, &setting);
         oh.write_setting_to_txt(file.toUtf8().data());
-    }
+    }       
 }
 
 void MainWindow::on_pointAmount_valueChanged(int arg1)
