@@ -495,6 +495,9 @@ QPushButton:pressed {
           <property name="text">
            <string>Combine forms for better utilization</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>

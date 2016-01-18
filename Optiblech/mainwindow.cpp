@@ -371,3 +371,8 @@ void MainWindow::on_planeHeight_editingFinished()
     pm->setPlaneHeight(ui->planeHeight->value());
     qDebug("Editing finished");
 }
+
+void MainWindow::on_checkBox_clicked(bool checked)
+{
+    GlobalParams::set_option_pre_merge(checked);
+}

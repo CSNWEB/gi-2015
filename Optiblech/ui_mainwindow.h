@@ -455,6 +455,7 @@ public:
 
         checkBox = new QCheckBox(tab_2);
         checkBox->setObjectName(QStringLiteral("checkBox"));
+        checkBox->setChecked(true);
 
         verticalLayout_2->addWidget(checkBox);
 
