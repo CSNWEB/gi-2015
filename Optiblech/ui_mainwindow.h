@@ -89,8 +89,8 @@ public:
     QWidget *svgContainer_2;
     QVBoxLayout *svgContainer;
     QHBoxLayout *horizontalLayout_11;
-    QLabel *label;
-    QLabel *label_7;
+    QLabel *utilizationLabel;
+    QLabel *optimumLabel;
     QWidget *saveContainer;
     QHBoxLayout *horizontalLayout_8;
     QPushButton *saveSVG;
@@ -455,6 +455,7 @@ public:
 
         checkBox = new QCheckBox(tab_2);
         checkBox->setObjectName(QStringLiteral("checkBox"));
+        checkBox->setChecked(true);
 
         verticalLayout_2->addWidget(checkBox);
 
@@ -517,7 +518,7 @@ public:
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         svgContainer_2 = new QWidget(tab_3);
         svgContainer_2->setObjectName(QStringLiteral("svgContainer_2"));
-        svgContainer_2->setEnabled(false);
+        svgContainer_2->setEnabled(true);
         QSizePolicy sizePolicy4(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy4.setHorizontalStretch(0);
         sizePolicy4.setVerticalStretch(0);
@@ -535,15 +536,15 @@ public:
         horizontalLayout_11->setSpacing(6);
         horizontalLayout_11->setObjectName(QStringLiteral("horizontalLayout_11"));
         horizontalLayout_11->setContentsMargins(-1, 5, -1, 5);
-        label = new QLabel(tab_3);
-        label->setObjectName(QStringLiteral("label"));
+        utilizationLabel = new QLabel(tab_3);
+        utilizationLabel->setObjectName(QStringLiteral("utilizationLabel"));
 
-        horizontalLayout_11->addWidget(label);
+        horizontalLayout_11->addWidget(utilizationLabel);
 
-        label_7 = new QLabel(tab_3);
-        label_7->setObjectName(QStringLiteral("label_7"));
+        optimumLabel = new QLabel(tab_3);
+        optimumLabel->setObjectName(QStringLiteral("optimumLabel"));
 
-        horizontalLayout_11->addWidget(label_7);
+        horizontalLayout_11->addWidget(optimumLabel);
 
 
         verticalLayout->addLayout(horizontalLayout_11);
@@ -577,7 +578,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -609,8 +610,8 @@ public:
         label_2->setText(QApplication::translate("MainWindow", "Delay (seconds)", 0));
         solveButton->setText(QApplication::translate("MainWindow", "Solve", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "2. Run Solver", 0));
-        label->setText(QApplication::translate("MainWindow", "Utilization: ", 0));
-        label_7->setText(QApplication::translate("MainWindow", "Comparison with optimum", 0));
+        utilizationLabel->setText(QApplication::translate("MainWindow", "Utilization", 0));
+        optimumLabel->setText(QApplication::translate("MainWindow", "Comparison with optimum", 0));
         saveSVG->setText(QApplication::translate("MainWindow", "Save as SVG", 0));
         saveTXT->setText(QApplication::translate("MainWindow", "Save as TXT", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "3. View Result", 0));

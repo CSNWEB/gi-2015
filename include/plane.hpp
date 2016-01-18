@@ -109,6 +109,10 @@ public:
      *  @return 	the utilitation as percentage within [0,1]
      */
     float compute_utilization();
+    
+    float get_used_area();
+    
+    float get_unused_area();
 };
 
 #endif

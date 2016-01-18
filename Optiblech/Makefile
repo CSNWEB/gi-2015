@@ -700,10 +700,17 @@ moc_problemmanager.cpp: ../include/problem.hpp \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		../include/binPacking.hpp \
+		../include/abstractFormConfiguration.hpp \
+		../include/abstractFormConfigurationTuple.hpp \
+		../include/formCombiner.hpp \
+		../include/binPackingPlane.hpp \
+		../include/binPackingShelf.hpp \
+		../include/tupleComparator.hpp \
+		../include/setting.hpp \
 		formview.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
-		../include/setting.hpp \
 		problemmanager.h
 	/Users/Christoph/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/Christoph/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/Christoph/Code/gi-2015/Optiblech -I/Users/Christoph/Code/gi-2015/include -I/Users/Christoph/Qt/5.4/clang_64/lib/QtOpenGL.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtCore.framework/Headers -F/Users/Christoph/Qt/5.4/clang_64/lib problemmanager.h -o moc_problemmanager.cpp
 
@@ -731,10 +738,17 @@ moc_manageformdialog.cpp: ../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versi
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		../include/binPacking.hpp \
+		../include/abstractFormConfiguration.hpp \
+		../include/abstractFormConfigurationTuple.hpp \
+		../include/formCombiner.hpp \
+		../include/binPackingPlane.hpp \
+		../include/binPackingShelf.hpp \
+		../include/tupleComparator.hpp \
+		../include/setting.hpp \
 		formview.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
-		../include/setting.hpp \
 		manageformdialog.h
 	/Users/Christoph/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/Christoph/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/Christoph/Code/gi-2015/Optiblech -I/Users/Christoph/Code/gi-2015/include -I/Users/Christoph/Qt/5.4/clang_64/lib/QtOpenGL.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtCore.framework/Headers -F/Users/Christoph/Qt/5.4/clang_64/lib manageformdialog.h -o moc_manageformdialog.cpp
 
@@ -762,10 +776,17 @@ moc_managepointsdialog.cpp: ../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Ver
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		../include/binPacking.hpp \
+		../include/abstractFormConfiguration.hpp \
+		../include/abstractFormConfigurationTuple.hpp \
+		../include/formCombiner.hpp \
+		../include/binPackingPlane.hpp \
+		../include/binPackingShelf.hpp \
+		../include/tupleComparator.hpp \
+		../include/setting.hpp \
 		formview.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
-		../include/setting.hpp \
 		managepointsdialog.h
 	/Users/Christoph/Qt/5.4/clang_64/bin/moc $(DEFINES) -D__APPLE__ -D__GNUC__=4 -I/Users/Christoph/Qt/5.4/clang_64/mkspecs/macx-clang -I/Users/Christoph/Code/gi-2015/Optiblech -I/Users/Christoph/Code/gi-2015/include -I/Users/Christoph/Qt/5.4/clang_64/lib/QtOpenGL.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtWidgets.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtGui.framework/Headers -I/Users/Christoph/Qt/5.4/clang_64/lib/QtCore.framework/Headers -F/Users/Christoph/Qt/5.4/clang_64/lib managepointsdialog.h -o moc_managepointsdialog.cpp
 
@@ -1247,10 +1268,17 @@ problemmanager.o: problemmanager.cpp problemmanager.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		../include/binPacking.hpp \
+		../include/abstractFormConfiguration.hpp \
+		../include/abstractFormConfigurationTuple.hpp \
+		../include/formCombiner.hpp \
+		../include/binPackingPlane.hpp \
+		../include/binPackingShelf.hpp \
+		../include/tupleComparator.hpp \
+		../include/setting.hpp \
 		formview.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
-		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
-		../include/setting.hpp
+		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o problemmanager.o problemmanager.cpp
 
 manageformdialog.o: manageformdialog.cpp manageformdialog.h \
@@ -1278,10 +1306,17 @@ manageformdialog.o: manageformdialog.cpp manageformdialog.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		../include/binPacking.hpp \
+		../include/abstractFormConfiguration.hpp \
+		../include/abstractFormConfigurationTuple.hpp \
+		../include/formCombiner.hpp \
+		../include/binPackingPlane.hpp \
+		../include/binPackingShelf.hpp \
+		../include/tupleComparator.hpp \
+		../include/setting.hpp \
 		formview.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
-		../include/setting.hpp \
 		ui_manageformdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o manageformdialog.o manageformdialog.cpp
 
@@ -1310,10 +1345,17 @@ managepointsdialog.o: managepointsdialog.cpp managepointsdialog.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qsize.h \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/QSet \
 		../../../Qt/5.4/clang_64/lib/QtCore.framework/Versions/5/Headers/qset.h \
+		../include/binPacking.hpp \
+		../include/abstractFormConfiguration.hpp \
+		../include/abstractFormConfigurationTuple.hpp \
+		../include/formCombiner.hpp \
+		../include/binPackingPlane.hpp \
+		../include/binPackingShelf.hpp \
+		../include/tupleComparator.hpp \
+		../include/setting.hpp \
 		formview.h \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/QGraphicsView \
 		../../../Qt/5.4/clang_64/lib/QtWidgets.framework/Versions/5/Headers/qgraphicsview.h \
-		../include/setting.hpp \
 		ui_managepointsdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o managepointsdialog.o managepointsdialog.cpp
 

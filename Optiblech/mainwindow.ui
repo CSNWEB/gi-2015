@@ -163,7 +163,7 @@ QPushButton:pressed {
        <string notr="true"/>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -495,6 +495,9 @@ QPushButton:pressed {
           <property name="text">
            <string>Combine forms for better utilization</string>
           </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
@@ -593,7 +596,7 @@ QPushButton:pressed {
         <item>
          <widget class="QWidget" name="svgContainer_2" native="true">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -619,14 +622,14 @@ QPushButton:pressed {
            <number>5</number>
           </property>
           <item>
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="utilizationLabel">
             <property name="text">
-             <string>Utilization: </string>
+             <string>Utilization</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="optimumLabel">
             <property name="text">
              <string>Comparison with optimum</string>
             </property>

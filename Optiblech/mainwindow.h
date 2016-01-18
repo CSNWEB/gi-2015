@@ -76,6 +76,8 @@ private slots:
 
     void on_planeHeight_editingFinished();
 
+    void on_checkBox_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
 
@@ -97,6 +99,8 @@ private:
     void enableEditFormButton(bool enabled);
     void enableEditPointButtons(bool enabled);
     void enableSaveButtons(bool enabled);
+
+    void showQuality();
 
 };
 
