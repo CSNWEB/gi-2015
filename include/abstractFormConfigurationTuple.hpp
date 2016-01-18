@@ -87,11 +87,6 @@ public:
 	/*!
 	 *
 	 */
-	void compute_optimal_configuration();
-
-	/*!
-	 *
-	 */
 	void set_number_of_usages(int number);
 
 	/*!
@@ -107,15 +102,6 @@ public:
 	int get_number_of_usages()
 	{return number_of_usages;};
 
-	/*!
-	 *  Returns maximum number this tuple could be used, i.e. the minimum of all needed amounts of the forms contained in this configuration.
-	 */
-	//int get_number_of_maximum_usages();
-
-	/*!
-	 *  Decrease the number of forms needed for all contained form-configurations
-	 */
-	//void use_configuration(int number_of_usages);
 
     /*!
      *  Get the size of the bounding box in x direction.
@@ -172,7 +158,9 @@ public:
 	 */
 	AbstractFormConfiguration *get_configuration_of_form(int index_of_form);
 
-
+	/*!
+	 *  Creates a string that describes this tupel and all contained Abstractfomrs. For Debugging
+	 */
 	string to_string();
 
 };
