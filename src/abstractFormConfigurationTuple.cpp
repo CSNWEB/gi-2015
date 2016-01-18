@@ -82,8 +82,40 @@ void AbstractFormConfigurationTuple::rotate(float angle)
 		printf("FUNCTION: %s\n", __PRETTY_FUNCTION__);
 	#endif
 
+	float min_x;
+	float max_x;
+	float min_y;
+	float max_y;
+
 	for (int config_index = 0; config_index < abstract_form_configs.size(); ++config_index)
+	{
 		abstract_form_configs[config_index].rotate(angle);
+		float cur_min_x = abstract_form_configs[config_index].get_min_x();
+		float cur_max_x = cur_min_x + abstract_form_configs[config_index].get_dx();
+		float cur_min_y = abstract_form_configs[config_index].get_min_y();
+		float cur_max_y = cur_min_y + abstract_form_configs[config_index].get_dy();
+		if (config_index == 0)
+		{
+			min_x = cur_min_x;
+			max_x = cur_max_x;
+			min_y = cur_min_y;
+			max_y = cur_max_y;
+		}
+		else
+		{
+			if (cur_min_x < min_x)
+				min_x = cur_min_x;
+			if (cur_max_x > max_x)
+				max_x = cur_max_x;
+			if (cur_min_y < min_y)
+				min_y = cur_min_y;
+			if (cur_max_y > max_y)
+				max_y = cur_max_y;
+		}
+	}
+	dx = max_x - min_x;
+	dy = max_y - min_y;
+
 }
 
 void AbstractFormConfigurationTuple::normalize_position()

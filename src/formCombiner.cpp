@@ -345,6 +345,7 @@ AbstractFormConfigurationTuple FormCombiner::create_config_tuple()
 		#ifdef DEBUG_FC
 		printf("New tuple post-correction:\n");
 		printf("%s\n",optimal_configured_tuple.to_string().c_str());
+		printf("dx = %.2f / dy = %.2f\n", optimal_configured_tuple.get_dx(), optimal_configured_tuple.get_dy());
 		#endif
 	}
 	else
