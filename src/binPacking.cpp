@@ -1,8 +1,8 @@
 #include "binPacking.hpp"
 
-//#ifdef DEBUG
+#ifdef DEBUG
 	#define DEBUG_BP
-//#endif
+#endif
 
 BinPacking::BinPacking(Problem &p): problem(p), setting(&problem)
 {
